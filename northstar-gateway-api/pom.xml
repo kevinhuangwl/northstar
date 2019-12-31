@@ -10,7 +10,7 @@
 	
 	<artifactId>northstar-gateway-api</artifactId>
 
-	<name>northstar-core</name>
+	<name>northstar-gateway-api</name>
 	<description>北极星程序化交易平台网关API</description>
 
 	<properties>
@@ -18,7 +18,11 @@
 	</properties>
 
 	<dependencies>
-		
+		<dependency>
+			<groupId>tech.xuan-wu</groupId>
+			<artifactId>northstar-common</artifactId>
+			<version>${northstar-version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -26,6 +30,16 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+			        <execution>
+			          <goals>
+			            <goal>repackage</goal>
+			          </goals>
+			        </execution>
+			      </executions>
+			      <configuration>
+			      	<skip>true</skip>
+			      </configuration>
 			</plugin>
 		</plugins>
 	</build>
