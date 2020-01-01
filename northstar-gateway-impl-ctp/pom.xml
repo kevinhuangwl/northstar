@@ -28,6 +28,7 @@
 			<artifactId>northstar-common</artifactId>
 			<version>${northstar-version}</version>
 		</dependency>
+		
 	</dependencies>
 
 	<build>
