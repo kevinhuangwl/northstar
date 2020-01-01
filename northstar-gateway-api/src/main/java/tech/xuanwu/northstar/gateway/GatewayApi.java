@@ -35,12 +35,12 @@ public interface GatewayApi {
 	 */
 	GatewayField getGateway();
 
-	/**
-	 * 获取日志字符串
-	 * 
-	 * @return
-	 */
-	String getLogInfo();
+//	/**
+//	 * 获取日志字符串
+//	 * 
+//	 * @return
+//	 */
+//	String getLogInfo();
 
 	/**
 	 * 订阅

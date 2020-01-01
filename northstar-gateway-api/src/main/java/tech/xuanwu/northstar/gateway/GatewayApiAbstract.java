@@ -63,8 +63,7 @@ public abstract class GatewayApiAbstract implements GatewayApi {
 		return gatewayName;
 	}
 
-	@Override
-	public String getLogInfo() {
+	protected String getLogInfo() {
 		return this.logInfo;
 	}
 

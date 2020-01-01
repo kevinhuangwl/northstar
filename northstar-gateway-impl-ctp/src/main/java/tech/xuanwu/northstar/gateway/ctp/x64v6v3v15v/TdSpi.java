@@ -77,7 +77,7 @@ public class TdSpi extends CThostFtdcTraderSpi {
 		this.appId = ctpGatewayImpl.getGatewaySetting().getCtpApiSetting().getAppId();
 		this.authCode = ctpGatewayImpl.getGatewaySetting().getCtpApiSetting().getAuthCode();
 		this.userProductInfo = ctpGatewayImpl.getGatewaySetting().getCtpApiSetting().getUserProductInfo();
-		this.logInfo = ctpGatewayImpl.getLogInfo();
+		this.logInfo = "网关ID-[" + ctpGatewayImpl.getGatewayId() + "] 名称-[" + ctpGatewayImpl.getGatewayName() + "] [→] ";
 		this.gatewayId = ctpGatewayImpl.getGatewayId();
 	}
 

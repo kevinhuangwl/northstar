@@ -61,7 +61,7 @@ public class MdSpi extends CThostFtdcMdSpi {
 		this.brokerId = ctpGatewayImpl.getGatewaySetting().getCtpApiSetting().getBrokerId();
 		this.userId = ctpGatewayImpl.getGatewaySetting().getCtpApiSetting().getUserId();
 		this.password = ctpGatewayImpl.getGatewaySetting().getCtpApiSetting().getPassword();
-		this.logInfo = ctpGatewayImpl.getLogInfo();
+		this.logInfo = "网关ID-[" + ctpGatewayImpl.getGatewayId() + "] 名称-[" + ctpGatewayImpl.getGatewayName() + "] [→] ";
 		this.gatewayId = ctpGatewayImpl.getGatewayId();
 	}
 
