@@ -35,13 +35,13 @@ public interface GatewayApi {
 	 */
 	GatewayField getGateway();
 
-//	/**
-//	 * 获取日志字符串
-//	 * 
-//	 * @return
-//	 */
-//	String getLogInfo();
-
+	/**
+	 * 获取网关配置
+	 * 
+	 * @return
+	 */
+	GatewaySettingField getGatewaySetting();
+	
 	/**
 	 * 订阅
 	 * 
@@ -127,13 +127,6 @@ public interface GatewayApi {
 	 * @param notice
 	 */
 	void emitNotice(NoticeField notice);
-
-	/**
-	 * 获取网关配置
-	 * 
-	 * @return
-	 */
-	GatewaySettingField getGatewaySetting();
 
 	/**
 	 * 连接

@@ -1,0 +1,17 @@
+
+env: real
+
+ctp:
+  gatewayImplClassName: tech.xuanwu.northstar.gateway.ctp.x64v6v3v15v.CtpGatewayImpl
+  gatewayID: CTP-SimNow724
+  gatewayName: CTP-SimNow724
+  mdHost: 180.168.146.187
+  mdPort: 10131
+  tdHost: 180.168.146.187
+  tdPort: 10130
+  userName: 
+  password: 
+  appID: northstar-demo
+  userProductInfo: northstar-demo
+  authCode: "0000000000000000"
+  brokerID: 9999
