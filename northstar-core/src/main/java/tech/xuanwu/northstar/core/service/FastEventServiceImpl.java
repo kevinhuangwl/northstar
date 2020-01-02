@@ -137,7 +137,6 @@ public class FastEventServiceImpl implements FastEventService, InitializingBean 
 	@Override
 	public void emitAccount(AccountField account) {
 		// 发送事件
-
 		RingBuffer<FastEvent> ringBuffer = getRingBuffer();
 		long sequence = ringBuffer.next(); // Grab the next sequence
 		try {
@@ -153,9 +152,7 @@ public class FastEventServiceImpl implements FastEventService, InitializingBean 
 
 	@Override
 	public void emitContract(ContractField contract) {
-
 		// 发送事件
-
 		RingBuffer<FastEvent> ringBuffer = getRingBuffer();
 		long sequence = ringBuffer.next(); // Grab the next sequence
 		try {
