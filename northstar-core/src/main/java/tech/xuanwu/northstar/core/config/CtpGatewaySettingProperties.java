@@ -2,8 +2,11 @@ package tech.xuanwu.northstar.core.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import com.alibaba.fastjson.JSON;
+
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import xyz.redtorch.pb.CoreEnum.GatewayAdapterTypeEnum;
 import xyz.redtorch.pb.CoreEnum.GatewayTypeEnum;
 import xyz.redtorch.pb.CoreField.GatewaySettingField;
@@ -15,6 +18,7 @@ import xyz.redtorch.pb.CoreField.GatewaySettingField.CtpApiSettingField;
  *
  */
 
+@Slf4j
 @Getter
 @Setter
 @ConfigurationProperties(prefix="ctp")
@@ -71,6 +75,8 @@ public class CtpGatewaySettingProperties {
 		builder.setGatewayName(gatewayName);
 		builder.setGatewayType(gatewayType);
 		builder.setCtpApiSetting(ctpApiBuilder);
+		
+		log.info("当前配置信息：\n" + JSON.toJSONString(this, true));
 		
 		return builder.build();
 	}

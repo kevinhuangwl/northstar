@@ -362,6 +362,9 @@ public class CommonUtils {
 	public static void copyURLToFileForTmp(String targetDir, URL sourceURL) throws IOException {
 		File orginFile = new File(sourceURL.getFile());
 		File targetFile = new File(targetDir + File.separator + orginFile.getName());
+		if(!targetFile.getParentFile().exists()) {
+			targetFile.getParentFile().mkdirs();
+		}
 		if (targetFile.exists()) {
 			targetFile.delete();
 		}
