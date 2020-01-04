@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import com.corundumstudio.socketio.SocketIOServer;
+
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.gateway.GatewayApi;
 
@@ -13,6 +15,9 @@ public class MainRunner implements CommandLineRunner{
 
 	@Autowired
 	GatewayApi ctpGatewayApi;
+	
+	@Autowired
+	SocketIOServer socketioServer; 
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -27,6 +32,8 @@ public class MainRunner implements CommandLineRunner{
 			
 			Thread.sleep(3000);
 		}
+		
+		socketioServer.start();
 	}
 
 }

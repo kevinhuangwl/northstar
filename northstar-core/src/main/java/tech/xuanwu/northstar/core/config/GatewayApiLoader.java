@@ -11,6 +11,11 @@ import tech.xuanwu.northstar.gateway.GatewayApi;
 import xyz.redtorch.common.service.FastEventService;
 import xyz.redtorch.pb.CoreField.GatewaySettingField;
 
+/**
+ * gateway加载器
+ * @author kevinhuangwl
+ *
+ */
 @Configuration
 @EnableConfigurationProperties(CtpGatewaySettingProperties.class)
 public class GatewayApiLoader {
