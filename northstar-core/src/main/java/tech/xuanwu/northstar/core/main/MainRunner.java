@@ -9,6 +9,11 @@ import com.corundumstudio.socketio.SocketIOServer;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.gateway.GatewayApi;
 
+/**
+ * 业务启动入口
+ * @author kevinhuangwl
+ *
+ */
 @Slf4j
 @Component
 public class MainRunner implements CommandLineRunner{
@@ -22,6 +27,7 @@ public class MainRunner implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		
+		//自动连接交易账户
 		for(;;) {
 			if(!ctpGatewayApi.isConnected()) {
 				ctpGatewayApi.connect();
@@ -33,6 +39,7 @@ public class MainRunner implements CommandLineRunner{
 			Thread.sleep(3000);
 		}
 		
+		//启动socket服务
 		socketioServer.start();
 	}
 
