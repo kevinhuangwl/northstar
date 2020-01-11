@@ -3,7 +3,7 @@ package xyz.redtorch.common.util;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoField;
 
-import xyz.redtorch.common.constant.CommonConstant;
+import tech.xuanwu.northstar.constant.CommonConstant;
 import xyz.redtorch.pb.CoreField.BarField;
 import xyz.redtorch.pb.CoreField.TickField;
 

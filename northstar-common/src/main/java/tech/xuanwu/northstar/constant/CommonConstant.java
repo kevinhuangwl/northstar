@@ -1,4 +1,4 @@
-package xyz.redtorch.common.constant;
+package tech.xuanwu.northstar.constant;
 
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;

@@ -15,7 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import xyz.redtorch.common.constant.CommonConstant;
+import tech.xuanwu.northstar.constant.CommonConstant;
 import xyz.redtorch.common.util.CommonUtils;
 import xyz.redtorch.gateway.ctp.x64v6v3v16t1v.api.CThostFtdcDepthMarketDataField;
 import xyz.redtorch.gateway.ctp.x64v6v3v16t1v.api.CThostFtdcForQuoteRspField;
