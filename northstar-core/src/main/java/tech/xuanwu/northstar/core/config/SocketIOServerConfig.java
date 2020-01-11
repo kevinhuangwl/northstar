@@ -21,7 +21,7 @@ public class SocketIOServerConfig {
 	
     private String host = "127.0.0.1";
 	
-    private int port = 3000;
+    private int port = 51666;
 
     private int bossCount = 1;
 

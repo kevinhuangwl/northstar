@@ -26,7 +26,7 @@ public class GatewayApiLoader {
 	@Autowired
 	FastEventService fastEventService;
 	
-	@Bean
+	@Bean(name="ctpGateway")
 	public GatewayApi getCtpGatewayApi() throws Exception {
 		Class<?> gatewayClass = Class.forName(p.getGatewayImplClassName());
 		Constructor<?> c = gatewayClass.getConstructor(FastEventService.class, GatewaySettingField.class);
