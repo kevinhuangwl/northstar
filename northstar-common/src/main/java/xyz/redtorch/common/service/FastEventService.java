@@ -1,8 +1,6 @@
 package xyz.redtorch.common.service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
@@ -45,7 +43,7 @@ public interface FastEventService {
 	void emitNotice(NoticeField notice);
 
 	public static enum FastEventType {
-		TICK(0), POSITION(1), ACCOUNT(2), CONTRACT(3), TRADE(4), ORDER(5), NOTICE(6), LOG(7);
+		TICK(0), INDEX_TICK(10), POSITION(1), ACCOUNT(2), CONTRACT(3), TRADE(4), ORDER(5), NOTICE(6), LOG(7);
 
 		private int value;
 
@@ -93,14 +91,14 @@ public interface FastEventService {
 
 		void awaitShutdown() throws InterruptedException;
 
-		List<String> getSubscribedEventList();
-
-		Set<String> getSubscribedEventSet();
-
-		void subscribeEvent(String event);
-
-		void unsubscribeEvent(String event);
-
+//		List<String> getSubscribedEventList();
+//
+//		Set<String> getSubscribedEventSet();
+//
+//		void subscribeEvent(String event);
+//
+//		void unsubscribeEvent(String event);
+//
 		void subscribeFastEventType(FastEventType fastEventType);
 
 		void unsubscribeFastEventType(FastEventType fastEventType);
@@ -109,8 +107,8 @@ public interface FastEventService {
 
 	public static abstract class FastEventDynamicHandlerAbstract implements FastEventDynamicHandler {
 		protected final CountDownLatch shutdownLatch = new CountDownLatch(1);
-		protected List<String> subscribedEventList = new ArrayList<>();
-		protected Set<String> subscribedEventSet = new HashSet<>();
+//		protected List<String> subscribedEventList = new ArrayList<>();
+//		protected Set<String> subscribedEventSet = new HashSet<>();
 		protected Set<FastEventType> subscribedFastEventTypeSet = new HashSet<>();
 
 		@Override
@@ -128,30 +126,30 @@ public interface FastEventService {
 			shutdownLatch.await();
 		}
 
-		@Override
-		public List<String> getSubscribedEventList() {
-			return subscribedEventList;
-		}
-
-		@Override
-		public Set<String> getSubscribedEventSet() {
-			return subscribedEventSet;
-		}
-
-		@Override
-		public void subscribeEvent(String event) {
-			subscribedEventList.add(event);
-			subscribedEventSet.add(event);
-		}
-
-		@Override
-		public void unsubscribeEvent(String event) {
-			subscribedEventList.remove(event);
-			if (!subscribedEventList.contains(event)) {
-				subscribedEventSet.remove(event);
-			}
-
-		}
+//		@Override
+//		public List<String> getSubscribedEventList() {
+//			return subscribedEventList;
+//		}
+//
+//		@Override
+//		public Set<String> getSubscribedEventSet() {
+//			return subscribedEventSet;
+//		}
+//
+//		@Override
+//		public void subscribeEvent(String event) {
+//			subscribedEventList.add(event);
+//			subscribedEventSet.add(event);
+//		}
+//
+//		@Override
+//		public void unsubscribeEvent(String event) {
+//			subscribedEventList.remove(event);
+//			if (!subscribedEventList.contains(event)) {
+//				subscribedEventSet.remove(event);
+//			}
+//
+//		}
 
 		@Override
 		public void subscribeFastEventType(FastEventType fastEventType) {
