@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import com.corundumstudio.socketio.SocketIOServer;
 
 import tech.xuanwu.northstar.constant.MessageType;
+import tech.xuanwu.northstar.engine.MessageEngine;
 import xyz.redtorch.pb.CoreField.TickField;
 
 @Component

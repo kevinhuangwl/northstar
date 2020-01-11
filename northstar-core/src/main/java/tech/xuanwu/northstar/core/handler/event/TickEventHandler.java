@@ -5,12 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.core.engine.MessageEngine;
-import xyz.redtorch.common.service.FastEventService;
-import xyz.redtorch.common.service.FastEventService.FastEventType;
+import tech.xuanwu.northstar.engine.FastEventEngine;
+import tech.xuanwu.northstar.engine.MessageEngine;
+import tech.xuanwu.northstar.engine.FastEventEngine.FastEvent;
+import tech.xuanwu.northstar.engine.FastEventEngine.FastEventDynamicHandlerAbstract;
+import tech.xuanwu.northstar.engine.FastEventEngine.FastEventType;
 import xyz.redtorch.pb.CoreField.TickField;
-import xyz.redtorch.common.service.FastEventService.FastEvent;
-import xyz.redtorch.common.service.FastEventService.FastEventDynamicHandlerAbstract;
 
 /**
  * Tick事件处理器
@@ -22,7 +22,7 @@ import xyz.redtorch.common.service.FastEventService.FastEventDynamicHandlerAbstr
 public class TickEventHandler extends FastEventDynamicHandlerAbstract implements InitializingBean{
 
 	@Autowired
-	FastEventService fes;
+	FastEventEngine fes;
 	
 	@Autowired
 	MessageEngine msgEngine;

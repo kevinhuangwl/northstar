@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import tech.xuanwu.northstar.core.engine.MessageEngine;
+import tech.xuanwu.northstar.engine.MessageEngine;
 import tech.xuanwu.northstar.gateway.GatewayApi;
 import xyz.redtorch.gateway.ctp.x64v6v3v15v.CtpGatewayImpl;
 import xyz.redtorch.pb.CoreField.ContractField;

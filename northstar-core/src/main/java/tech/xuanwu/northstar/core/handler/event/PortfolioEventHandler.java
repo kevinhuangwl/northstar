@@ -5,11 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.core.engine.MessageEngine;
-import xyz.redtorch.common.service.FastEventService;
-import xyz.redtorch.common.service.FastEventService.FastEvent;
-import xyz.redtorch.common.service.FastEventService.FastEventDynamicHandlerAbstract;
-import xyz.redtorch.common.service.FastEventService.FastEventType;
+import tech.xuanwu.northstar.engine.FastEventEngine;
+import tech.xuanwu.northstar.engine.MessageEngine;
+import tech.xuanwu.northstar.engine.FastEventEngine.FastEvent;
+import tech.xuanwu.northstar.engine.FastEventEngine.FastEventDynamicHandlerAbstract;
+import tech.xuanwu.northstar.engine.FastEventEngine.FastEventType;
 
 /**
  * 投资组合相关事件处理器
@@ -21,7 +21,7 @@ import xyz.redtorch.common.service.FastEventService.FastEventType;
 public class PortfolioEventHandler extends FastEventDynamicHandlerAbstract implements InitializingBean{
 	
 	@Autowired
-	FastEventService fes;
+	FastEventEngine fes;
 	
 	@Autowired
 	MessageEngine msgEngine;

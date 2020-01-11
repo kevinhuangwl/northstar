@@ -19,6 +19,10 @@ public class MainRunner implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 		Socket socket = IO.socket("http://localhost:51666");
 		
+		socket.on(MessageType.CONTRACT_LIST.toString(),(data)->{
+			log.info("收到：{}",(int)data[0]);
+		});
+		
 		socket.on(MessageType.MARKET_DATA.toString(), (data)->{
 			byte[] b = (byte[]) data[0];
 			try {
@@ -30,6 +34,7 @@ public class MainRunner implements CommandLineRunner{
 		});
 		
 		socket.connect();
+		
 		
 		for(;;) {
 			Thread.sleep(Integer.MAX_VALUE);
