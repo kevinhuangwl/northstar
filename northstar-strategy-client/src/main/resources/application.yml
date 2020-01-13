@@ -1,0 +1,4 @@
+server:
+  port: 51888
+  
+northstar.url: http://localhost:51666
