@@ -22,18 +22,6 @@
 		
 		<dependency>
 			<groupId>tech.xuan-wu</groupId>
-			<artifactId>northstar-common</artifactId>
-			<version>${northstar-version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>tech.xuan-wu</groupId>
-			<artifactId>northstar-gateway-api</artifactId>
-			<version>${northstar-version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>tech.xuan-wu</groupId>
 			<artifactId>northstar-gateway-impl-ctp</artifactId>
 			<version>${northstar-version}</version>
 		</dependency>
