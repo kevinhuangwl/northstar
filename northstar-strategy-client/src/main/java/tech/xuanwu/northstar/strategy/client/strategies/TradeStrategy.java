@@ -7,20 +7,23 @@ package tech.xuanwu.northstar.strategy.client.strategies;
  */
 public interface TradeStrategy {
 
-	/**
-	 * 策略初始化
-	 */
-	void init();
 	
 	/**
 	 * 启用策略
 	 * @return
 	 */
-	boolean resume();
+	void resume();
 	
 	/**
 	 * 停用策略
 	 * @return
 	 */
-	boolean suspend();
+	void suspend();
+	
+	
+	/**
+	 * 是否运行
+	 * @return
+	 */
+	boolean isRunning();
 }

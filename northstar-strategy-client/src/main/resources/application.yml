@@ -1,4 +1,13 @@
 server:
   port: 51888
   
-northstar.url: http://localhost:51666
+northstar:
+  endpoint: http://localhost:51666
+  
+  
+
+strategy-setting:
+  demo-strategy:
+    name: DemoStrategy
+    mdContracts: rb2005
+    tdContracts: rb2005
