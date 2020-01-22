@@ -44,6 +44,12 @@
 		    <artifactId>disruptor</artifactId>
 		    <version>3.4.2</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>3.10.2</version>
+		</dependency>
 				
 	</dependencies>
 

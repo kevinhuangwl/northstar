@@ -13,19 +13,17 @@ import tech.xuanwu.northstar.engine.FastEventEngine.FastEventType;
 import xyz.redtorch.pb.CoreField.TickField;
 
 /**
- * Tick事件处理器，专门用于推送行情数据
+ * 行情事件处理器，专门用于记录行情数据
  * @author kevinhuangwl
  *
  */
 @Slf4j
 @Component
-public class TickEventHandler extends FastEventDynamicHandlerAbstract implements InitializingBean{
+public class MarketDataEventHandler extends FastEventDynamicHandlerAbstract implements InitializingBean{
 
-	@Autowired
-	FastEventEngine fes;
 	
 	@Autowired
-	MessageEngine msgEngine;
+	FastEventEngine fes;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -39,9 +37,8 @@ public class TickEventHandler extends FastEventDynamicHandlerAbstract implements
 		if (FastEventType.TICK.equals(fastEvent.getFastEventType())) {
 			try {
 				TickField tick = (TickField) fastEvent.getObj();
-				msgEngine.emitTick(tick);
 			} catch (Exception e) {
-				log.error("Tick事件发生异常", e);
+				log.error("行情事件发生异常", e);
 			}
 		}
 	}
