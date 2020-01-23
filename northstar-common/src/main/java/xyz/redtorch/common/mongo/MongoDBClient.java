@@ -2,6 +2,7 @@ package xyz.redtorch.common.mongo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
@@ -10,6 +11,7 @@ import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.lmax.disruptor.LifecycleAware;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
@@ -23,12 +25,11 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.ReplaceOptions;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 
-public class MongoDBClient {
+public class MongoDBClient implements LifecycleAware{
 
 	private static Logger log = LoggerFactory.getLogger(MongoDBClient.class);
 	/*
@@ -139,9 +140,9 @@ public class MongoDBClient {
 	 */
 	public boolean upsert(String dbName, String collectionName, Document document, Document filter) {
 		if (document != null) {
-			ReplaceOptions replaceOptions = new ReplaceOptions();
-			replaceOptions.upsert(true);
-			mongoClient.getDatabase(dbName).getCollection(collectionName).replaceOne(filter, document, replaceOptions);
+			UpdateOptions updateOptions = new UpdateOptions();
+			updateOptions.upsert(true);
+			mongoClient.getDatabase(dbName).getCollection(collectionName).replaceOne(filter, document, updateOptions);
 			return true;
 		}
 		return false;
@@ -418,7 +419,7 @@ public class MongoDBClient {
 	 * @return
 	 */
 	public long getCount(String dbName, String collectionName) {
-		return getDatabase(dbName).getCollection(collectionName).countDocuments();
+		return getDatabase(dbName).getCollection(collectionName).count();
 	}
 
 	/**
@@ -469,9 +470,21 @@ public class MongoDBClient {
 	 * 关闭客户端
 	 */
 	public void close() {
+		log.info("关闭客户端");
 		if (mongoClient != null) {
 			mongoClient.close();
 			mongoClient = null;
 		}
+	}
+
+	@Override
+	public void onStart() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void onShutdown() {
+		log.info("准备关闭程序");
 	}
 }

@@ -8,5 +8,5 @@ public interface TickDataDao {
 
 	boolean saveTickData(TickField tick);
 	
-	TickField[] loadTickData(String unifiedSymbol, LocalDateTime startTime, LocalDateTime endTime);
+	TickField[] loadTickData(String contractId, LocalDateTime startTime, LocalDateTime endTime);
 }
