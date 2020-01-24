@@ -31,7 +31,8 @@ public class TickDataDaoImpl implements TickDataDao{
 		try {
 			Document doc = MongoDBUtils.beanToDocument(tick);
 			mongodb.upsert(DB_TICK, contractId, doc, doc);
-			
+			//释放Tick对象实现对象重用，减少GC
+			TickFactory.releaseTick(tick);
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			log.error("类型转换异常", e);
 			return false;

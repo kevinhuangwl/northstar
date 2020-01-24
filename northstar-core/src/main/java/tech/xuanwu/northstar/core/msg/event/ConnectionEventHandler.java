@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.core.handler.msg;
+package tech.xuanwu.northstar.core.msg.event;
 
 import org.springframework.stereotype.Component;
 

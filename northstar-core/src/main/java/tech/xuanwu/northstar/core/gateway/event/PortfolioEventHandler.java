@@ -1,11 +1,11 @@
-package tech.xuanwu.northstar.core.handler.event;
+package tech.xuanwu.northstar.core.gateway.event;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.core.engine.MessageEngine;
+import tech.xuanwu.northstar.core.msg.MessageEngine;
 import tech.xuanwu.northstar.engine.FastEventEngine;
 import tech.xuanwu.northstar.engine.FastEventEngine.FastEvent;
 import tech.xuanwu.northstar.engine.FastEventEngine.FastEventDynamicHandlerAbstract;

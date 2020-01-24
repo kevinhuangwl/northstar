@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.core.engine;
+package tech.xuanwu.northstar.core.msg;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

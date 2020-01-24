@@ -1,11 +1,11 @@
-package tech.xuanwu.northstar.core.handler.event;
+package tech.xuanwu.northstar.core.gateway.event;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.core.dao.TickDataDao;
+import tech.xuanwu.northstar.core.msg.MessageEngine;
 import tech.xuanwu.northstar.engine.FastEventEngine;
 import tech.xuanwu.northstar.engine.FastEventEngine.FastEvent;
 import tech.xuanwu.northstar.engine.FastEventEngine.FastEventDynamicHandlerAbstract;
@@ -13,19 +13,19 @@ import tech.xuanwu.northstar.engine.FastEventEngine.FastEventType;
 import xyz.redtorch.pb.CoreField.TickField;
 
 /**
- * 行情事件处理器，专门用于记录行情数据
+ * Tick事件处理器，专门用于推送行情数据
  * @author kevinhuangwl
  *
  */
 @Slf4j
 @Component
-public class MarketDataEventHandler extends FastEventDynamicHandlerAbstract implements InitializingBean{
-	
+public class TickEventHandler extends FastEventDynamicHandlerAbstract implements InitializingBean{
+
 	@Autowired
 	FastEventEngine fes;
 	
 	@Autowired
-	TickDataDao tickDao;
+	MessageEngine msgEngine;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -39,9 +39,9 @@ public class MarketDataEventHandler extends FastEventDynamicHandlerAbstract impl
 		if (FastEventType.TICK.equals(fastEvent.getFastEventType())) {
 			try {
 				TickField tick = (TickField) fastEvent.getObj();
-				tickDao.saveTickData(tick);
+				msgEngine.emitTick(tick);
 			} catch (Exception e) {
-				log.error("行情事件发生异常", e);
+				log.error("Tick事件发生异常", e);
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.core.handler.event;
+package tech.xuanwu.northstar.core.gateway.event;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
