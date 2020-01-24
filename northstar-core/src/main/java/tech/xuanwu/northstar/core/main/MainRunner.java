@@ -8,7 +8,6 @@ import com.corundumstudio.socketio.SocketIOServer;
 
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.gateway.GatewayApi;
-import xyz.redtorch.pb.CoreField.ContractField;
 
 /**
  * 业务启动入口
@@ -40,9 +39,9 @@ public class MainRunner implements CommandLineRunner{
 			Thread.sleep(3000);
 		}
 		
-		ContractField.Builder cb = ContractField.newBuilder();
-		cb.setSymbol("rb2005");
-		ctpGatewayApi.subscribe(cb.build());
+//		ContractField.Builder cb = ContractField.newBuilder();
+//		cb.setSymbol("rb2005");
+//		ctpGatewayApi.subscribe(cb.build());
 		
 		//启动socket服务
 		socketioServer.start();

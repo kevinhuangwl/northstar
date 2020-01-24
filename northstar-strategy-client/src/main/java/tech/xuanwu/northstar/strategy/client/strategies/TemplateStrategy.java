@@ -50,6 +50,16 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 	}
 	
 	@Override
+	public String getStrategyName() {
+		return name;
+	}
+	
+	@Override
+	public String[] getSubscribeContractList() {
+		return mdContracts;
+	}
+	
+	@Override
 	public synchronized void resume() {
 		running = true;
 	}
@@ -63,6 +73,9 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 	public boolean isRunning() {
 		return running;
 	}
+	
+	
+	
 	
 	protected abstract void onTick(TickField tick);
 	

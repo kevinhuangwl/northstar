@@ -226,4 +226,9 @@ public class CtpGatewayImpl extends GatewayApiAbstract {
 		return false;
 	}
 
+	@Override
+	public Map<String, ContractField> getContractMap() {
+		return contractMap;
+	}
+
 }

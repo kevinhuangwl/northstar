@@ -1,10 +1,14 @@
 package tech.xuanwu.northstar.constant;
 
-public enum MessageType {
-	//合约列表
-	CONTRACT_LIST,
+public interface MessageType {
+	//注册策略
+	String REG_STRATEGY = "RegisterStrategy";
+	//下单
+	String PLACE_ORDER = "PlaceOrder";
+	//撤单
+	String CANCEL_ORDER = "CancelOrder";
 	//TICK行情数据
-	MARKET_TICK_DATA,
+	String MARKET_TICK_DATA = "TickData";
 	//Bar数据
-	MARKET_BAR_DATA
+	String MARKET_BAR_DATA = "BarData";
 }

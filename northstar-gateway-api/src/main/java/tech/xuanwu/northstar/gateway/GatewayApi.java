@@ -1,5 +1,7 @@
 package tech.xuanwu.northstar.gateway;
 
+import java.util.Map;
+
 import xyz.redtorch.pb.CoreField.AccountField;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
 import xyz.redtorch.pb.CoreField.ContractField;
@@ -41,6 +43,12 @@ public interface GatewayApi {
 	 * @return
 	 */
 	GatewaySettingField getGatewaySetting();
+	
+	/**
+	 * 获取可用的合约
+	 * @return
+	 */
+	Map<String, ContractField> getContractMap();
 	
 	/**
 	 * 订阅

@@ -29,7 +29,7 @@ import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 
-public class MongoDBClient implements LifecycleAware{
+public class MongoDBClient {
 
 	private static Logger log = LoggerFactory.getLogger(MongoDBClient.class);
 	/*
@@ -470,21 +470,9 @@ public class MongoDBClient implements LifecycleAware{
 	 * 关闭客户端
 	 */
 	public void close() {
-		log.info("关闭客户端");
 		if (mongoClient != null) {
 			mongoClient.close();
 			mongoClient = null;
 		}
-	}
-
-	@Override
-	public void onStart() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void onShutdown() {
-		log.info("准备关闭程序");
 	}
 }

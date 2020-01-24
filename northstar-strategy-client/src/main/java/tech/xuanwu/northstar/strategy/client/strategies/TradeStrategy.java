@@ -1,5 +1,7 @@
 package tech.xuanwu.northstar.strategy.client.strategies;
 
+import java.util.List;
+
 /**
  * 交易策略接口
  * @author kevinhuangwl
@@ -7,6 +9,17 @@ package tech.xuanwu.northstar.strategy.client.strategies;
  */
 public interface TradeStrategy {
 
+	/**
+	 * 获取策略名称
+	 * @return
+	 */
+	String getStrategyName();
+	
+	/**
+	 * 获取策略订阅的合约名称
+	 * @return
+	 */
+	String[] getSubscribeContractList();
 	
 	/**
 	 * 启用策略

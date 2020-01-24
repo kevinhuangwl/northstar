@@ -26,11 +26,17 @@ public class MessageClient {
 	TradeStrategy strategy;
 	
 	public MessageClient(String coreServiceEndpoint, TradeStrategy s){
-		Socket socket = null;
 		try {
-			socket = IO.socket(coreServiceEndpoint);
 			
-			socket.on(MessageType.MARKET_TICK_DATA.toString(), (data)->{
+			final Socket client = IO.socket(coreServiceEndpoint);
+			
+			client.once(Socket.EVENT_CONNECTING, (data)->{
+				String strategyName = s.getStrategyName();
+				String[] contractList = s.getSubscribeContractList();
+				client.emit(MessageType.REG_STRATEGY, strategyName, contractList);
+			});
+			
+			client.on(MessageType.MARKET_TICK_DATA, (data)->{
 				byte[] b = (byte[]) data[0];
 				try {
 					TickField tick = TickField.parseFrom(b);
@@ -40,13 +46,14 @@ public class MessageClient {
 				}
 			});
 			
-			socket.connect();
+			client.connect();
+			
+			this.socketClient = client;
+			this.strategy = s;
+			
 		} catch (URISyntaxException e) {
 			log.error("通信客户端创建异常", e);
 		}
-		
-		socketClient = socket;
-		strategy = s;
 	}
 	
 	/**
@@ -54,7 +61,7 @@ public class MessageClient {
 	 * @param tick
 	 */
 	public void onTick(TickField tick) {
-		
+		log.info("{}，最新价：{}，持仓量变化：{}，成交量变化：{}", tick.getContract().getSymbol(), tick.getLastPrice(), tick.getOpenInterestChange(), tick.getVolumeChange());
 	}
 	
 	/**
