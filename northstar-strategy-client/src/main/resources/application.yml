@@ -4,10 +4,18 @@ server:
 northstar:
   endpoint: http://localhost:51666
   
-  
+spring:
+    data:
+        mongodb:
+            host: 127.0.0.1
+            port: 27017
+            database: DB_BAR_DATA
 
 strategy-setting:
   demo-strategy:
     name: DemoStrategy
     mdContracts: rb2005
     tdContracts: rb2005
+    
+    
+    

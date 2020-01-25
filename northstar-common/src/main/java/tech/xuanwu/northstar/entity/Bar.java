@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import lombok.Getter;
 import lombok.Setter;
-import xyz.redtorch.pb.CoreField.BarField;
 
 @Getter
 @Setter
@@ -25,28 +24,24 @@ public class Bar implements Serializable{
 	protected String actionTime;
 	//数据所属时间戳
 	protected long actionTimestamp;
-	//最新价
-	protected double lastPrice;
 	//交易量变化？
-	protected int volumeChange;
+	protected long volumeChange;
 	//成交量？？
 	protected long volume;
 	//成交金额
 	protected double turnover;
+	//成交金额变化
+	protected double turnoverChange;
 	//持仓量？？
 	protected double openInterest;
 	//持仓量变化？？
-	protected int openInterestChange;
+	protected double openInterestChange;
 	//开盘价
 	protected double openPrice;
 	//最高价
 	protected double highPrice;
 	//最低价
 	protected double lowPrice;
-	//涨停价
-	protected double upperLimit;
-	//跌停价
-	protected double lowerLimit;
 	//收盘价
 	protected double closePrice;
 	
