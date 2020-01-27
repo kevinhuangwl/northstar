@@ -336,9 +336,20 @@ public class MongoDBUtils {
 					log.error("Class-{}中成员变量{}的类型{}与当前值的类型{}不匹配,不可赋值", bean.getClass().getName(), varName,
 							beanFieldClazz, objectClzz);
 				}
-			} else if(beanFieldClazz.isAssignableFrom(objectClzz)) {
-				Method m = bean.getClass().getMethod("set" + upperCaseVarName, beanFieldClazz);
-				m.invoke(bean, object);
+			} else if (beanFieldClazz.isAssignableFrom(objectClzz)) {
+				try {
+					Method m = bean.getClass().getMethod("set" + upperCaseVarName, objectClzz);
+					m.invoke(bean, object);
+					return;
+				}catch(NoSuchMethodException e) {
+					
+				}
+				try {
+					Method m = bean.getClass().getMethod("set" + upperCaseVarName, beanFieldClazz);
+					m.invoke(bean, object);
+				}catch(NoSuchMethodException e) {
+					
+				}
 			}
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException | NoSuchFieldException | ParseException e) {
