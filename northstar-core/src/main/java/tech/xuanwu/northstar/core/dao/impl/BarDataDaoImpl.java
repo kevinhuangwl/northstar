@@ -50,12 +50,13 @@ public class BarDataDaoImpl implements BarDataDao{
 		long startTimestamp = startTime.toInstant(ZoneOffset.of("+8")).toEpochMilli();
 		long endTimestamp = endTime.toInstant(ZoneOffset.of("+8")).toEpochMilli();
 		
-		List<Document> result = mongodb.find(DB_BAR, contractId, Filters.and(Filters.gte("actionTimestamp", startTimestamp), Filters.lte("actionTimestamp", endTimestamp)));
+		List<Document> result = mongodb.find(DB_BAR, contractId, Filters.and(Filters.gte("actionTimestamp_", startTimestamp), Filters.lte("actionTimestamp_", endTimestamp)));
 		BarField[] bars = new BarField[result.size()];
 		for(int i=0;i<result.size();i++) {
 			try {
 				BarField.Builder bfb = BarField.newBuilder();
 				bfb = MongoDBUtils.documentToBean(result.get(i), bfb);
+				bars[i] = bfb.build();
 			} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
 				log.error("类型转换异常", e);
 				break;

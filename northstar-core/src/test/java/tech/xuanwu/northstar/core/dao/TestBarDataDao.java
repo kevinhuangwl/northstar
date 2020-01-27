@@ -1,11 +1,8 @@
 package tech.xuanwu.northstar.core.dao;
 
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import org.junit.Before;
@@ -56,12 +53,10 @@ public class TestBarDataDao {
 			barDao.saveBarData(b);
 		}
 		
-		
 		BarField[] result = barDao.loadBarData(CONTRACT_ID, LocalDateTime.now().minusDays(1), LocalDateTime.now());
 		
 		assertTrue(result.length==demoData.length);
 		for(int i=0; i<demoData.length; i++) {
-			
 			assertTrue(demoData[i].getActionTimestamp()==result[i].getActionTimestamp());
 		}
 	}

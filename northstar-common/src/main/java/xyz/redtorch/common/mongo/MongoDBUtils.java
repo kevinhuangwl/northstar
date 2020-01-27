@@ -128,6 +128,7 @@ public class MongoDBUtils {
 	 */
 	public static <T> void setProperty(T bean, String varName, T object) {
 		String upperCaseVarName = varName.substring(0, 1).toUpperCase() + varName.substring(1);
+		upperCaseVarName = upperCaseVarName.replace("_", "");
 		try {
 			if (bean.getClass().getDeclaredField(varName) == null) {
 				log.error("Class-{}中无法找到对应成员变量{}", bean.getClass().getName(), varName);
@@ -335,6 +336,9 @@ public class MongoDBUtils {
 					log.error("Class-{}中成员变量{}的类型{}与当前值的类型{}不匹配,不可赋值", bean.getClass().getName(), varName,
 							beanFieldClazz, objectClzz);
 				}
+			} else if(beanFieldClazz.isAssignableFrom(objectClzz)) {
+				Method m = bean.getClass().getMethod("set" + upperCaseVarName, beanFieldClazz);
+				m.invoke(bean, object);
 			}
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException | NoSuchFieldException | ParseException e) {
