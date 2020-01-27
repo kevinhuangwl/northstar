@@ -37,7 +37,6 @@ public class BarDataDaoImpl implements BarDataDao{
 		try {
 			Document doc = MongoDBUtils.beanToDocument(bar.toBuilder());
 			mongodb.upsert(DB_BAR, contractId, doc, doc);
-			//释放Bar对象实现对象重用，减少GC
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			log.error("类型转换异常", e);
 			return false;

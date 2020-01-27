@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.junit.After;
 import org.junit.Before;
@@ -45,18 +46,18 @@ public class TestBarDataDao {
 			b.setActionTime(now.format(DateTimeFormatter.ofPattern("HHmmssSSS")));
 			b.setActionTimestamp(System.currentTimeMillis()-10000+i);
 			b.setDataSourceId("rb2005@SHFE@FUTURES@CTP-SimNow724");
-			b.setOpenPrice(1000);
-			b.setHighPrice(2000);
-			b.setLowPrice(500);
-			b.setClosePrice(1111);
-			b.setVolume(100);
-			b.setVolumeChange(101);
-			b.setTurnover(500.25);
-			b.setTurnoverChange(123.5);
-			b.setNumTrades(8);
-			b.setNumTradesChange(9);
-			b.setOpenInterest(5.75);
-			b.setOpenInterestChange(7.75);
+			b.setOpenPrice(ThreadLocalRandom.current().nextDouble(1000000));
+			b.setHighPrice(ThreadLocalRandom.current().nextDouble(1000000));
+			b.setLowPrice(ThreadLocalRandom.current().nextDouble(1000000));
+			b.setClosePrice(ThreadLocalRandom.current().nextDouble(1000000));
+			b.setVolume(ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE));
+			b.setVolumeChange(ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE));
+			b.setNumTrades(ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE));
+			b.setNumTradesChange(ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE));
+			b.setTurnover(ThreadLocalRandom.current().nextDouble(Double.MAX_VALUE));
+			b.setTurnoverChange(ThreadLocalRandom.current().nextDouble(Double.MAX_VALUE));
+			b.setOpenInterest(ThreadLocalRandom.current().nextDouble(Double.MAX_VALUE));
+			b.setOpenInterestChange(ThreadLocalRandom.current().nextDouble(Double.MAX_VALUE));
 			demoData[i] = b.build();
 		}
 		

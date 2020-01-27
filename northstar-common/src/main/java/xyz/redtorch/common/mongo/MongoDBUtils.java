@@ -39,7 +39,7 @@ public class MongoDBUtils {
 				field.setAccessible(true);
 			}
 			Object param = field.get(bean);
-			if (param == null || "serialVersionUID".equals(field.getName())) {
+			if (param == null || "serialVersionUID".equals(field.getName()) || field.getName().contains("bitField")) {
 				continue;
 			} else if (param instanceof Integer) {
 				// 判断变量的类型
