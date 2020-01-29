@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class BaseAccount implements RiskControllable{
+public abstract class BaseAccount implements AccountOperation{
 
 	//账户余额
 	protected double balance;

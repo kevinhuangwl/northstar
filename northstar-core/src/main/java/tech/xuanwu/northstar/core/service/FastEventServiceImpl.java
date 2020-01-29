@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.core.gateway;
+package tech.xuanwu.northstar.core.service;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,7 +22,7 @@ import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import com.lmax.disruptor.util.DaemonThreadFactory;
 
-import tech.xuanwu.northstar.engine.FastEventEngine;
+import tech.xuanwu.northstar.service.FastEventService;
 import xyz.redtorch.pb.CoreField.AccountField;
 import xyz.redtorch.pb.CoreField.ContractField;
 import xyz.redtorch.pb.CoreField.NoticeField;
@@ -32,9 +32,9 @@ import xyz.redtorch.pb.CoreField.TickField;
 import xyz.redtorch.pb.CoreField.TradeField;
 
 @Service
-public class FastEventDisruptorEngine implements FastEventEngine, InitializingBean {
+public class FastEventServiceImpl implements FastEventService, InitializingBean {
 
-	private static Logger log = LoggerFactory.getLogger(FastEventDisruptorEngine.class);
+	private static Logger log = LoggerFactory.getLogger(FastEventServiceImpl.class);
 
 	private static ExecutorService executor = Executors.newCachedThreadPool(DaemonThreadFactory.INSTANCE);
 

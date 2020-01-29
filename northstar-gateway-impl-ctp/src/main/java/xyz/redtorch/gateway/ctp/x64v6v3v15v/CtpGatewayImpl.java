@@ -7,8 +7,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import tech.xuanwu.northstar.engine.FastEventEngine;
 import tech.xuanwu.northstar.gateway.GatewayApiAbstract;
+import tech.xuanwu.northstar.service.FastEventService;
 import xyz.redtorch.common.util.CommonUtils;
 import xyz.redtorch.pb.CoreEnum.GatewayTypeEnum;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
@@ -69,7 +69,7 @@ public class CtpGatewayImpl extends GatewayApiAbstract {
 
 	public Map<String, ContractField> contractMap = new HashMap<>();
 
-	public CtpGatewayImpl(FastEventEngine fastEventService, GatewaySettingField gatewaySetting) {
+	public CtpGatewayImpl(FastEventService fastEventService, GatewaySettingField gatewaySetting) {
 		super(fastEventService, gatewaySetting);
 
 		if (gatewaySetting.getGatewayType() == GatewayTypeEnum.TRADE_ONLY) {
