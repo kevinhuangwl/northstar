@@ -35,7 +35,9 @@ public class SocketIOServerConfig {
         config.setBossThreads(bossCount);
         config.setWorkerThreads(workCount);
         log.info("WebSocket服务地址：{}:{}", host, port);
-        return new SocketIOServer(config);
+        SocketIOServer socketServer = new SocketIOServer(config);
+        socketServer.start();
+        return socketServer;
     }
     
     @Bean

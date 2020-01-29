@@ -59,12 +59,12 @@ public class MessageEngine {
 	
 	@OnConnect  
     private void onConnect(final SocketIOClient client) {
-    	log.info("【连接】-[{}],已连接", client.getSessionId());
+    	log.info("【策略连接】-[{}],已连接", client.getSessionId());
     }  
   
     @OnDisconnect  
     private void onDisconnect(final SocketIOClient client) {
-    	log.info("【断开】-[{}],断开连接", client.getSessionId());
+    	log.info("【策略断开】-[{}],断开连接", client.getSessionId());
     	
     	clearOutRooms(client);
     }

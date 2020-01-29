@@ -31,6 +31,7 @@ public class GatewayApiLoader {
 		Class<?> gatewayClass = Class.forName(p.getGatewayImplClassName());
 		Constructor<?> c = gatewayClass.getConstructor(FastEventEngine.class, GatewaySettingField.class);
 		GatewayApi gateway = (GatewayApi) c.newInstance(fastEventService, p.convertToGatewaySettingField());
+		gateway.connect();
 		return gateway;
 	}
 	
