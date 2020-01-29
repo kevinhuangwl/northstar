@@ -1,7 +1,5 @@
 package tech.xuanwu.northstar.strategy.client.strategies;
 
-import java.util.List;
-
 /**
  * 交易策略接口
  * @author kevinhuangwl

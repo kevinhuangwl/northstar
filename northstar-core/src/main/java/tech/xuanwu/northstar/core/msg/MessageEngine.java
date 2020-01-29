@@ -39,6 +39,7 @@ public class MessageEngine {
 		String symbol = tick.getContract().getSymbol();
 		
 		server.getRoomOperations(symbol).sendEvent(MessageType.MARKET_TICK_DATA, tick.toByteArray());
+		log.info("收到{}数据", symbol);
 	}
 	
 	

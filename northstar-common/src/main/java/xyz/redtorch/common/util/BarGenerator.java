@@ -28,7 +28,7 @@ public class BarGenerator {
 	 * 
 	 * @param tick
 	 */
-	public void updateTick(TickField tick) {
+	public synchronized void updateTick(TickField tick) {
 
 		boolean newFlag = false;
 		LocalDateTime tickLocalDateTime = null;
@@ -114,7 +114,7 @@ public class BarGenerator {
 			this.xMin = xMin;
 		}
 
-		public void updateBar(BarField bar) {
+		public synchronized void updateBar(BarField bar) {
 
 			if (xMinBarBuilder == null) {
 				xMinBarBuilder = BarField.newBuilder();

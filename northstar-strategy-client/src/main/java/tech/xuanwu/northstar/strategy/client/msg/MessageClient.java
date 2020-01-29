@@ -6,10 +6,11 @@ import com.google.protobuf.InvalidProtocolBufferException;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
+import io.socket.emitter.Emitter.Listener;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.MessageType;
+import tech.xuanwu.northstar.strategy.client.strategies.TemplateStrategy;
 import tech.xuanwu.northstar.strategy.client.strategies.TradeStrategy;
-import xyz.redtorch.pb.CoreField.BarField;
 import xyz.redtorch.pb.CoreField.OrderField;
 import xyz.redtorch.pb.CoreField.TickField;
 
@@ -30,11 +31,15 @@ public class MessageClient {
 			
 			final Socket client = IO.socket(coreServiceEndpoint);
 			
-			client.once(Socket.EVENT_CONNECTING, (data)->{
+			final Listener callback = (data)->{
 				String strategyName = s.getStrategyName();
 				String[] contractList = s.getSubscribeContractList();
 				client.emit(MessageType.REG_STRATEGY, strategyName, contractList);
-			});
+			};
+			
+			client.once(Socket.EVENT_CONNECTING, callback);
+			
+			client.on(Socket.EVENT_RECONNECTING, callback);
 			
 			client.on(MessageType.MARKET_TICK_DATA, (data)->{
 				byte[] b = (byte[]) data[0];
@@ -61,17 +66,9 @@ public class MessageClient {
 	 * @param tick
 	 */
 	public void onTick(TickField tick) {
-		log.info("{}，最新价：{}，持仓量变化：{}，成交量变化：{}", tick.getContract().getSymbol(), tick.getLastPrice(), tick.getOpenInterestChange(), tick.getVolumeChange());
+		((TemplateStrategy)strategy).onTickEvent(tick);
 	}
 	
-	/**
-	 * 收到BAR数据
-	 * @param bar
-	 */
-	public void onBar(BarField bar) {
-		
-	}
-
 	/**
 	 * 发送委托单
 	 * @param order

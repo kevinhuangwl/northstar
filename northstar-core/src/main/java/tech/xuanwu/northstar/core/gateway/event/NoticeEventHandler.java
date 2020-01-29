@@ -16,7 +16,7 @@ import tech.xuanwu.northstar.engine.FastEventEngine.FastEventType;
  *
  */
 @Slf4j
-@Component
+//@Component
 public class NoticeEventHandler extends FastEventDynamicHandlerAbstract implements InitializingBean{
 	
 	@Autowired

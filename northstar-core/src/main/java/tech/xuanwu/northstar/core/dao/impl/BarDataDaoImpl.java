@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.core.dao.BarDataDao;
 import xyz.redtorch.common.mongo.MongoDBClient;
 import xyz.redtorch.common.mongo.MongoDBUtils;
+import xyz.redtorch.common.util.CommonUtils;
 import xyz.redtorch.pb.CoreField.BarField;
 
 @Slf4j
@@ -46,8 +47,8 @@ public class BarDataDaoImpl implements BarDataDao{
 
 	@Override
 	public BarField[] loadBarData(String contractId, LocalDateTime startTime, LocalDateTime endTime) {
-		long startTimestamp = startTime.toInstant(ZoneOffset.of("+8")).toEpochMilli();
-		long endTimestamp = endTime.toInstant(ZoneOffset.of("+8")).toEpochMilli();
+		long startTimestamp = CommonUtils.localDateTimeToMills(startTime);
+		long endTimestamp = CommonUtils.localDateTimeToMills(endTime);
 		
 		List<Document> result = mongodb.find(DB_BAR, contractId, Filters.and(Filters.gte("actionTimestamp_", startTimestamp), Filters.lte("actionTimestamp_", endTimestamp)));
 		BarField[] bars = new BarField[result.size()];

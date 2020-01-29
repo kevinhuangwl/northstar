@@ -1,5 +1,7 @@
 package tech.xuanwu.northstar.strategy.client.strategies;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -8,6 +10,7 @@ import com.alibaba.fastjson.JSON;
 import lombok.Getter;
 import lombok.Setter;
 import tech.xuanwu.northstar.strategy.client.msg.MessageClient;
+import xyz.redtorch.common.util.BarGenerator;
 import xyz.redtorch.pb.CoreField.BarField;
 import xyz.redtorch.pb.CoreField.TickField;
 
@@ -26,11 +29,12 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 	@Setter @Getter
 	protected String[] tdContracts;
 	
-	
 	@Value("${northstar.endpoint}")
 	protected String coreServiceEndpoint;
 	
 	protected MessageClient msgClient;
+	
+	private ConcurrentHashMap<String, BarGenerator> barGeneratorMap = new ConcurrentHashMap<String, BarGenerator>();
 	
 	
 	@Override
@@ -75,6 +79,22 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 	}
 	
 	
+	public void onTickEvent(TickField tick) {
+		//优先传入onTick计算策略
+		onTick(tick);
+		
+		//再计算Bar
+		String contractId = tick.getContract().getContractId();
+		if(!barGeneratorMap.containsKey(contractId)) {
+			barGeneratorMap.put(contractId, new BarGenerator(barCallback)); 
+		}
+		
+		barGeneratorMap.get(contractId).updateTick(tick);
+	}
+	
+	BarGenerator.CommonBarCallBack barCallback = (barField)->{
+		onBar(barField);
+	};
 	
 	
 	protected abstract void onTick(TickField tick);
