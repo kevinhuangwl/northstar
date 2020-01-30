@@ -7,6 +7,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import tech.xuanwu.northstar.core.config.props.CtpGatewaySettingProperties;
 import tech.xuanwu.northstar.gateway.GatewayApi;
 import tech.xuanwu.northstar.service.FastEventService;
 import xyz.redtorch.pb.CoreField.GatewaySettingField;

@@ -9,6 +9,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import tech.xuanwu.northstar.core.config.props.CtpGatewaySettingProperties;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @EnableConfigurationProperties(CtpGatewaySettingProperties.class)

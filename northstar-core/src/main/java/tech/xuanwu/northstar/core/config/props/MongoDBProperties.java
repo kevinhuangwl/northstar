@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.core.config;
+package tech.xuanwu.northstar.core.config.props;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -6,10 +6,12 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.core.msg.MessageEngine;
+import tech.xuanwu.northstar.core.util.ContractHelper;
 import tech.xuanwu.northstar.service.FastEventService;
 import tech.xuanwu.northstar.service.FastEventService.FastEvent;
 import tech.xuanwu.northstar.service.FastEventService.FastEventDynamicHandlerAbstract;
 import tech.xuanwu.northstar.service.FastEventService.FastEventType;
+import xyz.redtorch.pb.CoreField.ContractField;
 
 /**
  * 投资组合相关事件处理器
@@ -17,7 +19,7 @@ import tech.xuanwu.northstar.service.FastEventService.FastEventType;
  *
  */
 @Slf4j
-//@Component
+@Component
 public class PortfolioEventHandler extends FastEventDynamicHandlerAbstract implements InitializingBean{
 	
 	@Autowired
@@ -25,6 +27,9 @@ public class PortfolioEventHandler extends FastEventDynamicHandlerAbstract imple
 	
 	@Autowired
 	MessageEngine msgEngine;
+	
+	@Autowired
+	ContractHelper contractHelper;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -40,7 +45,29 @@ public class PortfolioEventHandler extends FastEventDynamicHandlerAbstract imple
 
 	@Override
 	public void onEvent(FastEvent event, long sequence, boolean endOfBatch) throws Exception {
-		// TODO Auto-generated method stub
+		if(!subscribedFastEventTypeSet.contains(event.getFastEventType())) {
+			return;
+		}
 		
+		switch(event.getFastEventType()) {
+		case ACCOUNT:
+			
+			break;
+		case POSITION:
+			
+			break;
+		case ORDER:
+			
+			break;
+		case TRADE:
+			
+			break;
+		case CONTRACT:
+			ContractField c = (ContractField) event.getObj();
+			contractHelper.registerContract(c);
+			break;
+		default:
+			log.warn("遇到未知事件类型：{}", event.getFastEventType());
+		}
 	}
 }
