@@ -17,6 +17,7 @@ import com.corundumstudio.socketio.annotation.OnEvent;
 
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.MessageType;
+import tech.xuanwu.northstar.core.util.ContractMap;
 import tech.xuanwu.northstar.gateway.GatewayApi;
 import xyz.redtorch.pb.CoreField.ContractField;
 import xyz.redtorch.pb.CoreField.OrderField;
@@ -33,6 +34,9 @@ public class MessageEngine {
 	
 	@Autowired
 	SocketIOServer server;
+	
+	@Autowired
+	ContractMap globeContractMap;
 
 	public void emitTick(TickField tick) {
 		//以合约名称作为广播的房间号
@@ -97,7 +101,7 @@ public class MessageEngine {
     }
     
     private void subscribeContract(String contract) {
-    	ContractField c = ctpGatewayApi.getContractMap().get(contract);
+    	ContractField c = globeContractMap.getContractBySymbol(contract);
     	if(c != null) {
     		ctpGatewayApi.subscribe(c);
     	}else {
