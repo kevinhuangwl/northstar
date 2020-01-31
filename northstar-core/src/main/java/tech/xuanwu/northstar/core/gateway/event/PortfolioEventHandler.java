@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.core.msg.MessageEngine;
-import tech.xuanwu.northstar.core.util.ContractHelper;
+import tech.xuanwu.northstar.core.util.ContractMap;
 import tech.xuanwu.northstar.service.FastEventService;
 import tech.xuanwu.northstar.service.FastEventService.FastEvent;
 import tech.xuanwu.northstar.service.FastEventService.FastEventDynamicHandlerAbstract;
@@ -29,7 +29,7 @@ public class PortfolioEventHandler extends FastEventDynamicHandlerAbstract imple
 	MessageEngine msgEngine;
 	
 	@Autowired
-	ContractHelper contractHelper;
+	ContractMap contractMap;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -49,6 +49,7 @@ public class PortfolioEventHandler extends FastEventDynamicHandlerAbstract imple
 			return;
 		}
 		
+		//发生频率越高的事件排得越前
 		switch(event.getFastEventType()) {
 		case ACCOUNT:
 			
@@ -64,7 +65,7 @@ public class PortfolioEventHandler extends FastEventDynamicHandlerAbstract imple
 			break;
 		case CONTRACT:
 			ContractField c = (ContractField) event.getObj();
-			contractHelper.registerContract(c);
+			contractMap.registerContract(c);
 			break;
 		default:
 			log.warn("遇到未知事件类型：{}", event.getFastEventType());

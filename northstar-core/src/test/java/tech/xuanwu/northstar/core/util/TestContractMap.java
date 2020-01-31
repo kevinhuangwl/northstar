@@ -23,10 +23,10 @@ import xyz.redtorch.pb.CoreField.ContractField;
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class TestContractHelper {
+public class TestContractMap {
 
 	@Autowired
-	ContractHelper contractHelper;
+	ContractMap contractMap;
 	
 	@Before
 	public void waitASec() throws InterruptedException {
@@ -37,14 +37,12 @@ public class TestContractHelper {
 	@Test
 	public void test() {
 		
-		ContractField c = contractHelper.getContractBySymbol("rb2005");
-		assertEquals(c.getSymbol(), "rb2005");
-		log.info(c.toString());
-		
-		Collection<ContractField> results = contractHelper.getAllMonthContracts("rb0000");
-		assertTrue(results.size()==12);
-		for(ContractField cf : results) {
-			log.info(cf.toString());
+		String[] symbols = new String[] {"rb2005","RB2005","T2003","t2003"};
+		for(String symbol : symbols) {
+			assertEquals(contractMap.getContractBySymbol(symbol).getSymbol(), symbol);
 		}
+		
+		Collection<ContractField> results = contractMap.getAllMonthContracts("rb0000");
+		assertTrue(results.size()==12);
 	}
 }
