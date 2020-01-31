@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.service;
+package tech.xuanwu.northstar.engine;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +22,7 @@ import xyz.redtorch.pb.CoreField.TradeField;
  * 事件引擎服务
  *
  */
-public interface FastEventService {
+public interface FastEventEngine {
 
 	BatchEventProcessor<FastEvent> addHandler(FastEventDynamicHandler handler);
 

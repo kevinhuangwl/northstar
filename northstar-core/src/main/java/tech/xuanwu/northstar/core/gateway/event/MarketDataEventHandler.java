@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.core.dao.BarDataDao;
 import tech.xuanwu.northstar.core.dao.TickDataDao;
-import tech.xuanwu.northstar.service.FastEventService;
-import tech.xuanwu.northstar.service.FastEventService.FastEvent;
-import tech.xuanwu.northstar.service.FastEventService.FastEventDynamicHandlerAbstract;
-import tech.xuanwu.northstar.service.FastEventService.FastEventType;
+import tech.xuanwu.northstar.engine.FastEventEngine;
+import tech.xuanwu.northstar.engine.FastEventEngine.FastEvent;
+import tech.xuanwu.northstar.engine.FastEventEngine.FastEventDynamicHandlerAbstract;
+import tech.xuanwu.northstar.engine.FastEventEngine.FastEventType;
 import xyz.redtorch.common.util.BarGenerator;
 import xyz.redtorch.pb.CoreField.TickField;
 
@@ -26,7 +26,7 @@ import xyz.redtorch.pb.CoreField.TickField;
 public class MarketDataEventHandler extends FastEventDynamicHandlerAbstract implements InitializingBean{
 	
 	@Autowired
-	FastEventService fes;
+	FastEventEngine fes;
 	
 	@Autowired
 	TickDataDao tickDao;

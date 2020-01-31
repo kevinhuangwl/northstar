@@ -3,7 +3,7 @@ package tech.xuanwu.northstar.gateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import tech.xuanwu.northstar.service.FastEventService;
+import tech.xuanwu.northstar.engine.FastEventEngine;
 import xyz.redtorch.pb.CoreField.AccountField;
 import xyz.redtorch.pb.CoreField.ContractField;
 import xyz.redtorch.pb.CoreField.GatewayField;
@@ -24,11 +24,11 @@ public abstract class GatewayApiAbstract implements GatewayApi {
 
 	protected GatewaySettingField gatewaySetting;
 
-	private FastEventService fastEventService;
+	private FastEventEngine fastEventService;
 
 	private GatewayField gateway;
 
-	public GatewayApiAbstract(FastEventService fastEventService, GatewaySettingField gatewaySetting) {
+	public GatewayApiAbstract(FastEventEngine fastEventService, GatewaySettingField gatewaySetting) {
 		this.fastEventService = fastEventService;
 		this.gatewaySetting = gatewaySetting;
 		this.gatewayId = gatewaySetting.getGatewayId();
