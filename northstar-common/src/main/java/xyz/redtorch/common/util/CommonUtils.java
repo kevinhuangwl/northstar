@@ -94,23 +94,24 @@ public class CommonUtils {
 
 		return null;
 	}
-	
+
 	/**
 	 * 写入字符串到文件
+	 * 
 	 * @param filePath
 	 * @param content
 	 * @return
 	 */
-	public static boolean writeStringToFile(String filePath,String content) {
-	      
-	    try(FileWriter fileWriter = new FileWriter(filePath);){
-	      fileWriter.write(content);
-	      fileWriter.flush();
-	      return true;
-	    } catch (IOException e) {
-	      logger.error("写入文件错误",e);
-	      return false;
-	    }
+	public static boolean writeStringToFile(String filePath, String content) {
+
+		try (FileWriter fileWriter = new FileWriter(filePath);) {
+			fileWriter.write(content);
+			fileWriter.flush();
+			return true;
+		} catch (IOException e) {
+			logger.error("写入文件错误", e);
+			return false;
+		}
 	}
 
 	/**
@@ -362,7 +363,7 @@ public class CommonUtils {
 	public static void copyURLToFileForTmp(String targetDir, URL sourceURL) throws IOException {
 		File orginFile = new File(sourceURL.getFile());
 		File targetFile = new File(targetDir + File.separator + orginFile.getName());
-		if(!targetFile.getParentFile().exists()) {
+		if (!targetFile.getParentFile().exists()) {
 			targetFile.getParentFile().mkdirs();
 		}
 		if (targetFile.exists()) {
@@ -453,23 +454,76 @@ public class CommonUtils {
 			return true;
 		}
 	}
+
 	public static int getNumberDecimalDigits(Double value) {
-		
-		if(isInteger(value)) {
+
+		if (isInteger(value)) {
 			return 0;
 		}
-		
-		int dcimalDigits = 0; 
-		String valueStr = Double.toString(value); 
-		int indexOf = valueStr.indexOf("."); 
-		if(indexOf > 0){ 
-			dcimalDigits = valueStr.length() - 1 - indexOf; 
-		} 
-		return dcimalDigits; 
+
+		int dcimalDigits = 0;
+		String valueStr = Double.toString(value);
+		int indexOf = valueStr.indexOf(".");
+		if (indexOf > 0) {
+			dcimalDigits = valueStr.length() - 1 - indexOf;
+		}
+		return dcimalDigits;
 	}
-	
-	public static boolean isInteger(double obj) {  
-	    double eps = 1e-10;  // 精度范围  
-	    return obj-Math.floor(obj) < eps;  
-	} 
+
+	public static boolean isInteger(double obj) {
+		double eps = 1e-10; // 精度范围
+		return obj - Math.floor(obj) < eps;
+	}
+
+	/**
+	 * 获取MAC地址
+	 * @return
+	 */
+	public static String getMACAddress() {
+		String address = "";
+		String os = System.getProperty("os.name");
+		if (os.startsWith("Windows")) {
+			try {
+				String command = "cmd.exe /c ipconfig /all";
+				Process p = Runtime.getRuntime().exec(command);
+				BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream(), "GBK"));
+				String line;
+				while ((line = br.readLine()) != null) {
+					String str = new String("物理地址");
+					if (line.indexOf(str) > 0) {
+						int index = line.indexOf(":");
+						index += 2;
+						address = line.substring(index);
+						break;
+					}
+				}
+				br.close();
+				return address.trim();
+			} catch (IOException e) {
+			}
+		} else if (os.startsWith("Linux")) {
+			String command = "/bin/sh -c ifconfig -a";
+			Process p;
+			try {
+				p = Runtime.getRuntime().exec(command);
+				BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+				String line;
+				while ((line = br.readLine()) != null) {
+					if (line.indexOf("HWaddr") > 0) {
+						int index = line.indexOf("HWaddr") + "HWaddr".length();
+						address = line.substring(index);
+						break;
+					}
+				}
+				br.close();
+			} catch (IOException e) {
+			}
+		}
+		address = address.trim();
+		return address;
+	}
+
+//	public static void main(String[] args) {
+//		System.out.println(getMACAddress());
+//	}
 }
