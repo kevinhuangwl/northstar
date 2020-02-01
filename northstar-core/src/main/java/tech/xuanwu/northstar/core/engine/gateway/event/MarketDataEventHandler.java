@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.core.gateway.event;
+package tech.xuanwu.northstar.core.engine.gateway.event;
 
 import java.util.concurrent.ConcurrentHashMap;
 

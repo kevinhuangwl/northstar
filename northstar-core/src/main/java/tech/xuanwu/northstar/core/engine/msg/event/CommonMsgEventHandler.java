@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.core.msg;
+package tech.xuanwu.northstar.core.engine.msg.event;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 import com.corundumstudio.socketio.SocketIOClient;
-import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.OnConnect;
 import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
@@ -20,46 +19,18 @@ import tech.xuanwu.northstar.constant.MessageType;
 import tech.xuanwu.northstar.core.util.ContractMap;
 import tech.xuanwu.northstar.gateway.GatewayApi;
 import xyz.redtorch.pb.CoreField.ContractField;
-import xyz.redtorch.pb.CoreField.OrderField;
-import xyz.redtorch.pb.CoreField.TickField;
 
 @Slf4j
 @Component
-public class MessageEngine {
-	
+public class CommonMsgEventHandler {
+
 	ConcurrentHashMap<UUID, List<String>> roomMap = new ConcurrentHashMap<>();
 	
 	@Autowired
 	GatewayApi ctpGatewayApi;
 	
 	@Autowired
-	SocketIOServer server;
-	
-	@Autowired
 	ContractMap globeContractMap;
-
-	public void emitTick(TickField tick) {
-		//以合约名称作为广播的房间号
-		String symbol = tick.getContract().getSymbol();
-		
-		server.getRoomOperations(symbol).sendEvent(MessageType.MARKET_TICK_DATA, tick.toByteArray());
-		log.info("收到{}数据", symbol);
-	}
-	
-	
-	public void onPlacingOrder(String strategyName, OrderField order) {
-		
-	}
-	
-	
-	public void onCancellingOrder(String strategyName, OrderField order) {
-		
-	}
-	
-	
-	public void onRegister(String strategyName, List<String> subscribeContractList) {
-		
-	}
 	
 	@OnConnect  
     private void onConnect(final SocketIOClient client) {
@@ -118,7 +89,4 @@ public class MessageEngine {
     private void cancelOrder(final SocketIOClient client) {
     	
     }
-    
-    
-
 }

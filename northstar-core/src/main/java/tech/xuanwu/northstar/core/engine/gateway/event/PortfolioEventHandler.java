@@ -1,11 +1,11 @@
-package tech.xuanwu.northstar.core.gateway.event;
+package tech.xuanwu.northstar.core.engine.gateway.event;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.core.msg.MessageEngine;
+import tech.xuanwu.northstar.core.engine.SocketIOMessageEngine;
 import tech.xuanwu.northstar.core.util.ContractMap;
 import tech.xuanwu.northstar.engine.FastEventEngine;
 import tech.xuanwu.northstar.engine.FastEventEngine.FastEvent;
@@ -26,7 +26,7 @@ public class PortfolioEventHandler extends FastEventDynamicHandlerAbstract imple
 	FastEventEngine fes;
 	
 	@Autowired
-	MessageEngine msgEngine;
+	SocketIOMessageEngine msgEngine;
 	
 	@Autowired
 	ContractMap contractMap;

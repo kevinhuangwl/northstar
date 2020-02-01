@@ -19,8 +19,8 @@ import xyz.redtorch.pb.CoreField.TickField;
 import xyz.redtorch.pb.CoreField.TradeField;
 
 /**
- * 事件引擎服务
- *
+ * 事件引擎
+ * 负责第三方网关的事件
  */
 public interface FastEventEngine {
 
