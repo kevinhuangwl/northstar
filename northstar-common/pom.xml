@@ -12,25 +12,20 @@
 	<name>northstar-common</name>
 
 	<properties>
-		<java.version>11</java.version>
-		<protobuf-version>3.6.1</protobuf-version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.google.protobuf</groupId>
 			<artifactId>protobuf-java</artifactId>
-			<version>${protobuf-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.protobuf</groupId>
 			<artifactId>protobuf-java-util</artifactId>
-			<version>${protobuf-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.protobuf-java-format</groupId>
 			<artifactId>protobuf-java-format</artifactId>
-			<version>1.4</version>
 		</dependency>
 		<dependency>
 		    <groupId>commons-io</groupId>
@@ -41,11 +36,9 @@
 			<artifactId>commons-codec</artifactId>
 		</dependency>
 		
-		<!-- https://mvnrepository.com/artifact/com.lmax/disruptor -->
 		<dependency>
 		    <groupId>com.lmax</groupId>
 		    <artifactId>disruptor</artifactId>
-		    <version>3.4.2</version>
 		</dependency>
 		
 		<dependency>

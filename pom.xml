@@ -27,6 +27,11 @@
 		<commons-codec-version>1.13</commons-codec-version>
 		<commons-io-version>2.6</commons-io-version>
 		<fastjson-version>1.2.62</fastjson-version>
+		<protobuf-version>3.6.1</protobuf-version>
+		<protobuf-java-format-version>1.4</protobuf-java-format-version>
+		<disruptor-version>3.4.2</disruptor-version>
+		<netty-socketio-version>1.7.8</netty-socketio-version>
+		<socketio-client-version>1.0.0</socketio-client-version>
 	</properties>
 
 	<modules>
@@ -55,16 +60,37 @@
 		    <version>${commons-lang3-version}</version>
 		</dependency>
 				
-		<dependency>
-		    <groupId>com.alibaba</groupId>
-		    <artifactId>fastjson</artifactId>
-		    <version>${fastjson-version}</version>
-		</dependency>
+		
 		
 	</dependencies>
 	
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>tech.xuan-wu</groupId>
+				<artifactId>northstar-common</artifactId>
+				<version>${northstar-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>tech.xuan-wu</groupId>
+				<artifactId>northstar-core</artifactId>
+				<version>${northstar-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>tech.xuan-wu</groupId>
+				<artifactId>northstar-gateway-api</artifactId>
+				<version>${northstar-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>tech.xuan-wu</groupId>
+				<artifactId>northstar-gateway-impl-ctp</artifactId>
+				<version>${northstar-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>tech.xuan-wu</groupId>
+				<artifactId>northstar-strategy-client</artifactId>
+				<version>${northstar-version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter</artifactId>
@@ -100,6 +126,41 @@
 			    <groupId>commons-io</groupId>
 			    <artifactId>commons-io</artifactId>
 			    <version>${commons-io-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.protobuf</groupId>
+				<artifactId>protobuf-java</artifactId>
+				<version>${protobuf-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.protobuf</groupId>
+				<artifactId>protobuf-java-util</artifactId>
+				<version>${protobuf-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.googlecode.protobuf-java-format</groupId>
+				<artifactId>protobuf-java-format</artifactId>
+				<version>${protobuf-java-format-version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>com.lmax</groupId>
+			    <artifactId>disruptor</artifactId>
+			    <version>${disruptor-version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>com.corundumstudio.socketio</groupId>
+			    <artifactId>netty-socketio</artifactId>
+			    <version>${netty-socketio-version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>io.socket</groupId>
+			    <artifactId>socket.io-client</artifactId>
+			    <version>${socketio-client-version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>com.alibaba</groupId>
+			    <artifactId>fastjson</artifactId>
+			    <version>${fastjson-version}</version>
 			</dependency>
 		</dependencies>
 		
