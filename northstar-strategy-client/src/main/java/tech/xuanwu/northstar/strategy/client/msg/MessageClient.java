@@ -32,9 +32,10 @@ public class MessageClient {
 			final Socket client = IO.socket(coreServiceEndpoint);
 			
 			final Listener callback = (data)->{
+				String gatewayName = s.getGatewayName();
 				String strategyName = s.getStrategyName();
 				String[] contractList = s.getSubscribeContractList();
-				client.emit(MessageType.REG_STRATEGY, strategyName, contractList);
+				client.emit(MessageType.REG_STRATEGY, gatewayName, strategyName, contractList);
 			};
 			
 			client.once(Socket.EVENT_CONNECTING, callback);

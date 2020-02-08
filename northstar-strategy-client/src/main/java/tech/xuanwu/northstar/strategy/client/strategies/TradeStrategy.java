@@ -6,6 +6,12 @@ package tech.xuanwu.northstar.strategy.client.strategies;
  *
  */
 public interface TradeStrategy {
+	
+	/**
+	 * 获取策略所使用的网关接口名称
+	 * @return
+	 */
+	String getGatewayName();
 
 	/**
 	 * 获取策略名称
