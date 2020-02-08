@@ -26,9 +26,11 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 	@Setter @Getter
 	protected String name;
 	
+	/*订阅行情合约*/
 	@Setter @Getter
 	protected String[] mdContracts;
 	
+	/*下单目标合约*/
 	@Setter @Getter
 	protected String[] tdContracts;
 	
@@ -105,12 +107,13 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 	protected abstract void onBar(BarField bar);
 	
 	/*采用文华风格的开平仓API设计，让策略端避免考虑平今仓还是平旧仓的问题，默认优先平旧仓，由接口平台的风控模块自动计算*/
+	protected void BK(String symbol, int volume) {}
 	
-	protected void BK() {}
+	protected void SK(String symbol, int volume) {}
 	
-	protected void SK() {}
+	protected void BP(String symbol, int volume) {}
 	
-	protected void BP() {}
+	protected void SP(String symbol, int volume) {}
 	
-	protected void SP() {}
+	//TODO 难点：下单之后，如何拿到订单号，如何制定撤单策略，如何反馈成交
 }

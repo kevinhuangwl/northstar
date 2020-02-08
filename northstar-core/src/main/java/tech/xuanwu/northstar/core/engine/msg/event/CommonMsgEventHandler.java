@@ -1,6 +1,7 @@
 package tech.xuanwu.northstar.core.engine.msg.event;
 
 import java.util.ArrayList;
+import java.util.EventObject;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,8 +16,11 @@ import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
 
 import lombok.extern.slf4j.Slf4j;
+import tech.xuanwu.northstar.constant.EventType;
 import tech.xuanwu.northstar.constant.MessageType;
 import tech.xuanwu.northstar.core.util.ContractMap;
+import tech.xuanwu.northstar.dto.StrategyInfo;
+import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.gateway.GatewayApi;
 import xyz.redtorch.pb.CoreField.ContractField;
 
@@ -31,6 +35,9 @@ public class CommonMsgEventHandler {
 	
 	@Autowired
 	ContractMap globeContractMap;
+	
+	@Autowired
+	RuntimeEngine rtEngine;
 	
 	@OnConnect  
     private void onConnect(final SocketIOClient client) {
@@ -53,26 +60,37 @@ public class CommonMsgEventHandler {
     }
     
     @OnEvent(MessageType.REG_STRATEGY)
-    private void registerStrategy(final SocketIOClient client, String strategyName, String[] contractList) {
+    private void registerStrategy(final SocketIOClient client, StrategyInfo s) {
     	
-    	log.info("【策略注册】-[{}],【{}】订阅合约{}", client.getSessionId(), strategyName, JSON.toJSONString(contractList));
+    	log.info("【策略注册】-[{}],【{}】绑定账户：{}，订阅合约：{}", 
+    			client.getSessionId(), 
+    			s.getStrategyName(), 
+    			s.getAccountName(), 
+    			JSON.toJSONString(s.getSubscribeContracts()));
+    	
+    	String[] contractList = s.getSubscribeContracts();
     	
     	List<String> roomList = new ArrayList<String>(contractList.length+1);
-    	client.joinRoom(strategyName);
-    	roomList.add(strategyName);
+    	client.joinRoom(s.getStrategyName());
+    	roomList.add(s.getStrategyName());
+    	
+    	rtEngine.emitEvent(EventType.REGISTER_STRATEGY.toString(), new EventObject(s));
+    	
     	for(String contract : contractList) {
     		client.joinRoom(contract);
     		roomList.add(contract);
     		
     		//订阅合约
-    		subscribeContract(contract);
+    		ContractField c = globeContractMap.getContractBySymbol(contract);
+    		subscribeContract(c);
+    		
+    		rtEngine.emitEvent(EventType.REGISTER_CONTRACT.toString(), new EventObject(c));
     	}
     	
     	roomMap.put(client.getSessionId(), roomList);
     }
     
-    private void subscribeContract(String contract) {
-    	ContractField c = globeContractMap.getContractBySymbol(contract);
+    private void subscribeContract(ContractField c) {
     	if(c != null) {
     		ctpGatewayApi.subscribe(c);
     	}else {

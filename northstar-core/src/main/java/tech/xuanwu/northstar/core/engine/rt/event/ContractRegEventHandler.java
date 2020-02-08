@@ -8,24 +8,32 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.EventType;
+import tech.xuanwu.northstar.core.dao.ContractDao;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
+import xyz.redtorch.pb.CoreField.ContractField;
 
 @Slf4j
 @Component
-public class AccountRegEventHandler implements RuntimeEngine.Listener, InitializingBean{
-	
+public class ContractRegEventHandler implements RuntimeEngine.Listener, InitializingBean{
+
 	@Autowired
 	private RuntimeEngine rtEngine;
 	
+	@Autowired
+	private ContractDao contractDao;
+	
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		rtEngine.addEventHandler(EventType.ACCOUNT_REGISTER.toString(), this);
+		rtEngine.addEventHandler(EventType.REGISTER_CONTRACT.toString(), this);
 	}
 
 	@Override
 	public void onEvent(EventObject e) {
-		// TODO Auto-generated method stub
-		
+		try {			
+			ContractField c = (ContractField) e.getSource();
+			contractDao.upsertSubscribeContract(c);
+		}catch(ClassCastException ex) {
+			log.error("", ex);
+		}
 	}
-
 }

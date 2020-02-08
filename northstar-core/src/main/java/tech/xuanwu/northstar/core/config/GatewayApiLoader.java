@@ -45,9 +45,9 @@ public class GatewayApiLoader {
 	
 	@Bean
 	public Account getAccount() {
-		Account account = new Account(rtEngine);
+		Account account = new Account("默认CTP账户", rtEngine);
 		EventObject e = new EventObject(account);
-		rtEngine.emitEvent(EventType.ACCOUNT_REGISTER.toString(), e);
+		rtEngine.emitEvent(EventType.REGISTER_ACCOUNT.toString(), e);
 		return account;
 	}
 	

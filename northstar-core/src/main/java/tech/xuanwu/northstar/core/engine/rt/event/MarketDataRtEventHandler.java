@@ -54,7 +54,6 @@ public class MarketDataRtEventHandler implements RuntimeEngine.Listener, Initial
 			
 			cmdMap.get(contractId).updateTick(tick);
 		}catch(ClassCastException e) {
-			log.warn("事件回调使用异常，收到一个不正确的对象：{}", event.toString());
 			log.error("", e);
 		}
 		

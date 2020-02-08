@@ -12,7 +12,8 @@ import tech.xuanwu.northstar.constant.MessageType;
 import tech.xuanwu.northstar.dto.StrategyInfo;
 import tech.xuanwu.northstar.strategy.client.strategies.TemplateStrategy;
 import tech.xuanwu.northstar.strategy.client.strategies.TradeStrategy;
-import xyz.redtorch.pb.CoreField.OrderField;
+import xyz.redtorch.pb.CoreField.CancelOrderReqField;
+import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 import xyz.redtorch.pb.CoreField.TickField;
 
 /**
@@ -23,7 +24,7 @@ import xyz.redtorch.pb.CoreField.TickField;
 @Slf4j
 public class MessageClient {
 	
-	Socket socketClient;
+	Socket client;
 	
 	TradeStrategy strategy;
 	
@@ -57,7 +58,7 @@ public class MessageClient {
 			
 			client.connect();
 			
-			this.socketClient = client;
+			this.client = client;
 			this.strategy = s;
 			
 		} catch (URISyntaxException e) {
@@ -75,24 +76,18 @@ public class MessageClient {
 	
 	/**
 	 * 发送委托单
-	 * @param order
+	 * @param submitOrderReq
 	 */
-	public void sendOrder(OrderField order) {
-		
+	public void sendOrder(SubmitOrderReqField submitOrderReq) {
+		client.emit(MessageType.PLACE_ORDER, submitOrderReq);
 	}
 	
 	/**
-	 * 注册策略
+	 * 撤销委托单
+	 * @param cancelOrderReq
 	 */
-	public void registerStrategy() {
-		
-	}
-	
-	/**
-	 * 订阅合约
-	 */
-	public void subscribeContracts() {
-		
+	public void cancelOrder(CancelOrderReqField cancelOrderReq) {
+		client.emit(MessageType.CANCEL_ORDER, cancelOrderReq);
 	}
 	
 }

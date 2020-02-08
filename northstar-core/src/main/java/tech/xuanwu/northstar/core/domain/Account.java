@@ -45,30 +45,31 @@ public class Account implements IAccount{
 	
 	/*账户名称*/
 	@Getter
-	private String name;
+	protected String name;
 	
 	/*账户余额*/
 	@Getter
-	private double balance;
+	protected double balance;
 	
 	/*保证金占用*/
 	@Getter
-	private double margin;
+	protected double margin;
 	
 	/*持仓信息*/
-	private List<PositionField> positionList = new ArrayList<>();
+	protected List<PositionField> positionList = new ArrayList<>();
 	
 	/*订单信息*/
-	private List<OrderField> orderList = new ArrayList<>();
+	protected List<OrderField> orderList = new ArrayList<>();
 	
-	String lastOrderTradeDay = "";
+	protected String lastOrderTradeDay = "";
 	
 	/*成交信息*/
-	private List<TradeField> transactionList = new ArrayList<>();
+	protected List<TradeField> transactionList = new ArrayList<>();
 	
 	public Account(){}
 	
-	public Account(RuntimeEngine rtEngine){
+	public Account(String name, RuntimeEngine rtEngine){
+		this.name = name;
 		this.rtEngine = rtEngine;
 	}
 
@@ -162,9 +163,10 @@ public class Account implements IAccount{
 	}
 
 	@Override
-	public void regStrategy(IStrategy strategy) {
+	public void regStrategy(String strategyName) {
+		IStrategy strategy = new Strategy(strategyName);
 		synchronized (strategyMap) {
-			strategyMap.put(strategy.getName(), strategy);
+			strategyMap.put(strategyName, strategy);
 		}
 		
 	}

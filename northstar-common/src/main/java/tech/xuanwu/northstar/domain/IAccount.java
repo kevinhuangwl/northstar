@@ -17,7 +17,7 @@ public interface IAccount extends IAccountLike{
 	
 	List<IStrategy> getStrategyList();
 	
-	void regStrategy(IStrategy strategy);
+	void regStrategy(String strategyName);
 	
 	void unregStrategy(String strategyName);
 }
