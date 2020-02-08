@@ -9,6 +9,7 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter.Listener;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.MessageType;
+import tech.xuanwu.northstar.dto.StrategyInfo;
 import tech.xuanwu.northstar.strategy.client.strategies.TemplateStrategy;
 import tech.xuanwu.northstar.strategy.client.strategies.TradeStrategy;
 import xyz.redtorch.pb.CoreField.OrderField;
@@ -35,7 +36,9 @@ public class MessageClient {
 				String accountName = s.getAccountName();
 				String strategyName = s.getStrategyName();
 				String[] contractList = s.getSubscribeContractList();
-				client.emit(MessageType.REG_STRATEGY, accountName, strategyName, contractList);
+				StrategyInfo strategyInfo = new StrategyInfo(accountName, strategyName, contractList);
+				
+				client.emit(MessageType.REG_STRATEGY, strategyInfo);
 			};
 			
 			client.once(Socket.EVENT_CONNECTING, callback);
