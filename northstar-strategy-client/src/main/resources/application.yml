@@ -13,7 +13,7 @@ spring:
 
 strategy-setting:
   demo-strategy:
-    gatewayName: 默认CTP账户
+    accountName: 默认CTP账户
     name: DemoStrategy
     mdContracts: rb2005
     tdContracts: rb2005

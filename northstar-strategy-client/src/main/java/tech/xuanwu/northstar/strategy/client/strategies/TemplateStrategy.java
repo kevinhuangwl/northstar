@@ -21,7 +21,7 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 	protected boolean isBlocking = false;
 	
 	@Setter @Getter
-	protected String gatewayName;
+	protected String accountName;
 	
 	@Setter @Getter
 	protected String name;
