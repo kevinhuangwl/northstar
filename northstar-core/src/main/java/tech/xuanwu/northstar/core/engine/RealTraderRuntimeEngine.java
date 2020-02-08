@@ -1,43 +1,46 @@
 package tech.xuanwu.northstar.core.engine;
 
+import java.util.EventObject;
+import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.core.domain.ContractMarketData;
+import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
-import xyz.redtorch.pb.CoreField.TickField;
 
 @Slf4j
 @Component
-public class RealTraderRuntimeEngine implements RuntimeEngine{
+public class RealTraderRuntimeEngine extends AbstractTraderRuntimeEngine implements RuntimeEngine{
 	
-	//初始化时先预留N个合约的容量
-	private ConcurrentHashMap<String, ContractMarketData> cmdMap = new ConcurrentHashMap<>(500);
-
+	
+	private ConcurrentHashMap<String, ConcurrentLinkedQueue<Listener>> handlerMap = new ConcurrentHashMap<>();
+	
 	@Override
-	public void updateTick(TickField tick) {
-		String contractId = tick.getContract().getContractId();
-		if(!cmdMap.containsKey(contractId)) {
-			cmdMap.put(contractId, new ContractMarketData());
+	public boolean addEventHandler(String event, Listener listener) {
+		if(!handlerMap.containsKey(event)) {
+			handlerMap.put(event, new ConcurrentLinkedQueue<RuntimeEngine.Listener>());
 		}
 		
-		cmdMap.get(contractId).updateTick(tick);
+		log.info("增加一个【{}】事件的处理函数:{}", event, listener.getClass().getSimpleName());
+		return handlerMap.get(event).add(listener);
 	}
 
-	@Override
-	public boolean regAccount() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
-	public boolean unregAccount() {
-		// TODO Auto-generated method stub
-		return false;
+	public void emitEvent(String event, EventObject e) throws IllegalStateException {
+		if(!handlerMap.containsKey(event)) {
+			throw new IllegalStateException("没有事件【" + event + "】相应的处理函数");
+		}
+		
+		ConcurrentLinkedQueue<Listener> q = handlerMap.get(event);
+		Iterator<Listener> it = q.iterator();
+		while(it.hasNext()) {
+			it.next().onEvent(e);
+		}
 	}
-	
-	
+
 
 }

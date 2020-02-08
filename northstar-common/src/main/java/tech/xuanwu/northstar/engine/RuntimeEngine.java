@@ -1,6 +1,8 @@
 package tech.xuanwu.northstar.engine;
 
-import xyz.redtorch.pb.CoreField.TickField;
+import java.util.EventObject;
+
+import tech.xuanwu.northstar.domain.IAccount;
 
 /**
  * 运行时引擎
@@ -9,10 +11,20 @@ import xyz.redtorch.pb.CoreField.TickField;
  *
  */
 public interface RuntimeEngine {
-
-	boolean regAccount();
 	
-	boolean unregAccount();
+	void regAccount(IAccount account);
 	
-	void updateTick(TickField tick);
+	void unregAccount(String accountName);
+	
+	IAccount getAccount(String accountName);
+	
+	boolean addEventHandler(String event, Listener listener);
+	
+	void emitEvent(String event, EventObject e) throws IllegalStateException;
+	
+	interface Listener{
+		
+		void onEvent(EventObject e);
+	}
+	
 }

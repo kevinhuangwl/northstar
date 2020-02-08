@@ -15,8 +15,11 @@ public class DemoStrategy extends TemplateStrategy {
 
 	@Override
 	protected void onTick(TickField tick) {
-		// TODO Auto-generated method stub
-
+		log.info("合约-[{}], 价：{}，仓：{}，量：{}", 
+				tick.getContract().getSymbol(), 
+				tick.getLastPrice(), 
+				tick.getOpenInterestChange(), 
+				tick.getVolumeChange());
 	}
 
 	@Override

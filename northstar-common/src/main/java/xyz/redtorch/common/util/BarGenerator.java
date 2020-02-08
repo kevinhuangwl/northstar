@@ -31,9 +31,8 @@ public class BarGenerator {
 	public synchronized void updateTick(TickField tick) {
 
 		boolean newFlag = false;
-		LocalDateTime tickLocalDateTime = null;
+		LocalDateTime tickLocalDateTime = CommonUtils.millsToLocalDateTime(tick.getActionTimestamp());
 		if (lastTick != null) {
-			tickLocalDateTime = CommonUtils.millsToLocalDateTime(tick.getActionTimestamp());
 			// 此处过滤用于一个策略在多个网关订阅了同一个合约的情况下,Tick到达顺序和实际产生顺序不一致或者重复的情况
 			if (tickLocalDateTime.isBefore(lastTickLocalDateTime)) {
 				return;

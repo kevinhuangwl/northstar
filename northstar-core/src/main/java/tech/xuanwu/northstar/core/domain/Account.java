@@ -1,18 +1,25 @@
 package tech.xuanwu.northstar.core.domain;
 
+import java.util.ArrayList;
+import java.util.EventObject;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.springframework.util.MultiValueMap;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import lombok.Data;
 import lombok.Getter;
-import xyz.redtorch.pb.CoreEnum.CurrencyEnum;
+import lombok.extern.slf4j.Slf4j;
+import tech.xuanwu.northstar.constant.EventType;
+import tech.xuanwu.northstar.core.dao.AccountDao;
+import tech.xuanwu.northstar.domain.IAccount;
+import tech.xuanwu.northstar.domain.IStrategy;
+import tech.xuanwu.northstar.engine.RuntimeEngine;
 import xyz.redtorch.pb.CoreField.AccountField;
-import xyz.redtorch.pb.CoreField.GatewayField;
+import xyz.redtorch.pb.CoreField.CancelOrderReqField;
 import xyz.redtorch.pb.CoreField.OrderField;
 import xyz.redtorch.pb.CoreField.PositionField;
+import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 import xyz.redtorch.pb.CoreField.TradeField;
 
 /**
@@ -21,52 +28,153 @@ import xyz.redtorch.pb.CoreField.TradeField;
  * @author kevinhuangwl
  *
  */
-public class Account {
-
+@Slf4j
+public class Account implements IAccount{
+	
+	@Autowired
+	private AccountDao accDao;
+	
+	/*运行时引擎*/
+	private RuntimeEngine rtEngine;
+	
 	/*基本账户信息副本*/
-	private AccountField account;
+	private volatile AccountField account;
+	
+	/*策略信息*/
+	private Map<String, IStrategy> strategyMap = new HashMap<>();
+	
+	/*账户名称*/
+	@Getter
+	private String name;
+	
+	/*账户余额*/
+	@Getter
+	private double balance;
+	
+	/*保证金占用*/
+	@Getter
+	private double margin;
 	
 	/*持仓信息*/
-	private Positions positions; 
+	private List<PositionField> positionList = new ArrayList<>();
 	
 	/*订单信息*/
-	private Map<String, OrderField> ordersMap;
+	private List<OrderField> orderList = new ArrayList<>();
+	
+	String lastOrderTradeDay = "";
 	
 	/*成交信息*/
-	private List<TradeField> transactionList;
+	private List<TradeField> transactionList = new ArrayList<>();
 	
 	public Account(){}
 	
-	public Account(AccountField accountField){
+	public Account(RuntimeEngine rtEngine){
+		this.rtEngine = rtEngine;
+	}
+
+	@Override
+	public void placeOrder(SubmitOrderReqField submitOrderReq) {
+		log.info("账户-【{}】委托下单，{}", name, submitOrderReq);
+		rtEngine.emitEvent(EventType.SUBMIT_ORDER.toString(), new EventObject(submitOrderReq));
+	}
+
+	@Override
+	public void cancelOrder(CancelOrderReqField cancelOrderReq) {
+		log.info("账户-【{}】委托撤单，{}", name, cancelOrderReq);
+		rtEngine.emitEvent(EventType.WITHDRAW_ORDER.toString(), new EventObject(cancelOrderReq));
+	}
+
+	@Override
+	public void updatePosition(PositionField position) {
+		synchronized (positionList) {
+			positionList.add(position);
+		}
+	}
+
+	@Override
+	public List<PositionField> getPositionList() {
+		synchronized (positionList) {		
+			List<PositionField> resultList = new ArrayList<>(positionList.size());
+			resultList.addAll(positionList);
+			return resultList;
+		}
+	}
+
+	@Override
+	public void updateOrder(OrderField order) {
+		// FIXME 这处不确定
+		synchronized (orderList) {
+			if(!lastOrderTradeDay.equals(order.getTradingDay())) {
+				//FIXME 不确定是否要保存
+				orderList.clear();
+			}
+			orderList.add(order);
+		}
+	}
+
+	@Override
+	public List<OrderField> getOrderListOfCurrentTradeDay() {
+		synchronized (orderList) {
+			List<OrderField> resultList = new ArrayList<>(orderList.size());
+			resultList.addAll(orderList);
+			return resultList;
+		}
+	}
+
+	@Override
+	public void updateTransaction(TradeField transaction) {
+		synchronized (transactionList) {
+			transactionList.add(transaction);
+		}
+	}
+
+	@Override
+	public List<TradeField> getTransactionListOfCurrentTradeDay() {
+		synchronized (transactionList) {
+			List<TradeField> resultList = new ArrayList<>(transactionList.size());
+			resultList.addAll(transactionList);
+			return resultList;
+		}
+	}
+
+	@Override
+	public AccountField getAccount() {
+		return account;
+	}
+
+	@Override
+	public void updateAccount(AccountField account) {
+		//若账户信息有变，则保存记录
+		if(this.account!=null && !this.account.equals(account)) {
+			accDao.insert(account);
+		}
+		
+		this.account = account;
+	}
+
+	@Override
+	public List<IStrategy> getStrategyList() {
+		synchronized (strategyMap) {
+			List<IStrategy> resultList = new ArrayList<>(strategyMap.size());
+			resultList.addAll(strategyMap.values());
+			return resultList;
+		}
+	}
+
+	@Override
+	public void regStrategy(IStrategy strategy) {
+		synchronized (strategyMap) {
+			strategyMap.put(strategy.getName(), strategy);
+		}
 		
 	}
-	
-	/**
-	 * 账户更新
-	 * @param accountField
-	 */
-	public void updateAccount(AccountField accountField) {
-		
+
+	@Override
+	public void unregStrategy(String strategyName) {
+		synchronized (strategyMap) {
+			strategyMap.remove(strategyName);
+		}
 	}
 	
-	private void setPropsFrom(AccountField accountField) {
-		
-	}
-	
-	private void saveChange() {
-		
-	}
-	
-	public boolean placeOrder() {
-		return false;
-	}
-	
-	public boolean cancelOrder() {
-		return false;
-	}
-	
-	public List<PositionField> getAllPosition() {
-		return null;
-	}
 	
 }

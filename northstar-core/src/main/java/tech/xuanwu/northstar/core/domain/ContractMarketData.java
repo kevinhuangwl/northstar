@@ -1,5 +1,6 @@
 package tech.xuanwu.northstar.core.domain;
 
+import lombok.Setter;
 import tech.xuanwu.northstar.core.dao.BarDataDao;
 import tech.xuanwu.northstar.core.dao.TickDataDao;
 import xyz.redtorch.common.util.BarGenerator;
@@ -14,8 +15,10 @@ import xyz.redtorch.pb.CoreField.TickField;
  */
 public class ContractMarketData {
 	
+	@Setter
 	private TickDataDao tickDao;
 	
+	@Setter
 	private BarDataDao barDao;
 	
 	private BarGenerator barGen = new BarGenerator((bar)->{
