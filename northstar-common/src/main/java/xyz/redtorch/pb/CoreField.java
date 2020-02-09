@@ -122,6 +122,15 @@ public final class CoreField {
      * <code>.xyz.redtorch.pb.ConnectStatusEnum status = 6;</code>
      */
     xyz.redtorch.pb.CoreEnum.ConnectStatusEnum getStatus();
+
+    /**
+     * <pre>
+     * 登录失败标志
+     * </pre>
+     *
+     * <code>bool authErrorFlag = 7;</code>
+     */
+    boolean getAuthErrorFlag();
   }
   /**
    * <pre>
@@ -146,6 +155,7 @@ public final class CoreField {
       gatewayType_ = 0;
       gatewayAdapterType_ = 0;
       status_ = 0;
+      authErrorFlag_ = false;
     }
 
     @java.lang.Override
@@ -206,6 +216,11 @@ public final class CoreField {
               int rawValue = input.readEnum();
 
               status_ = rawValue;
+              break;
+            }
+            case 56: {
+
+              authErrorFlag_ = input.readBool();
               break;
             }
             default: {
@@ -441,6 +456,19 @@ public final class CoreField {
       return result == null ? xyz.redtorch.pb.CoreEnum.ConnectStatusEnum.UNRECOGNIZED : result;
     }
 
+    public static final int AUTHERRORFLAG_FIELD_NUMBER = 7;
+    private boolean authErrorFlag_;
+    /**
+     * <pre>
+     * 登录失败标志
+     * </pre>
+     *
+     * <code>bool authErrorFlag = 7;</code>
+     */
+    public boolean getAuthErrorFlag() {
+      return authErrorFlag_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -464,14 +492,17 @@ public final class CoreField {
       if (!getDescriptionBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, description_);
       }
-      if (gatewayType_ != xyz.redtorch.pb.CoreEnum.GatewayTypeEnum.TRADE_AND_MARKET_DATA.getNumber()) {
+      if (gatewayType_ != xyz.redtorch.pb.CoreEnum.GatewayTypeEnum.GTE_TradeAndMarketData.getNumber()) {
         output.writeEnum(4, gatewayType_);
       }
-      if (gatewayAdapterType_ != xyz.redtorch.pb.CoreEnum.GatewayAdapterTypeEnum.CTP.getNumber()) {
+      if (gatewayAdapterType_ != xyz.redtorch.pb.CoreEnum.GatewayAdapterTypeEnum.GAT_CTP.getNumber()) {
         output.writeEnum(5, gatewayAdapterType_);
       }
-      if (status_ != xyz.redtorch.pb.CoreEnum.ConnectStatusEnum.DISCONNECTED.getNumber()) {
+      if (status_ != xyz.redtorch.pb.CoreEnum.ConnectStatusEnum.CS_Unkonwn.getNumber()) {
         output.writeEnum(6, status_);
+      }
+      if (authErrorFlag_ != false) {
+        output.writeBool(7, authErrorFlag_);
       }
       unknownFields.writeTo(output);
     }
@@ -491,17 +522,21 @@ public final class CoreField {
       if (!getDescriptionBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, description_);
       }
-      if (gatewayType_ != xyz.redtorch.pb.CoreEnum.GatewayTypeEnum.TRADE_AND_MARKET_DATA.getNumber()) {
+      if (gatewayType_ != xyz.redtorch.pb.CoreEnum.GatewayTypeEnum.GTE_TradeAndMarketData.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(4, gatewayType_);
       }
-      if (gatewayAdapterType_ != xyz.redtorch.pb.CoreEnum.GatewayAdapterTypeEnum.CTP.getNumber()) {
+      if (gatewayAdapterType_ != xyz.redtorch.pb.CoreEnum.GatewayAdapterTypeEnum.GAT_CTP.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(5, gatewayAdapterType_);
       }
-      if (status_ != xyz.redtorch.pb.CoreEnum.ConnectStatusEnum.DISCONNECTED.getNumber()) {
+      if (status_ != xyz.redtorch.pb.CoreEnum.ConnectStatusEnum.CS_Unkonwn.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(6, status_);
+      }
+      if (authErrorFlag_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(7, authErrorFlag_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -528,6 +563,8 @@ public final class CoreField {
       result = result && gatewayType_ == other.gatewayType_;
       result = result && gatewayAdapterType_ == other.gatewayAdapterType_;
       result = result && status_ == other.status_;
+      result = result && (getAuthErrorFlag()
+          == other.getAuthErrorFlag());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -551,6 +588,9 @@ public final class CoreField {
       hash = (53 * hash) + gatewayAdapterType_;
       hash = (37 * hash) + STATUS_FIELD_NUMBER;
       hash = (53 * hash) + status_;
+      hash = (37 * hash) + AUTHERRORFLAG_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getAuthErrorFlag());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -700,6 +740,8 @@ public final class CoreField {
 
         status_ = 0;
 
+        authErrorFlag_ = false;
+
         return this;
       }
 
@@ -732,6 +774,7 @@ public final class CoreField {
         result.gatewayType_ = gatewayType_;
         result.gatewayAdapterType_ = gatewayAdapterType_;
         result.status_ = status_;
+        result.authErrorFlag_ = authErrorFlag_;
         onBuilt();
         return result;
       }
@@ -800,6 +843,9 @@ public final class CoreField {
         }
         if (other.status_ != 0) {
           setStatusValue(other.getStatusValue());
+        }
+        if (other.getAuthErrorFlag() != false) {
+          setAuthErrorFlag(other.getAuthErrorFlag());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1291,6 +1337,44 @@ public final class CoreField {
         onChanged();
         return this;
       }
+
+      private boolean authErrorFlag_ ;
+      /**
+       * <pre>
+       * 登录失败标志
+       * </pre>
+       *
+       * <code>bool authErrorFlag = 7;</code>
+       */
+      public boolean getAuthErrorFlag() {
+        return authErrorFlag_;
+      }
+      /**
+       * <pre>
+       * 登录失败标志
+       * </pre>
+       *
+       * <code>bool authErrorFlag = 7;</code>
+       */
+      public Builder setAuthErrorFlag(boolean value) {
+        
+        authErrorFlag_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 登录失败标志
+       * </pre>
+       *
+       * <code>bool authErrorFlag = 7;</code>
+       */
+      public Builder clearAuthErrorFlag() {
+        
+        authErrorFlag_ = false;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -1371,18 +1455,18 @@ public final class CoreField {
      * 简称
      * </pre>
      *
-     * <code>string shortName = 2;</code>
+     * <code>string name = 2;</code>
      */
-    java.lang.String getShortName();
+    java.lang.String getName();
     /**
      * <pre>
      * 简称
      * </pre>
      *
-     * <code>string shortName = 2;</code>
+     * <code>string name = 2;</code>
      */
     com.google.protobuf.ByteString
-        getShortNameBytes();
+        getNameBytes();
 
     /**
      * <pre>
@@ -1478,17 +1562,17 @@ public final class CoreField {
      * 产品类型
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ProductTypeEnum productType = 10;</code>
+     * <code>.xyz.redtorch.pb.ProductClassEnum productClass = 10;</code>
      */
-    int getProductTypeValue();
+    int getProductClassValue();
     /**
      * <pre>
      * 产品类型
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ProductTypeEnum productType = 10;</code>
+     * <code>.xyz.redtorch.pb.ProductClassEnum productClass = 10;</code>
      */
-    xyz.redtorch.pb.CoreEnum.ProductTypeEnum getProductType();
+    xyz.redtorch.pb.CoreEnum.ProductClassEnum getProductClass();
 
     /**
      * <pre>
@@ -1584,17 +1668,17 @@ public final class CoreField {
      * 期权类型
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.OptionTypeEnum optionType = 19;</code>
+     * <code>.xyz.redtorch.pb.OptionsTypeEnum optionsType = 19;</code>
      */
-    int getOptionTypeValue();
+    int getOptionsTypeValue();
     /**
      * <pre>
      * 期权类型
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.OptionTypeEnum optionType = 19;</code>
+     * <code>.xyz.redtorch.pb.OptionsTypeEnum optionsType = 19;</code>
      */
-    xyz.redtorch.pb.CoreEnum.OptionTypeEnum getOptionType();
+    xyz.redtorch.pb.CoreEnum.OptionsTypeEnum getOptionsType();
 
     /**
      * <pre>
@@ -1661,28 +1745,38 @@ public final class CoreField {
 
     /**
      * <pre>
-     * 网关
+     * 组合类型
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 26;</code>
+     * <code>.xyz.redtorch.pb.CombinationTypeEnum combinationType = 26;</code>
      */
-    boolean hasGateway();
+    int getCombinationTypeValue();
+    /**
+     * <pre>
+     * 组合类型
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.CombinationTypeEnum combinationType = 26;</code>
+     */
+    xyz.redtorch.pb.CoreEnum.CombinationTypeEnum getCombinationType();
+
     /**
      * <pre>
      * 网关
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 26;</code>
+     * <code>string gatewayId = 27;</code>
      */
-    xyz.redtorch.pb.CoreField.GatewayField getGateway();
+    java.lang.String getGatewayId();
     /**
      * <pre>
      * 网关
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 26;</code>
+     * <code>string gatewayId = 27;</code>
      */
-    xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder getGatewayOrBuilder();
+    com.google.protobuf.ByteString
+        getGatewayIdBytes();
   }
   /**
    * <pre>
@@ -1702,13 +1796,13 @@ public final class CoreField {
     }
     private ContractField() {
       contractId_ = "";
-      shortName_ = "";
+      name_ = "";
       fullName_ = "";
       thirdPartyId_ = "";
       unifiedSymbol_ = "";
       symbol_ = "";
       exchange_ = 0;
-      productType_ = 0;
+      productClass_ = 0;
       currency_ = 0;
       multiplier_ = 0D;
       priceTick_ = 0D;
@@ -1717,13 +1811,15 @@ public final class CoreField {
       maxMarginSideAlgorithm_ = false;
       underlyingSymbol_ = "";
       strikePrice_ = 0D;
-      optionType_ = 0;
+      optionsType_ = 0;
       underlyingMultiplier_ = 0D;
       lastTradeDateOrContractMonth_ = "";
       maxMarketOrderVolume_ = 0;
       minMarketOrderVolume_ = 0;
       maxLimitOrderVolume_ = 0;
       minLimitOrderVolume_ = 0;
+      combinationType_ = 0;
+      gatewayId_ = "";
     }
 
     @java.lang.Override
@@ -1759,7 +1855,7 @@ public final class CoreField {
             case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              shortName_ = s;
+              name_ = s;
               break;
             }
             case 26: {
@@ -1795,7 +1891,7 @@ public final class CoreField {
             case 80: {
               int rawValue = input.readEnum();
 
-              productType_ = rawValue;
+              productClass_ = rawValue;
               break;
             }
             case 88: {
@@ -1843,7 +1939,7 @@ public final class CoreField {
             case 152: {
               int rawValue = input.readEnum();
 
-              optionType_ = rawValue;
+              optionsType_ = rawValue;
               break;
             }
             case 161: {
@@ -1877,17 +1973,16 @@ public final class CoreField {
               minLimitOrderVolume_ = input.readFixed32();
               break;
             }
-            case 210: {
-              xyz.redtorch.pb.CoreField.GatewayField.Builder subBuilder = null;
-              if (gateway_ != null) {
-                subBuilder = gateway_.toBuilder();
-              }
-              gateway_ = input.readMessage(xyz.redtorch.pb.CoreField.GatewayField.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(gateway_);
-                gateway_ = subBuilder.buildPartial();
-              }
+            case 208: {
+              int rawValue = input.readEnum();
 
+              combinationType_ = rawValue;
+              break;
+            }
+            case 218: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              gatewayId_ = s;
               break;
             }
             default: {
@@ -1964,24 +2059,24 @@ public final class CoreField {
       }
     }
 
-    public static final int SHORTNAME_FIELD_NUMBER = 2;
-    private volatile java.lang.Object shortName_;
+    public static final int NAME_FIELD_NUMBER = 2;
+    private volatile java.lang.Object name_;
     /**
      * <pre>
      * 简称
      * </pre>
      *
-     * <code>string shortName = 2;</code>
+     * <code>string name = 2;</code>
      */
-    public java.lang.String getShortName() {
-      java.lang.Object ref = shortName_;
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        shortName_ = s;
+        name_ = s;
         return s;
       }
     }
@@ -1990,16 +2085,16 @@ public final class CoreField {
      * 简称
      * </pre>
      *
-     * <code>string shortName = 2;</code>
+     * <code>string name = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getShortNameBytes() {
-      java.lang.Object ref = shortName_;
+        getNameBytes() {
+      java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        shortName_ = b;
+        name_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -2199,29 +2294,29 @@ public final class CoreField {
       return result == null ? xyz.redtorch.pb.CoreEnum.ExchangeEnum.UNRECOGNIZED : result;
     }
 
-    public static final int PRODUCTTYPE_FIELD_NUMBER = 10;
-    private int productType_;
+    public static final int PRODUCTCLASS_FIELD_NUMBER = 10;
+    private int productClass_;
     /**
      * <pre>
      * 产品类型
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ProductTypeEnum productType = 10;</code>
+     * <code>.xyz.redtorch.pb.ProductClassEnum productClass = 10;</code>
      */
-    public int getProductTypeValue() {
-      return productType_;
+    public int getProductClassValue() {
+      return productClass_;
     }
     /**
      * <pre>
      * 产品类型
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ProductTypeEnum productType = 10;</code>
+     * <code>.xyz.redtorch.pb.ProductClassEnum productClass = 10;</code>
      */
-    public xyz.redtorch.pb.CoreEnum.ProductTypeEnum getProductType() {
+    public xyz.redtorch.pb.CoreEnum.ProductClassEnum getProductClass() {
       @SuppressWarnings("deprecation")
-      xyz.redtorch.pb.CoreEnum.ProductTypeEnum result = xyz.redtorch.pb.CoreEnum.ProductTypeEnum.valueOf(productType_);
-      return result == null ? xyz.redtorch.pb.CoreEnum.ProductTypeEnum.UNRECOGNIZED : result;
+      xyz.redtorch.pb.CoreEnum.ProductClassEnum result = xyz.redtorch.pb.CoreEnum.ProductClassEnum.valueOf(productClass_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.ProductClassEnum.UNRECOGNIZED : result;
     }
 
     public static final int CURRENCY_FIELD_NUMBER = 11;
@@ -2369,29 +2464,29 @@ public final class CoreField {
       return strikePrice_;
     }
 
-    public static final int OPTIONTYPE_FIELD_NUMBER = 19;
-    private int optionType_;
+    public static final int OPTIONSTYPE_FIELD_NUMBER = 19;
+    private int optionsType_;
     /**
      * <pre>
      * 期权类型
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.OptionTypeEnum optionType = 19;</code>
+     * <code>.xyz.redtorch.pb.OptionsTypeEnum optionsType = 19;</code>
      */
-    public int getOptionTypeValue() {
-      return optionType_;
+    public int getOptionsTypeValue() {
+      return optionsType_;
     }
     /**
      * <pre>
      * 期权类型
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.OptionTypeEnum optionType = 19;</code>
+     * <code>.xyz.redtorch.pb.OptionsTypeEnum optionsType = 19;</code>
      */
-    public xyz.redtorch.pb.CoreEnum.OptionTypeEnum getOptionType() {
+    public xyz.redtorch.pb.CoreEnum.OptionsTypeEnum getOptionsType() {
       @SuppressWarnings("deprecation")
-      xyz.redtorch.pb.CoreEnum.OptionTypeEnum result = xyz.redtorch.pb.CoreEnum.OptionTypeEnum.valueOf(optionType_);
-      return result == null ? xyz.redtorch.pb.CoreEnum.OptionTypeEnum.UNRECOGNIZED : result;
+      xyz.redtorch.pb.CoreEnum.OptionsTypeEnum result = xyz.redtorch.pb.CoreEnum.OptionsTypeEnum.valueOf(optionsType_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.OptionsTypeEnum.UNRECOGNIZED : result;
     }
 
     public static final int UNDERLYINGMULTIPLIER_FIELD_NUMBER = 20;
@@ -2501,37 +2596,71 @@ public final class CoreField {
       return minLimitOrderVolume_;
     }
 
-    public static final int GATEWAY_FIELD_NUMBER = 26;
-    private xyz.redtorch.pb.CoreField.GatewayField gateway_;
+    public static final int COMBINATIONTYPE_FIELD_NUMBER = 26;
+    private int combinationType_;
+    /**
+     * <pre>
+     * 组合类型
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.CombinationTypeEnum combinationType = 26;</code>
+     */
+    public int getCombinationTypeValue() {
+      return combinationType_;
+    }
+    /**
+     * <pre>
+     * 组合类型
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.CombinationTypeEnum combinationType = 26;</code>
+     */
+    public xyz.redtorch.pb.CoreEnum.CombinationTypeEnum getCombinationType() {
+      @SuppressWarnings("deprecation")
+      xyz.redtorch.pb.CoreEnum.CombinationTypeEnum result = xyz.redtorch.pb.CoreEnum.CombinationTypeEnum.valueOf(combinationType_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.CombinationTypeEnum.UNRECOGNIZED : result;
+    }
+
+    public static final int GATEWAYID_FIELD_NUMBER = 27;
+    private volatile java.lang.Object gatewayId_;
     /**
      * <pre>
      * 网关
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 26;</code>
+     * <code>string gatewayId = 27;</code>
      */
-    public boolean hasGateway() {
-      return gateway_ != null;
+    public java.lang.String getGatewayId() {
+      java.lang.Object ref = gatewayId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        gatewayId_ = s;
+        return s;
+      }
     }
     /**
      * <pre>
      * 网关
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 26;</code>
+     * <code>string gatewayId = 27;</code>
      */
-    public xyz.redtorch.pb.CoreField.GatewayField getGateway() {
-      return gateway_ == null ? xyz.redtorch.pb.CoreField.GatewayField.getDefaultInstance() : gateway_;
-    }
-    /**
-     * <pre>
-     * 网关
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 26;</code>
-     */
-    public xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder getGatewayOrBuilder() {
-      return getGateway();
+    public com.google.protobuf.ByteString
+        getGatewayIdBytes() {
+      java.lang.Object ref = gatewayId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        gatewayId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     private byte memoizedIsInitialized = -1;
@@ -2551,8 +2680,8 @@ public final class CoreField {
       if (!getContractIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, contractId_);
       }
-      if (!getShortNameBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, shortName_);
+      if (!getNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, name_);
       }
       if (!getFullNameBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, fullName_);
@@ -2566,13 +2695,13 @@ public final class CoreField {
       if (!getSymbolBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 8, symbol_);
       }
-      if (exchange_ != xyz.redtorch.pb.CoreEnum.ExchangeEnum.UNKNOWN_EXCHANGE.getNumber()) {
+      if (exchange_ != xyz.redtorch.pb.CoreEnum.ExchangeEnum.UnknownExchange.getNumber()) {
         output.writeEnum(9, exchange_);
       }
-      if (productType_ != xyz.redtorch.pb.CoreEnum.ProductTypeEnum.UNKNOWN_PRODUCT_TYPE.getNumber()) {
-        output.writeEnum(10, productType_);
+      if (productClass_ != xyz.redtorch.pb.CoreEnum.ProductClassEnum.UnknownProductClass.getNumber()) {
+        output.writeEnum(10, productClass_);
       }
-      if (currency_ != xyz.redtorch.pb.CoreEnum.CurrencyEnum.UNKNOWN_CURRENCY.getNumber()) {
+      if (currency_ != xyz.redtorch.pb.CoreEnum.CurrencyEnum.UnknownCurrency.getNumber()) {
         output.writeEnum(11, currency_);
       }
       if (multiplier_ != 0D) {
@@ -2596,8 +2725,8 @@ public final class CoreField {
       if (strikePrice_ != 0D) {
         output.writeDouble(18, strikePrice_);
       }
-      if (optionType_ != xyz.redtorch.pb.CoreEnum.OptionTypeEnum.UNKNOWN_OPTION_TYPE.getNumber()) {
-        output.writeEnum(19, optionType_);
+      if (optionsType_ != xyz.redtorch.pb.CoreEnum.OptionsTypeEnum.O_Unknown.getNumber()) {
+        output.writeEnum(19, optionsType_);
       }
       if (underlyingMultiplier_ != 0D) {
         output.writeDouble(20, underlyingMultiplier_);
@@ -2617,8 +2746,11 @@ public final class CoreField {
       if (minLimitOrderVolume_ != 0) {
         output.writeFixed32(25, minLimitOrderVolume_);
       }
-      if (gateway_ != null) {
-        output.writeMessage(26, getGateway());
+      if (combinationType_ != xyz.redtorch.pb.CoreEnum.CombinationTypeEnum.COMBT_Unknown.getNumber()) {
+        output.writeEnum(26, combinationType_);
+      }
+      if (!getGatewayIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 27, gatewayId_);
       }
       unknownFields.writeTo(output);
     }
@@ -2632,8 +2764,8 @@ public final class CoreField {
       if (!getContractIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, contractId_);
       }
-      if (!getShortNameBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, shortName_);
+      if (!getNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, name_);
       }
       if (!getFullNameBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, fullName_);
@@ -2647,15 +2779,15 @@ public final class CoreField {
       if (!getSymbolBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, symbol_);
       }
-      if (exchange_ != xyz.redtorch.pb.CoreEnum.ExchangeEnum.UNKNOWN_EXCHANGE.getNumber()) {
+      if (exchange_ != xyz.redtorch.pb.CoreEnum.ExchangeEnum.UnknownExchange.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(9, exchange_);
       }
-      if (productType_ != xyz.redtorch.pb.CoreEnum.ProductTypeEnum.UNKNOWN_PRODUCT_TYPE.getNumber()) {
+      if (productClass_ != xyz.redtorch.pb.CoreEnum.ProductClassEnum.UnknownProductClass.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(10, productType_);
+          .computeEnumSize(10, productClass_);
       }
-      if (currency_ != xyz.redtorch.pb.CoreEnum.CurrencyEnum.UNKNOWN_CURRENCY.getNumber()) {
+      if (currency_ != xyz.redtorch.pb.CoreEnum.CurrencyEnum.UnknownCurrency.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(11, currency_);
       }
@@ -2686,9 +2818,9 @@ public final class CoreField {
         size += com.google.protobuf.CodedOutputStream
           .computeDoubleSize(18, strikePrice_);
       }
-      if (optionType_ != xyz.redtorch.pb.CoreEnum.OptionTypeEnum.UNKNOWN_OPTION_TYPE.getNumber()) {
+      if (optionsType_ != xyz.redtorch.pb.CoreEnum.OptionsTypeEnum.O_Unknown.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(19, optionType_);
+          .computeEnumSize(19, optionsType_);
       }
       if (underlyingMultiplier_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
@@ -2713,9 +2845,12 @@ public final class CoreField {
         size += com.google.protobuf.CodedOutputStream
           .computeFixed32Size(25, minLimitOrderVolume_);
       }
-      if (gateway_ != null) {
+      if (combinationType_ != xyz.redtorch.pb.CoreEnum.CombinationTypeEnum.COMBT_Unknown.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(26, getGateway());
+          .computeEnumSize(26, combinationType_);
+      }
+      if (!getGatewayIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(27, gatewayId_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2735,8 +2870,8 @@ public final class CoreField {
       boolean result = true;
       result = result && getContractId()
           .equals(other.getContractId());
-      result = result && getShortName()
-          .equals(other.getShortName());
+      result = result && getName()
+          .equals(other.getName());
       result = result && getFullName()
           .equals(other.getFullName());
       result = result && getThirdPartyId()
@@ -2746,7 +2881,7 @@ public final class CoreField {
       result = result && getSymbol()
           .equals(other.getSymbol());
       result = result && exchange_ == other.exchange_;
-      result = result && productType_ == other.productType_;
+      result = result && productClass_ == other.productClass_;
       result = result && currency_ == other.currency_;
       result = result && (
           java.lang.Double.doubleToLongBits(getMultiplier())
@@ -2772,7 +2907,7 @@ public final class CoreField {
           java.lang.Double.doubleToLongBits(getStrikePrice())
           == java.lang.Double.doubleToLongBits(
               other.getStrikePrice()));
-      result = result && optionType_ == other.optionType_;
+      result = result && optionsType_ == other.optionsType_;
       result = result && (
           java.lang.Double.doubleToLongBits(getUnderlyingMultiplier())
           == java.lang.Double.doubleToLongBits(
@@ -2787,11 +2922,9 @@ public final class CoreField {
           == other.getMaxLimitOrderVolume());
       result = result && (getMinLimitOrderVolume()
           == other.getMinLimitOrderVolume());
-      result = result && (hasGateway() == other.hasGateway());
-      if (hasGateway()) {
-        result = result && getGateway()
-            .equals(other.getGateway());
-      }
+      result = result && combinationType_ == other.combinationType_;
+      result = result && getGatewayId()
+          .equals(other.getGatewayId());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -2805,8 +2938,8 @@ public final class CoreField {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + CONTRACTID_FIELD_NUMBER;
       hash = (53 * hash) + getContractId().hashCode();
-      hash = (37 * hash) + SHORTNAME_FIELD_NUMBER;
-      hash = (53 * hash) + getShortName().hashCode();
+      hash = (37 * hash) + NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getName().hashCode();
       hash = (37 * hash) + FULLNAME_FIELD_NUMBER;
       hash = (53 * hash) + getFullName().hashCode();
       hash = (37 * hash) + THIRDPARTYID_FIELD_NUMBER;
@@ -2817,8 +2950,8 @@ public final class CoreField {
       hash = (53 * hash) + getSymbol().hashCode();
       hash = (37 * hash) + EXCHANGE_FIELD_NUMBER;
       hash = (53 * hash) + exchange_;
-      hash = (37 * hash) + PRODUCTTYPE_FIELD_NUMBER;
-      hash = (53 * hash) + productType_;
+      hash = (37 * hash) + PRODUCTCLASS_FIELD_NUMBER;
+      hash = (53 * hash) + productClass_;
       hash = (37 * hash) + CURRENCY_FIELD_NUMBER;
       hash = (53 * hash) + currency_;
       hash = (37 * hash) + MULTIPLIER_FIELD_NUMBER;
@@ -2841,8 +2974,8 @@ public final class CoreField {
       hash = (37 * hash) + STRIKEPRICE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           java.lang.Double.doubleToLongBits(getStrikePrice()));
-      hash = (37 * hash) + OPTIONTYPE_FIELD_NUMBER;
-      hash = (53 * hash) + optionType_;
+      hash = (37 * hash) + OPTIONSTYPE_FIELD_NUMBER;
+      hash = (53 * hash) + optionsType_;
       hash = (37 * hash) + UNDERLYINGMULTIPLIER_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           java.lang.Double.doubleToLongBits(getUnderlyingMultiplier()));
@@ -2856,10 +2989,10 @@ public final class CoreField {
       hash = (53 * hash) + getMaxLimitOrderVolume();
       hash = (37 * hash) + MINLIMITORDERVOLUME_FIELD_NUMBER;
       hash = (53 * hash) + getMinLimitOrderVolume();
-      if (hasGateway()) {
-        hash = (37 * hash) + GATEWAY_FIELD_NUMBER;
-        hash = (53 * hash) + getGateway().hashCode();
-      }
+      hash = (37 * hash) + COMBINATIONTYPE_FIELD_NUMBER;
+      hash = (53 * hash) + combinationType_;
+      hash = (37 * hash) + GATEWAYID_FIELD_NUMBER;
+      hash = (53 * hash) + getGatewayId().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -2999,7 +3132,7 @@ public final class CoreField {
         super.clear();
         contractId_ = "";
 
-        shortName_ = "";
+        name_ = "";
 
         fullName_ = "";
 
@@ -3011,7 +3144,7 @@ public final class CoreField {
 
         exchange_ = 0;
 
-        productType_ = 0;
+        productClass_ = 0;
 
         currency_ = 0;
 
@@ -3029,7 +3162,7 @@ public final class CoreField {
 
         strikePrice_ = 0D;
 
-        optionType_ = 0;
+        optionsType_ = 0;
 
         underlyingMultiplier_ = 0D;
 
@@ -3043,12 +3176,10 @@ public final class CoreField {
 
         minLimitOrderVolume_ = 0;
 
-        if (gatewayBuilder_ == null) {
-          gateway_ = null;
-        } else {
-          gateway_ = null;
-          gatewayBuilder_ = null;
-        }
+        combinationType_ = 0;
+
+        gatewayId_ = "";
+
         return this;
       }
 
@@ -3076,13 +3207,13 @@ public final class CoreField {
       public xyz.redtorch.pb.CoreField.ContractField buildPartial() {
         xyz.redtorch.pb.CoreField.ContractField result = new xyz.redtorch.pb.CoreField.ContractField(this);
         result.contractId_ = contractId_;
-        result.shortName_ = shortName_;
+        result.name_ = name_;
         result.fullName_ = fullName_;
         result.thirdPartyId_ = thirdPartyId_;
         result.unifiedSymbol_ = unifiedSymbol_;
         result.symbol_ = symbol_;
         result.exchange_ = exchange_;
-        result.productType_ = productType_;
+        result.productClass_ = productClass_;
         result.currency_ = currency_;
         result.multiplier_ = multiplier_;
         result.priceTick_ = priceTick_;
@@ -3091,18 +3222,15 @@ public final class CoreField {
         result.maxMarginSideAlgorithm_ = maxMarginSideAlgorithm_;
         result.underlyingSymbol_ = underlyingSymbol_;
         result.strikePrice_ = strikePrice_;
-        result.optionType_ = optionType_;
+        result.optionsType_ = optionsType_;
         result.underlyingMultiplier_ = underlyingMultiplier_;
         result.lastTradeDateOrContractMonth_ = lastTradeDateOrContractMonth_;
         result.maxMarketOrderVolume_ = maxMarketOrderVolume_;
         result.minMarketOrderVolume_ = minMarketOrderVolume_;
         result.maxLimitOrderVolume_ = maxLimitOrderVolume_;
         result.minLimitOrderVolume_ = minLimitOrderVolume_;
-        if (gatewayBuilder_ == null) {
-          result.gateway_ = gateway_;
-        } else {
-          result.gateway_ = gatewayBuilder_.build();
-        }
+        result.combinationType_ = combinationType_;
+        result.gatewayId_ = gatewayId_;
         onBuilt();
         return result;
       }
@@ -3155,8 +3283,8 @@ public final class CoreField {
           contractId_ = other.contractId_;
           onChanged();
         }
-        if (!other.getShortName().isEmpty()) {
-          shortName_ = other.shortName_;
+        if (!other.getName().isEmpty()) {
+          name_ = other.name_;
           onChanged();
         }
         if (!other.getFullName().isEmpty()) {
@@ -3178,8 +3306,8 @@ public final class CoreField {
         if (other.exchange_ != 0) {
           setExchangeValue(other.getExchangeValue());
         }
-        if (other.productType_ != 0) {
-          setProductTypeValue(other.getProductTypeValue());
+        if (other.productClass_ != 0) {
+          setProductClassValue(other.getProductClassValue());
         }
         if (other.currency_ != 0) {
           setCurrencyValue(other.getCurrencyValue());
@@ -3206,8 +3334,8 @@ public final class CoreField {
         if (other.getStrikePrice() != 0D) {
           setStrikePrice(other.getStrikePrice());
         }
-        if (other.optionType_ != 0) {
-          setOptionTypeValue(other.getOptionTypeValue());
+        if (other.optionsType_ != 0) {
+          setOptionsTypeValue(other.getOptionsTypeValue());
         }
         if (other.getUnderlyingMultiplier() != 0D) {
           setUnderlyingMultiplier(other.getUnderlyingMultiplier());
@@ -3228,8 +3356,12 @@ public final class CoreField {
         if (other.getMinLimitOrderVolume() != 0) {
           setMinLimitOrderVolume(other.getMinLimitOrderVolume());
         }
-        if (other.hasGateway()) {
-          mergeGateway(other.getGateway());
+        if (other.combinationType_ != 0) {
+          setCombinationTypeValue(other.getCombinationTypeValue());
+        }
+        if (!other.getGatewayId().isEmpty()) {
+          gatewayId_ = other.gatewayId_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -3349,21 +3481,21 @@ public final class CoreField {
         return this;
       }
 
-      private java.lang.Object shortName_ = "";
+      private java.lang.Object name_ = "";
       /**
        * <pre>
        * 简称
        * </pre>
        *
-       * <code>string shortName = 2;</code>
+       * <code>string name = 2;</code>
        */
-      public java.lang.String getShortName() {
-        java.lang.Object ref = shortName_;
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          shortName_ = s;
+          name_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -3374,16 +3506,16 @@ public final class CoreField {
        * 简称
        * </pre>
        *
-       * <code>string shortName = 2;</code>
+       * <code>string name = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getShortNameBytes() {
-        java.lang.Object ref = shortName_;
+          getNameBytes() {
+        java.lang.Object ref = name_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          shortName_ = b;
+          name_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -3394,15 +3526,15 @@ public final class CoreField {
        * 简称
        * </pre>
        *
-       * <code>string shortName = 2;</code>
+       * <code>string name = 2;</code>
        */
-      public Builder setShortName(
+      public Builder setName(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        shortName_ = value;
+        name_ = value;
         onChanged();
         return this;
       }
@@ -3411,11 +3543,11 @@ public final class CoreField {
        * 简称
        * </pre>
        *
-       * <code>string shortName = 2;</code>
+       * <code>string name = 2;</code>
        */
-      public Builder clearShortName() {
+      public Builder clearName() {
         
-        shortName_ = getDefaultInstance().getShortName();
+        name_ = getDefaultInstance().getName();
         onChanged();
         return this;
       }
@@ -3424,16 +3556,16 @@ public final class CoreField {
        * 简称
        * </pre>
        *
-       * <code>string shortName = 2;</code>
+       * <code>string name = 2;</code>
        */
-      public Builder setShortNameBytes(
+      public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        shortName_ = value;
+        name_ = value;
         onChanged();
         return this;
       }
@@ -3859,26 +3991,26 @@ public final class CoreField {
         return this;
       }
 
-      private int productType_ = 0;
+      private int productClass_ = 0;
       /**
        * <pre>
        * 产品类型
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ProductTypeEnum productType = 10;</code>
+       * <code>.xyz.redtorch.pb.ProductClassEnum productClass = 10;</code>
        */
-      public int getProductTypeValue() {
-        return productType_;
+      public int getProductClassValue() {
+        return productClass_;
       }
       /**
        * <pre>
        * 产品类型
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ProductTypeEnum productType = 10;</code>
+       * <code>.xyz.redtorch.pb.ProductClassEnum productClass = 10;</code>
        */
-      public Builder setProductTypeValue(int value) {
-        productType_ = value;
+      public Builder setProductClassValue(int value) {
+        productClass_ = value;
         onChanged();
         return this;
       }
@@ -3887,26 +4019,26 @@ public final class CoreField {
        * 产品类型
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ProductTypeEnum productType = 10;</code>
+       * <code>.xyz.redtorch.pb.ProductClassEnum productClass = 10;</code>
        */
-      public xyz.redtorch.pb.CoreEnum.ProductTypeEnum getProductType() {
+      public xyz.redtorch.pb.CoreEnum.ProductClassEnum getProductClass() {
         @SuppressWarnings("deprecation")
-        xyz.redtorch.pb.CoreEnum.ProductTypeEnum result = xyz.redtorch.pb.CoreEnum.ProductTypeEnum.valueOf(productType_);
-        return result == null ? xyz.redtorch.pb.CoreEnum.ProductTypeEnum.UNRECOGNIZED : result;
+        xyz.redtorch.pb.CoreEnum.ProductClassEnum result = xyz.redtorch.pb.CoreEnum.ProductClassEnum.valueOf(productClass_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.ProductClassEnum.UNRECOGNIZED : result;
       }
       /**
        * <pre>
        * 产品类型
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ProductTypeEnum productType = 10;</code>
+       * <code>.xyz.redtorch.pb.ProductClassEnum productClass = 10;</code>
        */
-      public Builder setProductType(xyz.redtorch.pb.CoreEnum.ProductTypeEnum value) {
+      public Builder setProductClass(xyz.redtorch.pb.CoreEnum.ProductClassEnum value) {
         if (value == null) {
           throw new NullPointerException();
         }
         
-        productType_ = value.getNumber();
+        productClass_ = value.getNumber();
         onChanged();
         return this;
       }
@@ -3915,11 +4047,11 @@ public final class CoreField {
        * 产品类型
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ProductTypeEnum productType = 10;</code>
+       * <code>.xyz.redtorch.pb.ProductClassEnum productClass = 10;</code>
        */
-      public Builder clearProductType() {
+      public Builder clearProductClass() {
         
-        productType_ = 0;
+        productClass_ = 0;
         onChanged();
         return this;
       }
@@ -4306,26 +4438,26 @@ public final class CoreField {
         return this;
       }
 
-      private int optionType_ = 0;
+      private int optionsType_ = 0;
       /**
        * <pre>
        * 期权类型
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OptionTypeEnum optionType = 19;</code>
+       * <code>.xyz.redtorch.pb.OptionsTypeEnum optionsType = 19;</code>
        */
-      public int getOptionTypeValue() {
-        return optionType_;
+      public int getOptionsTypeValue() {
+        return optionsType_;
       }
       /**
        * <pre>
        * 期权类型
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OptionTypeEnum optionType = 19;</code>
+       * <code>.xyz.redtorch.pb.OptionsTypeEnum optionsType = 19;</code>
        */
-      public Builder setOptionTypeValue(int value) {
-        optionType_ = value;
+      public Builder setOptionsTypeValue(int value) {
+        optionsType_ = value;
         onChanged();
         return this;
       }
@@ -4334,26 +4466,26 @@ public final class CoreField {
        * 期权类型
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OptionTypeEnum optionType = 19;</code>
+       * <code>.xyz.redtorch.pb.OptionsTypeEnum optionsType = 19;</code>
        */
-      public xyz.redtorch.pb.CoreEnum.OptionTypeEnum getOptionType() {
+      public xyz.redtorch.pb.CoreEnum.OptionsTypeEnum getOptionsType() {
         @SuppressWarnings("deprecation")
-        xyz.redtorch.pb.CoreEnum.OptionTypeEnum result = xyz.redtorch.pb.CoreEnum.OptionTypeEnum.valueOf(optionType_);
-        return result == null ? xyz.redtorch.pb.CoreEnum.OptionTypeEnum.UNRECOGNIZED : result;
+        xyz.redtorch.pb.CoreEnum.OptionsTypeEnum result = xyz.redtorch.pb.CoreEnum.OptionsTypeEnum.valueOf(optionsType_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.OptionsTypeEnum.UNRECOGNIZED : result;
       }
       /**
        * <pre>
        * 期权类型
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OptionTypeEnum optionType = 19;</code>
+       * <code>.xyz.redtorch.pb.OptionsTypeEnum optionsType = 19;</code>
        */
-      public Builder setOptionType(xyz.redtorch.pb.CoreEnum.OptionTypeEnum value) {
+      public Builder setOptionsType(xyz.redtorch.pb.CoreEnum.OptionsTypeEnum value) {
         if (value == null) {
           throw new NullPointerException();
         }
         
-        optionType_ = value.getNumber();
+        optionsType_ = value.getNumber();
         onChanged();
         return this;
       }
@@ -4362,11 +4494,11 @@ public final class CoreField {
        * 期权类型
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OptionTypeEnum optionType = 19;</code>
+       * <code>.xyz.redtorch.pb.OptionsTypeEnum optionsType = 19;</code>
        */
-      public Builder clearOptionType() {
+      public Builder clearOptionsType() {
         
-        optionType_ = 0;
+        optionsType_ = 0;
         onChanged();
         return this;
       }
@@ -4650,136 +4782,89 @@ public final class CoreField {
         return this;
       }
 
-      private xyz.redtorch.pb.CoreField.GatewayField gateway_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          xyz.redtorch.pb.CoreField.GatewayField, xyz.redtorch.pb.CoreField.GatewayField.Builder, xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder> gatewayBuilder_;
+      private int combinationType_ = 0;
       /**
        * <pre>
-       * 网关
+       * 组合类型
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 26;</code>
+       * <code>.xyz.redtorch.pb.CombinationTypeEnum combinationType = 26;</code>
        */
-      public boolean hasGateway() {
-        return gatewayBuilder_ != null || gateway_ != null;
+      public int getCombinationTypeValue() {
+        return combinationType_;
       }
       /**
        * <pre>
-       * 网关
+       * 组合类型
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 26;</code>
+       * <code>.xyz.redtorch.pb.CombinationTypeEnum combinationType = 26;</code>
        */
-      public xyz.redtorch.pb.CoreField.GatewayField getGateway() {
-        if (gatewayBuilder_ == null) {
-          return gateway_ == null ? xyz.redtorch.pb.CoreField.GatewayField.getDefaultInstance() : gateway_;
-        } else {
-          return gatewayBuilder_.getMessage();
-        }
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 26;</code>
-       */
-      public Builder setGateway(xyz.redtorch.pb.CoreField.GatewayField value) {
-        if (gatewayBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          gateway_ = value;
-          onChanged();
-        } else {
-          gatewayBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 26;</code>
-       */
-      public Builder setGateway(
-          xyz.redtorch.pb.CoreField.GatewayField.Builder builderForValue) {
-        if (gatewayBuilder_ == null) {
-          gateway_ = builderForValue.build();
-          onChanged();
-        } else {
-          gatewayBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 26;</code>
-       */
-      public Builder mergeGateway(xyz.redtorch.pb.CoreField.GatewayField value) {
-        if (gatewayBuilder_ == null) {
-          if (gateway_ != null) {
-            gateway_ =
-              xyz.redtorch.pb.CoreField.GatewayField.newBuilder(gateway_).mergeFrom(value).buildPartial();
-          } else {
-            gateway_ = value;
-          }
-          onChanged();
-        } else {
-          gatewayBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 26;</code>
-       */
-      public Builder clearGateway() {
-        if (gatewayBuilder_ == null) {
-          gateway_ = null;
-          onChanged();
-        } else {
-          gateway_ = null;
-          gatewayBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 26;</code>
-       */
-      public xyz.redtorch.pb.CoreField.GatewayField.Builder getGatewayBuilder() {
-        
+      public Builder setCombinationTypeValue(int value) {
+        combinationType_ = value;
         onChanged();
-        return getGatewayFieldBuilder().getBuilder();
+        return this;
       }
+      /**
+       * <pre>
+       * 组合类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.CombinationTypeEnum combinationType = 26;</code>
+       */
+      public xyz.redtorch.pb.CoreEnum.CombinationTypeEnum getCombinationType() {
+        @SuppressWarnings("deprecation")
+        xyz.redtorch.pb.CoreEnum.CombinationTypeEnum result = xyz.redtorch.pb.CoreEnum.CombinationTypeEnum.valueOf(combinationType_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.CombinationTypeEnum.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 组合类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.CombinationTypeEnum combinationType = 26;</code>
+       */
+      public Builder setCombinationType(xyz.redtorch.pb.CoreEnum.CombinationTypeEnum value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        combinationType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 组合类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.CombinationTypeEnum combinationType = 26;</code>
+       */
+      public Builder clearCombinationType() {
+        
+        combinationType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object gatewayId_ = "";
       /**
        * <pre>
        * 网关
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 26;</code>
+       * <code>string gatewayId = 27;</code>
        */
-      public xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder getGatewayOrBuilder() {
-        if (gatewayBuilder_ != null) {
-          return gatewayBuilder_.getMessageOrBuilder();
+      public java.lang.String getGatewayId() {
+        java.lang.Object ref = gatewayId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          gatewayId_ = s;
+          return s;
         } else {
-          return gateway_ == null ?
-              xyz.redtorch.pb.CoreField.GatewayField.getDefaultInstance() : gateway_;
+          return (java.lang.String) ref;
         }
       }
       /**
@@ -4787,20 +4872,68 @@ public final class CoreField {
        * 网关
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 26;</code>
+       * <code>string gatewayId = 27;</code>
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          xyz.redtorch.pb.CoreField.GatewayField, xyz.redtorch.pb.CoreField.GatewayField.Builder, xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder> 
-          getGatewayFieldBuilder() {
-        if (gatewayBuilder_ == null) {
-          gatewayBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              xyz.redtorch.pb.CoreField.GatewayField, xyz.redtorch.pb.CoreField.GatewayField.Builder, xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder>(
-                  getGateway(),
-                  getParentForChildren(),
-                  isClean());
-          gateway_ = null;
+      public com.google.protobuf.ByteString
+          getGatewayIdBytes() {
+        java.lang.Object ref = gatewayId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          gatewayId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
         }
-        return gatewayBuilder_;
+      }
+      /**
+       * <pre>
+       * 网关
+       * </pre>
+       *
+       * <code>string gatewayId = 27;</code>
+       */
+      public Builder setGatewayId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        gatewayId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 网关
+       * </pre>
+       *
+       * <code>string gatewayId = 27;</code>
+       */
+      public Builder clearGatewayId() {
+        
+        gatewayId_ = getDefaultInstance().getGatewayId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 网关
+       * </pre>
+       *
+       * <code>string gatewayId = 27;</code>
+       */
+      public Builder setGatewayIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        gatewayId_ = value;
+        onChanged();
+        return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -5031,28 +5164,21 @@ public final class CoreField {
 
     /**
      * <pre>
-     * 网关
+     * 网关ID
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 15;</code>
+     * <code>string gatewayId = 15;</code>
      */
-    boolean hasGateway();
+    java.lang.String getGatewayId();
     /**
      * <pre>
-     * 网关
+     * 网关ID
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 15;</code>
+     * <code>string gatewayId = 15;</code>
      */
-    xyz.redtorch.pb.CoreField.GatewayField getGateway();
-    /**
-     * <pre>
-     * 网关
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 15;</code>
-     */
-    xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder getGatewayOrBuilder();
+    com.google.protobuf.ByteString
+        getGatewayIdBytes();
   }
   /**
    * <pre>
@@ -5085,6 +5211,7 @@ public final class CoreField {
       positionProfit_ = 0D;
       deposit_ = 0D;
       withdraw_ = 0D;
+      gatewayId_ = "";
     }
 
     @java.lang.Override
@@ -5187,16 +5314,9 @@ public final class CoreField {
               break;
             }
             case 122: {
-              xyz.redtorch.pb.CoreField.GatewayField.Builder subBuilder = null;
-              if (gateway_ != null) {
-                subBuilder = gateway_.toBuilder();
-              }
-              gateway_ = input.readMessage(xyz.redtorch.pb.CoreField.GatewayField.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(gateway_);
-                gateway_ = subBuilder.buildPartial();
-              }
+              java.lang.String s = input.readStringRequireUtf8();
 
+              gatewayId_ = s;
               break;
             }
             default: {
@@ -5541,37 +5661,46 @@ public final class CoreField {
       return withdraw_;
     }
 
-    public static final int GATEWAY_FIELD_NUMBER = 15;
-    private xyz.redtorch.pb.CoreField.GatewayField gateway_;
+    public static final int GATEWAYID_FIELD_NUMBER = 15;
+    private volatile java.lang.Object gatewayId_;
     /**
      * <pre>
-     * 网关
+     * 网关ID
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 15;</code>
+     * <code>string gatewayId = 15;</code>
      */
-    public boolean hasGateway() {
-      return gateway_ != null;
+    public java.lang.String getGatewayId() {
+      java.lang.Object ref = gatewayId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        gatewayId_ = s;
+        return s;
+      }
     }
     /**
      * <pre>
-     * 网关
+     * 网关ID
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 15;</code>
+     * <code>string gatewayId = 15;</code>
      */
-    public xyz.redtorch.pb.CoreField.GatewayField getGateway() {
-      return gateway_ == null ? xyz.redtorch.pb.CoreField.GatewayField.getDefaultInstance() : gateway_;
-    }
-    /**
-     * <pre>
-     * 网关
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 15;</code>
-     */
-    public xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder getGatewayOrBuilder() {
-      return getGateway();
+    public com.google.protobuf.ByteString
+        getGatewayIdBytes() {
+      java.lang.Object ref = gatewayId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        gatewayId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     private byte memoizedIsInitialized = -1;
@@ -5600,7 +5729,7 @@ public final class CoreField {
       if (!getHolderBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, holder_);
       }
-      if (currency_ != xyz.redtorch.pb.CoreEnum.CurrencyEnum.UNKNOWN_CURRENCY.getNumber()) {
+      if (currency_ != xyz.redtorch.pb.CoreEnum.CurrencyEnum.UnknownCurrency.getNumber()) {
         output.writeEnum(5, currency_);
       }
       if (preBalance_ != 0D) {
@@ -5630,8 +5759,8 @@ public final class CoreField {
       if (withdraw_ != 0D) {
         output.writeDouble(14, withdraw_);
       }
-      if (gateway_ != null) {
-        output.writeMessage(15, getGateway());
+      if (!getGatewayIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 15, gatewayId_);
       }
       unknownFields.writeTo(output);
     }
@@ -5654,7 +5783,7 @@ public final class CoreField {
       if (!getHolderBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, holder_);
       }
-      if (currency_ != xyz.redtorch.pb.CoreEnum.CurrencyEnum.UNKNOWN_CURRENCY.getNumber()) {
+      if (currency_ != xyz.redtorch.pb.CoreEnum.CurrencyEnum.UnknownCurrency.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(5, currency_);
       }
@@ -5694,9 +5823,8 @@ public final class CoreField {
         size += com.google.protobuf.CodedOutputStream
           .computeDoubleSize(14, withdraw_);
       }
-      if (gateway_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(15, getGateway());
+      if (!getGatewayIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(15, gatewayId_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -5759,11 +5887,8 @@ public final class CoreField {
           java.lang.Double.doubleToLongBits(getWithdraw())
           == java.lang.Double.doubleToLongBits(
               other.getWithdraw()));
-      result = result && (hasGateway() == other.hasGateway());
-      if (hasGateway()) {
-        result = result && getGateway()
-            .equals(other.getGateway());
-      }
+      result = result && getGatewayId()
+          .equals(other.getGatewayId());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -5812,10 +5937,8 @@ public final class CoreField {
       hash = (37 * hash) + WITHDRAW_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           java.lang.Double.doubleToLongBits(getWithdraw()));
-      if (hasGateway()) {
-        hash = (37 * hash) + GATEWAY_FIELD_NUMBER;
-        hash = (53 * hash) + getGateway().hashCode();
-      }
+      hash = (37 * hash) + GATEWAYID_FIELD_NUMBER;
+      hash = (53 * hash) + getGatewayId().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -5981,12 +6104,8 @@ public final class CoreField {
 
         withdraw_ = 0D;
 
-        if (gatewayBuilder_ == null) {
-          gateway_ = null;
-        } else {
-          gateway_ = null;
-          gatewayBuilder_ = null;
-        }
+        gatewayId_ = "";
+
         return this;
       }
 
@@ -6027,11 +6146,7 @@ public final class CoreField {
         result.positionProfit_ = positionProfit_;
         result.deposit_ = deposit_;
         result.withdraw_ = withdraw_;
-        if (gatewayBuilder_ == null) {
-          result.gateway_ = gateway_;
-        } else {
-          result.gateway_ = gatewayBuilder_.build();
-        }
+        result.gatewayId_ = gatewayId_;
         onBuilt();
         return result;
       }
@@ -6126,8 +6241,9 @@ public final class CoreField {
         if (other.getWithdraw() != 0D) {
           setWithdraw(other.getWithdraw());
         }
-        if (other.hasGateway()) {
-          mergeGateway(other.getGateway());
+        if (!other.getGatewayId().isEmpty()) {
+          gatewayId_ = other.gatewayId_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -6921,157 +7037,93 @@ public final class CoreField {
         return this;
       }
 
-      private xyz.redtorch.pb.CoreField.GatewayField gateway_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          xyz.redtorch.pb.CoreField.GatewayField, xyz.redtorch.pb.CoreField.GatewayField.Builder, xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder> gatewayBuilder_;
+      private java.lang.Object gatewayId_ = "";
       /**
        * <pre>
-       * 网关
+       * 网关ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 15;</code>
+       * <code>string gatewayId = 15;</code>
        */
-      public boolean hasGateway() {
-        return gatewayBuilder_ != null || gateway_ != null;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 15;</code>
-       */
-      public xyz.redtorch.pb.CoreField.GatewayField getGateway() {
-        if (gatewayBuilder_ == null) {
-          return gateway_ == null ? xyz.redtorch.pb.CoreField.GatewayField.getDefaultInstance() : gateway_;
+      public java.lang.String getGatewayId() {
+        java.lang.Object ref = gatewayId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          gatewayId_ = s;
+          return s;
         } else {
-          return gatewayBuilder_.getMessage();
+          return (java.lang.String) ref;
         }
       }
       /**
        * <pre>
-       * 网关
+       * 网关ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 15;</code>
+       * <code>string gatewayId = 15;</code>
        */
-      public Builder setGateway(xyz.redtorch.pb.CoreField.GatewayField value) {
-        if (gatewayBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          gateway_ = value;
-          onChanged();
+      public com.google.protobuf.ByteString
+          getGatewayIdBytes() {
+        java.lang.Object ref = gatewayId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          gatewayId_ = b;
+          return b;
         } else {
-          gatewayBuilder_.setMessage(value);
+          return (com.google.protobuf.ByteString) ref;
         }
-
-        return this;
       }
       /**
        * <pre>
-       * 网关
+       * 网关ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 15;</code>
+       * <code>string gatewayId = 15;</code>
        */
-      public Builder setGateway(
-          xyz.redtorch.pb.CoreField.GatewayField.Builder builderForValue) {
-        if (gatewayBuilder_ == null) {
-          gateway_ = builderForValue.build();
-          onChanged();
-        } else {
-          gatewayBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 15;</code>
-       */
-      public Builder mergeGateway(xyz.redtorch.pb.CoreField.GatewayField value) {
-        if (gatewayBuilder_ == null) {
-          if (gateway_ != null) {
-            gateway_ =
-              xyz.redtorch.pb.CoreField.GatewayField.newBuilder(gateway_).mergeFrom(value).buildPartial();
-          } else {
-            gateway_ = value;
-          }
-          onChanged();
-        } else {
-          gatewayBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 15;</code>
-       */
-      public Builder clearGateway() {
-        if (gatewayBuilder_ == null) {
-          gateway_ = null;
-          onChanged();
-        } else {
-          gateway_ = null;
-          gatewayBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 15;</code>
-       */
-      public xyz.redtorch.pb.CoreField.GatewayField.Builder getGatewayBuilder() {
-        
+      public Builder setGatewayId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        gatewayId_ = value;
         onChanged();
-        return getGatewayFieldBuilder().getBuilder();
+        return this;
       }
       /**
        * <pre>
-       * 网关
+       * 网关ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 15;</code>
+       * <code>string gatewayId = 15;</code>
        */
-      public xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder getGatewayOrBuilder() {
-        if (gatewayBuilder_ != null) {
-          return gatewayBuilder_.getMessageOrBuilder();
-        } else {
-          return gateway_ == null ?
-              xyz.redtorch.pb.CoreField.GatewayField.getDefaultInstance() : gateway_;
-        }
+      public Builder clearGatewayId() {
+        
+        gatewayId_ = getDefaultInstance().getGatewayId();
+        onChanged();
+        return this;
       }
       /**
        * <pre>
-       * 网关
+       * 网关ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 15;</code>
+       * <code>string gatewayId = 15;</code>
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          xyz.redtorch.pb.CoreField.GatewayField, xyz.redtorch.pb.CoreField.GatewayField.Builder, xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder> 
-          getGatewayFieldBuilder() {
-        if (gatewayBuilder_ == null) {
-          gatewayBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              xyz.redtorch.pb.CoreField.GatewayField, xyz.redtorch.pb.CoreField.GatewayField.Builder, xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder>(
-                  getGateway(),
-                  getParentForChildren(),
-                  isClean());
-          gateway_ = null;
-        }
-        return gatewayBuilder_;
+      public Builder setGatewayIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        gatewayId_ = value;
+        onChanged();
+        return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -7150,7 +7202,7 @@ public final class CoreField {
 
     /**
      * <pre>
-     * 定单ID,通常是&lt;网关ID&#64;定单ID&gt;
+     * 定单ID,通常是&lt;网关ID&#64;适配器定单ID&gt;
      * </pre>
      *
      * <code>string orderId = 2;</code>
@@ -7158,7 +7210,7 @@ public final class CoreField {
     java.lang.String getOrderId();
     /**
      * <pre>
-     * 定单ID,通常是&lt;网关ID&#64;定单ID&gt;
+     * 定单ID,通常是&lt;网关ID&#64;适配器定单ID&gt;
      * </pre>
      *
      * <code>string orderId = 2;</code>
@@ -7204,10 +7256,82 @@ public final class CoreField {
 
     /**
      * <pre>
+     * 本地报单编号
+     * </pre>
+     *
+     * <code>string orderLocalId = 5;</code>
+     */
+    java.lang.String getOrderLocalId();
+    /**
+     * <pre>
+     * 本地报单编号
+     * </pre>
+     *
+     * <code>string orderLocalId = 5;</code>
+     */
+    com.google.protobuf.ByteString
+        getOrderLocalIdBytes();
+
+    /**
+     * <pre>
+     * 经纪公司报单编号
+     * </pre>
+     *
+     * <code>string brokerOrderSeq = 6;</code>
+     */
+    java.lang.String getBrokerOrderSeq();
+    /**
+     * <pre>
+     * 经纪公司报单编号
+     * </pre>
+     *
+     * <code>string brokerOrderSeq = 6;</code>
+     */
+    com.google.protobuf.ByteString
+        getBrokerOrderSeqBytes();
+
+    /**
+     * <pre>
+     * 报单编号
+     * </pre>
+     *
+     * <code>string orderSysId = 7;</code>
+     */
+    java.lang.String getOrderSysId();
+    /**
+     * <pre>
+     * 报单编号
+     * </pre>
+     *
+     * <code>string orderSysId = 7;</code>
+     */
+    com.google.protobuf.ByteString
+        getOrderSysIdBytes();
+
+    /**
+     * <pre>
+     * 序号
+     * </pre>
+     *
+     * <code>string sequenceNo = 8;</code>
+     */
+    java.lang.String getSequenceNo();
+    /**
+     * <pre>
+     * 序号
+     * </pre>
+     *
+     * <code>string sequenceNo = 8;</code>
+     */
+    com.google.protobuf.ByteString
+        getSequenceNoBytes();
+
+    /**
+     * <pre>
      * 方向
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.DirectionEnum direction = 5;</code>
+     * <code>.xyz.redtorch.pb.DirectionEnum direction = 9;</code>
      */
     int getDirectionValue();
     /**
@@ -7215,7 +7339,7 @@ public final class CoreField {
      * 方向
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.DirectionEnum direction = 5;</code>
+     * <code>.xyz.redtorch.pb.DirectionEnum direction = 9;</code>
      */
     xyz.redtorch.pb.CoreEnum.DirectionEnum getDirection();
 
@@ -7224,24 +7348,58 @@ public final class CoreField {
      * 开平
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.OffsetEnum offset = 6;</code>
+     * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 10;</code>
      */
-    int getOffsetValue();
+    int getOffsetFlagValue();
     /**
      * <pre>
      * 开平
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.OffsetEnum offset = 6;</code>
+     * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 10;</code>
      */
-    xyz.redtorch.pb.CoreEnum.OffsetEnum getOffset();
+    xyz.redtorch.pb.CoreEnum.OffsetFlagEnum getOffsetFlag();
+
+    /**
+     * <pre>
+     * 投机套保标识
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 11;</code>
+     */
+    int getHedgeFlagValue();
+    /**
+     * <pre>
+     * 投机套保标识
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 11;</code>
+     */
+    xyz.redtorch.pb.CoreEnum.HedgeFlagEnum getHedgeFlag();
+
+    /**
+     * <pre>
+     * 定单价格类型 
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.OrderPriceTypeEnum orderPriceType = 12;</code>
+     */
+    int getOrderPriceTypeValue();
+    /**
+     * <pre>
+     * 定单价格类型 
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.OrderPriceTypeEnum orderPriceType = 12;</code>
+     */
+    xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum getOrderPriceType();
 
     /**
      * <pre>
      * 状态
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.OrderStatusEnum orderStatus = 7;</code>
+     * <code>.xyz.redtorch.pb.OrderStatusEnum orderStatus = 13;</code>
      */
     int getOrderStatusValue();
     /**
@@ -7249,7 +7407,7 @@ public final class CoreField {
      * 状态
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.OrderStatusEnum orderStatus = 7;</code>
+     * <code>.xyz.redtorch.pb.OrderStatusEnum orderStatus = 13;</code>
      */
     xyz.redtorch.pb.CoreEnum.OrderStatusEnum getOrderStatus();
 
@@ -7258,7 +7416,7 @@ public final class CoreField {
      * 价格
      * </pre>
      *
-     * <code>double price = 8;</code>
+     * <code>double price = 14;</code>
      */
     double getPrice();
 
@@ -7267,7 +7425,7 @@ public final class CoreField {
      * 数量
      * </pre>
      *
-     * <code>fixed32 totalVolume = 9;</code>
+     * <code>fixed32 totalVolume = 15;</code>
      */
     int getTotalVolume();
 
@@ -7276,16 +7434,147 @@ public final class CoreField {
      * 已成交数量
      * </pre>
      *
-     * <code>fixed32 tradedVolume = 10;</code>
+     * <code>fixed32 tradedVolume = 16;</code>
      */
     int getTradedVolume();
+
+    /**
+     * <pre>
+     * 时效
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.TimeConditionEnum timeCondition = 17;</code>
+     */
+    int getTimeConditionValue();
+    /**
+     * <pre>
+     * 时效
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.TimeConditionEnum timeCondition = 17;</code>
+     */
+    xyz.redtorch.pb.CoreEnum.TimeConditionEnum getTimeCondition();
+
+    /**
+     * <pre>
+     * GTD日期
+     * </pre>
+     *
+     * <code>string gtdDate = 18;</code>
+     */
+    java.lang.String getGtdDate();
+    /**
+     * <pre>
+     * GTD日期
+     * </pre>
+     *
+     * <code>string gtdDate = 18;</code>
+     */
+    com.google.protobuf.ByteString
+        getGtdDateBytes();
+
+    /**
+     * <pre>
+     * 成交量类型
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.VolumeConditionEnum volumeCondition = 19;</code>
+     */
+    int getVolumeConditionValue();
+    /**
+     * <pre>
+     * 成交量类型
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.VolumeConditionEnum volumeCondition = 19;</code>
+     */
+    xyz.redtorch.pb.CoreEnum.VolumeConditionEnum getVolumeCondition();
+
+    /**
+     * <pre>
+     * 最小成交量
+     * </pre>
+     *
+     * <code>fixed32 minVolume = 20;</code>
+     */
+    int getMinVolume();
+
+    /**
+     * <pre>
+     * 触发条件
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.ContingentConditionEnum contingentCondition = 21;</code>
+     */
+    int getContingentConditionValue();
+    /**
+     * <pre>
+     * 触发条件
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.ContingentConditionEnum contingentCondition = 21;</code>
+     */
+    xyz.redtorch.pb.CoreEnum.ContingentConditionEnum getContingentCondition();
+
+    /**
+     * <pre>
+     * 止损价
+     * </pre>
+     *
+     * <code>double stopPrice = 22;</code>
+     */
+    double getStopPrice();
+
+    /**
+     * <pre>
+     * 强平原因
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.ForceCloseReasonEnum forceCloseReason = 23;</code>
+     */
+    int getForceCloseReasonValue();
+    /**
+     * <pre>
+     * 强平原因
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.ForceCloseReasonEnum forceCloseReason = 23;</code>
+     */
+    xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum getForceCloseReason();
+
+    /**
+     * <pre>
+     * 自动挂起标志
+     * </pre>
+     *
+     * <code>fixed32 autoSuspend = 24;</code>
+     */
+    int getAutoSuspend();
+
+    /**
+     * <pre>
+     * 用户强平标志
+     * </pre>
+     *
+     * <code>fixed32 userForceClose = 25;</code>
+     */
+    int getUserForceClose();
+
+    /**
+     * <pre>
+     * 互换单标志
+     * </pre>
+     *
+     * <code>fixed32 swapOrder = 26;</code>
+     */
+    int getSwapOrder();
 
     /**
      * <pre>
      * 交易日
      * </pre>
      *
-     * <code>string tradingDay = 12;</code>
+     * <code>string tradingDay = 27;</code>
      */
     java.lang.String getTradingDay();
     /**
@@ -7293,7 +7582,7 @@ public final class CoreField {
      * 交易日
      * </pre>
      *
-     * <code>string tradingDay = 12;</code>
+     * <code>string tradingDay = 27;</code>
      */
     com.google.protobuf.ByteString
         getTradingDayBytes();
@@ -7303,7 +7592,7 @@ public final class CoreField {
      * 定单日期
      * </pre>
      *
-     * <code>string orderDate = 13;</code>
+     * <code>string orderDate = 28;</code>
      */
     java.lang.String getOrderDate();
     /**
@@ -7311,7 +7600,7 @@ public final class CoreField {
      * 定单日期
      * </pre>
      *
-     * <code>string orderDate = 13;</code>
+     * <code>string orderDate = 28;</code>
      */
     com.google.protobuf.ByteString
         getOrderDateBytes();
@@ -7321,7 +7610,7 @@ public final class CoreField {
      * 定单时间
      * </pre>
      *
-     * <code>string orderTime = 14;</code>
+     * <code>string orderTime = 29;</code>
      */
     java.lang.String getOrderTime();
     /**
@@ -7329,35 +7618,17 @@ public final class CoreField {
      * 定单时间
      * </pre>
      *
-     * <code>string orderTime = 14;</code>
+     * <code>string orderTime = 29;</code>
      */
     com.google.protobuf.ByteString
         getOrderTimeBytes();
 
     /**
      * <pre>
-     * 撤单时间
-     * </pre>
-     *
-     * <code>string cancelTime = 15;</code>
-     */
-    java.lang.String getCancelTime();
-    /**
-     * <pre>
-     * 撤单时间
-     * </pre>
-     *
-     * <code>string cancelTime = 15;</code>
-     */
-    com.google.protobuf.ByteString
-        getCancelTimeBytes();
-
-    /**
-     * <pre>
      * 激活时间
      * </pre>
      *
-     * <code>string activeTime = 16;</code>
+     * <code>string activeTime = 30;</code>
      */
     java.lang.String getActiveTime();
     /**
@@ -7365,17 +7636,53 @@ public final class CoreField {
      * 激活时间
      * </pre>
      *
-     * <code>string activeTime = 16;</code>
+     * <code>string activeTime = 30;</code>
      */
     com.google.protobuf.ByteString
         getActiveTimeBytes();
 
     /**
      * <pre>
+     * 挂起时间
+     * </pre>
+     *
+     * <code>string suspendTime = 31;</code>
+     */
+    java.lang.String getSuspendTime();
+    /**
+     * <pre>
+     * 挂起时间
+     * </pre>
+     *
+     * <code>string suspendTime = 31;</code>
+     */
+    com.google.protobuf.ByteString
+        getSuspendTimeBytes();
+
+    /**
+     * <pre>
+     * 撤销时间
+     * </pre>
+     *
+     * <code>string cancelTime = 32;</code>
+     */
+    java.lang.String getCancelTime();
+    /**
+     * <pre>
+     * 撤销时间
+     * </pre>
+     *
+     * <code>string cancelTime = 32;</code>
+     */
+    com.google.protobuf.ByteString
+        getCancelTimeBytes();
+
+    /**
+     * <pre>
      * 最后修改时间
      * </pre>
      *
-     * <code>string updateTime = 17;</code>
+     * <code>string updateTime = 33;</code>
      */
     java.lang.String getUpdateTime();
     /**
@@ -7383,7 +7690,7 @@ public final class CoreField {
      * 最后修改时间
      * </pre>
      *
-     * <code>string updateTime = 17;</code>
+     * <code>string updateTime = 33;</code>
      */
     com.google.protobuf.ByteString
         getUpdateTimeBytes();
@@ -7393,42 +7700,25 @@ public final class CoreField {
      * 状态信息
      * </pre>
      *
-     * <code>string statusInfo = 18;</code>
+     * <code>string statusMsg = 34;</code>
      */
-    java.lang.String getStatusInfo();
+    java.lang.String getStatusMsg();
     /**
      * <pre>
      * 状态信息
      * </pre>
      *
-     * <code>string statusInfo = 18;</code>
+     * <code>string statusMsg = 34;</code>
      */
     com.google.protobuf.ByteString
-        getStatusInfoBytes();
-
-    /**
-     * <pre>
-     * 时效
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.TimeConditionTypeEnum timeConditionType = 19;</code>
-     */
-    int getTimeConditionTypeValue();
-    /**
-     * <pre>
-     * 时效
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.TimeConditionTypeEnum timeConditionType = 19;</code>
-     */
-    xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum getTimeConditionType();
+        getStatusMsgBytes();
 
     /**
      * <pre>
      * 前置机编号(CTP/LTS)
      * </pre>
      *
-     * <code>fixed32 frontId = 20;</code>
+     * <code>fixed32 frontId = 35;</code>
      */
     int getFrontId();
 
@@ -7437,7 +7727,7 @@ public final class CoreField {
      * 连接编号(CTP/LTS)
      * </pre>
      *
-     * <code>fixed32 sessionId = 21;</code>
+     * <code>fixed32 sessionId = 36;</code>
      */
     int getSessionId();
 
@@ -7446,7 +7736,7 @@ public final class CoreField {
      * 合约
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+     * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
      */
     boolean hasContract();
     /**
@@ -7454,7 +7744,7 @@ public final class CoreField {
      * 合约
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+     * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
      */
     xyz.redtorch.pb.CoreField.ContractField getContract();
     /**
@@ -7462,34 +7752,27 @@ public final class CoreField {
      * 合约
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+     * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
      */
     xyz.redtorch.pb.CoreField.ContractFieldOrBuilder getContractOrBuilder();
 
     /**
      * <pre>
-     * 网关
+     * 网关ID
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
+     * <code>string gatewayId = 38;</code>
      */
-    boolean hasGateway();
+    java.lang.String getGatewayId();
     /**
      * <pre>
-     * 网关
+     * 网关ID
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
+     * <code>string gatewayId = 38;</code>
      */
-    xyz.redtorch.pb.CoreField.GatewayField getGateway();
-    /**
-     * <pre>
-     * 网关
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
-     */
-    xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder getGatewayOrBuilder();
+    com.google.protobuf.ByteString
+        getGatewayIdBytes();
   }
   /**
    * <pre>
@@ -7512,22 +7795,39 @@ public final class CoreField {
       orderId_ = "";
       adapterOrderId_ = "";
       accountId_ = "";
+      orderLocalId_ = "";
+      brokerOrderSeq_ = "";
+      orderSysId_ = "";
+      sequenceNo_ = "";
       direction_ = 0;
-      offset_ = 0;
+      offsetFlag_ = 0;
+      hedgeFlag_ = 0;
+      orderPriceType_ = 0;
       orderStatus_ = 0;
       price_ = 0D;
       totalVolume_ = 0;
       tradedVolume_ = 0;
+      timeCondition_ = 0;
+      gtdDate_ = "";
+      volumeCondition_ = 0;
+      minVolume_ = 0;
+      contingentCondition_ = 0;
+      stopPrice_ = 0D;
+      forceCloseReason_ = 0;
+      autoSuspend_ = 0;
+      userForceClose_ = 0;
+      swapOrder_ = 0;
       tradingDay_ = "";
       orderDate_ = "";
       orderTime_ = "";
-      cancelTime_ = "";
       activeTime_ = "";
+      suspendTime_ = "";
+      cancelTime_ = "";
       updateTime_ = "";
-      statusInfo_ = "";
-      timeConditionType_ = 0;
+      statusMsg_ = "";
       frontId_ = 0;
       sessionId_ = 0;
+      gatewayId_ = "";
     }
 
     @java.lang.Override
@@ -7544,6 +7844,7 @@ public final class CoreField {
         throw new java.lang.NullPointerException();
       }
       int mutable_bitField0_ = 0;
+      int mutable_bitField1_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -7578,98 +7879,189 @@ public final class CoreField {
               accountId_ = s;
               break;
             }
-            case 40: {
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              orderLocalId_ = s;
+              break;
+            }
+            case 50: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              brokerOrderSeq_ = s;
+              break;
+            }
+            case 58: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              orderSysId_ = s;
+              break;
+            }
+            case 66: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              sequenceNo_ = s;
+              break;
+            }
+            case 72: {
               int rawValue = input.readEnum();
 
               direction_ = rawValue;
               break;
             }
-            case 48: {
+            case 80: {
               int rawValue = input.readEnum();
 
-              offset_ = rawValue;
+              offsetFlag_ = rawValue;
               break;
             }
-            case 56: {
+            case 88: {
+              int rawValue = input.readEnum();
+
+              hedgeFlag_ = rawValue;
+              break;
+            }
+            case 96: {
+              int rawValue = input.readEnum();
+
+              orderPriceType_ = rawValue;
+              break;
+            }
+            case 104: {
               int rawValue = input.readEnum();
 
               orderStatus_ = rawValue;
               break;
             }
-            case 65: {
+            case 113: {
 
               price_ = input.readDouble();
               break;
             }
-            case 77: {
+            case 125: {
 
               totalVolume_ = input.readFixed32();
               break;
             }
-            case 85: {
+            case 133: {
 
               tradedVolume_ = input.readFixed32();
               break;
             }
-            case 98: {
-              java.lang.String s = input.readStringRequireUtf8();
+            case 136: {
+              int rawValue = input.readEnum();
 
-              tradingDay_ = s;
-              break;
-            }
-            case 106: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              orderDate_ = s;
-              break;
-            }
-            case 114: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              orderTime_ = s;
-              break;
-            }
-            case 122: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              cancelTime_ = s;
-              break;
-            }
-            case 130: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              activeTime_ = s;
-              break;
-            }
-            case 138: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              updateTime_ = s;
+              timeCondition_ = rawValue;
               break;
             }
             case 146: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              statusInfo_ = s;
+              gtdDate_ = s;
               break;
             }
             case 152: {
               int rawValue = input.readEnum();
 
-              timeConditionType_ = rawValue;
+              volumeCondition_ = rawValue;
               break;
             }
             case 165: {
 
+              minVolume_ = input.readFixed32();
+              break;
+            }
+            case 168: {
+              int rawValue = input.readEnum();
+
+              contingentCondition_ = rawValue;
+              break;
+            }
+            case 177: {
+
+              stopPrice_ = input.readDouble();
+              break;
+            }
+            case 184: {
+              int rawValue = input.readEnum();
+
+              forceCloseReason_ = rawValue;
+              break;
+            }
+            case 197: {
+
+              autoSuspend_ = input.readFixed32();
+              break;
+            }
+            case 205: {
+
+              userForceClose_ = input.readFixed32();
+              break;
+            }
+            case 213: {
+
+              swapOrder_ = input.readFixed32();
+              break;
+            }
+            case 218: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              tradingDay_ = s;
+              break;
+            }
+            case 226: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              orderDate_ = s;
+              break;
+            }
+            case 234: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              orderTime_ = s;
+              break;
+            }
+            case 242: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              activeTime_ = s;
+              break;
+            }
+            case 250: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              suspendTime_ = s;
+              break;
+            }
+            case 258: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              cancelTime_ = s;
+              break;
+            }
+            case 266: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              updateTime_ = s;
+              break;
+            }
+            case 274: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              statusMsg_ = s;
+              break;
+            }
+            case 285: {
+
               frontId_ = input.readFixed32();
               break;
             }
-            case 173: {
+            case 293: {
 
               sessionId_ = input.readFixed32();
               break;
             }
-            case 178: {
+            case 298: {
               xyz.redtorch.pb.CoreField.ContractField.Builder subBuilder = null;
               if (contract_ != null) {
                 subBuilder = contract_.toBuilder();
@@ -7682,17 +8074,10 @@ public final class CoreField {
 
               break;
             }
-            case 186: {
-              xyz.redtorch.pb.CoreField.GatewayField.Builder subBuilder = null;
-              if (gateway_ != null) {
-                subBuilder = gateway_.toBuilder();
-              }
-              gateway_ = input.readMessage(xyz.redtorch.pb.CoreField.GatewayField.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(gateway_);
-                gateway_ = subBuilder.buildPartial();
-              }
+            case 306: {
+              java.lang.String s = input.readStringRequireUtf8();
 
+              gatewayId_ = s;
               break;
             }
             default: {
@@ -7773,7 +8158,7 @@ public final class CoreField {
     private volatile java.lang.Object orderId_;
     /**
      * <pre>
-     * 定单ID,通常是&lt;网关ID&#64;定单ID&gt;
+     * 定单ID,通常是&lt;网关ID&#64;适配器定单ID&gt;
      * </pre>
      *
      * <code>string orderId = 2;</code>
@@ -7792,7 +8177,7 @@ public final class CoreField {
     }
     /**
      * <pre>
-     * 定单ID,通常是&lt;网关ID&#64;定单ID&gt;
+     * 定单ID,通常是&lt;网关ID&#64;适配器定单ID&gt;
      * </pre>
      *
      * <code>string orderId = 2;</code>
@@ -7895,14 +8280,182 @@ public final class CoreField {
       }
     }
 
-    public static final int DIRECTION_FIELD_NUMBER = 5;
+    public static final int ORDERLOCALID_FIELD_NUMBER = 5;
+    private volatile java.lang.Object orderLocalId_;
+    /**
+     * <pre>
+     * 本地报单编号
+     * </pre>
+     *
+     * <code>string orderLocalId = 5;</code>
+     */
+    public java.lang.String getOrderLocalId() {
+      java.lang.Object ref = orderLocalId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        orderLocalId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 本地报单编号
+     * </pre>
+     *
+     * <code>string orderLocalId = 5;</code>
+     */
+    public com.google.protobuf.ByteString
+        getOrderLocalIdBytes() {
+      java.lang.Object ref = orderLocalId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        orderLocalId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int BROKERORDERSEQ_FIELD_NUMBER = 6;
+    private volatile java.lang.Object brokerOrderSeq_;
+    /**
+     * <pre>
+     * 经纪公司报单编号
+     * </pre>
+     *
+     * <code>string brokerOrderSeq = 6;</code>
+     */
+    public java.lang.String getBrokerOrderSeq() {
+      java.lang.Object ref = brokerOrderSeq_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        brokerOrderSeq_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 经纪公司报单编号
+     * </pre>
+     *
+     * <code>string brokerOrderSeq = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getBrokerOrderSeqBytes() {
+      java.lang.Object ref = brokerOrderSeq_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        brokerOrderSeq_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ORDERSYSID_FIELD_NUMBER = 7;
+    private volatile java.lang.Object orderSysId_;
+    /**
+     * <pre>
+     * 报单编号
+     * </pre>
+     *
+     * <code>string orderSysId = 7;</code>
+     */
+    public java.lang.String getOrderSysId() {
+      java.lang.Object ref = orderSysId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        orderSysId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 报单编号
+     * </pre>
+     *
+     * <code>string orderSysId = 7;</code>
+     */
+    public com.google.protobuf.ByteString
+        getOrderSysIdBytes() {
+      java.lang.Object ref = orderSysId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        orderSysId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SEQUENCENO_FIELD_NUMBER = 8;
+    private volatile java.lang.Object sequenceNo_;
+    /**
+     * <pre>
+     * 序号
+     * </pre>
+     *
+     * <code>string sequenceNo = 8;</code>
+     */
+    public java.lang.String getSequenceNo() {
+      java.lang.Object ref = sequenceNo_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        sequenceNo_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 序号
+     * </pre>
+     *
+     * <code>string sequenceNo = 8;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSequenceNoBytes() {
+      java.lang.Object ref = sequenceNo_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        sequenceNo_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int DIRECTION_FIELD_NUMBER = 9;
     private int direction_;
     /**
      * <pre>
      * 方向
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.DirectionEnum direction = 5;</code>
+     * <code>.xyz.redtorch.pb.DirectionEnum direction = 9;</code>
      */
     public int getDirectionValue() {
       return direction_;
@@ -7912,7 +8465,7 @@ public final class CoreField {
      * 方向
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.DirectionEnum direction = 5;</code>
+     * <code>.xyz.redtorch.pb.DirectionEnum direction = 9;</code>
      */
     public xyz.redtorch.pb.CoreEnum.DirectionEnum getDirection() {
       @SuppressWarnings("deprecation")
@@ -7920,39 +8473,89 @@ public final class CoreField {
       return result == null ? xyz.redtorch.pb.CoreEnum.DirectionEnum.UNRECOGNIZED : result;
     }
 
-    public static final int OFFSET_FIELD_NUMBER = 6;
-    private int offset_;
+    public static final int OFFSETFLAG_FIELD_NUMBER = 10;
+    private int offsetFlag_;
     /**
      * <pre>
      * 开平
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.OffsetEnum offset = 6;</code>
+     * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 10;</code>
      */
-    public int getOffsetValue() {
-      return offset_;
+    public int getOffsetFlagValue() {
+      return offsetFlag_;
     }
     /**
      * <pre>
      * 开平
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.OffsetEnum offset = 6;</code>
+     * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 10;</code>
      */
-    public xyz.redtorch.pb.CoreEnum.OffsetEnum getOffset() {
+    public xyz.redtorch.pb.CoreEnum.OffsetFlagEnum getOffsetFlag() {
       @SuppressWarnings("deprecation")
-      xyz.redtorch.pb.CoreEnum.OffsetEnum result = xyz.redtorch.pb.CoreEnum.OffsetEnum.valueOf(offset_);
-      return result == null ? xyz.redtorch.pb.CoreEnum.OffsetEnum.UNRECOGNIZED : result;
+      xyz.redtorch.pb.CoreEnum.OffsetFlagEnum result = xyz.redtorch.pb.CoreEnum.OffsetFlagEnum.valueOf(offsetFlag_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.OffsetFlagEnum.UNRECOGNIZED : result;
     }
 
-    public static final int ORDERSTATUS_FIELD_NUMBER = 7;
+    public static final int HEDGEFLAG_FIELD_NUMBER = 11;
+    private int hedgeFlag_;
+    /**
+     * <pre>
+     * 投机套保标识
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 11;</code>
+     */
+    public int getHedgeFlagValue() {
+      return hedgeFlag_;
+    }
+    /**
+     * <pre>
+     * 投机套保标识
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 11;</code>
+     */
+    public xyz.redtorch.pb.CoreEnum.HedgeFlagEnum getHedgeFlag() {
+      @SuppressWarnings("deprecation")
+      xyz.redtorch.pb.CoreEnum.HedgeFlagEnum result = xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.valueOf(hedgeFlag_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.UNRECOGNIZED : result;
+    }
+
+    public static final int ORDERPRICETYPE_FIELD_NUMBER = 12;
+    private int orderPriceType_;
+    /**
+     * <pre>
+     * 定单价格类型 
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.OrderPriceTypeEnum orderPriceType = 12;</code>
+     */
+    public int getOrderPriceTypeValue() {
+      return orderPriceType_;
+    }
+    /**
+     * <pre>
+     * 定单价格类型 
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.OrderPriceTypeEnum orderPriceType = 12;</code>
+     */
+    public xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum getOrderPriceType() {
+      @SuppressWarnings("deprecation")
+      xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum result = xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum.valueOf(orderPriceType_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum.UNRECOGNIZED : result;
+    }
+
+    public static final int ORDERSTATUS_FIELD_NUMBER = 13;
     private int orderStatus_;
     /**
      * <pre>
      * 状态
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.OrderStatusEnum orderStatus = 7;</code>
+     * <code>.xyz.redtorch.pb.OrderStatusEnum orderStatus = 13;</code>
      */
     public int getOrderStatusValue() {
       return orderStatus_;
@@ -7962,7 +8565,7 @@ public final class CoreField {
      * 状态
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.OrderStatusEnum orderStatus = 7;</code>
+     * <code>.xyz.redtorch.pb.OrderStatusEnum orderStatus = 13;</code>
      */
     public xyz.redtorch.pb.CoreEnum.OrderStatusEnum getOrderStatus() {
       @SuppressWarnings("deprecation")
@@ -7970,53 +8573,260 @@ public final class CoreField {
       return result == null ? xyz.redtorch.pb.CoreEnum.OrderStatusEnum.UNRECOGNIZED : result;
     }
 
-    public static final int PRICE_FIELD_NUMBER = 8;
+    public static final int PRICE_FIELD_NUMBER = 14;
     private double price_;
     /**
      * <pre>
      * 价格
      * </pre>
      *
-     * <code>double price = 8;</code>
+     * <code>double price = 14;</code>
      */
     public double getPrice() {
       return price_;
     }
 
-    public static final int TOTALVOLUME_FIELD_NUMBER = 9;
+    public static final int TOTALVOLUME_FIELD_NUMBER = 15;
     private int totalVolume_;
     /**
      * <pre>
      * 数量
      * </pre>
      *
-     * <code>fixed32 totalVolume = 9;</code>
+     * <code>fixed32 totalVolume = 15;</code>
      */
     public int getTotalVolume() {
       return totalVolume_;
     }
 
-    public static final int TRADEDVOLUME_FIELD_NUMBER = 10;
+    public static final int TRADEDVOLUME_FIELD_NUMBER = 16;
     private int tradedVolume_;
     /**
      * <pre>
      * 已成交数量
      * </pre>
      *
-     * <code>fixed32 tradedVolume = 10;</code>
+     * <code>fixed32 tradedVolume = 16;</code>
      */
     public int getTradedVolume() {
       return tradedVolume_;
     }
 
-    public static final int TRADINGDAY_FIELD_NUMBER = 12;
+    public static final int TIMECONDITION_FIELD_NUMBER = 17;
+    private int timeCondition_;
+    /**
+     * <pre>
+     * 时效
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.TimeConditionEnum timeCondition = 17;</code>
+     */
+    public int getTimeConditionValue() {
+      return timeCondition_;
+    }
+    /**
+     * <pre>
+     * 时效
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.TimeConditionEnum timeCondition = 17;</code>
+     */
+    public xyz.redtorch.pb.CoreEnum.TimeConditionEnum getTimeCondition() {
+      @SuppressWarnings("deprecation")
+      xyz.redtorch.pb.CoreEnum.TimeConditionEnum result = xyz.redtorch.pb.CoreEnum.TimeConditionEnum.valueOf(timeCondition_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.TimeConditionEnum.UNRECOGNIZED : result;
+    }
+
+    public static final int GTDDATE_FIELD_NUMBER = 18;
+    private volatile java.lang.Object gtdDate_;
+    /**
+     * <pre>
+     * GTD日期
+     * </pre>
+     *
+     * <code>string gtdDate = 18;</code>
+     */
+    public java.lang.String getGtdDate() {
+      java.lang.Object ref = gtdDate_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        gtdDate_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * GTD日期
+     * </pre>
+     *
+     * <code>string gtdDate = 18;</code>
+     */
+    public com.google.protobuf.ByteString
+        getGtdDateBytes() {
+      java.lang.Object ref = gtdDate_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        gtdDate_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int VOLUMECONDITION_FIELD_NUMBER = 19;
+    private int volumeCondition_;
+    /**
+     * <pre>
+     * 成交量类型
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.VolumeConditionEnum volumeCondition = 19;</code>
+     */
+    public int getVolumeConditionValue() {
+      return volumeCondition_;
+    }
+    /**
+     * <pre>
+     * 成交量类型
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.VolumeConditionEnum volumeCondition = 19;</code>
+     */
+    public xyz.redtorch.pb.CoreEnum.VolumeConditionEnum getVolumeCondition() {
+      @SuppressWarnings("deprecation")
+      xyz.redtorch.pb.CoreEnum.VolumeConditionEnum result = xyz.redtorch.pb.CoreEnum.VolumeConditionEnum.valueOf(volumeCondition_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.VolumeConditionEnum.UNRECOGNIZED : result;
+    }
+
+    public static final int MINVOLUME_FIELD_NUMBER = 20;
+    private int minVolume_;
+    /**
+     * <pre>
+     * 最小成交量
+     * </pre>
+     *
+     * <code>fixed32 minVolume = 20;</code>
+     */
+    public int getMinVolume() {
+      return minVolume_;
+    }
+
+    public static final int CONTINGENTCONDITION_FIELD_NUMBER = 21;
+    private int contingentCondition_;
+    /**
+     * <pre>
+     * 触发条件
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.ContingentConditionEnum contingentCondition = 21;</code>
+     */
+    public int getContingentConditionValue() {
+      return contingentCondition_;
+    }
+    /**
+     * <pre>
+     * 触发条件
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.ContingentConditionEnum contingentCondition = 21;</code>
+     */
+    public xyz.redtorch.pb.CoreEnum.ContingentConditionEnum getContingentCondition() {
+      @SuppressWarnings("deprecation")
+      xyz.redtorch.pb.CoreEnum.ContingentConditionEnum result = xyz.redtorch.pb.CoreEnum.ContingentConditionEnum.valueOf(contingentCondition_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.ContingentConditionEnum.UNRECOGNIZED : result;
+    }
+
+    public static final int STOPPRICE_FIELD_NUMBER = 22;
+    private double stopPrice_;
+    /**
+     * <pre>
+     * 止损价
+     * </pre>
+     *
+     * <code>double stopPrice = 22;</code>
+     */
+    public double getStopPrice() {
+      return stopPrice_;
+    }
+
+    public static final int FORCECLOSEREASON_FIELD_NUMBER = 23;
+    private int forceCloseReason_;
+    /**
+     * <pre>
+     * 强平原因
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.ForceCloseReasonEnum forceCloseReason = 23;</code>
+     */
+    public int getForceCloseReasonValue() {
+      return forceCloseReason_;
+    }
+    /**
+     * <pre>
+     * 强平原因
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.ForceCloseReasonEnum forceCloseReason = 23;</code>
+     */
+    public xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum getForceCloseReason() {
+      @SuppressWarnings("deprecation")
+      xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum result = xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum.valueOf(forceCloseReason_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum.UNRECOGNIZED : result;
+    }
+
+    public static final int AUTOSUSPEND_FIELD_NUMBER = 24;
+    private int autoSuspend_;
+    /**
+     * <pre>
+     * 自动挂起标志
+     * </pre>
+     *
+     * <code>fixed32 autoSuspend = 24;</code>
+     */
+    public int getAutoSuspend() {
+      return autoSuspend_;
+    }
+
+    public static final int USERFORCECLOSE_FIELD_NUMBER = 25;
+    private int userForceClose_;
+    /**
+     * <pre>
+     * 用户强平标志
+     * </pre>
+     *
+     * <code>fixed32 userForceClose = 25;</code>
+     */
+    public int getUserForceClose() {
+      return userForceClose_;
+    }
+
+    public static final int SWAPORDER_FIELD_NUMBER = 26;
+    private int swapOrder_;
+    /**
+     * <pre>
+     * 互换单标志
+     * </pre>
+     *
+     * <code>fixed32 swapOrder = 26;</code>
+     */
+    public int getSwapOrder() {
+      return swapOrder_;
+    }
+
+    public static final int TRADINGDAY_FIELD_NUMBER = 27;
     private volatile java.lang.Object tradingDay_;
     /**
      * <pre>
      * 交易日
      * </pre>
      *
-     * <code>string tradingDay = 12;</code>
+     * <code>string tradingDay = 27;</code>
      */
     public java.lang.String getTradingDay() {
       java.lang.Object ref = tradingDay_;
@@ -8035,7 +8845,7 @@ public final class CoreField {
      * 交易日
      * </pre>
      *
-     * <code>string tradingDay = 12;</code>
+     * <code>string tradingDay = 27;</code>
      */
     public com.google.protobuf.ByteString
         getTradingDayBytes() {
@@ -8051,14 +8861,14 @@ public final class CoreField {
       }
     }
 
-    public static final int ORDERDATE_FIELD_NUMBER = 13;
+    public static final int ORDERDATE_FIELD_NUMBER = 28;
     private volatile java.lang.Object orderDate_;
     /**
      * <pre>
      * 定单日期
      * </pre>
      *
-     * <code>string orderDate = 13;</code>
+     * <code>string orderDate = 28;</code>
      */
     public java.lang.String getOrderDate() {
       java.lang.Object ref = orderDate_;
@@ -8077,7 +8887,7 @@ public final class CoreField {
      * 定单日期
      * </pre>
      *
-     * <code>string orderDate = 13;</code>
+     * <code>string orderDate = 28;</code>
      */
     public com.google.protobuf.ByteString
         getOrderDateBytes() {
@@ -8093,14 +8903,14 @@ public final class CoreField {
       }
     }
 
-    public static final int ORDERTIME_FIELD_NUMBER = 14;
+    public static final int ORDERTIME_FIELD_NUMBER = 29;
     private volatile java.lang.Object orderTime_;
     /**
      * <pre>
      * 定单时间
      * </pre>
      *
-     * <code>string orderTime = 14;</code>
+     * <code>string orderTime = 29;</code>
      */
     public java.lang.String getOrderTime() {
       java.lang.Object ref = orderTime_;
@@ -8119,7 +8929,7 @@ public final class CoreField {
      * 定单时间
      * </pre>
      *
-     * <code>string orderTime = 14;</code>
+     * <code>string orderTime = 29;</code>
      */
     public com.google.protobuf.ByteString
         getOrderTimeBytes() {
@@ -8135,56 +8945,14 @@ public final class CoreField {
       }
     }
 
-    public static final int CANCELTIME_FIELD_NUMBER = 15;
-    private volatile java.lang.Object cancelTime_;
-    /**
-     * <pre>
-     * 撤单时间
-     * </pre>
-     *
-     * <code>string cancelTime = 15;</code>
-     */
-    public java.lang.String getCancelTime() {
-      java.lang.Object ref = cancelTime_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        cancelTime_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     * 撤单时间
-     * </pre>
-     *
-     * <code>string cancelTime = 15;</code>
-     */
-    public com.google.protobuf.ByteString
-        getCancelTimeBytes() {
-      java.lang.Object ref = cancelTime_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        cancelTime_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int ACTIVETIME_FIELD_NUMBER = 16;
+    public static final int ACTIVETIME_FIELD_NUMBER = 30;
     private volatile java.lang.Object activeTime_;
     /**
      * <pre>
      * 激活时间
      * </pre>
      *
-     * <code>string activeTime = 16;</code>
+     * <code>string activeTime = 30;</code>
      */
     public java.lang.String getActiveTime() {
       java.lang.Object ref = activeTime_;
@@ -8203,7 +8971,7 @@ public final class CoreField {
      * 激活时间
      * </pre>
      *
-     * <code>string activeTime = 16;</code>
+     * <code>string activeTime = 30;</code>
      */
     public com.google.protobuf.ByteString
         getActiveTimeBytes() {
@@ -8219,14 +8987,98 @@ public final class CoreField {
       }
     }
 
-    public static final int UPDATETIME_FIELD_NUMBER = 17;
+    public static final int SUSPENDTIME_FIELD_NUMBER = 31;
+    private volatile java.lang.Object suspendTime_;
+    /**
+     * <pre>
+     * 挂起时间
+     * </pre>
+     *
+     * <code>string suspendTime = 31;</code>
+     */
+    public java.lang.String getSuspendTime() {
+      java.lang.Object ref = suspendTime_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        suspendTime_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 挂起时间
+     * </pre>
+     *
+     * <code>string suspendTime = 31;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSuspendTimeBytes() {
+      java.lang.Object ref = suspendTime_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        suspendTime_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CANCELTIME_FIELD_NUMBER = 32;
+    private volatile java.lang.Object cancelTime_;
+    /**
+     * <pre>
+     * 撤销时间
+     * </pre>
+     *
+     * <code>string cancelTime = 32;</code>
+     */
+    public java.lang.String getCancelTime() {
+      java.lang.Object ref = cancelTime_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        cancelTime_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 撤销时间
+     * </pre>
+     *
+     * <code>string cancelTime = 32;</code>
+     */
+    public com.google.protobuf.ByteString
+        getCancelTimeBytes() {
+      java.lang.Object ref = cancelTime_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        cancelTime_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int UPDATETIME_FIELD_NUMBER = 33;
     private volatile java.lang.Object updateTime_;
     /**
      * <pre>
      * 最后修改时间
      * </pre>
      *
-     * <code>string updateTime = 17;</code>
+     * <code>string updateTime = 33;</code>
      */
     public java.lang.String getUpdateTime() {
       java.lang.Object ref = updateTime_;
@@ -8245,7 +9097,7 @@ public final class CoreField {
      * 最后修改时间
      * </pre>
      *
-     * <code>string updateTime = 17;</code>
+     * <code>string updateTime = 33;</code>
      */
     public com.google.protobuf.ByteString
         getUpdateTimeBytes() {
@@ -8261,24 +9113,24 @@ public final class CoreField {
       }
     }
 
-    public static final int STATUSINFO_FIELD_NUMBER = 18;
-    private volatile java.lang.Object statusInfo_;
+    public static final int STATUSMSG_FIELD_NUMBER = 34;
+    private volatile java.lang.Object statusMsg_;
     /**
      * <pre>
      * 状态信息
      * </pre>
      *
-     * <code>string statusInfo = 18;</code>
+     * <code>string statusMsg = 34;</code>
      */
-    public java.lang.String getStatusInfo() {
-      java.lang.Object ref = statusInfo_;
+    public java.lang.String getStatusMsg() {
+      java.lang.Object ref = statusMsg_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        statusInfo_ = s;
+        statusMsg_ = s;
         return s;
       }
     }
@@ -8287,81 +9139,56 @@ public final class CoreField {
      * 状态信息
      * </pre>
      *
-     * <code>string statusInfo = 18;</code>
+     * <code>string statusMsg = 34;</code>
      */
     public com.google.protobuf.ByteString
-        getStatusInfoBytes() {
-      java.lang.Object ref = statusInfo_;
+        getStatusMsgBytes() {
+      java.lang.Object ref = statusMsg_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        statusInfo_ = b;
+        statusMsg_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
 
-    public static final int TIMECONDITIONTYPE_FIELD_NUMBER = 19;
-    private int timeConditionType_;
-    /**
-     * <pre>
-     * 时效
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.TimeConditionTypeEnum timeConditionType = 19;</code>
-     */
-    public int getTimeConditionTypeValue() {
-      return timeConditionType_;
-    }
-    /**
-     * <pre>
-     * 时效
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.TimeConditionTypeEnum timeConditionType = 19;</code>
-     */
-    public xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum getTimeConditionType() {
-      @SuppressWarnings("deprecation")
-      xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum result = xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum.valueOf(timeConditionType_);
-      return result == null ? xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum.UNRECOGNIZED : result;
-    }
-
-    public static final int FRONTID_FIELD_NUMBER = 20;
+    public static final int FRONTID_FIELD_NUMBER = 35;
     private int frontId_;
     /**
      * <pre>
      * 前置机编号(CTP/LTS)
      * </pre>
      *
-     * <code>fixed32 frontId = 20;</code>
+     * <code>fixed32 frontId = 35;</code>
      */
     public int getFrontId() {
       return frontId_;
     }
 
-    public static final int SESSIONID_FIELD_NUMBER = 21;
+    public static final int SESSIONID_FIELD_NUMBER = 36;
     private int sessionId_;
     /**
      * <pre>
      * 连接编号(CTP/LTS)
      * </pre>
      *
-     * <code>fixed32 sessionId = 21;</code>
+     * <code>fixed32 sessionId = 36;</code>
      */
     public int getSessionId() {
       return sessionId_;
     }
 
-    public static final int CONTRACT_FIELD_NUMBER = 22;
+    public static final int CONTRACT_FIELD_NUMBER = 37;
     private xyz.redtorch.pb.CoreField.ContractField contract_;
     /**
      * <pre>
      * 合约
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+     * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
      */
     public boolean hasContract() {
       return contract_ != null;
@@ -8371,7 +9198,7 @@ public final class CoreField {
      * 合约
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+     * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
      */
     public xyz.redtorch.pb.CoreField.ContractField getContract() {
       return contract_ == null ? xyz.redtorch.pb.CoreField.ContractField.getDefaultInstance() : contract_;
@@ -8381,43 +9208,52 @@ public final class CoreField {
      * 合约
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+     * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
      */
     public xyz.redtorch.pb.CoreField.ContractFieldOrBuilder getContractOrBuilder() {
       return getContract();
     }
 
-    public static final int GATEWAY_FIELD_NUMBER = 23;
-    private xyz.redtorch.pb.CoreField.GatewayField gateway_;
+    public static final int GATEWAYID_FIELD_NUMBER = 38;
+    private volatile java.lang.Object gatewayId_;
     /**
      * <pre>
-     * 网关
+     * 网关ID
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
+     * <code>string gatewayId = 38;</code>
      */
-    public boolean hasGateway() {
-      return gateway_ != null;
+    public java.lang.String getGatewayId() {
+      java.lang.Object ref = gatewayId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        gatewayId_ = s;
+        return s;
+      }
     }
     /**
      * <pre>
-     * 网关
+     * 网关ID
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
+     * <code>string gatewayId = 38;</code>
      */
-    public xyz.redtorch.pb.CoreField.GatewayField getGateway() {
-      return gateway_ == null ? xyz.redtorch.pb.CoreField.GatewayField.getDefaultInstance() : gateway_;
-    }
-    /**
-     * <pre>
-     * 网关
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
-     */
-    public xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder getGatewayOrBuilder() {
-      return getGateway();
+    public com.google.protobuf.ByteString
+        getGatewayIdBytes() {
+      java.lang.Object ref = gatewayId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        gatewayId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     private byte memoizedIsInitialized = -1;
@@ -8446,59 +9282,107 @@ public final class CoreField {
       if (!getAccountIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, accountId_);
       }
-      if (direction_ != xyz.redtorch.pb.CoreEnum.DirectionEnum.UNKNOWN_DIRECTION.getNumber()) {
-        output.writeEnum(5, direction_);
+      if (!getOrderLocalIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, orderLocalId_);
       }
-      if (offset_ != xyz.redtorch.pb.CoreEnum.OffsetEnum.UNKNOWN_OFFSET.getNumber()) {
-        output.writeEnum(6, offset_);
+      if (!getBrokerOrderSeqBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, brokerOrderSeq_);
       }
-      if (orderStatus_ != xyz.redtorch.pb.CoreEnum.OrderStatusEnum.UNKNOWN_ORDER_STATUS.getNumber()) {
-        output.writeEnum(7, orderStatus_);
+      if (!getOrderSysIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, orderSysId_);
+      }
+      if (!getSequenceNoBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, sequenceNo_);
+      }
+      if (direction_ != xyz.redtorch.pb.CoreEnum.DirectionEnum.D_Unknown.getNumber()) {
+        output.writeEnum(9, direction_);
+      }
+      if (offsetFlag_ != xyz.redtorch.pb.CoreEnum.OffsetFlagEnum.OF_Unkonwn.getNumber()) {
+        output.writeEnum(10, offsetFlag_);
+      }
+      if (hedgeFlag_ != xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.HF_Unknown.getNumber()) {
+        output.writeEnum(11, hedgeFlag_);
+      }
+      if (orderPriceType_ != xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum.OPT_Unknown.getNumber()) {
+        output.writeEnum(12, orderPriceType_);
+      }
+      if (orderStatus_ != xyz.redtorch.pb.CoreEnum.OrderStatusEnum.OS_Unknown.getNumber()) {
+        output.writeEnum(13, orderStatus_);
       }
       if (price_ != 0D) {
-        output.writeDouble(8, price_);
+        output.writeDouble(14, price_);
       }
       if (totalVolume_ != 0) {
-        output.writeFixed32(9, totalVolume_);
+        output.writeFixed32(15, totalVolume_);
       }
       if (tradedVolume_ != 0) {
-        output.writeFixed32(10, tradedVolume_);
+        output.writeFixed32(16, tradedVolume_);
+      }
+      if (timeCondition_ != xyz.redtorch.pb.CoreEnum.TimeConditionEnum.TC_Unkonwn.getNumber()) {
+        output.writeEnum(17, timeCondition_);
+      }
+      if (!getGtdDateBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 18, gtdDate_);
+      }
+      if (volumeCondition_ != xyz.redtorch.pb.CoreEnum.VolumeConditionEnum.VC_Unkonwn.getNumber()) {
+        output.writeEnum(19, volumeCondition_);
+      }
+      if (minVolume_ != 0) {
+        output.writeFixed32(20, minVolume_);
+      }
+      if (contingentCondition_ != xyz.redtorch.pb.CoreEnum.ContingentConditionEnum.CC_Unkonwn.getNumber()) {
+        output.writeEnum(21, contingentCondition_);
+      }
+      if (stopPrice_ != 0D) {
+        output.writeDouble(22, stopPrice_);
+      }
+      if (forceCloseReason_ != xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum.FCR_Unkonwn.getNumber()) {
+        output.writeEnum(23, forceCloseReason_);
+      }
+      if (autoSuspend_ != 0) {
+        output.writeFixed32(24, autoSuspend_);
+      }
+      if (userForceClose_ != 0) {
+        output.writeFixed32(25, userForceClose_);
+      }
+      if (swapOrder_ != 0) {
+        output.writeFixed32(26, swapOrder_);
       }
       if (!getTradingDayBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 12, tradingDay_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 27, tradingDay_);
       }
       if (!getOrderDateBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 13, orderDate_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 28, orderDate_);
       }
       if (!getOrderTimeBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 14, orderTime_);
-      }
-      if (!getCancelTimeBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 15, cancelTime_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 29, orderTime_);
       }
       if (!getActiveTimeBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 16, activeTime_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 30, activeTime_);
+      }
+      if (!getSuspendTimeBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 31, suspendTime_);
+      }
+      if (!getCancelTimeBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 32, cancelTime_);
       }
       if (!getUpdateTimeBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 17, updateTime_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 33, updateTime_);
       }
-      if (!getStatusInfoBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 18, statusInfo_);
-      }
-      if (timeConditionType_ != xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum.UNKNOWN_TIME_CONDITION_TYPE.getNumber()) {
-        output.writeEnum(19, timeConditionType_);
+      if (!getStatusMsgBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 34, statusMsg_);
       }
       if (frontId_ != 0) {
-        output.writeFixed32(20, frontId_);
+        output.writeFixed32(35, frontId_);
       }
       if (sessionId_ != 0) {
-        output.writeFixed32(21, sessionId_);
+        output.writeFixed32(36, sessionId_);
       }
       if (contract_ != null) {
-        output.writeMessage(22, getContract());
+        output.writeMessage(37, getContract());
       }
-      if (gateway_ != null) {
-        output.writeMessage(23, getGateway());
+      if (!getGatewayIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 38, gatewayId_);
       }
       unknownFields.writeTo(output);
     }
@@ -8521,70 +9405,127 @@ public final class CoreField {
       if (!getAccountIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, accountId_);
       }
-      if (direction_ != xyz.redtorch.pb.CoreEnum.DirectionEnum.UNKNOWN_DIRECTION.getNumber()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(5, direction_);
+      if (!getOrderLocalIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, orderLocalId_);
       }
-      if (offset_ != xyz.redtorch.pb.CoreEnum.OffsetEnum.UNKNOWN_OFFSET.getNumber()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(6, offset_);
+      if (!getBrokerOrderSeqBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, brokerOrderSeq_);
       }
-      if (orderStatus_ != xyz.redtorch.pb.CoreEnum.OrderStatusEnum.UNKNOWN_ORDER_STATUS.getNumber()) {
+      if (!getOrderSysIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, orderSysId_);
+      }
+      if (!getSequenceNoBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, sequenceNo_);
+      }
+      if (direction_ != xyz.redtorch.pb.CoreEnum.DirectionEnum.D_Unknown.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(7, orderStatus_);
+          .computeEnumSize(9, direction_);
+      }
+      if (offsetFlag_ != xyz.redtorch.pb.CoreEnum.OffsetFlagEnum.OF_Unkonwn.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(10, offsetFlag_);
+      }
+      if (hedgeFlag_ != xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.HF_Unknown.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(11, hedgeFlag_);
+      }
+      if (orderPriceType_ != xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum.OPT_Unknown.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(12, orderPriceType_);
+      }
+      if (orderStatus_ != xyz.redtorch.pb.CoreEnum.OrderStatusEnum.OS_Unknown.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(13, orderStatus_);
       }
       if (price_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(8, price_);
+          .computeDoubleSize(14, price_);
       }
       if (totalVolume_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed32Size(9, totalVolume_);
+          .computeFixed32Size(15, totalVolume_);
       }
       if (tradedVolume_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed32Size(10, tradedVolume_);
+          .computeFixed32Size(16, tradedVolume_);
+      }
+      if (timeCondition_ != xyz.redtorch.pb.CoreEnum.TimeConditionEnum.TC_Unkonwn.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(17, timeCondition_);
+      }
+      if (!getGtdDateBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(18, gtdDate_);
+      }
+      if (volumeCondition_ != xyz.redtorch.pb.CoreEnum.VolumeConditionEnum.VC_Unkonwn.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(19, volumeCondition_);
+      }
+      if (minVolume_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed32Size(20, minVolume_);
+      }
+      if (contingentCondition_ != xyz.redtorch.pb.CoreEnum.ContingentConditionEnum.CC_Unkonwn.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(21, contingentCondition_);
+      }
+      if (stopPrice_ != 0D) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(22, stopPrice_);
+      }
+      if (forceCloseReason_ != xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum.FCR_Unkonwn.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(23, forceCloseReason_);
+      }
+      if (autoSuspend_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed32Size(24, autoSuspend_);
+      }
+      if (userForceClose_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed32Size(25, userForceClose_);
+      }
+      if (swapOrder_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed32Size(26, swapOrder_);
       }
       if (!getTradingDayBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(12, tradingDay_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(27, tradingDay_);
       }
       if (!getOrderDateBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(13, orderDate_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(28, orderDate_);
       }
       if (!getOrderTimeBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(14, orderTime_);
-      }
-      if (!getCancelTimeBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(15, cancelTime_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(29, orderTime_);
       }
       if (!getActiveTimeBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(16, activeTime_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(30, activeTime_);
+      }
+      if (!getSuspendTimeBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(31, suspendTime_);
+      }
+      if (!getCancelTimeBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(32, cancelTime_);
       }
       if (!getUpdateTimeBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(17, updateTime_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(33, updateTime_);
       }
-      if (!getStatusInfoBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(18, statusInfo_);
-      }
-      if (timeConditionType_ != xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum.UNKNOWN_TIME_CONDITION_TYPE.getNumber()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(19, timeConditionType_);
+      if (!getStatusMsgBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(34, statusMsg_);
       }
       if (frontId_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed32Size(20, frontId_);
+          .computeFixed32Size(35, frontId_);
       }
       if (sessionId_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed32Size(21, sessionId_);
+          .computeFixed32Size(36, sessionId_);
       }
       if (contract_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(22, getContract());
+          .computeMessageSize(37, getContract());
       }
-      if (gateway_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(23, getGateway());
+      if (!getGatewayIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(38, gatewayId_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -8610,8 +9551,18 @@ public final class CoreField {
           .equals(other.getAdapterOrderId());
       result = result && getAccountId()
           .equals(other.getAccountId());
+      result = result && getOrderLocalId()
+          .equals(other.getOrderLocalId());
+      result = result && getBrokerOrderSeq()
+          .equals(other.getBrokerOrderSeq());
+      result = result && getOrderSysId()
+          .equals(other.getOrderSysId());
+      result = result && getSequenceNo()
+          .equals(other.getSequenceNo());
       result = result && direction_ == other.direction_;
-      result = result && offset_ == other.offset_;
+      result = result && offsetFlag_ == other.offsetFlag_;
+      result = result && hedgeFlag_ == other.hedgeFlag_;
+      result = result && orderPriceType_ == other.orderPriceType_;
       result = result && orderStatus_ == other.orderStatus_;
       result = result && (
           java.lang.Double.doubleToLongBits(getPrice())
@@ -8621,21 +9572,40 @@ public final class CoreField {
           == other.getTotalVolume());
       result = result && (getTradedVolume()
           == other.getTradedVolume());
+      result = result && timeCondition_ == other.timeCondition_;
+      result = result && getGtdDate()
+          .equals(other.getGtdDate());
+      result = result && volumeCondition_ == other.volumeCondition_;
+      result = result && (getMinVolume()
+          == other.getMinVolume());
+      result = result && contingentCondition_ == other.contingentCondition_;
+      result = result && (
+          java.lang.Double.doubleToLongBits(getStopPrice())
+          == java.lang.Double.doubleToLongBits(
+              other.getStopPrice()));
+      result = result && forceCloseReason_ == other.forceCloseReason_;
+      result = result && (getAutoSuspend()
+          == other.getAutoSuspend());
+      result = result && (getUserForceClose()
+          == other.getUserForceClose());
+      result = result && (getSwapOrder()
+          == other.getSwapOrder());
       result = result && getTradingDay()
           .equals(other.getTradingDay());
       result = result && getOrderDate()
           .equals(other.getOrderDate());
       result = result && getOrderTime()
           .equals(other.getOrderTime());
-      result = result && getCancelTime()
-          .equals(other.getCancelTime());
       result = result && getActiveTime()
           .equals(other.getActiveTime());
+      result = result && getSuspendTime()
+          .equals(other.getSuspendTime());
+      result = result && getCancelTime()
+          .equals(other.getCancelTime());
       result = result && getUpdateTime()
           .equals(other.getUpdateTime());
-      result = result && getStatusInfo()
-          .equals(other.getStatusInfo());
-      result = result && timeConditionType_ == other.timeConditionType_;
+      result = result && getStatusMsg()
+          .equals(other.getStatusMsg());
       result = result && (getFrontId()
           == other.getFrontId());
       result = result && (getSessionId()
@@ -8645,11 +9615,8 @@ public final class CoreField {
         result = result && getContract()
             .equals(other.getContract());
       }
-      result = result && (hasGateway() == other.hasGateway());
-      if (hasGateway()) {
-        result = result && getGateway()
-            .equals(other.getGateway());
-      }
+      result = result && getGatewayId()
+          .equals(other.getGatewayId());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -8669,10 +9636,22 @@ public final class CoreField {
       hash = (53 * hash) + getAdapterOrderId().hashCode();
       hash = (37 * hash) + ACCOUNTID_FIELD_NUMBER;
       hash = (53 * hash) + getAccountId().hashCode();
+      hash = (37 * hash) + ORDERLOCALID_FIELD_NUMBER;
+      hash = (53 * hash) + getOrderLocalId().hashCode();
+      hash = (37 * hash) + BROKERORDERSEQ_FIELD_NUMBER;
+      hash = (53 * hash) + getBrokerOrderSeq().hashCode();
+      hash = (37 * hash) + ORDERSYSID_FIELD_NUMBER;
+      hash = (53 * hash) + getOrderSysId().hashCode();
+      hash = (37 * hash) + SEQUENCENO_FIELD_NUMBER;
+      hash = (53 * hash) + getSequenceNo().hashCode();
       hash = (37 * hash) + DIRECTION_FIELD_NUMBER;
       hash = (53 * hash) + direction_;
-      hash = (37 * hash) + OFFSET_FIELD_NUMBER;
-      hash = (53 * hash) + offset_;
+      hash = (37 * hash) + OFFSETFLAG_FIELD_NUMBER;
+      hash = (53 * hash) + offsetFlag_;
+      hash = (37 * hash) + HEDGEFLAG_FIELD_NUMBER;
+      hash = (53 * hash) + hedgeFlag_;
+      hash = (37 * hash) + ORDERPRICETYPE_FIELD_NUMBER;
+      hash = (53 * hash) + orderPriceType_;
       hash = (37 * hash) + ORDERSTATUS_FIELD_NUMBER;
       hash = (53 * hash) + orderStatus_;
       hash = (37 * hash) + PRICE_FIELD_NUMBER;
@@ -8682,22 +9661,43 @@ public final class CoreField {
       hash = (53 * hash) + getTotalVolume();
       hash = (37 * hash) + TRADEDVOLUME_FIELD_NUMBER;
       hash = (53 * hash) + getTradedVolume();
+      hash = (37 * hash) + TIMECONDITION_FIELD_NUMBER;
+      hash = (53 * hash) + timeCondition_;
+      hash = (37 * hash) + GTDDATE_FIELD_NUMBER;
+      hash = (53 * hash) + getGtdDate().hashCode();
+      hash = (37 * hash) + VOLUMECONDITION_FIELD_NUMBER;
+      hash = (53 * hash) + volumeCondition_;
+      hash = (37 * hash) + MINVOLUME_FIELD_NUMBER;
+      hash = (53 * hash) + getMinVolume();
+      hash = (37 * hash) + CONTINGENTCONDITION_FIELD_NUMBER;
+      hash = (53 * hash) + contingentCondition_;
+      hash = (37 * hash) + STOPPRICE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          java.lang.Double.doubleToLongBits(getStopPrice()));
+      hash = (37 * hash) + FORCECLOSEREASON_FIELD_NUMBER;
+      hash = (53 * hash) + forceCloseReason_;
+      hash = (37 * hash) + AUTOSUSPEND_FIELD_NUMBER;
+      hash = (53 * hash) + getAutoSuspend();
+      hash = (37 * hash) + USERFORCECLOSE_FIELD_NUMBER;
+      hash = (53 * hash) + getUserForceClose();
+      hash = (37 * hash) + SWAPORDER_FIELD_NUMBER;
+      hash = (53 * hash) + getSwapOrder();
       hash = (37 * hash) + TRADINGDAY_FIELD_NUMBER;
       hash = (53 * hash) + getTradingDay().hashCode();
       hash = (37 * hash) + ORDERDATE_FIELD_NUMBER;
       hash = (53 * hash) + getOrderDate().hashCode();
       hash = (37 * hash) + ORDERTIME_FIELD_NUMBER;
       hash = (53 * hash) + getOrderTime().hashCode();
-      hash = (37 * hash) + CANCELTIME_FIELD_NUMBER;
-      hash = (53 * hash) + getCancelTime().hashCode();
       hash = (37 * hash) + ACTIVETIME_FIELD_NUMBER;
       hash = (53 * hash) + getActiveTime().hashCode();
+      hash = (37 * hash) + SUSPENDTIME_FIELD_NUMBER;
+      hash = (53 * hash) + getSuspendTime().hashCode();
+      hash = (37 * hash) + CANCELTIME_FIELD_NUMBER;
+      hash = (53 * hash) + getCancelTime().hashCode();
       hash = (37 * hash) + UPDATETIME_FIELD_NUMBER;
       hash = (53 * hash) + getUpdateTime().hashCode();
-      hash = (37 * hash) + STATUSINFO_FIELD_NUMBER;
-      hash = (53 * hash) + getStatusInfo().hashCode();
-      hash = (37 * hash) + TIMECONDITIONTYPE_FIELD_NUMBER;
-      hash = (53 * hash) + timeConditionType_;
+      hash = (37 * hash) + STATUSMSG_FIELD_NUMBER;
+      hash = (53 * hash) + getStatusMsg().hashCode();
       hash = (37 * hash) + FRONTID_FIELD_NUMBER;
       hash = (53 * hash) + getFrontId();
       hash = (37 * hash) + SESSIONID_FIELD_NUMBER;
@@ -8706,10 +9706,8 @@ public final class CoreField {
         hash = (37 * hash) + CONTRACT_FIELD_NUMBER;
         hash = (53 * hash) + getContract().hashCode();
       }
-      if (hasGateway()) {
-        hash = (37 * hash) + GATEWAY_FIELD_NUMBER;
-        hash = (53 * hash) + getGateway().hashCode();
-      }
+      hash = (37 * hash) + GATEWAYID_FIELD_NUMBER;
+      hash = (53 * hash) + getGatewayId().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -8855,9 +9853,21 @@ public final class CoreField {
 
         accountId_ = "";
 
+        orderLocalId_ = "";
+
+        brokerOrderSeq_ = "";
+
+        orderSysId_ = "";
+
+        sequenceNo_ = "";
+
         direction_ = 0;
 
-        offset_ = 0;
+        offsetFlag_ = 0;
+
+        hedgeFlag_ = 0;
+
+        orderPriceType_ = 0;
 
         orderStatus_ = 0;
 
@@ -8867,21 +9877,41 @@ public final class CoreField {
 
         tradedVolume_ = 0;
 
+        timeCondition_ = 0;
+
+        gtdDate_ = "";
+
+        volumeCondition_ = 0;
+
+        minVolume_ = 0;
+
+        contingentCondition_ = 0;
+
+        stopPrice_ = 0D;
+
+        forceCloseReason_ = 0;
+
+        autoSuspend_ = 0;
+
+        userForceClose_ = 0;
+
+        swapOrder_ = 0;
+
         tradingDay_ = "";
 
         orderDate_ = "";
 
         orderTime_ = "";
 
-        cancelTime_ = "";
-
         activeTime_ = "";
+
+        suspendTime_ = "";
+
+        cancelTime_ = "";
 
         updateTime_ = "";
 
-        statusInfo_ = "";
-
-        timeConditionType_ = 0;
+        statusMsg_ = "";
 
         frontId_ = 0;
 
@@ -8893,12 +9923,8 @@ public final class CoreField {
           contract_ = null;
           contractBuilder_ = null;
         }
-        if (gatewayBuilder_ == null) {
-          gateway_ = null;
-        } else {
-          gateway_ = null;
-          gatewayBuilder_ = null;
-        }
+        gatewayId_ = "";
+
         return this;
       }
 
@@ -8929,20 +9955,36 @@ public final class CoreField {
         result.orderId_ = orderId_;
         result.adapterOrderId_ = adapterOrderId_;
         result.accountId_ = accountId_;
+        result.orderLocalId_ = orderLocalId_;
+        result.brokerOrderSeq_ = brokerOrderSeq_;
+        result.orderSysId_ = orderSysId_;
+        result.sequenceNo_ = sequenceNo_;
         result.direction_ = direction_;
-        result.offset_ = offset_;
+        result.offsetFlag_ = offsetFlag_;
+        result.hedgeFlag_ = hedgeFlag_;
+        result.orderPriceType_ = orderPriceType_;
         result.orderStatus_ = orderStatus_;
         result.price_ = price_;
         result.totalVolume_ = totalVolume_;
         result.tradedVolume_ = tradedVolume_;
+        result.timeCondition_ = timeCondition_;
+        result.gtdDate_ = gtdDate_;
+        result.volumeCondition_ = volumeCondition_;
+        result.minVolume_ = minVolume_;
+        result.contingentCondition_ = contingentCondition_;
+        result.stopPrice_ = stopPrice_;
+        result.forceCloseReason_ = forceCloseReason_;
+        result.autoSuspend_ = autoSuspend_;
+        result.userForceClose_ = userForceClose_;
+        result.swapOrder_ = swapOrder_;
         result.tradingDay_ = tradingDay_;
         result.orderDate_ = orderDate_;
         result.orderTime_ = orderTime_;
-        result.cancelTime_ = cancelTime_;
         result.activeTime_ = activeTime_;
+        result.suspendTime_ = suspendTime_;
+        result.cancelTime_ = cancelTime_;
         result.updateTime_ = updateTime_;
-        result.statusInfo_ = statusInfo_;
-        result.timeConditionType_ = timeConditionType_;
+        result.statusMsg_ = statusMsg_;
         result.frontId_ = frontId_;
         result.sessionId_ = sessionId_;
         if (contractBuilder_ == null) {
@@ -8950,11 +9992,7 @@ public final class CoreField {
         } else {
           result.contract_ = contractBuilder_.build();
         }
-        if (gatewayBuilder_ == null) {
-          result.gateway_ = gateway_;
-        } else {
-          result.gateway_ = gatewayBuilder_.build();
-        }
+        result.gatewayId_ = gatewayId_;
         onBuilt();
         return result;
       }
@@ -9019,11 +10057,33 @@ public final class CoreField {
           accountId_ = other.accountId_;
           onChanged();
         }
+        if (!other.getOrderLocalId().isEmpty()) {
+          orderLocalId_ = other.orderLocalId_;
+          onChanged();
+        }
+        if (!other.getBrokerOrderSeq().isEmpty()) {
+          brokerOrderSeq_ = other.brokerOrderSeq_;
+          onChanged();
+        }
+        if (!other.getOrderSysId().isEmpty()) {
+          orderSysId_ = other.orderSysId_;
+          onChanged();
+        }
+        if (!other.getSequenceNo().isEmpty()) {
+          sequenceNo_ = other.sequenceNo_;
+          onChanged();
+        }
         if (other.direction_ != 0) {
           setDirectionValue(other.getDirectionValue());
         }
-        if (other.offset_ != 0) {
-          setOffsetValue(other.getOffsetValue());
+        if (other.offsetFlag_ != 0) {
+          setOffsetFlagValue(other.getOffsetFlagValue());
+        }
+        if (other.hedgeFlag_ != 0) {
+          setHedgeFlagValue(other.getHedgeFlagValue());
+        }
+        if (other.orderPriceType_ != 0) {
+          setOrderPriceTypeValue(other.getOrderPriceTypeValue());
         }
         if (other.orderStatus_ != 0) {
           setOrderStatusValue(other.getOrderStatusValue());
@@ -9037,6 +10097,37 @@ public final class CoreField {
         if (other.getTradedVolume() != 0) {
           setTradedVolume(other.getTradedVolume());
         }
+        if (other.timeCondition_ != 0) {
+          setTimeConditionValue(other.getTimeConditionValue());
+        }
+        if (!other.getGtdDate().isEmpty()) {
+          gtdDate_ = other.gtdDate_;
+          onChanged();
+        }
+        if (other.volumeCondition_ != 0) {
+          setVolumeConditionValue(other.getVolumeConditionValue());
+        }
+        if (other.getMinVolume() != 0) {
+          setMinVolume(other.getMinVolume());
+        }
+        if (other.contingentCondition_ != 0) {
+          setContingentConditionValue(other.getContingentConditionValue());
+        }
+        if (other.getStopPrice() != 0D) {
+          setStopPrice(other.getStopPrice());
+        }
+        if (other.forceCloseReason_ != 0) {
+          setForceCloseReasonValue(other.getForceCloseReasonValue());
+        }
+        if (other.getAutoSuspend() != 0) {
+          setAutoSuspend(other.getAutoSuspend());
+        }
+        if (other.getUserForceClose() != 0) {
+          setUserForceClose(other.getUserForceClose());
+        }
+        if (other.getSwapOrder() != 0) {
+          setSwapOrder(other.getSwapOrder());
+        }
         if (!other.getTradingDay().isEmpty()) {
           tradingDay_ = other.tradingDay_;
           onChanged();
@@ -9049,24 +10140,25 @@ public final class CoreField {
           orderTime_ = other.orderTime_;
           onChanged();
         }
-        if (!other.getCancelTime().isEmpty()) {
-          cancelTime_ = other.cancelTime_;
-          onChanged();
-        }
         if (!other.getActiveTime().isEmpty()) {
           activeTime_ = other.activeTime_;
+          onChanged();
+        }
+        if (!other.getSuspendTime().isEmpty()) {
+          suspendTime_ = other.suspendTime_;
+          onChanged();
+        }
+        if (!other.getCancelTime().isEmpty()) {
+          cancelTime_ = other.cancelTime_;
           onChanged();
         }
         if (!other.getUpdateTime().isEmpty()) {
           updateTime_ = other.updateTime_;
           onChanged();
         }
-        if (!other.getStatusInfo().isEmpty()) {
-          statusInfo_ = other.statusInfo_;
+        if (!other.getStatusMsg().isEmpty()) {
+          statusMsg_ = other.statusMsg_;
           onChanged();
-        }
-        if (other.timeConditionType_ != 0) {
-          setTimeConditionTypeValue(other.getTimeConditionTypeValue());
         }
         if (other.getFrontId() != 0) {
           setFrontId(other.getFrontId());
@@ -9077,8 +10169,9 @@ public final class CoreField {
         if (other.hasContract()) {
           mergeContract(other.getContract());
         }
-        if (other.hasGateway()) {
-          mergeGateway(other.getGateway());
+        if (!other.getGatewayId().isEmpty()) {
+          gatewayId_ = other.gatewayId_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -9201,7 +10294,7 @@ public final class CoreField {
       private java.lang.Object orderId_ = "";
       /**
        * <pre>
-       * 定单ID,通常是&lt;网关ID&#64;定单ID&gt;
+       * 定单ID,通常是&lt;网关ID&#64;适配器定单ID&gt;
        * </pre>
        *
        * <code>string orderId = 2;</code>
@@ -9220,7 +10313,7 @@ public final class CoreField {
       }
       /**
        * <pre>
-       * 定单ID,通常是&lt;网关ID&#64;定单ID&gt;
+       * 定单ID,通常是&lt;网关ID&#64;适配器定单ID&gt;
        * </pre>
        *
        * <code>string orderId = 2;</code>
@@ -9240,7 +10333,7 @@ public final class CoreField {
       }
       /**
        * <pre>
-       * 定单ID,通常是&lt;网关ID&#64;定单ID&gt;
+       * 定单ID,通常是&lt;网关ID&#64;适配器定单ID&gt;
        * </pre>
        *
        * <code>string orderId = 2;</code>
@@ -9257,7 +10350,7 @@ public final class CoreField {
       }
       /**
        * <pre>
-       * 定单ID,通常是&lt;网关ID&#64;定单ID&gt;
+       * 定单ID,通常是&lt;网关ID&#64;适配器定单ID&gt;
        * </pre>
        *
        * <code>string orderId = 2;</code>
@@ -9270,7 +10363,7 @@ public final class CoreField {
       }
       /**
        * <pre>
-       * 定单ID,通常是&lt;网关ID&#64;定单ID&gt;
+       * 定单ID,通常是&lt;网关ID&#64;适配器定单ID&gt;
        * </pre>
        *
        * <code>string orderId = 2;</code>
@@ -9465,13 +10558,369 @@ public final class CoreField {
         return this;
       }
 
+      private java.lang.Object orderLocalId_ = "";
+      /**
+       * <pre>
+       * 本地报单编号
+       * </pre>
+       *
+       * <code>string orderLocalId = 5;</code>
+       */
+      public java.lang.String getOrderLocalId() {
+        java.lang.Object ref = orderLocalId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          orderLocalId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 本地报单编号
+       * </pre>
+       *
+       * <code>string orderLocalId = 5;</code>
+       */
+      public com.google.protobuf.ByteString
+          getOrderLocalIdBytes() {
+        java.lang.Object ref = orderLocalId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          orderLocalId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 本地报单编号
+       * </pre>
+       *
+       * <code>string orderLocalId = 5;</code>
+       */
+      public Builder setOrderLocalId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        orderLocalId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 本地报单编号
+       * </pre>
+       *
+       * <code>string orderLocalId = 5;</code>
+       */
+      public Builder clearOrderLocalId() {
+        
+        orderLocalId_ = getDefaultInstance().getOrderLocalId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 本地报单编号
+       * </pre>
+       *
+       * <code>string orderLocalId = 5;</code>
+       */
+      public Builder setOrderLocalIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        orderLocalId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object brokerOrderSeq_ = "";
+      /**
+       * <pre>
+       * 经纪公司报单编号
+       * </pre>
+       *
+       * <code>string brokerOrderSeq = 6;</code>
+       */
+      public java.lang.String getBrokerOrderSeq() {
+        java.lang.Object ref = brokerOrderSeq_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          brokerOrderSeq_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 经纪公司报单编号
+       * </pre>
+       *
+       * <code>string brokerOrderSeq = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getBrokerOrderSeqBytes() {
+        java.lang.Object ref = brokerOrderSeq_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          brokerOrderSeq_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 经纪公司报单编号
+       * </pre>
+       *
+       * <code>string brokerOrderSeq = 6;</code>
+       */
+      public Builder setBrokerOrderSeq(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        brokerOrderSeq_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 经纪公司报单编号
+       * </pre>
+       *
+       * <code>string brokerOrderSeq = 6;</code>
+       */
+      public Builder clearBrokerOrderSeq() {
+        
+        brokerOrderSeq_ = getDefaultInstance().getBrokerOrderSeq();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 经纪公司报单编号
+       * </pre>
+       *
+       * <code>string brokerOrderSeq = 6;</code>
+       */
+      public Builder setBrokerOrderSeqBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        brokerOrderSeq_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object orderSysId_ = "";
+      /**
+       * <pre>
+       * 报单编号
+       * </pre>
+       *
+       * <code>string orderSysId = 7;</code>
+       */
+      public java.lang.String getOrderSysId() {
+        java.lang.Object ref = orderSysId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          orderSysId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 报单编号
+       * </pre>
+       *
+       * <code>string orderSysId = 7;</code>
+       */
+      public com.google.protobuf.ByteString
+          getOrderSysIdBytes() {
+        java.lang.Object ref = orderSysId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          orderSysId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 报单编号
+       * </pre>
+       *
+       * <code>string orderSysId = 7;</code>
+       */
+      public Builder setOrderSysId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        orderSysId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 报单编号
+       * </pre>
+       *
+       * <code>string orderSysId = 7;</code>
+       */
+      public Builder clearOrderSysId() {
+        
+        orderSysId_ = getDefaultInstance().getOrderSysId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 报单编号
+       * </pre>
+       *
+       * <code>string orderSysId = 7;</code>
+       */
+      public Builder setOrderSysIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        orderSysId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object sequenceNo_ = "";
+      /**
+       * <pre>
+       * 序号
+       * </pre>
+       *
+       * <code>string sequenceNo = 8;</code>
+       */
+      public java.lang.String getSequenceNo() {
+        java.lang.Object ref = sequenceNo_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          sequenceNo_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 序号
+       * </pre>
+       *
+       * <code>string sequenceNo = 8;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSequenceNoBytes() {
+        java.lang.Object ref = sequenceNo_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          sequenceNo_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 序号
+       * </pre>
+       *
+       * <code>string sequenceNo = 8;</code>
+       */
+      public Builder setSequenceNo(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        sequenceNo_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 序号
+       * </pre>
+       *
+       * <code>string sequenceNo = 8;</code>
+       */
+      public Builder clearSequenceNo() {
+        
+        sequenceNo_ = getDefaultInstance().getSequenceNo();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 序号
+       * </pre>
+       *
+       * <code>string sequenceNo = 8;</code>
+       */
+      public Builder setSequenceNoBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        sequenceNo_ = value;
+        onChanged();
+        return this;
+      }
+
       private int direction_ = 0;
       /**
        * <pre>
        * 方向
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.DirectionEnum direction = 5;</code>
+       * <code>.xyz.redtorch.pb.DirectionEnum direction = 9;</code>
        */
       public int getDirectionValue() {
         return direction_;
@@ -9481,7 +10930,7 @@ public final class CoreField {
        * 方向
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.DirectionEnum direction = 5;</code>
+       * <code>.xyz.redtorch.pb.DirectionEnum direction = 9;</code>
        */
       public Builder setDirectionValue(int value) {
         direction_ = value;
@@ -9493,7 +10942,7 @@ public final class CoreField {
        * 方向
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.DirectionEnum direction = 5;</code>
+       * <code>.xyz.redtorch.pb.DirectionEnum direction = 9;</code>
        */
       public xyz.redtorch.pb.CoreEnum.DirectionEnum getDirection() {
         @SuppressWarnings("deprecation")
@@ -9505,7 +10954,7 @@ public final class CoreField {
        * 方向
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.DirectionEnum direction = 5;</code>
+       * <code>.xyz.redtorch.pb.DirectionEnum direction = 9;</code>
        */
       public Builder setDirection(xyz.redtorch.pb.CoreEnum.DirectionEnum value) {
         if (value == null) {
@@ -9521,7 +10970,7 @@ public final class CoreField {
        * 方向
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.DirectionEnum direction = 5;</code>
+       * <code>.xyz.redtorch.pb.DirectionEnum direction = 9;</code>
        */
       public Builder clearDirection() {
         
@@ -9530,26 +10979,26 @@ public final class CoreField {
         return this;
       }
 
-      private int offset_ = 0;
+      private int offsetFlag_ = 0;
       /**
        * <pre>
        * 开平
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OffsetEnum offset = 6;</code>
+       * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 10;</code>
        */
-      public int getOffsetValue() {
-        return offset_;
+      public int getOffsetFlagValue() {
+        return offsetFlag_;
       }
       /**
        * <pre>
        * 开平
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OffsetEnum offset = 6;</code>
+       * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 10;</code>
        */
-      public Builder setOffsetValue(int value) {
-        offset_ = value;
+      public Builder setOffsetFlagValue(int value) {
+        offsetFlag_ = value;
         onChanged();
         return this;
       }
@@ -9558,26 +11007,26 @@ public final class CoreField {
        * 开平
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OffsetEnum offset = 6;</code>
+       * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 10;</code>
        */
-      public xyz.redtorch.pb.CoreEnum.OffsetEnum getOffset() {
+      public xyz.redtorch.pb.CoreEnum.OffsetFlagEnum getOffsetFlag() {
         @SuppressWarnings("deprecation")
-        xyz.redtorch.pb.CoreEnum.OffsetEnum result = xyz.redtorch.pb.CoreEnum.OffsetEnum.valueOf(offset_);
-        return result == null ? xyz.redtorch.pb.CoreEnum.OffsetEnum.UNRECOGNIZED : result;
+        xyz.redtorch.pb.CoreEnum.OffsetFlagEnum result = xyz.redtorch.pb.CoreEnum.OffsetFlagEnum.valueOf(offsetFlag_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.OffsetFlagEnum.UNRECOGNIZED : result;
       }
       /**
        * <pre>
        * 开平
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OffsetEnum offset = 6;</code>
+       * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 10;</code>
        */
-      public Builder setOffset(xyz.redtorch.pb.CoreEnum.OffsetEnum value) {
+      public Builder setOffsetFlag(xyz.redtorch.pb.CoreEnum.OffsetFlagEnum value) {
         if (value == null) {
           throw new NullPointerException();
         }
         
-        offset_ = value.getNumber();
+        offsetFlag_ = value.getNumber();
         onChanged();
         return this;
       }
@@ -9586,11 +11035,141 @@ public final class CoreField {
        * 开平
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OffsetEnum offset = 6;</code>
+       * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 10;</code>
        */
-      public Builder clearOffset() {
+      public Builder clearOffsetFlag() {
         
-        offset_ = 0;
+        offsetFlag_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int hedgeFlag_ = 0;
+      /**
+       * <pre>
+       * 投机套保标识
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 11;</code>
+       */
+      public int getHedgeFlagValue() {
+        return hedgeFlag_;
+      }
+      /**
+       * <pre>
+       * 投机套保标识
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 11;</code>
+       */
+      public Builder setHedgeFlagValue(int value) {
+        hedgeFlag_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 投机套保标识
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 11;</code>
+       */
+      public xyz.redtorch.pb.CoreEnum.HedgeFlagEnum getHedgeFlag() {
+        @SuppressWarnings("deprecation")
+        xyz.redtorch.pb.CoreEnum.HedgeFlagEnum result = xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.valueOf(hedgeFlag_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 投机套保标识
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 11;</code>
+       */
+      public Builder setHedgeFlag(xyz.redtorch.pb.CoreEnum.HedgeFlagEnum value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        hedgeFlag_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 投机套保标识
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 11;</code>
+       */
+      public Builder clearHedgeFlag() {
+        
+        hedgeFlag_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int orderPriceType_ = 0;
+      /**
+       * <pre>
+       * 定单价格类型 
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.OrderPriceTypeEnum orderPriceType = 12;</code>
+       */
+      public int getOrderPriceTypeValue() {
+        return orderPriceType_;
+      }
+      /**
+       * <pre>
+       * 定单价格类型 
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.OrderPriceTypeEnum orderPriceType = 12;</code>
+       */
+      public Builder setOrderPriceTypeValue(int value) {
+        orderPriceType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 定单价格类型 
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.OrderPriceTypeEnum orderPriceType = 12;</code>
+       */
+      public xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum getOrderPriceType() {
+        @SuppressWarnings("deprecation")
+        xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum result = xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum.valueOf(orderPriceType_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 定单价格类型 
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.OrderPriceTypeEnum orderPriceType = 12;</code>
+       */
+      public Builder setOrderPriceType(xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        orderPriceType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 定单价格类型 
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.OrderPriceTypeEnum orderPriceType = 12;</code>
+       */
+      public Builder clearOrderPriceType() {
+        
+        orderPriceType_ = 0;
         onChanged();
         return this;
       }
@@ -9601,7 +11180,7 @@ public final class CoreField {
        * 状态
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OrderStatusEnum orderStatus = 7;</code>
+       * <code>.xyz.redtorch.pb.OrderStatusEnum orderStatus = 13;</code>
        */
       public int getOrderStatusValue() {
         return orderStatus_;
@@ -9611,7 +11190,7 @@ public final class CoreField {
        * 状态
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OrderStatusEnum orderStatus = 7;</code>
+       * <code>.xyz.redtorch.pb.OrderStatusEnum orderStatus = 13;</code>
        */
       public Builder setOrderStatusValue(int value) {
         orderStatus_ = value;
@@ -9623,7 +11202,7 @@ public final class CoreField {
        * 状态
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OrderStatusEnum orderStatus = 7;</code>
+       * <code>.xyz.redtorch.pb.OrderStatusEnum orderStatus = 13;</code>
        */
       public xyz.redtorch.pb.CoreEnum.OrderStatusEnum getOrderStatus() {
         @SuppressWarnings("deprecation")
@@ -9635,7 +11214,7 @@ public final class CoreField {
        * 状态
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OrderStatusEnum orderStatus = 7;</code>
+       * <code>.xyz.redtorch.pb.OrderStatusEnum orderStatus = 13;</code>
        */
       public Builder setOrderStatus(xyz.redtorch.pb.CoreEnum.OrderStatusEnum value) {
         if (value == null) {
@@ -9651,7 +11230,7 @@ public final class CoreField {
        * 状态
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OrderStatusEnum orderStatus = 7;</code>
+       * <code>.xyz.redtorch.pb.OrderStatusEnum orderStatus = 13;</code>
        */
       public Builder clearOrderStatus() {
         
@@ -9666,7 +11245,7 @@ public final class CoreField {
        * 价格
        * </pre>
        *
-       * <code>double price = 8;</code>
+       * <code>double price = 14;</code>
        */
       public double getPrice() {
         return price_;
@@ -9676,7 +11255,7 @@ public final class CoreField {
        * 价格
        * </pre>
        *
-       * <code>double price = 8;</code>
+       * <code>double price = 14;</code>
        */
       public Builder setPrice(double value) {
         
@@ -9689,7 +11268,7 @@ public final class CoreField {
        * 价格
        * </pre>
        *
-       * <code>double price = 8;</code>
+       * <code>double price = 14;</code>
        */
       public Builder clearPrice() {
         
@@ -9704,7 +11283,7 @@ public final class CoreField {
        * 数量
        * </pre>
        *
-       * <code>fixed32 totalVolume = 9;</code>
+       * <code>fixed32 totalVolume = 15;</code>
        */
       public int getTotalVolume() {
         return totalVolume_;
@@ -9714,7 +11293,7 @@ public final class CoreField {
        * 数量
        * </pre>
        *
-       * <code>fixed32 totalVolume = 9;</code>
+       * <code>fixed32 totalVolume = 15;</code>
        */
       public Builder setTotalVolume(int value) {
         
@@ -9727,7 +11306,7 @@ public final class CoreField {
        * 数量
        * </pre>
        *
-       * <code>fixed32 totalVolume = 9;</code>
+       * <code>fixed32 totalVolume = 15;</code>
        */
       public Builder clearTotalVolume() {
         
@@ -9742,7 +11321,7 @@ public final class CoreField {
        * 已成交数量
        * </pre>
        *
-       * <code>fixed32 tradedVolume = 10;</code>
+       * <code>fixed32 tradedVolume = 16;</code>
        */
       public int getTradedVolume() {
         return tradedVolume_;
@@ -9752,7 +11331,7 @@ public final class CoreField {
        * 已成交数量
        * </pre>
        *
-       * <code>fixed32 tradedVolume = 10;</code>
+       * <code>fixed32 tradedVolume = 16;</code>
        */
       public Builder setTradedVolume(int value) {
         
@@ -9765,11 +11344,550 @@ public final class CoreField {
        * 已成交数量
        * </pre>
        *
-       * <code>fixed32 tradedVolume = 10;</code>
+       * <code>fixed32 tradedVolume = 16;</code>
        */
       public Builder clearTradedVolume() {
         
         tradedVolume_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int timeCondition_ = 0;
+      /**
+       * <pre>
+       * 时效
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.TimeConditionEnum timeCondition = 17;</code>
+       */
+      public int getTimeConditionValue() {
+        return timeCondition_;
+      }
+      /**
+       * <pre>
+       * 时效
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.TimeConditionEnum timeCondition = 17;</code>
+       */
+      public Builder setTimeConditionValue(int value) {
+        timeCondition_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 时效
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.TimeConditionEnum timeCondition = 17;</code>
+       */
+      public xyz.redtorch.pb.CoreEnum.TimeConditionEnum getTimeCondition() {
+        @SuppressWarnings("deprecation")
+        xyz.redtorch.pb.CoreEnum.TimeConditionEnum result = xyz.redtorch.pb.CoreEnum.TimeConditionEnum.valueOf(timeCondition_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.TimeConditionEnum.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 时效
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.TimeConditionEnum timeCondition = 17;</code>
+       */
+      public Builder setTimeCondition(xyz.redtorch.pb.CoreEnum.TimeConditionEnum value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        timeCondition_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 时效
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.TimeConditionEnum timeCondition = 17;</code>
+       */
+      public Builder clearTimeCondition() {
+        
+        timeCondition_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object gtdDate_ = "";
+      /**
+       * <pre>
+       * GTD日期
+       * </pre>
+       *
+       * <code>string gtdDate = 18;</code>
+       */
+      public java.lang.String getGtdDate() {
+        java.lang.Object ref = gtdDate_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          gtdDate_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * GTD日期
+       * </pre>
+       *
+       * <code>string gtdDate = 18;</code>
+       */
+      public com.google.protobuf.ByteString
+          getGtdDateBytes() {
+        java.lang.Object ref = gtdDate_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          gtdDate_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * GTD日期
+       * </pre>
+       *
+       * <code>string gtdDate = 18;</code>
+       */
+      public Builder setGtdDate(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        gtdDate_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * GTD日期
+       * </pre>
+       *
+       * <code>string gtdDate = 18;</code>
+       */
+      public Builder clearGtdDate() {
+        
+        gtdDate_ = getDefaultInstance().getGtdDate();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * GTD日期
+       * </pre>
+       *
+       * <code>string gtdDate = 18;</code>
+       */
+      public Builder setGtdDateBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        gtdDate_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int volumeCondition_ = 0;
+      /**
+       * <pre>
+       * 成交量类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.VolumeConditionEnum volumeCondition = 19;</code>
+       */
+      public int getVolumeConditionValue() {
+        return volumeCondition_;
+      }
+      /**
+       * <pre>
+       * 成交量类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.VolumeConditionEnum volumeCondition = 19;</code>
+       */
+      public Builder setVolumeConditionValue(int value) {
+        volumeCondition_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 成交量类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.VolumeConditionEnum volumeCondition = 19;</code>
+       */
+      public xyz.redtorch.pb.CoreEnum.VolumeConditionEnum getVolumeCondition() {
+        @SuppressWarnings("deprecation")
+        xyz.redtorch.pb.CoreEnum.VolumeConditionEnum result = xyz.redtorch.pb.CoreEnum.VolumeConditionEnum.valueOf(volumeCondition_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.VolumeConditionEnum.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 成交量类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.VolumeConditionEnum volumeCondition = 19;</code>
+       */
+      public Builder setVolumeCondition(xyz.redtorch.pb.CoreEnum.VolumeConditionEnum value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        volumeCondition_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 成交量类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.VolumeConditionEnum volumeCondition = 19;</code>
+       */
+      public Builder clearVolumeCondition() {
+        
+        volumeCondition_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int minVolume_ ;
+      /**
+       * <pre>
+       * 最小成交量
+       * </pre>
+       *
+       * <code>fixed32 minVolume = 20;</code>
+       */
+      public int getMinVolume() {
+        return minVolume_;
+      }
+      /**
+       * <pre>
+       * 最小成交量
+       * </pre>
+       *
+       * <code>fixed32 minVolume = 20;</code>
+       */
+      public Builder setMinVolume(int value) {
+        
+        minVolume_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最小成交量
+       * </pre>
+       *
+       * <code>fixed32 minVolume = 20;</code>
+       */
+      public Builder clearMinVolume() {
+        
+        minVolume_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int contingentCondition_ = 0;
+      /**
+       * <pre>
+       * 触发条件
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.ContingentConditionEnum contingentCondition = 21;</code>
+       */
+      public int getContingentConditionValue() {
+        return contingentCondition_;
+      }
+      /**
+       * <pre>
+       * 触发条件
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.ContingentConditionEnum contingentCondition = 21;</code>
+       */
+      public Builder setContingentConditionValue(int value) {
+        contingentCondition_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 触发条件
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.ContingentConditionEnum contingentCondition = 21;</code>
+       */
+      public xyz.redtorch.pb.CoreEnum.ContingentConditionEnum getContingentCondition() {
+        @SuppressWarnings("deprecation")
+        xyz.redtorch.pb.CoreEnum.ContingentConditionEnum result = xyz.redtorch.pb.CoreEnum.ContingentConditionEnum.valueOf(contingentCondition_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.ContingentConditionEnum.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 触发条件
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.ContingentConditionEnum contingentCondition = 21;</code>
+       */
+      public Builder setContingentCondition(xyz.redtorch.pb.CoreEnum.ContingentConditionEnum value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        contingentCondition_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 触发条件
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.ContingentConditionEnum contingentCondition = 21;</code>
+       */
+      public Builder clearContingentCondition() {
+        
+        contingentCondition_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private double stopPrice_ ;
+      /**
+       * <pre>
+       * 止损价
+       * </pre>
+       *
+       * <code>double stopPrice = 22;</code>
+       */
+      public double getStopPrice() {
+        return stopPrice_;
+      }
+      /**
+       * <pre>
+       * 止损价
+       * </pre>
+       *
+       * <code>double stopPrice = 22;</code>
+       */
+      public Builder setStopPrice(double value) {
+        
+        stopPrice_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 止损价
+       * </pre>
+       *
+       * <code>double stopPrice = 22;</code>
+       */
+      public Builder clearStopPrice() {
+        
+        stopPrice_ = 0D;
+        onChanged();
+        return this;
+      }
+
+      private int forceCloseReason_ = 0;
+      /**
+       * <pre>
+       * 强平原因
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.ForceCloseReasonEnum forceCloseReason = 23;</code>
+       */
+      public int getForceCloseReasonValue() {
+        return forceCloseReason_;
+      }
+      /**
+       * <pre>
+       * 强平原因
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.ForceCloseReasonEnum forceCloseReason = 23;</code>
+       */
+      public Builder setForceCloseReasonValue(int value) {
+        forceCloseReason_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 强平原因
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.ForceCloseReasonEnum forceCloseReason = 23;</code>
+       */
+      public xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum getForceCloseReason() {
+        @SuppressWarnings("deprecation")
+        xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum result = xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum.valueOf(forceCloseReason_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 强平原因
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.ForceCloseReasonEnum forceCloseReason = 23;</code>
+       */
+      public Builder setForceCloseReason(xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        forceCloseReason_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 强平原因
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.ForceCloseReasonEnum forceCloseReason = 23;</code>
+       */
+      public Builder clearForceCloseReason() {
+        
+        forceCloseReason_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int autoSuspend_ ;
+      /**
+       * <pre>
+       * 自动挂起标志
+       * </pre>
+       *
+       * <code>fixed32 autoSuspend = 24;</code>
+       */
+      public int getAutoSuspend() {
+        return autoSuspend_;
+      }
+      /**
+       * <pre>
+       * 自动挂起标志
+       * </pre>
+       *
+       * <code>fixed32 autoSuspend = 24;</code>
+       */
+      public Builder setAutoSuspend(int value) {
+        
+        autoSuspend_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 自动挂起标志
+       * </pre>
+       *
+       * <code>fixed32 autoSuspend = 24;</code>
+       */
+      public Builder clearAutoSuspend() {
+        
+        autoSuspend_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userForceClose_ ;
+      /**
+       * <pre>
+       * 用户强平标志
+       * </pre>
+       *
+       * <code>fixed32 userForceClose = 25;</code>
+       */
+      public int getUserForceClose() {
+        return userForceClose_;
+      }
+      /**
+       * <pre>
+       * 用户强平标志
+       * </pre>
+       *
+       * <code>fixed32 userForceClose = 25;</code>
+       */
+      public Builder setUserForceClose(int value) {
+        
+        userForceClose_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户强平标志
+       * </pre>
+       *
+       * <code>fixed32 userForceClose = 25;</code>
+       */
+      public Builder clearUserForceClose() {
+        
+        userForceClose_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int swapOrder_ ;
+      /**
+       * <pre>
+       * 互换单标志
+       * </pre>
+       *
+       * <code>fixed32 swapOrder = 26;</code>
+       */
+      public int getSwapOrder() {
+        return swapOrder_;
+      }
+      /**
+       * <pre>
+       * 互换单标志
+       * </pre>
+       *
+       * <code>fixed32 swapOrder = 26;</code>
+       */
+      public Builder setSwapOrder(int value) {
+        
+        swapOrder_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 互换单标志
+       * </pre>
+       *
+       * <code>fixed32 swapOrder = 26;</code>
+       */
+      public Builder clearSwapOrder() {
+        
+        swapOrder_ = 0;
         onChanged();
         return this;
       }
@@ -9780,7 +11898,7 @@ public final class CoreField {
        * 交易日
        * </pre>
        *
-       * <code>string tradingDay = 12;</code>
+       * <code>string tradingDay = 27;</code>
        */
       public java.lang.String getTradingDay() {
         java.lang.Object ref = tradingDay_;
@@ -9799,7 +11917,7 @@ public final class CoreField {
        * 交易日
        * </pre>
        *
-       * <code>string tradingDay = 12;</code>
+       * <code>string tradingDay = 27;</code>
        */
       public com.google.protobuf.ByteString
           getTradingDayBytes() {
@@ -9819,7 +11937,7 @@ public final class CoreField {
        * 交易日
        * </pre>
        *
-       * <code>string tradingDay = 12;</code>
+       * <code>string tradingDay = 27;</code>
        */
       public Builder setTradingDay(
           java.lang.String value) {
@@ -9836,7 +11954,7 @@ public final class CoreField {
        * 交易日
        * </pre>
        *
-       * <code>string tradingDay = 12;</code>
+       * <code>string tradingDay = 27;</code>
        */
       public Builder clearTradingDay() {
         
@@ -9849,7 +11967,7 @@ public final class CoreField {
        * 交易日
        * </pre>
        *
-       * <code>string tradingDay = 12;</code>
+       * <code>string tradingDay = 27;</code>
        */
       public Builder setTradingDayBytes(
           com.google.protobuf.ByteString value) {
@@ -9869,7 +11987,7 @@ public final class CoreField {
        * 定单日期
        * </pre>
        *
-       * <code>string orderDate = 13;</code>
+       * <code>string orderDate = 28;</code>
        */
       public java.lang.String getOrderDate() {
         java.lang.Object ref = orderDate_;
@@ -9888,7 +12006,7 @@ public final class CoreField {
        * 定单日期
        * </pre>
        *
-       * <code>string orderDate = 13;</code>
+       * <code>string orderDate = 28;</code>
        */
       public com.google.protobuf.ByteString
           getOrderDateBytes() {
@@ -9908,7 +12026,7 @@ public final class CoreField {
        * 定单日期
        * </pre>
        *
-       * <code>string orderDate = 13;</code>
+       * <code>string orderDate = 28;</code>
        */
       public Builder setOrderDate(
           java.lang.String value) {
@@ -9925,7 +12043,7 @@ public final class CoreField {
        * 定单日期
        * </pre>
        *
-       * <code>string orderDate = 13;</code>
+       * <code>string orderDate = 28;</code>
        */
       public Builder clearOrderDate() {
         
@@ -9938,7 +12056,7 @@ public final class CoreField {
        * 定单日期
        * </pre>
        *
-       * <code>string orderDate = 13;</code>
+       * <code>string orderDate = 28;</code>
        */
       public Builder setOrderDateBytes(
           com.google.protobuf.ByteString value) {
@@ -9958,7 +12076,7 @@ public final class CoreField {
        * 定单时间
        * </pre>
        *
-       * <code>string orderTime = 14;</code>
+       * <code>string orderTime = 29;</code>
        */
       public java.lang.String getOrderTime() {
         java.lang.Object ref = orderTime_;
@@ -9977,7 +12095,7 @@ public final class CoreField {
        * 定单时间
        * </pre>
        *
-       * <code>string orderTime = 14;</code>
+       * <code>string orderTime = 29;</code>
        */
       public com.google.protobuf.ByteString
           getOrderTimeBytes() {
@@ -9997,7 +12115,7 @@ public final class CoreField {
        * 定单时间
        * </pre>
        *
-       * <code>string orderTime = 14;</code>
+       * <code>string orderTime = 29;</code>
        */
       public Builder setOrderTime(
           java.lang.String value) {
@@ -10014,7 +12132,7 @@ public final class CoreField {
        * 定单时间
        * </pre>
        *
-       * <code>string orderTime = 14;</code>
+       * <code>string orderTime = 29;</code>
        */
       public Builder clearOrderTime() {
         
@@ -10027,7 +12145,7 @@ public final class CoreField {
        * 定单时间
        * </pre>
        *
-       * <code>string orderTime = 14;</code>
+       * <code>string orderTime = 29;</code>
        */
       public Builder setOrderTimeBytes(
           com.google.protobuf.ByteString value) {
@@ -10041,102 +12159,13 @@ public final class CoreField {
         return this;
       }
 
-      private java.lang.Object cancelTime_ = "";
-      /**
-       * <pre>
-       * 撤单时间
-       * </pre>
-       *
-       * <code>string cancelTime = 15;</code>
-       */
-      public java.lang.String getCancelTime() {
-        java.lang.Object ref = cancelTime_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          cancelTime_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 撤单时间
-       * </pre>
-       *
-       * <code>string cancelTime = 15;</code>
-       */
-      public com.google.protobuf.ByteString
-          getCancelTimeBytes() {
-        java.lang.Object ref = cancelTime_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          cancelTime_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 撤单时间
-       * </pre>
-       *
-       * <code>string cancelTime = 15;</code>
-       */
-      public Builder setCancelTime(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        cancelTime_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 撤单时间
-       * </pre>
-       *
-       * <code>string cancelTime = 15;</code>
-       */
-      public Builder clearCancelTime() {
-        
-        cancelTime_ = getDefaultInstance().getCancelTime();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 撤单时间
-       * </pre>
-       *
-       * <code>string cancelTime = 15;</code>
-       */
-      public Builder setCancelTimeBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        cancelTime_ = value;
-        onChanged();
-        return this;
-      }
-
       private java.lang.Object activeTime_ = "";
       /**
        * <pre>
        * 激活时间
        * </pre>
        *
-       * <code>string activeTime = 16;</code>
+       * <code>string activeTime = 30;</code>
        */
       public java.lang.String getActiveTime() {
         java.lang.Object ref = activeTime_;
@@ -10155,7 +12184,7 @@ public final class CoreField {
        * 激活时间
        * </pre>
        *
-       * <code>string activeTime = 16;</code>
+       * <code>string activeTime = 30;</code>
        */
       public com.google.protobuf.ByteString
           getActiveTimeBytes() {
@@ -10175,7 +12204,7 @@ public final class CoreField {
        * 激活时间
        * </pre>
        *
-       * <code>string activeTime = 16;</code>
+       * <code>string activeTime = 30;</code>
        */
       public Builder setActiveTime(
           java.lang.String value) {
@@ -10192,7 +12221,7 @@ public final class CoreField {
        * 激活时间
        * </pre>
        *
-       * <code>string activeTime = 16;</code>
+       * <code>string activeTime = 30;</code>
        */
       public Builder clearActiveTime() {
         
@@ -10205,7 +12234,7 @@ public final class CoreField {
        * 激活时间
        * </pre>
        *
-       * <code>string activeTime = 16;</code>
+       * <code>string activeTime = 30;</code>
        */
       public Builder setActiveTimeBytes(
           com.google.protobuf.ByteString value) {
@@ -10219,13 +12248,191 @@ public final class CoreField {
         return this;
       }
 
+      private java.lang.Object suspendTime_ = "";
+      /**
+       * <pre>
+       * 挂起时间
+       * </pre>
+       *
+       * <code>string suspendTime = 31;</code>
+       */
+      public java.lang.String getSuspendTime() {
+        java.lang.Object ref = suspendTime_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          suspendTime_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 挂起时间
+       * </pre>
+       *
+       * <code>string suspendTime = 31;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSuspendTimeBytes() {
+        java.lang.Object ref = suspendTime_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          suspendTime_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 挂起时间
+       * </pre>
+       *
+       * <code>string suspendTime = 31;</code>
+       */
+      public Builder setSuspendTime(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        suspendTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 挂起时间
+       * </pre>
+       *
+       * <code>string suspendTime = 31;</code>
+       */
+      public Builder clearSuspendTime() {
+        
+        suspendTime_ = getDefaultInstance().getSuspendTime();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 挂起时间
+       * </pre>
+       *
+       * <code>string suspendTime = 31;</code>
+       */
+      public Builder setSuspendTimeBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        suspendTime_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object cancelTime_ = "";
+      /**
+       * <pre>
+       * 撤销时间
+       * </pre>
+       *
+       * <code>string cancelTime = 32;</code>
+       */
+      public java.lang.String getCancelTime() {
+        java.lang.Object ref = cancelTime_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          cancelTime_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 撤销时间
+       * </pre>
+       *
+       * <code>string cancelTime = 32;</code>
+       */
+      public com.google.protobuf.ByteString
+          getCancelTimeBytes() {
+        java.lang.Object ref = cancelTime_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          cancelTime_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 撤销时间
+       * </pre>
+       *
+       * <code>string cancelTime = 32;</code>
+       */
+      public Builder setCancelTime(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        cancelTime_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 撤销时间
+       * </pre>
+       *
+       * <code>string cancelTime = 32;</code>
+       */
+      public Builder clearCancelTime() {
+        
+        cancelTime_ = getDefaultInstance().getCancelTime();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 撤销时间
+       * </pre>
+       *
+       * <code>string cancelTime = 32;</code>
+       */
+      public Builder setCancelTimeBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        cancelTime_ = value;
+        onChanged();
+        return this;
+      }
+
       private java.lang.Object updateTime_ = "";
       /**
        * <pre>
        * 最后修改时间
        * </pre>
        *
-       * <code>string updateTime = 17;</code>
+       * <code>string updateTime = 33;</code>
        */
       public java.lang.String getUpdateTime() {
         java.lang.Object ref = updateTime_;
@@ -10244,7 +12451,7 @@ public final class CoreField {
        * 最后修改时间
        * </pre>
        *
-       * <code>string updateTime = 17;</code>
+       * <code>string updateTime = 33;</code>
        */
       public com.google.protobuf.ByteString
           getUpdateTimeBytes() {
@@ -10264,7 +12471,7 @@ public final class CoreField {
        * 最后修改时间
        * </pre>
        *
-       * <code>string updateTime = 17;</code>
+       * <code>string updateTime = 33;</code>
        */
       public Builder setUpdateTime(
           java.lang.String value) {
@@ -10281,7 +12488,7 @@ public final class CoreField {
        * 最后修改时间
        * </pre>
        *
-       * <code>string updateTime = 17;</code>
+       * <code>string updateTime = 33;</code>
        */
       public Builder clearUpdateTime() {
         
@@ -10294,7 +12501,7 @@ public final class CoreField {
        * 最后修改时间
        * </pre>
        *
-       * <code>string updateTime = 17;</code>
+       * <code>string updateTime = 33;</code>
        */
       public Builder setUpdateTimeBytes(
           com.google.protobuf.ByteString value) {
@@ -10308,21 +12515,21 @@ public final class CoreField {
         return this;
       }
 
-      private java.lang.Object statusInfo_ = "";
+      private java.lang.Object statusMsg_ = "";
       /**
        * <pre>
        * 状态信息
        * </pre>
        *
-       * <code>string statusInfo = 18;</code>
+       * <code>string statusMsg = 34;</code>
        */
-      public java.lang.String getStatusInfo() {
-        java.lang.Object ref = statusInfo_;
+      public java.lang.String getStatusMsg() {
+        java.lang.Object ref = statusMsg_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          statusInfo_ = s;
+          statusMsg_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -10333,16 +12540,16 @@ public final class CoreField {
        * 状态信息
        * </pre>
        *
-       * <code>string statusInfo = 18;</code>
+       * <code>string statusMsg = 34;</code>
        */
       public com.google.protobuf.ByteString
-          getStatusInfoBytes() {
-        java.lang.Object ref = statusInfo_;
+          getStatusMsgBytes() {
+        java.lang.Object ref = statusMsg_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          statusInfo_ = b;
+          statusMsg_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -10353,15 +12560,15 @@ public final class CoreField {
        * 状态信息
        * </pre>
        *
-       * <code>string statusInfo = 18;</code>
+       * <code>string statusMsg = 34;</code>
        */
-      public Builder setStatusInfo(
+      public Builder setStatusMsg(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        statusInfo_ = value;
+        statusMsg_ = value;
         onChanged();
         return this;
       }
@@ -10370,11 +12577,11 @@ public final class CoreField {
        * 状态信息
        * </pre>
        *
-       * <code>string statusInfo = 18;</code>
+       * <code>string statusMsg = 34;</code>
        */
-      public Builder clearStatusInfo() {
+      public Builder clearStatusMsg() {
         
-        statusInfo_ = getDefaultInstance().getStatusInfo();
+        statusMsg_ = getDefaultInstance().getStatusMsg();
         onChanged();
         return this;
       }
@@ -10383,81 +12590,16 @@ public final class CoreField {
        * 状态信息
        * </pre>
        *
-       * <code>string statusInfo = 18;</code>
+       * <code>string statusMsg = 34;</code>
        */
-      public Builder setStatusInfoBytes(
+      public Builder setStatusMsgBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        statusInfo_ = value;
-        onChanged();
-        return this;
-      }
-
-      private int timeConditionType_ = 0;
-      /**
-       * <pre>
-       * 时效
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.TimeConditionTypeEnum timeConditionType = 19;</code>
-       */
-      public int getTimeConditionTypeValue() {
-        return timeConditionType_;
-      }
-      /**
-       * <pre>
-       * 时效
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.TimeConditionTypeEnum timeConditionType = 19;</code>
-       */
-      public Builder setTimeConditionTypeValue(int value) {
-        timeConditionType_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 时效
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.TimeConditionTypeEnum timeConditionType = 19;</code>
-       */
-      public xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum getTimeConditionType() {
-        @SuppressWarnings("deprecation")
-        xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum result = xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum.valueOf(timeConditionType_);
-        return result == null ? xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum.UNRECOGNIZED : result;
-      }
-      /**
-       * <pre>
-       * 时效
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.TimeConditionTypeEnum timeConditionType = 19;</code>
-       */
-      public Builder setTimeConditionType(xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        
-        timeConditionType_ = value.getNumber();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 时效
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.TimeConditionTypeEnum timeConditionType = 19;</code>
-       */
-      public Builder clearTimeConditionType() {
-        
-        timeConditionType_ = 0;
+        statusMsg_ = value;
         onChanged();
         return this;
       }
@@ -10468,7 +12610,7 @@ public final class CoreField {
        * 前置机编号(CTP/LTS)
        * </pre>
        *
-       * <code>fixed32 frontId = 20;</code>
+       * <code>fixed32 frontId = 35;</code>
        */
       public int getFrontId() {
         return frontId_;
@@ -10478,7 +12620,7 @@ public final class CoreField {
        * 前置机编号(CTP/LTS)
        * </pre>
        *
-       * <code>fixed32 frontId = 20;</code>
+       * <code>fixed32 frontId = 35;</code>
        */
       public Builder setFrontId(int value) {
         
@@ -10491,7 +12633,7 @@ public final class CoreField {
        * 前置机编号(CTP/LTS)
        * </pre>
        *
-       * <code>fixed32 frontId = 20;</code>
+       * <code>fixed32 frontId = 35;</code>
        */
       public Builder clearFrontId() {
         
@@ -10506,7 +12648,7 @@ public final class CoreField {
        * 连接编号(CTP/LTS)
        * </pre>
        *
-       * <code>fixed32 sessionId = 21;</code>
+       * <code>fixed32 sessionId = 36;</code>
        */
       public int getSessionId() {
         return sessionId_;
@@ -10516,7 +12658,7 @@ public final class CoreField {
        * 连接编号(CTP/LTS)
        * </pre>
        *
-       * <code>fixed32 sessionId = 21;</code>
+       * <code>fixed32 sessionId = 36;</code>
        */
       public Builder setSessionId(int value) {
         
@@ -10529,7 +12671,7 @@ public final class CoreField {
        * 连接编号(CTP/LTS)
        * </pre>
        *
-       * <code>fixed32 sessionId = 21;</code>
+       * <code>fixed32 sessionId = 36;</code>
        */
       public Builder clearSessionId() {
         
@@ -10546,7 +12688,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
        */
       public boolean hasContract() {
         return contractBuilder_ != null || contract_ != null;
@@ -10556,7 +12698,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
        */
       public xyz.redtorch.pb.CoreField.ContractField getContract() {
         if (contractBuilder_ == null) {
@@ -10570,7 +12712,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
        */
       public Builder setContract(xyz.redtorch.pb.CoreField.ContractField value) {
         if (contractBuilder_ == null) {
@@ -10590,7 +12732,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
        */
       public Builder setContract(
           xyz.redtorch.pb.CoreField.ContractField.Builder builderForValue) {
@@ -10608,7 +12750,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
        */
       public Builder mergeContract(xyz.redtorch.pb.CoreField.ContractField value) {
         if (contractBuilder_ == null) {
@@ -10630,7 +12772,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
        */
       public Builder clearContract() {
         if (contractBuilder_ == null) {
@@ -10648,7 +12790,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
        */
       public xyz.redtorch.pb.CoreField.ContractField.Builder getContractBuilder() {
         
@@ -10660,7 +12802,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
        */
       public xyz.redtorch.pb.CoreField.ContractFieldOrBuilder getContractOrBuilder() {
         if (contractBuilder_ != null) {
@@ -10675,7 +12817,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           xyz.redtorch.pb.CoreField.ContractField, xyz.redtorch.pb.CoreField.ContractField.Builder, xyz.redtorch.pb.CoreField.ContractFieldOrBuilder> 
@@ -10691,157 +12833,93 @@ public final class CoreField {
         return contractBuilder_;
       }
 
-      private xyz.redtorch.pb.CoreField.GatewayField gateway_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          xyz.redtorch.pb.CoreField.GatewayField, xyz.redtorch.pb.CoreField.GatewayField.Builder, xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder> gatewayBuilder_;
+      private java.lang.Object gatewayId_ = "";
       /**
        * <pre>
-       * 网关
+       * 网关ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
+       * <code>string gatewayId = 38;</code>
        */
-      public boolean hasGateway() {
-        return gatewayBuilder_ != null || gateway_ != null;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
-       */
-      public xyz.redtorch.pb.CoreField.GatewayField getGateway() {
-        if (gatewayBuilder_ == null) {
-          return gateway_ == null ? xyz.redtorch.pb.CoreField.GatewayField.getDefaultInstance() : gateway_;
+      public java.lang.String getGatewayId() {
+        java.lang.Object ref = gatewayId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          gatewayId_ = s;
+          return s;
         } else {
-          return gatewayBuilder_.getMessage();
+          return (java.lang.String) ref;
         }
       }
       /**
        * <pre>
-       * 网关
+       * 网关ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
+       * <code>string gatewayId = 38;</code>
        */
-      public Builder setGateway(xyz.redtorch.pb.CoreField.GatewayField value) {
-        if (gatewayBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          gateway_ = value;
-          onChanged();
+      public com.google.protobuf.ByteString
+          getGatewayIdBytes() {
+        java.lang.Object ref = gatewayId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          gatewayId_ = b;
+          return b;
         } else {
-          gatewayBuilder_.setMessage(value);
+          return (com.google.protobuf.ByteString) ref;
         }
-
-        return this;
       }
       /**
        * <pre>
-       * 网关
+       * 网关ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
+       * <code>string gatewayId = 38;</code>
        */
-      public Builder setGateway(
-          xyz.redtorch.pb.CoreField.GatewayField.Builder builderForValue) {
-        if (gatewayBuilder_ == null) {
-          gateway_ = builderForValue.build();
-          onChanged();
-        } else {
-          gatewayBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
-       */
-      public Builder mergeGateway(xyz.redtorch.pb.CoreField.GatewayField value) {
-        if (gatewayBuilder_ == null) {
-          if (gateway_ != null) {
-            gateway_ =
-              xyz.redtorch.pb.CoreField.GatewayField.newBuilder(gateway_).mergeFrom(value).buildPartial();
-          } else {
-            gateway_ = value;
-          }
-          onChanged();
-        } else {
-          gatewayBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
-       */
-      public Builder clearGateway() {
-        if (gatewayBuilder_ == null) {
-          gateway_ = null;
-          onChanged();
-        } else {
-          gateway_ = null;
-          gatewayBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
-       */
-      public xyz.redtorch.pb.CoreField.GatewayField.Builder getGatewayBuilder() {
-        
+      public Builder setGatewayId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        gatewayId_ = value;
         onChanged();
-        return getGatewayFieldBuilder().getBuilder();
+        return this;
       }
       /**
        * <pre>
-       * 网关
+       * 网关ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
+       * <code>string gatewayId = 38;</code>
        */
-      public xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder getGatewayOrBuilder() {
-        if (gatewayBuilder_ != null) {
-          return gatewayBuilder_.getMessageOrBuilder();
-        } else {
-          return gateway_ == null ?
-              xyz.redtorch.pb.CoreField.GatewayField.getDefaultInstance() : gateway_;
-        }
+      public Builder clearGatewayId() {
+        
+        gatewayId_ = getDefaultInstance().getGatewayId();
+        onChanged();
+        return this;
       }
       /**
        * <pre>
-       * 网关
+       * 网关ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
+       * <code>string gatewayId = 38;</code>
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          xyz.redtorch.pb.CoreField.GatewayField, xyz.redtorch.pb.CoreField.GatewayField.Builder, xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder> 
-          getGatewayFieldBuilder() {
-        if (gatewayBuilder_ == null) {
-          gatewayBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              xyz.redtorch.pb.CoreField.GatewayField, xyz.redtorch.pb.CoreField.GatewayField.Builder, xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder>(
-                  getGateway(),
-                  getParentForChildren(),
-                  isClean());
-          gateway_ = null;
-        }
-        return gatewayBuilder_;
+      public Builder setGatewayIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        gatewayId_ = value;
+        onChanged();
+        return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -10902,7 +12980,7 @@ public final class CoreField {
 
     /**
      * <pre>
-     * 成交ID,通常是&lt;网关ID&#64;方向&#64;成交编号&gt;，加入方向是因为部分交易所发生违规自成交后,成交ID相同
+     * 成交ID,通常是&lt;网关ID&#64;定单编号&#64;方向&#64;成交编号&gt;，加入方向是因为部分交易所发生违规自成交后,成交ID相同
      * </pre>
      *
      * <code>string tradeId = 1;</code>
@@ -10910,7 +12988,7 @@ public final class CoreField {
     java.lang.String getTradeId();
     /**
      * <pre>
-     * 成交ID,通常是&lt;网关ID&#64;方向&#64;成交编号&gt;，加入方向是因为部分交易所发生违规自成交后,成交ID相同
+     * 成交ID,通常是&lt;网关ID&#64;定单编号&#64;方向&#64;成交编号&gt;，加入方向是因为部分交易所发生违规自成交后,成交ID相同
      * </pre>
      *
      * <code>string tradeId = 1;</code>
@@ -10992,10 +13070,100 @@ public final class CoreField {
 
     /**
      * <pre>
+     * 本地报单编号
+     * </pre>
+     *
+     * <code>string orderLocalId = 6;</code>
+     */
+    java.lang.String getOrderLocalId();
+    /**
+     * <pre>
+     * 本地报单编号
+     * </pre>
+     *
+     * <code>string orderLocalId = 6;</code>
+     */
+    com.google.protobuf.ByteString
+        getOrderLocalIdBytes();
+
+    /**
+     * <pre>
+     *经纪公司报单编号
+     * </pre>
+     *
+     * <code>string brokerOrderSeq = 7;</code>
+     */
+    java.lang.String getBrokerOrderSeq();
+    /**
+     * <pre>
+     *经纪公司报单编号
+     * </pre>
+     *
+     * <code>string brokerOrderSeq = 7;</code>
+     */
+    com.google.protobuf.ByteString
+        getBrokerOrderSeqBytes();
+
+    /**
+     * <pre>
+     * 报单编号
+     * </pre>
+     *
+     * <code>string orderSysId = 8;</code>
+     */
+    java.lang.String getOrderSysId();
+    /**
+     * <pre>
+     * 报单编号
+     * </pre>
+     *
+     * <code>string orderSysId = 8;</code>
+     */
+    com.google.protobuf.ByteString
+        getOrderSysIdBytes();
+
+    /**
+     * <pre>
+     * 结算编号
+     * </pre>
+     *
+     * <code>string settlementId = 9;</code>
+     */
+    java.lang.String getSettlementId();
+    /**
+     * <pre>
+     * 结算编号
+     * </pre>
+     *
+     * <code>string settlementId = 9;</code>
+     */
+    com.google.protobuf.ByteString
+        getSettlementIdBytes();
+
+    /**
+     * <pre>
+     * 序列号
+     * </pre>
+     *
+     * <code>string sequenceNo = 10;</code>
+     */
+    java.lang.String getSequenceNo();
+    /**
+     * <pre>
+     * 序列号
+     * </pre>
+     *
+     * <code>string sequenceNo = 10;</code>
+     */
+    com.google.protobuf.ByteString
+        getSequenceNoBytes();
+
+    /**
+     * <pre>
      * 账户ID
      * </pre>
      *
-     * <code>string accountId = 6;</code>
+     * <code>string accountId = 11;</code>
      */
     java.lang.String getAccountId();
     /**
@@ -11003,7 +13171,7 @@ public final class CoreField {
      * 账户ID
      * </pre>
      *
-     * <code>string accountId = 6;</code>
+     * <code>string accountId = 11;</code>
      */
     com.google.protobuf.ByteString
         getAccountIdBytes();
@@ -11013,7 +13181,7 @@ public final class CoreField {
      * 方向
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.DirectionEnum direction = 7;</code>
+     * <code>.xyz.redtorch.pb.DirectionEnum direction = 12;</code>
      */
     int getDirectionValue();
     /**
@@ -11021,7 +13189,7 @@ public final class CoreField {
      * 方向
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.DirectionEnum direction = 7;</code>
+     * <code>.xyz.redtorch.pb.DirectionEnum direction = 12;</code>
      */
     xyz.redtorch.pb.CoreEnum.DirectionEnum getDirection();
 
@@ -11030,24 +13198,41 @@ public final class CoreField {
      * 开平
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.OffsetEnum offset = 8;</code>
+     * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 13;</code>
      */
-    int getOffsetValue();
+    int getOffsetFlagValue();
     /**
      * <pre>
      * 开平
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.OffsetEnum offset = 8;</code>
+     * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 13;</code>
      */
-    xyz.redtorch.pb.CoreEnum.OffsetEnum getOffset();
+    xyz.redtorch.pb.CoreEnum.OffsetFlagEnum getOffsetFlag();
+
+    /**
+     * <pre>
+     * 投机套保标识
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 14;</code>
+     */
+    int getHedgeFlagValue();
+    /**
+     * <pre>
+     * 投机套保标识
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 14;</code>
+     */
+    xyz.redtorch.pb.CoreEnum.HedgeFlagEnum getHedgeFlag();
 
     /**
      * <pre>
      * 价格
      * </pre>
      *
-     * <code>double price = 9;</code>
+     * <code>double price = 15;</code>
      */
     double getPrice();
 
@@ -11056,16 +13241,50 @@ public final class CoreField {
      * 数量
      * </pre>
      *
-     * <code>fixed32 volume = 10;</code>
+     * <code>fixed32 volume = 16;</code>
      */
     int getVolume();
+
+    /**
+     * <pre>
+     * 成交类型
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.TradeTypeEnum tradeType = 17;</code>
+     */
+    int getTradeTypeValue();
+    /**
+     * <pre>
+     * 成交类型
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.TradeTypeEnum tradeType = 17;</code>
+     */
+    xyz.redtorch.pb.CoreEnum.TradeTypeEnum getTradeType();
+
+    /**
+     * <pre>
+     * 成交价来源
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.PriceSourceEnum priceSource = 18;</code>
+     */
+    int getPriceSourceValue();
+    /**
+     * <pre>
+     * 成交价来源
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.PriceSourceEnum priceSource = 18;</code>
+     */
+    xyz.redtorch.pb.CoreEnum.PriceSourceEnum getPriceSource();
 
     /**
      * <pre>
      * 交易日
      * </pre>
      *
-     * <code>string tradingDay = 11;</code>
+     * <code>string tradingDay = 19;</code>
      */
     java.lang.String getTradingDay();
     /**
@@ -11073,7 +13292,7 @@ public final class CoreField {
      * 交易日
      * </pre>
      *
-     * <code>string tradingDay = 11;</code>
+     * <code>string tradingDay = 19;</code>
      */
     com.google.protobuf.ByteString
         getTradingDayBytes();
@@ -11083,7 +13302,7 @@ public final class CoreField {
      * 成交日期
      * </pre>
      *
-     * <code>string tradeDate = 12;</code>
+     * <code>string tradeDate = 20;</code>
      */
     java.lang.String getTradeDate();
     /**
@@ -11091,7 +13310,7 @@ public final class CoreField {
      * 成交日期
      * </pre>
      *
-     * <code>string tradeDate = 12;</code>
+     * <code>string tradeDate = 20;</code>
      */
     com.google.protobuf.ByteString
         getTradeDateBytes();
@@ -11101,7 +13320,7 @@ public final class CoreField {
      * 成交时间(HHmmssSSS)
      * </pre>
      *
-     * <code>string tradeTime = 13;</code>
+     * <code>string tradeTime = 21;</code>
      */
     java.lang.String getTradeTime();
     /**
@@ -11109,7 +13328,7 @@ public final class CoreField {
      * 成交时间(HHmmssSSS)
      * </pre>
      *
-     * <code>string tradeTime = 13;</code>
+     * <code>string tradeTime = 21;</code>
      */
     com.google.protobuf.ByteString
         getTradeTimeBytes();
@@ -11119,7 +13338,7 @@ public final class CoreField {
      * 成交时间戳
      * </pre>
      *
-     * <code>fixed64 tradeTimestamp = 14;</code>
+     * <code>fixed64 tradeTimestamp = 22;</code>
      */
     long getTradeTimestamp();
 
@@ -11128,7 +13347,7 @@ public final class CoreField {
      * 合约
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ContractField contract = 15;</code>
+     * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
      */
     boolean hasContract();
     /**
@@ -11136,7 +13355,7 @@ public final class CoreField {
      * 合约
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ContractField contract = 15;</code>
+     * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
      */
     xyz.redtorch.pb.CoreField.ContractField getContract();
     /**
@@ -11144,34 +13363,27 @@ public final class CoreField {
      * 合约
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ContractField contract = 15;</code>
+     * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
      */
     xyz.redtorch.pb.CoreField.ContractFieldOrBuilder getContractOrBuilder();
 
     /**
      * <pre>
-     * 网关
+     * 网关ID
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 16;</code>
+     * <code>string gatewayId = 24;</code>
      */
-    boolean hasGateway();
+    java.lang.String getGatewayId();
     /**
      * <pre>
-     * 网关
+     * 网关ID
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 16;</code>
+     * <code>string gatewayId = 24;</code>
      */
-    xyz.redtorch.pb.CoreField.GatewayField getGateway();
-    /**
-     * <pre>
-     * 网关
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 16;</code>
-     */
-    xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder getGatewayOrBuilder();
+    com.google.protobuf.ByteString
+        getGatewayIdBytes();
   }
   /**
    * <pre>
@@ -11195,15 +13407,24 @@ public final class CoreField {
       originOrderId_ = "";
       orderId_ = "";
       adapterOrderId_ = "";
+      orderLocalId_ = "";
+      brokerOrderSeq_ = "";
+      orderSysId_ = "";
+      settlementId_ = "";
+      sequenceNo_ = "";
       accountId_ = "";
       direction_ = 0;
-      offset_ = 0;
+      offsetFlag_ = 0;
+      hedgeFlag_ = 0;
       price_ = 0D;
       volume_ = 0;
+      tradeType_ = 0;
+      priceSource_ = 0;
       tradingDay_ = "";
       tradeDate_ = "";
       tradeTime_ = "";
       tradeTimestamp_ = 0L;
+      gatewayId_ = "";
     }
 
     @java.lang.Override
@@ -11263,55 +13484,103 @@ public final class CoreField {
             case 50: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              accountId_ = s;
+              orderLocalId_ = s;
               break;
             }
-            case 56: {
-              int rawValue = input.readEnum();
+            case 58: {
+              java.lang.String s = input.readStringRequireUtf8();
 
-              direction_ = rawValue;
+              brokerOrderSeq_ = s;
               break;
             }
-            case 64: {
-              int rawValue = input.readEnum();
+            case 66: {
+              java.lang.String s = input.readStringRequireUtf8();
 
-              offset_ = rawValue;
+              orderSysId_ = s;
               break;
             }
-            case 73: {
+            case 74: {
+              java.lang.String s = input.readStringRequireUtf8();
 
-              price_ = input.readDouble();
+              settlementId_ = s;
               break;
             }
-            case 85: {
+            case 82: {
+              java.lang.String s = input.readStringRequireUtf8();
 
-              volume_ = input.readFixed32();
+              sequenceNo_ = s;
               break;
             }
             case 90: {
               java.lang.String s = input.readStringRequireUtf8();
 
+              accountId_ = s;
+              break;
+            }
+            case 96: {
+              int rawValue = input.readEnum();
+
+              direction_ = rawValue;
+              break;
+            }
+            case 104: {
+              int rawValue = input.readEnum();
+
+              offsetFlag_ = rawValue;
+              break;
+            }
+            case 112: {
+              int rawValue = input.readEnum();
+
+              hedgeFlag_ = rawValue;
+              break;
+            }
+            case 121: {
+
+              price_ = input.readDouble();
+              break;
+            }
+            case 133: {
+
+              volume_ = input.readFixed32();
+              break;
+            }
+            case 136: {
+              int rawValue = input.readEnum();
+
+              tradeType_ = rawValue;
+              break;
+            }
+            case 144: {
+              int rawValue = input.readEnum();
+
+              priceSource_ = rawValue;
+              break;
+            }
+            case 154: {
+              java.lang.String s = input.readStringRequireUtf8();
+
               tradingDay_ = s;
               break;
             }
-            case 98: {
+            case 162: {
               java.lang.String s = input.readStringRequireUtf8();
 
               tradeDate_ = s;
               break;
             }
-            case 106: {
+            case 170: {
               java.lang.String s = input.readStringRequireUtf8();
 
               tradeTime_ = s;
               break;
             }
-            case 113: {
+            case 177: {
 
               tradeTimestamp_ = input.readFixed64();
               break;
             }
-            case 122: {
+            case 186: {
               xyz.redtorch.pb.CoreField.ContractField.Builder subBuilder = null;
               if (contract_ != null) {
                 subBuilder = contract_.toBuilder();
@@ -11324,17 +13593,10 @@ public final class CoreField {
 
               break;
             }
-            case 130: {
-              xyz.redtorch.pb.CoreField.GatewayField.Builder subBuilder = null;
-              if (gateway_ != null) {
-                subBuilder = gateway_.toBuilder();
-              }
-              gateway_ = input.readMessage(xyz.redtorch.pb.CoreField.GatewayField.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(gateway_);
-                gateway_ = subBuilder.buildPartial();
-              }
+            case 194: {
+              java.lang.String s = input.readStringRequireUtf8();
 
+              gatewayId_ = s;
               break;
             }
             default: {
@@ -11373,7 +13635,7 @@ public final class CoreField {
     private volatile java.lang.Object tradeId_;
     /**
      * <pre>
-     * 成交ID,通常是&lt;网关ID&#64;方向&#64;成交编号&gt;，加入方向是因为部分交易所发生违规自成交后,成交ID相同
+     * 成交ID,通常是&lt;网关ID&#64;定单编号&#64;方向&#64;成交编号&gt;，加入方向是因为部分交易所发生违规自成交后,成交ID相同
      * </pre>
      *
      * <code>string tradeId = 1;</code>
@@ -11392,7 +13654,7 @@ public final class CoreField {
     }
     /**
      * <pre>
-     * 成交ID,通常是&lt;网关ID&#64;方向&#64;成交编号&gt;，加入方向是因为部分交易所发生违规自成交后,成交ID相同
+     * 成交ID,通常是&lt;网关ID&#64;定单编号&#64;方向&#64;成交编号&gt;，加入方向是因为部分交易所发生违规自成交后,成交ID相同
      * </pre>
      *
      * <code>string tradeId = 1;</code>
@@ -11579,14 +13841,224 @@ public final class CoreField {
       }
     }
 
-    public static final int ACCOUNTID_FIELD_NUMBER = 6;
+    public static final int ORDERLOCALID_FIELD_NUMBER = 6;
+    private volatile java.lang.Object orderLocalId_;
+    /**
+     * <pre>
+     * 本地报单编号
+     * </pre>
+     *
+     * <code>string orderLocalId = 6;</code>
+     */
+    public java.lang.String getOrderLocalId() {
+      java.lang.Object ref = orderLocalId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        orderLocalId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 本地报单编号
+     * </pre>
+     *
+     * <code>string orderLocalId = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getOrderLocalIdBytes() {
+      java.lang.Object ref = orderLocalId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        orderLocalId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int BROKERORDERSEQ_FIELD_NUMBER = 7;
+    private volatile java.lang.Object brokerOrderSeq_;
+    /**
+     * <pre>
+     *经纪公司报单编号
+     * </pre>
+     *
+     * <code>string brokerOrderSeq = 7;</code>
+     */
+    public java.lang.String getBrokerOrderSeq() {
+      java.lang.Object ref = brokerOrderSeq_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        brokerOrderSeq_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *经纪公司报单编号
+     * </pre>
+     *
+     * <code>string brokerOrderSeq = 7;</code>
+     */
+    public com.google.protobuf.ByteString
+        getBrokerOrderSeqBytes() {
+      java.lang.Object ref = brokerOrderSeq_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        brokerOrderSeq_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ORDERSYSID_FIELD_NUMBER = 8;
+    private volatile java.lang.Object orderSysId_;
+    /**
+     * <pre>
+     * 报单编号
+     * </pre>
+     *
+     * <code>string orderSysId = 8;</code>
+     */
+    public java.lang.String getOrderSysId() {
+      java.lang.Object ref = orderSysId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        orderSysId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 报单编号
+     * </pre>
+     *
+     * <code>string orderSysId = 8;</code>
+     */
+    public com.google.protobuf.ByteString
+        getOrderSysIdBytes() {
+      java.lang.Object ref = orderSysId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        orderSysId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SETTLEMENTID_FIELD_NUMBER = 9;
+    private volatile java.lang.Object settlementId_;
+    /**
+     * <pre>
+     * 结算编号
+     * </pre>
+     *
+     * <code>string settlementId = 9;</code>
+     */
+    public java.lang.String getSettlementId() {
+      java.lang.Object ref = settlementId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        settlementId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 结算编号
+     * </pre>
+     *
+     * <code>string settlementId = 9;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSettlementIdBytes() {
+      java.lang.Object ref = settlementId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        settlementId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SEQUENCENO_FIELD_NUMBER = 10;
+    private volatile java.lang.Object sequenceNo_;
+    /**
+     * <pre>
+     * 序列号
+     * </pre>
+     *
+     * <code>string sequenceNo = 10;</code>
+     */
+    public java.lang.String getSequenceNo() {
+      java.lang.Object ref = sequenceNo_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        sequenceNo_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 序列号
+     * </pre>
+     *
+     * <code>string sequenceNo = 10;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSequenceNoBytes() {
+      java.lang.Object ref = sequenceNo_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        sequenceNo_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ACCOUNTID_FIELD_NUMBER = 11;
     private volatile java.lang.Object accountId_;
     /**
      * <pre>
      * 账户ID
      * </pre>
      *
-     * <code>string accountId = 6;</code>
+     * <code>string accountId = 11;</code>
      */
     public java.lang.String getAccountId() {
       java.lang.Object ref = accountId_;
@@ -11605,7 +14077,7 @@ public final class CoreField {
      * 账户ID
      * </pre>
      *
-     * <code>string accountId = 6;</code>
+     * <code>string accountId = 11;</code>
      */
     public com.google.protobuf.ByteString
         getAccountIdBytes() {
@@ -11621,14 +14093,14 @@ public final class CoreField {
       }
     }
 
-    public static final int DIRECTION_FIELD_NUMBER = 7;
+    public static final int DIRECTION_FIELD_NUMBER = 12;
     private int direction_;
     /**
      * <pre>
      * 方向
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.DirectionEnum direction = 7;</code>
+     * <code>.xyz.redtorch.pb.DirectionEnum direction = 12;</code>
      */
     public int getDirectionValue() {
       return direction_;
@@ -11638,7 +14110,7 @@ public final class CoreField {
      * 方向
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.DirectionEnum direction = 7;</code>
+     * <code>.xyz.redtorch.pb.DirectionEnum direction = 12;</code>
      */
     public xyz.redtorch.pb.CoreEnum.DirectionEnum getDirection() {
       @SuppressWarnings("deprecation")
@@ -11646,65 +14118,140 @@ public final class CoreField {
       return result == null ? xyz.redtorch.pb.CoreEnum.DirectionEnum.UNRECOGNIZED : result;
     }
 
-    public static final int OFFSET_FIELD_NUMBER = 8;
-    private int offset_;
+    public static final int OFFSETFLAG_FIELD_NUMBER = 13;
+    private int offsetFlag_;
     /**
      * <pre>
      * 开平
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.OffsetEnum offset = 8;</code>
+     * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 13;</code>
      */
-    public int getOffsetValue() {
-      return offset_;
+    public int getOffsetFlagValue() {
+      return offsetFlag_;
     }
     /**
      * <pre>
      * 开平
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.OffsetEnum offset = 8;</code>
+     * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 13;</code>
      */
-    public xyz.redtorch.pb.CoreEnum.OffsetEnum getOffset() {
+    public xyz.redtorch.pb.CoreEnum.OffsetFlagEnum getOffsetFlag() {
       @SuppressWarnings("deprecation")
-      xyz.redtorch.pb.CoreEnum.OffsetEnum result = xyz.redtorch.pb.CoreEnum.OffsetEnum.valueOf(offset_);
-      return result == null ? xyz.redtorch.pb.CoreEnum.OffsetEnum.UNRECOGNIZED : result;
+      xyz.redtorch.pb.CoreEnum.OffsetFlagEnum result = xyz.redtorch.pb.CoreEnum.OffsetFlagEnum.valueOf(offsetFlag_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.OffsetFlagEnum.UNRECOGNIZED : result;
     }
 
-    public static final int PRICE_FIELD_NUMBER = 9;
+    public static final int HEDGEFLAG_FIELD_NUMBER = 14;
+    private int hedgeFlag_;
+    /**
+     * <pre>
+     * 投机套保标识
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 14;</code>
+     */
+    public int getHedgeFlagValue() {
+      return hedgeFlag_;
+    }
+    /**
+     * <pre>
+     * 投机套保标识
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 14;</code>
+     */
+    public xyz.redtorch.pb.CoreEnum.HedgeFlagEnum getHedgeFlag() {
+      @SuppressWarnings("deprecation")
+      xyz.redtorch.pb.CoreEnum.HedgeFlagEnum result = xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.valueOf(hedgeFlag_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.UNRECOGNIZED : result;
+    }
+
+    public static final int PRICE_FIELD_NUMBER = 15;
     private double price_;
     /**
      * <pre>
      * 价格
      * </pre>
      *
-     * <code>double price = 9;</code>
+     * <code>double price = 15;</code>
      */
     public double getPrice() {
       return price_;
     }
 
-    public static final int VOLUME_FIELD_NUMBER = 10;
+    public static final int VOLUME_FIELD_NUMBER = 16;
     private int volume_;
     /**
      * <pre>
      * 数量
      * </pre>
      *
-     * <code>fixed32 volume = 10;</code>
+     * <code>fixed32 volume = 16;</code>
      */
     public int getVolume() {
       return volume_;
     }
 
-    public static final int TRADINGDAY_FIELD_NUMBER = 11;
+    public static final int TRADETYPE_FIELD_NUMBER = 17;
+    private int tradeType_;
+    /**
+     * <pre>
+     * 成交类型
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.TradeTypeEnum tradeType = 17;</code>
+     */
+    public int getTradeTypeValue() {
+      return tradeType_;
+    }
+    /**
+     * <pre>
+     * 成交类型
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.TradeTypeEnum tradeType = 17;</code>
+     */
+    public xyz.redtorch.pb.CoreEnum.TradeTypeEnum getTradeType() {
+      @SuppressWarnings("deprecation")
+      xyz.redtorch.pb.CoreEnum.TradeTypeEnum result = xyz.redtorch.pb.CoreEnum.TradeTypeEnum.valueOf(tradeType_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.TradeTypeEnum.UNRECOGNIZED : result;
+    }
+
+    public static final int PRICESOURCE_FIELD_NUMBER = 18;
+    private int priceSource_;
+    /**
+     * <pre>
+     * 成交价来源
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.PriceSourceEnum priceSource = 18;</code>
+     */
+    public int getPriceSourceValue() {
+      return priceSource_;
+    }
+    /**
+     * <pre>
+     * 成交价来源
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.PriceSourceEnum priceSource = 18;</code>
+     */
+    public xyz.redtorch.pb.CoreEnum.PriceSourceEnum getPriceSource() {
+      @SuppressWarnings("deprecation")
+      xyz.redtorch.pb.CoreEnum.PriceSourceEnum result = xyz.redtorch.pb.CoreEnum.PriceSourceEnum.valueOf(priceSource_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.PriceSourceEnum.UNRECOGNIZED : result;
+    }
+
+    public static final int TRADINGDAY_FIELD_NUMBER = 19;
     private volatile java.lang.Object tradingDay_;
     /**
      * <pre>
      * 交易日
      * </pre>
      *
-     * <code>string tradingDay = 11;</code>
+     * <code>string tradingDay = 19;</code>
      */
     public java.lang.String getTradingDay() {
       java.lang.Object ref = tradingDay_;
@@ -11723,7 +14270,7 @@ public final class CoreField {
      * 交易日
      * </pre>
      *
-     * <code>string tradingDay = 11;</code>
+     * <code>string tradingDay = 19;</code>
      */
     public com.google.protobuf.ByteString
         getTradingDayBytes() {
@@ -11739,14 +14286,14 @@ public final class CoreField {
       }
     }
 
-    public static final int TRADEDATE_FIELD_NUMBER = 12;
+    public static final int TRADEDATE_FIELD_NUMBER = 20;
     private volatile java.lang.Object tradeDate_;
     /**
      * <pre>
      * 成交日期
      * </pre>
      *
-     * <code>string tradeDate = 12;</code>
+     * <code>string tradeDate = 20;</code>
      */
     public java.lang.String getTradeDate() {
       java.lang.Object ref = tradeDate_;
@@ -11765,7 +14312,7 @@ public final class CoreField {
      * 成交日期
      * </pre>
      *
-     * <code>string tradeDate = 12;</code>
+     * <code>string tradeDate = 20;</code>
      */
     public com.google.protobuf.ByteString
         getTradeDateBytes() {
@@ -11781,14 +14328,14 @@ public final class CoreField {
       }
     }
 
-    public static final int TRADETIME_FIELD_NUMBER = 13;
+    public static final int TRADETIME_FIELD_NUMBER = 21;
     private volatile java.lang.Object tradeTime_;
     /**
      * <pre>
      * 成交时间(HHmmssSSS)
      * </pre>
      *
-     * <code>string tradeTime = 13;</code>
+     * <code>string tradeTime = 21;</code>
      */
     public java.lang.String getTradeTime() {
       java.lang.Object ref = tradeTime_;
@@ -11807,7 +14354,7 @@ public final class CoreField {
      * 成交时间(HHmmssSSS)
      * </pre>
      *
-     * <code>string tradeTime = 13;</code>
+     * <code>string tradeTime = 21;</code>
      */
     public com.google.protobuf.ByteString
         getTradeTimeBytes() {
@@ -11823,27 +14370,27 @@ public final class CoreField {
       }
     }
 
-    public static final int TRADETIMESTAMP_FIELD_NUMBER = 14;
+    public static final int TRADETIMESTAMP_FIELD_NUMBER = 22;
     private long tradeTimestamp_;
     /**
      * <pre>
      * 成交时间戳
      * </pre>
      *
-     * <code>fixed64 tradeTimestamp = 14;</code>
+     * <code>fixed64 tradeTimestamp = 22;</code>
      */
     public long getTradeTimestamp() {
       return tradeTimestamp_;
     }
 
-    public static final int CONTRACT_FIELD_NUMBER = 15;
+    public static final int CONTRACT_FIELD_NUMBER = 23;
     private xyz.redtorch.pb.CoreField.ContractField contract_;
     /**
      * <pre>
      * 合约
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ContractField contract = 15;</code>
+     * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
      */
     public boolean hasContract() {
       return contract_ != null;
@@ -11853,7 +14400,7 @@ public final class CoreField {
      * 合约
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ContractField contract = 15;</code>
+     * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
      */
     public xyz.redtorch.pb.CoreField.ContractField getContract() {
       return contract_ == null ? xyz.redtorch.pb.CoreField.ContractField.getDefaultInstance() : contract_;
@@ -11863,43 +14410,52 @@ public final class CoreField {
      * 合约
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ContractField contract = 15;</code>
+     * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
      */
     public xyz.redtorch.pb.CoreField.ContractFieldOrBuilder getContractOrBuilder() {
       return getContract();
     }
 
-    public static final int GATEWAY_FIELD_NUMBER = 16;
-    private xyz.redtorch.pb.CoreField.GatewayField gateway_;
+    public static final int GATEWAYID_FIELD_NUMBER = 24;
+    private volatile java.lang.Object gatewayId_;
     /**
      * <pre>
-     * 网关
+     * 网关ID
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 16;</code>
+     * <code>string gatewayId = 24;</code>
      */
-    public boolean hasGateway() {
-      return gateway_ != null;
+    public java.lang.String getGatewayId() {
+      java.lang.Object ref = gatewayId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        gatewayId_ = s;
+        return s;
+      }
     }
     /**
      * <pre>
-     * 网关
+     * 网关ID
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 16;</code>
+     * <code>string gatewayId = 24;</code>
      */
-    public xyz.redtorch.pb.CoreField.GatewayField getGateway() {
-      return gateway_ == null ? xyz.redtorch.pb.CoreField.GatewayField.getDefaultInstance() : gateway_;
-    }
-    /**
-     * <pre>
-     * 网关
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 16;</code>
-     */
-    public xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder getGatewayOrBuilder() {
-      return getGateway();
+    public com.google.protobuf.ByteString
+        getGatewayIdBytes() {
+      java.lang.Object ref = gatewayId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        gatewayId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     private byte memoizedIsInitialized = -1;
@@ -11931,38 +14487,62 @@ public final class CoreField {
       if (!getAdapterOrderIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, adapterOrderId_);
       }
+      if (!getOrderLocalIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, orderLocalId_);
+      }
+      if (!getBrokerOrderSeqBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, brokerOrderSeq_);
+      }
+      if (!getOrderSysIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, orderSysId_);
+      }
+      if (!getSettlementIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, settlementId_);
+      }
+      if (!getSequenceNoBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, sequenceNo_);
+      }
       if (!getAccountIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, accountId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, accountId_);
       }
-      if (direction_ != xyz.redtorch.pb.CoreEnum.DirectionEnum.UNKNOWN_DIRECTION.getNumber()) {
-        output.writeEnum(7, direction_);
+      if (direction_ != xyz.redtorch.pb.CoreEnum.DirectionEnum.D_Unknown.getNumber()) {
+        output.writeEnum(12, direction_);
       }
-      if (offset_ != xyz.redtorch.pb.CoreEnum.OffsetEnum.UNKNOWN_OFFSET.getNumber()) {
-        output.writeEnum(8, offset_);
+      if (offsetFlag_ != xyz.redtorch.pb.CoreEnum.OffsetFlagEnum.OF_Unkonwn.getNumber()) {
+        output.writeEnum(13, offsetFlag_);
+      }
+      if (hedgeFlag_ != xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.HF_Unknown.getNumber()) {
+        output.writeEnum(14, hedgeFlag_);
       }
       if (price_ != 0D) {
-        output.writeDouble(9, price_);
+        output.writeDouble(15, price_);
       }
       if (volume_ != 0) {
-        output.writeFixed32(10, volume_);
+        output.writeFixed32(16, volume_);
+      }
+      if (tradeType_ != xyz.redtorch.pb.CoreEnum.TradeTypeEnum.TT_Unkonwn.getNumber()) {
+        output.writeEnum(17, tradeType_);
+      }
+      if (priceSource_ != xyz.redtorch.pb.CoreEnum.PriceSourceEnum.PSRC_Unkonwn.getNumber()) {
+        output.writeEnum(18, priceSource_);
       }
       if (!getTradingDayBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, tradingDay_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 19, tradingDay_);
       }
       if (!getTradeDateBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 12, tradeDate_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 20, tradeDate_);
       }
       if (!getTradeTimeBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 13, tradeTime_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 21, tradeTime_);
       }
       if (tradeTimestamp_ != 0L) {
-        output.writeFixed64(14, tradeTimestamp_);
+        output.writeFixed64(22, tradeTimestamp_);
       }
       if (contract_ != null) {
-        output.writeMessage(15, getContract());
+        output.writeMessage(23, getContract());
       }
-      if (gateway_ != null) {
-        output.writeMessage(16, getGateway());
+      if (!getGatewayIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 24, gatewayId_);
       }
       unknownFields.writeTo(output);
     }
@@ -11988,45 +14568,71 @@ public final class CoreField {
       if (!getAdapterOrderIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, adapterOrderId_);
       }
+      if (!getOrderLocalIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, orderLocalId_);
+      }
+      if (!getBrokerOrderSeqBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, brokerOrderSeq_);
+      }
+      if (!getOrderSysIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, orderSysId_);
+      }
+      if (!getSettlementIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, settlementId_);
+      }
+      if (!getSequenceNoBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, sequenceNo_);
+      }
       if (!getAccountIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, accountId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, accountId_);
       }
-      if (direction_ != xyz.redtorch.pb.CoreEnum.DirectionEnum.UNKNOWN_DIRECTION.getNumber()) {
+      if (direction_ != xyz.redtorch.pb.CoreEnum.DirectionEnum.D_Unknown.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(7, direction_);
+          .computeEnumSize(12, direction_);
       }
-      if (offset_ != xyz.redtorch.pb.CoreEnum.OffsetEnum.UNKNOWN_OFFSET.getNumber()) {
+      if (offsetFlag_ != xyz.redtorch.pb.CoreEnum.OffsetFlagEnum.OF_Unkonwn.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(8, offset_);
+          .computeEnumSize(13, offsetFlag_);
+      }
+      if (hedgeFlag_ != xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.HF_Unknown.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(14, hedgeFlag_);
       }
       if (price_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(9, price_);
+          .computeDoubleSize(15, price_);
       }
       if (volume_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed32Size(10, volume_);
+          .computeFixed32Size(16, volume_);
+      }
+      if (tradeType_ != xyz.redtorch.pb.CoreEnum.TradeTypeEnum.TT_Unkonwn.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(17, tradeType_);
+      }
+      if (priceSource_ != xyz.redtorch.pb.CoreEnum.PriceSourceEnum.PSRC_Unkonwn.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(18, priceSource_);
       }
       if (!getTradingDayBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, tradingDay_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(19, tradingDay_);
       }
       if (!getTradeDateBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(12, tradeDate_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(20, tradeDate_);
       }
       if (!getTradeTimeBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(13, tradeTime_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(21, tradeTime_);
       }
       if (tradeTimestamp_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed64Size(14, tradeTimestamp_);
+          .computeFixed64Size(22, tradeTimestamp_);
       }
       if (contract_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(15, getContract());
+          .computeMessageSize(23, getContract());
       }
-      if (gateway_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(16, getGateway());
+      if (!getGatewayIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(24, gatewayId_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -12054,16 +14660,29 @@ public final class CoreField {
           .equals(other.getOrderId());
       result = result && getAdapterOrderId()
           .equals(other.getAdapterOrderId());
+      result = result && getOrderLocalId()
+          .equals(other.getOrderLocalId());
+      result = result && getBrokerOrderSeq()
+          .equals(other.getBrokerOrderSeq());
+      result = result && getOrderSysId()
+          .equals(other.getOrderSysId());
+      result = result && getSettlementId()
+          .equals(other.getSettlementId());
+      result = result && getSequenceNo()
+          .equals(other.getSequenceNo());
       result = result && getAccountId()
           .equals(other.getAccountId());
       result = result && direction_ == other.direction_;
-      result = result && offset_ == other.offset_;
+      result = result && offsetFlag_ == other.offsetFlag_;
+      result = result && hedgeFlag_ == other.hedgeFlag_;
       result = result && (
           java.lang.Double.doubleToLongBits(getPrice())
           == java.lang.Double.doubleToLongBits(
               other.getPrice()));
       result = result && (getVolume()
           == other.getVolume());
+      result = result && tradeType_ == other.tradeType_;
+      result = result && priceSource_ == other.priceSource_;
       result = result && getTradingDay()
           .equals(other.getTradingDay());
       result = result && getTradeDate()
@@ -12077,11 +14696,8 @@ public final class CoreField {
         result = result && getContract()
             .equals(other.getContract());
       }
-      result = result && (hasGateway() == other.hasGateway());
-      if (hasGateway()) {
-        result = result && getGateway()
-            .equals(other.getGateway());
-      }
+      result = result && getGatewayId()
+          .equals(other.getGatewayId());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -12103,17 +14719,33 @@ public final class CoreField {
       hash = (53 * hash) + getOrderId().hashCode();
       hash = (37 * hash) + ADAPTERORDERID_FIELD_NUMBER;
       hash = (53 * hash) + getAdapterOrderId().hashCode();
+      hash = (37 * hash) + ORDERLOCALID_FIELD_NUMBER;
+      hash = (53 * hash) + getOrderLocalId().hashCode();
+      hash = (37 * hash) + BROKERORDERSEQ_FIELD_NUMBER;
+      hash = (53 * hash) + getBrokerOrderSeq().hashCode();
+      hash = (37 * hash) + ORDERSYSID_FIELD_NUMBER;
+      hash = (53 * hash) + getOrderSysId().hashCode();
+      hash = (37 * hash) + SETTLEMENTID_FIELD_NUMBER;
+      hash = (53 * hash) + getSettlementId().hashCode();
+      hash = (37 * hash) + SEQUENCENO_FIELD_NUMBER;
+      hash = (53 * hash) + getSequenceNo().hashCode();
       hash = (37 * hash) + ACCOUNTID_FIELD_NUMBER;
       hash = (53 * hash) + getAccountId().hashCode();
       hash = (37 * hash) + DIRECTION_FIELD_NUMBER;
       hash = (53 * hash) + direction_;
-      hash = (37 * hash) + OFFSET_FIELD_NUMBER;
-      hash = (53 * hash) + offset_;
+      hash = (37 * hash) + OFFSETFLAG_FIELD_NUMBER;
+      hash = (53 * hash) + offsetFlag_;
+      hash = (37 * hash) + HEDGEFLAG_FIELD_NUMBER;
+      hash = (53 * hash) + hedgeFlag_;
       hash = (37 * hash) + PRICE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           java.lang.Double.doubleToLongBits(getPrice()));
       hash = (37 * hash) + VOLUME_FIELD_NUMBER;
       hash = (53 * hash) + getVolume();
+      hash = (37 * hash) + TRADETYPE_FIELD_NUMBER;
+      hash = (53 * hash) + tradeType_;
+      hash = (37 * hash) + PRICESOURCE_FIELD_NUMBER;
+      hash = (53 * hash) + priceSource_;
       hash = (37 * hash) + TRADINGDAY_FIELD_NUMBER;
       hash = (53 * hash) + getTradingDay().hashCode();
       hash = (37 * hash) + TRADEDATE_FIELD_NUMBER;
@@ -12127,10 +14759,8 @@ public final class CoreField {
         hash = (37 * hash) + CONTRACT_FIELD_NUMBER;
         hash = (53 * hash) + getContract().hashCode();
       }
-      if (hasGateway()) {
-        hash = (37 * hash) + GATEWAY_FIELD_NUMBER;
-        hash = (53 * hash) + getGateway().hashCode();
-      }
+      hash = (37 * hash) + GATEWAYID_FIELD_NUMBER;
+      hash = (53 * hash) + getGatewayId().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -12278,15 +14908,31 @@ public final class CoreField {
 
         adapterOrderId_ = "";
 
+        orderLocalId_ = "";
+
+        brokerOrderSeq_ = "";
+
+        orderSysId_ = "";
+
+        settlementId_ = "";
+
+        sequenceNo_ = "";
+
         accountId_ = "";
 
         direction_ = 0;
 
-        offset_ = 0;
+        offsetFlag_ = 0;
+
+        hedgeFlag_ = 0;
 
         price_ = 0D;
 
         volume_ = 0;
+
+        tradeType_ = 0;
+
+        priceSource_ = 0;
 
         tradingDay_ = "";
 
@@ -12302,12 +14948,8 @@ public final class CoreField {
           contract_ = null;
           contractBuilder_ = null;
         }
-        if (gatewayBuilder_ == null) {
-          gateway_ = null;
-        } else {
-          gateway_ = null;
-          gatewayBuilder_ = null;
-        }
+        gatewayId_ = "";
+
         return this;
       }
 
@@ -12339,11 +14981,19 @@ public final class CoreField {
         result.originOrderId_ = originOrderId_;
         result.orderId_ = orderId_;
         result.adapterOrderId_ = adapterOrderId_;
+        result.orderLocalId_ = orderLocalId_;
+        result.brokerOrderSeq_ = brokerOrderSeq_;
+        result.orderSysId_ = orderSysId_;
+        result.settlementId_ = settlementId_;
+        result.sequenceNo_ = sequenceNo_;
         result.accountId_ = accountId_;
         result.direction_ = direction_;
-        result.offset_ = offset_;
+        result.offsetFlag_ = offsetFlag_;
+        result.hedgeFlag_ = hedgeFlag_;
         result.price_ = price_;
         result.volume_ = volume_;
+        result.tradeType_ = tradeType_;
+        result.priceSource_ = priceSource_;
         result.tradingDay_ = tradingDay_;
         result.tradeDate_ = tradeDate_;
         result.tradeTime_ = tradeTime_;
@@ -12353,11 +15003,7 @@ public final class CoreField {
         } else {
           result.contract_ = contractBuilder_.build();
         }
-        if (gatewayBuilder_ == null) {
-          result.gateway_ = gateway_;
-        } else {
-          result.gateway_ = gatewayBuilder_.build();
-        }
+        result.gatewayId_ = gatewayId_;
         onBuilt();
         return result;
       }
@@ -12426,6 +15072,26 @@ public final class CoreField {
           adapterOrderId_ = other.adapterOrderId_;
           onChanged();
         }
+        if (!other.getOrderLocalId().isEmpty()) {
+          orderLocalId_ = other.orderLocalId_;
+          onChanged();
+        }
+        if (!other.getBrokerOrderSeq().isEmpty()) {
+          brokerOrderSeq_ = other.brokerOrderSeq_;
+          onChanged();
+        }
+        if (!other.getOrderSysId().isEmpty()) {
+          orderSysId_ = other.orderSysId_;
+          onChanged();
+        }
+        if (!other.getSettlementId().isEmpty()) {
+          settlementId_ = other.settlementId_;
+          onChanged();
+        }
+        if (!other.getSequenceNo().isEmpty()) {
+          sequenceNo_ = other.sequenceNo_;
+          onChanged();
+        }
         if (!other.getAccountId().isEmpty()) {
           accountId_ = other.accountId_;
           onChanged();
@@ -12433,14 +15099,23 @@ public final class CoreField {
         if (other.direction_ != 0) {
           setDirectionValue(other.getDirectionValue());
         }
-        if (other.offset_ != 0) {
-          setOffsetValue(other.getOffsetValue());
+        if (other.offsetFlag_ != 0) {
+          setOffsetFlagValue(other.getOffsetFlagValue());
+        }
+        if (other.hedgeFlag_ != 0) {
+          setHedgeFlagValue(other.getHedgeFlagValue());
         }
         if (other.getPrice() != 0D) {
           setPrice(other.getPrice());
         }
         if (other.getVolume() != 0) {
           setVolume(other.getVolume());
+        }
+        if (other.tradeType_ != 0) {
+          setTradeTypeValue(other.getTradeTypeValue());
+        }
+        if (other.priceSource_ != 0) {
+          setPriceSourceValue(other.getPriceSourceValue());
         }
         if (!other.getTradingDay().isEmpty()) {
           tradingDay_ = other.tradingDay_;
@@ -12460,8 +15135,9 @@ public final class CoreField {
         if (other.hasContract()) {
           mergeContract(other.getContract());
         }
-        if (other.hasGateway()) {
-          mergeGateway(other.getGateway());
+        if (!other.getGatewayId().isEmpty()) {
+          gatewayId_ = other.gatewayId_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -12495,7 +15171,7 @@ public final class CoreField {
       private java.lang.Object tradeId_ = "";
       /**
        * <pre>
-       * 成交ID,通常是&lt;网关ID&#64;方向&#64;成交编号&gt;，加入方向是因为部分交易所发生违规自成交后,成交ID相同
+       * 成交ID,通常是&lt;网关ID&#64;定单编号&#64;方向&#64;成交编号&gt;，加入方向是因为部分交易所发生违规自成交后,成交ID相同
        * </pre>
        *
        * <code>string tradeId = 1;</code>
@@ -12514,7 +15190,7 @@ public final class CoreField {
       }
       /**
        * <pre>
-       * 成交ID,通常是&lt;网关ID&#64;方向&#64;成交编号&gt;，加入方向是因为部分交易所发生违规自成交后,成交ID相同
+       * 成交ID,通常是&lt;网关ID&#64;定单编号&#64;方向&#64;成交编号&gt;，加入方向是因为部分交易所发生违规自成交后,成交ID相同
        * </pre>
        *
        * <code>string tradeId = 1;</code>
@@ -12534,7 +15210,7 @@ public final class CoreField {
       }
       /**
        * <pre>
-       * 成交ID,通常是&lt;网关ID&#64;方向&#64;成交编号&gt;，加入方向是因为部分交易所发生违规自成交后,成交ID相同
+       * 成交ID,通常是&lt;网关ID&#64;定单编号&#64;方向&#64;成交编号&gt;，加入方向是因为部分交易所发生违规自成交后,成交ID相同
        * </pre>
        *
        * <code>string tradeId = 1;</code>
@@ -12551,7 +15227,7 @@ public final class CoreField {
       }
       /**
        * <pre>
-       * 成交ID,通常是&lt;网关ID&#64;方向&#64;成交编号&gt;，加入方向是因为部分交易所发生违规自成交后,成交ID相同
+       * 成交ID,通常是&lt;网关ID&#64;定单编号&#64;方向&#64;成交编号&gt;，加入方向是因为部分交易所发生违规自成交后,成交ID相同
        * </pre>
        *
        * <code>string tradeId = 1;</code>
@@ -12564,7 +15240,7 @@ public final class CoreField {
       }
       /**
        * <pre>
-       * 成交ID,通常是&lt;网关ID&#64;方向&#64;成交编号&gt;，加入方向是因为部分交易所发生违规自成交后,成交ID相同
+       * 成交ID,通常是&lt;网关ID&#64;定单编号&#64;方向&#64;成交编号&gt;，加入方向是因为部分交易所发生违规自成交后,成交ID相同
        * </pre>
        *
        * <code>string tradeId = 1;</code>
@@ -12937,13 +15613,458 @@ public final class CoreField {
         return this;
       }
 
+      private java.lang.Object orderLocalId_ = "";
+      /**
+       * <pre>
+       * 本地报单编号
+       * </pre>
+       *
+       * <code>string orderLocalId = 6;</code>
+       */
+      public java.lang.String getOrderLocalId() {
+        java.lang.Object ref = orderLocalId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          orderLocalId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 本地报单编号
+       * </pre>
+       *
+       * <code>string orderLocalId = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getOrderLocalIdBytes() {
+        java.lang.Object ref = orderLocalId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          orderLocalId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 本地报单编号
+       * </pre>
+       *
+       * <code>string orderLocalId = 6;</code>
+       */
+      public Builder setOrderLocalId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        orderLocalId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 本地报单编号
+       * </pre>
+       *
+       * <code>string orderLocalId = 6;</code>
+       */
+      public Builder clearOrderLocalId() {
+        
+        orderLocalId_ = getDefaultInstance().getOrderLocalId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 本地报单编号
+       * </pre>
+       *
+       * <code>string orderLocalId = 6;</code>
+       */
+      public Builder setOrderLocalIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        orderLocalId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object brokerOrderSeq_ = "";
+      /**
+       * <pre>
+       *经纪公司报单编号
+       * </pre>
+       *
+       * <code>string brokerOrderSeq = 7;</code>
+       */
+      public java.lang.String getBrokerOrderSeq() {
+        java.lang.Object ref = brokerOrderSeq_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          brokerOrderSeq_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *经纪公司报单编号
+       * </pre>
+       *
+       * <code>string brokerOrderSeq = 7;</code>
+       */
+      public com.google.protobuf.ByteString
+          getBrokerOrderSeqBytes() {
+        java.lang.Object ref = brokerOrderSeq_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          brokerOrderSeq_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *经纪公司报单编号
+       * </pre>
+       *
+       * <code>string brokerOrderSeq = 7;</code>
+       */
+      public Builder setBrokerOrderSeq(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        brokerOrderSeq_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *经纪公司报单编号
+       * </pre>
+       *
+       * <code>string brokerOrderSeq = 7;</code>
+       */
+      public Builder clearBrokerOrderSeq() {
+        
+        brokerOrderSeq_ = getDefaultInstance().getBrokerOrderSeq();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *经纪公司报单编号
+       * </pre>
+       *
+       * <code>string brokerOrderSeq = 7;</code>
+       */
+      public Builder setBrokerOrderSeqBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        brokerOrderSeq_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object orderSysId_ = "";
+      /**
+       * <pre>
+       * 报单编号
+       * </pre>
+       *
+       * <code>string orderSysId = 8;</code>
+       */
+      public java.lang.String getOrderSysId() {
+        java.lang.Object ref = orderSysId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          orderSysId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 报单编号
+       * </pre>
+       *
+       * <code>string orderSysId = 8;</code>
+       */
+      public com.google.protobuf.ByteString
+          getOrderSysIdBytes() {
+        java.lang.Object ref = orderSysId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          orderSysId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 报单编号
+       * </pre>
+       *
+       * <code>string orderSysId = 8;</code>
+       */
+      public Builder setOrderSysId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        orderSysId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 报单编号
+       * </pre>
+       *
+       * <code>string orderSysId = 8;</code>
+       */
+      public Builder clearOrderSysId() {
+        
+        orderSysId_ = getDefaultInstance().getOrderSysId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 报单编号
+       * </pre>
+       *
+       * <code>string orderSysId = 8;</code>
+       */
+      public Builder setOrderSysIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        orderSysId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object settlementId_ = "";
+      /**
+       * <pre>
+       * 结算编号
+       * </pre>
+       *
+       * <code>string settlementId = 9;</code>
+       */
+      public java.lang.String getSettlementId() {
+        java.lang.Object ref = settlementId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          settlementId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 结算编号
+       * </pre>
+       *
+       * <code>string settlementId = 9;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSettlementIdBytes() {
+        java.lang.Object ref = settlementId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          settlementId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 结算编号
+       * </pre>
+       *
+       * <code>string settlementId = 9;</code>
+       */
+      public Builder setSettlementId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        settlementId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 结算编号
+       * </pre>
+       *
+       * <code>string settlementId = 9;</code>
+       */
+      public Builder clearSettlementId() {
+        
+        settlementId_ = getDefaultInstance().getSettlementId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 结算编号
+       * </pre>
+       *
+       * <code>string settlementId = 9;</code>
+       */
+      public Builder setSettlementIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        settlementId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object sequenceNo_ = "";
+      /**
+       * <pre>
+       * 序列号
+       * </pre>
+       *
+       * <code>string sequenceNo = 10;</code>
+       */
+      public java.lang.String getSequenceNo() {
+        java.lang.Object ref = sequenceNo_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          sequenceNo_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 序列号
+       * </pre>
+       *
+       * <code>string sequenceNo = 10;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSequenceNoBytes() {
+        java.lang.Object ref = sequenceNo_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          sequenceNo_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 序列号
+       * </pre>
+       *
+       * <code>string sequenceNo = 10;</code>
+       */
+      public Builder setSequenceNo(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        sequenceNo_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 序列号
+       * </pre>
+       *
+       * <code>string sequenceNo = 10;</code>
+       */
+      public Builder clearSequenceNo() {
+        
+        sequenceNo_ = getDefaultInstance().getSequenceNo();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 序列号
+       * </pre>
+       *
+       * <code>string sequenceNo = 10;</code>
+       */
+      public Builder setSequenceNoBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        sequenceNo_ = value;
+        onChanged();
+        return this;
+      }
+
       private java.lang.Object accountId_ = "";
       /**
        * <pre>
        * 账户ID
        * </pre>
        *
-       * <code>string accountId = 6;</code>
+       * <code>string accountId = 11;</code>
        */
       public java.lang.String getAccountId() {
         java.lang.Object ref = accountId_;
@@ -12962,7 +16083,7 @@ public final class CoreField {
        * 账户ID
        * </pre>
        *
-       * <code>string accountId = 6;</code>
+       * <code>string accountId = 11;</code>
        */
       public com.google.protobuf.ByteString
           getAccountIdBytes() {
@@ -12982,7 +16103,7 @@ public final class CoreField {
        * 账户ID
        * </pre>
        *
-       * <code>string accountId = 6;</code>
+       * <code>string accountId = 11;</code>
        */
       public Builder setAccountId(
           java.lang.String value) {
@@ -12999,7 +16120,7 @@ public final class CoreField {
        * 账户ID
        * </pre>
        *
-       * <code>string accountId = 6;</code>
+       * <code>string accountId = 11;</code>
        */
       public Builder clearAccountId() {
         
@@ -13012,7 +16133,7 @@ public final class CoreField {
        * 账户ID
        * </pre>
        *
-       * <code>string accountId = 6;</code>
+       * <code>string accountId = 11;</code>
        */
       public Builder setAccountIdBytes(
           com.google.protobuf.ByteString value) {
@@ -13032,7 +16153,7 @@ public final class CoreField {
        * 方向
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.DirectionEnum direction = 7;</code>
+       * <code>.xyz.redtorch.pb.DirectionEnum direction = 12;</code>
        */
       public int getDirectionValue() {
         return direction_;
@@ -13042,7 +16163,7 @@ public final class CoreField {
        * 方向
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.DirectionEnum direction = 7;</code>
+       * <code>.xyz.redtorch.pb.DirectionEnum direction = 12;</code>
        */
       public Builder setDirectionValue(int value) {
         direction_ = value;
@@ -13054,7 +16175,7 @@ public final class CoreField {
        * 方向
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.DirectionEnum direction = 7;</code>
+       * <code>.xyz.redtorch.pb.DirectionEnum direction = 12;</code>
        */
       public xyz.redtorch.pb.CoreEnum.DirectionEnum getDirection() {
         @SuppressWarnings("deprecation")
@@ -13066,7 +16187,7 @@ public final class CoreField {
        * 方向
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.DirectionEnum direction = 7;</code>
+       * <code>.xyz.redtorch.pb.DirectionEnum direction = 12;</code>
        */
       public Builder setDirection(xyz.redtorch.pb.CoreEnum.DirectionEnum value) {
         if (value == null) {
@@ -13082,7 +16203,7 @@ public final class CoreField {
        * 方向
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.DirectionEnum direction = 7;</code>
+       * <code>.xyz.redtorch.pb.DirectionEnum direction = 12;</code>
        */
       public Builder clearDirection() {
         
@@ -13091,26 +16212,26 @@ public final class CoreField {
         return this;
       }
 
-      private int offset_ = 0;
+      private int offsetFlag_ = 0;
       /**
        * <pre>
        * 开平
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OffsetEnum offset = 8;</code>
+       * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 13;</code>
        */
-      public int getOffsetValue() {
-        return offset_;
+      public int getOffsetFlagValue() {
+        return offsetFlag_;
       }
       /**
        * <pre>
        * 开平
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OffsetEnum offset = 8;</code>
+       * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 13;</code>
        */
-      public Builder setOffsetValue(int value) {
-        offset_ = value;
+      public Builder setOffsetFlagValue(int value) {
+        offsetFlag_ = value;
         onChanged();
         return this;
       }
@@ -13119,26 +16240,26 @@ public final class CoreField {
        * 开平
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OffsetEnum offset = 8;</code>
+       * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 13;</code>
        */
-      public xyz.redtorch.pb.CoreEnum.OffsetEnum getOffset() {
+      public xyz.redtorch.pb.CoreEnum.OffsetFlagEnum getOffsetFlag() {
         @SuppressWarnings("deprecation")
-        xyz.redtorch.pb.CoreEnum.OffsetEnum result = xyz.redtorch.pb.CoreEnum.OffsetEnum.valueOf(offset_);
-        return result == null ? xyz.redtorch.pb.CoreEnum.OffsetEnum.UNRECOGNIZED : result;
+        xyz.redtorch.pb.CoreEnum.OffsetFlagEnum result = xyz.redtorch.pb.CoreEnum.OffsetFlagEnum.valueOf(offsetFlag_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.OffsetFlagEnum.UNRECOGNIZED : result;
       }
       /**
        * <pre>
        * 开平
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OffsetEnum offset = 8;</code>
+       * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 13;</code>
        */
-      public Builder setOffset(xyz.redtorch.pb.CoreEnum.OffsetEnum value) {
+      public Builder setOffsetFlag(xyz.redtorch.pb.CoreEnum.OffsetFlagEnum value) {
         if (value == null) {
           throw new NullPointerException();
         }
         
-        offset_ = value.getNumber();
+        offsetFlag_ = value.getNumber();
         onChanged();
         return this;
       }
@@ -13147,11 +16268,76 @@ public final class CoreField {
        * 开平
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OffsetEnum offset = 8;</code>
+       * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 13;</code>
        */
-      public Builder clearOffset() {
+      public Builder clearOffsetFlag() {
         
-        offset_ = 0;
+        offsetFlag_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int hedgeFlag_ = 0;
+      /**
+       * <pre>
+       * 投机套保标识
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 14;</code>
+       */
+      public int getHedgeFlagValue() {
+        return hedgeFlag_;
+      }
+      /**
+       * <pre>
+       * 投机套保标识
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 14;</code>
+       */
+      public Builder setHedgeFlagValue(int value) {
+        hedgeFlag_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 投机套保标识
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 14;</code>
+       */
+      public xyz.redtorch.pb.CoreEnum.HedgeFlagEnum getHedgeFlag() {
+        @SuppressWarnings("deprecation")
+        xyz.redtorch.pb.CoreEnum.HedgeFlagEnum result = xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.valueOf(hedgeFlag_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 投机套保标识
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 14;</code>
+       */
+      public Builder setHedgeFlag(xyz.redtorch.pb.CoreEnum.HedgeFlagEnum value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        hedgeFlag_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 投机套保标识
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 14;</code>
+       */
+      public Builder clearHedgeFlag() {
+        
+        hedgeFlag_ = 0;
         onChanged();
         return this;
       }
@@ -13162,7 +16348,7 @@ public final class CoreField {
        * 价格
        * </pre>
        *
-       * <code>double price = 9;</code>
+       * <code>double price = 15;</code>
        */
       public double getPrice() {
         return price_;
@@ -13172,7 +16358,7 @@ public final class CoreField {
        * 价格
        * </pre>
        *
-       * <code>double price = 9;</code>
+       * <code>double price = 15;</code>
        */
       public Builder setPrice(double value) {
         
@@ -13185,7 +16371,7 @@ public final class CoreField {
        * 价格
        * </pre>
        *
-       * <code>double price = 9;</code>
+       * <code>double price = 15;</code>
        */
       public Builder clearPrice() {
         
@@ -13200,7 +16386,7 @@ public final class CoreField {
        * 数量
        * </pre>
        *
-       * <code>fixed32 volume = 10;</code>
+       * <code>fixed32 volume = 16;</code>
        */
       public int getVolume() {
         return volume_;
@@ -13210,7 +16396,7 @@ public final class CoreField {
        * 数量
        * </pre>
        *
-       * <code>fixed32 volume = 10;</code>
+       * <code>fixed32 volume = 16;</code>
        */
       public Builder setVolume(int value) {
         
@@ -13223,11 +16409,141 @@ public final class CoreField {
        * 数量
        * </pre>
        *
-       * <code>fixed32 volume = 10;</code>
+       * <code>fixed32 volume = 16;</code>
        */
       public Builder clearVolume() {
         
         volume_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int tradeType_ = 0;
+      /**
+       * <pre>
+       * 成交类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.TradeTypeEnum tradeType = 17;</code>
+       */
+      public int getTradeTypeValue() {
+        return tradeType_;
+      }
+      /**
+       * <pre>
+       * 成交类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.TradeTypeEnum tradeType = 17;</code>
+       */
+      public Builder setTradeTypeValue(int value) {
+        tradeType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 成交类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.TradeTypeEnum tradeType = 17;</code>
+       */
+      public xyz.redtorch.pb.CoreEnum.TradeTypeEnum getTradeType() {
+        @SuppressWarnings("deprecation")
+        xyz.redtorch.pb.CoreEnum.TradeTypeEnum result = xyz.redtorch.pb.CoreEnum.TradeTypeEnum.valueOf(tradeType_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.TradeTypeEnum.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 成交类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.TradeTypeEnum tradeType = 17;</code>
+       */
+      public Builder setTradeType(xyz.redtorch.pb.CoreEnum.TradeTypeEnum value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        tradeType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 成交类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.TradeTypeEnum tradeType = 17;</code>
+       */
+      public Builder clearTradeType() {
+        
+        tradeType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int priceSource_ = 0;
+      /**
+       * <pre>
+       * 成交价来源
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.PriceSourceEnum priceSource = 18;</code>
+       */
+      public int getPriceSourceValue() {
+        return priceSource_;
+      }
+      /**
+       * <pre>
+       * 成交价来源
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.PriceSourceEnum priceSource = 18;</code>
+       */
+      public Builder setPriceSourceValue(int value) {
+        priceSource_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 成交价来源
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.PriceSourceEnum priceSource = 18;</code>
+       */
+      public xyz.redtorch.pb.CoreEnum.PriceSourceEnum getPriceSource() {
+        @SuppressWarnings("deprecation")
+        xyz.redtorch.pb.CoreEnum.PriceSourceEnum result = xyz.redtorch.pb.CoreEnum.PriceSourceEnum.valueOf(priceSource_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.PriceSourceEnum.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 成交价来源
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.PriceSourceEnum priceSource = 18;</code>
+       */
+      public Builder setPriceSource(xyz.redtorch.pb.CoreEnum.PriceSourceEnum value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        priceSource_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 成交价来源
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.PriceSourceEnum priceSource = 18;</code>
+       */
+      public Builder clearPriceSource() {
+        
+        priceSource_ = 0;
         onChanged();
         return this;
       }
@@ -13238,7 +16554,7 @@ public final class CoreField {
        * 交易日
        * </pre>
        *
-       * <code>string tradingDay = 11;</code>
+       * <code>string tradingDay = 19;</code>
        */
       public java.lang.String getTradingDay() {
         java.lang.Object ref = tradingDay_;
@@ -13257,7 +16573,7 @@ public final class CoreField {
        * 交易日
        * </pre>
        *
-       * <code>string tradingDay = 11;</code>
+       * <code>string tradingDay = 19;</code>
        */
       public com.google.protobuf.ByteString
           getTradingDayBytes() {
@@ -13277,7 +16593,7 @@ public final class CoreField {
        * 交易日
        * </pre>
        *
-       * <code>string tradingDay = 11;</code>
+       * <code>string tradingDay = 19;</code>
        */
       public Builder setTradingDay(
           java.lang.String value) {
@@ -13294,7 +16610,7 @@ public final class CoreField {
        * 交易日
        * </pre>
        *
-       * <code>string tradingDay = 11;</code>
+       * <code>string tradingDay = 19;</code>
        */
       public Builder clearTradingDay() {
         
@@ -13307,7 +16623,7 @@ public final class CoreField {
        * 交易日
        * </pre>
        *
-       * <code>string tradingDay = 11;</code>
+       * <code>string tradingDay = 19;</code>
        */
       public Builder setTradingDayBytes(
           com.google.protobuf.ByteString value) {
@@ -13327,7 +16643,7 @@ public final class CoreField {
        * 成交日期
        * </pre>
        *
-       * <code>string tradeDate = 12;</code>
+       * <code>string tradeDate = 20;</code>
        */
       public java.lang.String getTradeDate() {
         java.lang.Object ref = tradeDate_;
@@ -13346,7 +16662,7 @@ public final class CoreField {
        * 成交日期
        * </pre>
        *
-       * <code>string tradeDate = 12;</code>
+       * <code>string tradeDate = 20;</code>
        */
       public com.google.protobuf.ByteString
           getTradeDateBytes() {
@@ -13366,7 +16682,7 @@ public final class CoreField {
        * 成交日期
        * </pre>
        *
-       * <code>string tradeDate = 12;</code>
+       * <code>string tradeDate = 20;</code>
        */
       public Builder setTradeDate(
           java.lang.String value) {
@@ -13383,7 +16699,7 @@ public final class CoreField {
        * 成交日期
        * </pre>
        *
-       * <code>string tradeDate = 12;</code>
+       * <code>string tradeDate = 20;</code>
        */
       public Builder clearTradeDate() {
         
@@ -13396,7 +16712,7 @@ public final class CoreField {
        * 成交日期
        * </pre>
        *
-       * <code>string tradeDate = 12;</code>
+       * <code>string tradeDate = 20;</code>
        */
       public Builder setTradeDateBytes(
           com.google.protobuf.ByteString value) {
@@ -13416,7 +16732,7 @@ public final class CoreField {
        * 成交时间(HHmmssSSS)
        * </pre>
        *
-       * <code>string tradeTime = 13;</code>
+       * <code>string tradeTime = 21;</code>
        */
       public java.lang.String getTradeTime() {
         java.lang.Object ref = tradeTime_;
@@ -13435,7 +16751,7 @@ public final class CoreField {
        * 成交时间(HHmmssSSS)
        * </pre>
        *
-       * <code>string tradeTime = 13;</code>
+       * <code>string tradeTime = 21;</code>
        */
       public com.google.protobuf.ByteString
           getTradeTimeBytes() {
@@ -13455,7 +16771,7 @@ public final class CoreField {
        * 成交时间(HHmmssSSS)
        * </pre>
        *
-       * <code>string tradeTime = 13;</code>
+       * <code>string tradeTime = 21;</code>
        */
       public Builder setTradeTime(
           java.lang.String value) {
@@ -13472,7 +16788,7 @@ public final class CoreField {
        * 成交时间(HHmmssSSS)
        * </pre>
        *
-       * <code>string tradeTime = 13;</code>
+       * <code>string tradeTime = 21;</code>
        */
       public Builder clearTradeTime() {
         
@@ -13485,7 +16801,7 @@ public final class CoreField {
        * 成交时间(HHmmssSSS)
        * </pre>
        *
-       * <code>string tradeTime = 13;</code>
+       * <code>string tradeTime = 21;</code>
        */
       public Builder setTradeTimeBytes(
           com.google.protobuf.ByteString value) {
@@ -13505,7 +16821,7 @@ public final class CoreField {
        * 成交时间戳
        * </pre>
        *
-       * <code>fixed64 tradeTimestamp = 14;</code>
+       * <code>fixed64 tradeTimestamp = 22;</code>
        */
       public long getTradeTimestamp() {
         return tradeTimestamp_;
@@ -13515,7 +16831,7 @@ public final class CoreField {
        * 成交时间戳
        * </pre>
        *
-       * <code>fixed64 tradeTimestamp = 14;</code>
+       * <code>fixed64 tradeTimestamp = 22;</code>
        */
       public Builder setTradeTimestamp(long value) {
         
@@ -13528,7 +16844,7 @@ public final class CoreField {
        * 成交时间戳
        * </pre>
        *
-       * <code>fixed64 tradeTimestamp = 14;</code>
+       * <code>fixed64 tradeTimestamp = 22;</code>
        */
       public Builder clearTradeTimestamp() {
         
@@ -13545,7 +16861,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 15;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
        */
       public boolean hasContract() {
         return contractBuilder_ != null || contract_ != null;
@@ -13555,7 +16871,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 15;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
        */
       public xyz.redtorch.pb.CoreField.ContractField getContract() {
         if (contractBuilder_ == null) {
@@ -13569,7 +16885,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 15;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
        */
       public Builder setContract(xyz.redtorch.pb.CoreField.ContractField value) {
         if (contractBuilder_ == null) {
@@ -13589,7 +16905,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 15;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
        */
       public Builder setContract(
           xyz.redtorch.pb.CoreField.ContractField.Builder builderForValue) {
@@ -13607,7 +16923,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 15;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
        */
       public Builder mergeContract(xyz.redtorch.pb.CoreField.ContractField value) {
         if (contractBuilder_ == null) {
@@ -13629,7 +16945,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 15;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
        */
       public Builder clearContract() {
         if (contractBuilder_ == null) {
@@ -13647,7 +16963,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 15;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
        */
       public xyz.redtorch.pb.CoreField.ContractField.Builder getContractBuilder() {
         
@@ -13659,7 +16975,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 15;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
        */
       public xyz.redtorch.pb.CoreField.ContractFieldOrBuilder getContractOrBuilder() {
         if (contractBuilder_ != null) {
@@ -13674,7 +16990,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 15;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           xyz.redtorch.pb.CoreField.ContractField, xyz.redtorch.pb.CoreField.ContractField.Builder, xyz.redtorch.pb.CoreField.ContractFieldOrBuilder> 
@@ -13690,157 +17006,93 @@ public final class CoreField {
         return contractBuilder_;
       }
 
-      private xyz.redtorch.pb.CoreField.GatewayField gateway_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          xyz.redtorch.pb.CoreField.GatewayField, xyz.redtorch.pb.CoreField.GatewayField.Builder, xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder> gatewayBuilder_;
+      private java.lang.Object gatewayId_ = "";
       /**
        * <pre>
-       * 网关
+       * 网关ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 16;</code>
+       * <code>string gatewayId = 24;</code>
        */
-      public boolean hasGateway() {
-        return gatewayBuilder_ != null || gateway_ != null;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 16;</code>
-       */
-      public xyz.redtorch.pb.CoreField.GatewayField getGateway() {
-        if (gatewayBuilder_ == null) {
-          return gateway_ == null ? xyz.redtorch.pb.CoreField.GatewayField.getDefaultInstance() : gateway_;
+      public java.lang.String getGatewayId() {
+        java.lang.Object ref = gatewayId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          gatewayId_ = s;
+          return s;
         } else {
-          return gatewayBuilder_.getMessage();
+          return (java.lang.String) ref;
         }
       }
       /**
        * <pre>
-       * 网关
+       * 网关ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 16;</code>
+       * <code>string gatewayId = 24;</code>
        */
-      public Builder setGateway(xyz.redtorch.pb.CoreField.GatewayField value) {
-        if (gatewayBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          gateway_ = value;
-          onChanged();
+      public com.google.protobuf.ByteString
+          getGatewayIdBytes() {
+        java.lang.Object ref = gatewayId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          gatewayId_ = b;
+          return b;
         } else {
-          gatewayBuilder_.setMessage(value);
+          return (com.google.protobuf.ByteString) ref;
         }
-
-        return this;
       }
       /**
        * <pre>
-       * 网关
+       * 网关ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 16;</code>
+       * <code>string gatewayId = 24;</code>
        */
-      public Builder setGateway(
-          xyz.redtorch.pb.CoreField.GatewayField.Builder builderForValue) {
-        if (gatewayBuilder_ == null) {
-          gateway_ = builderForValue.build();
-          onChanged();
-        } else {
-          gatewayBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 16;</code>
-       */
-      public Builder mergeGateway(xyz.redtorch.pb.CoreField.GatewayField value) {
-        if (gatewayBuilder_ == null) {
-          if (gateway_ != null) {
-            gateway_ =
-              xyz.redtorch.pb.CoreField.GatewayField.newBuilder(gateway_).mergeFrom(value).buildPartial();
-          } else {
-            gateway_ = value;
-          }
-          onChanged();
-        } else {
-          gatewayBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 16;</code>
-       */
-      public Builder clearGateway() {
-        if (gatewayBuilder_ == null) {
-          gateway_ = null;
-          onChanged();
-        } else {
-          gateway_ = null;
-          gatewayBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 16;</code>
-       */
-      public xyz.redtorch.pb.CoreField.GatewayField.Builder getGatewayBuilder() {
-        
+      public Builder setGatewayId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        gatewayId_ = value;
         onChanged();
-        return getGatewayFieldBuilder().getBuilder();
+        return this;
       }
       /**
        * <pre>
-       * 网关
+       * 网关ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 16;</code>
+       * <code>string gatewayId = 24;</code>
        */
-      public xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder getGatewayOrBuilder() {
-        if (gatewayBuilder_ != null) {
-          return gatewayBuilder_.getMessageOrBuilder();
-        } else {
-          return gateway_ == null ?
-              xyz.redtorch.pb.CoreField.GatewayField.getDefaultInstance() : gateway_;
-        }
+      public Builder clearGatewayId() {
+        
+        gatewayId_ = getDefaultInstance().getGatewayId();
+        onChanged();
+        return this;
       }
       /**
        * <pre>
-       * 网关
+       * 网关ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 16;</code>
+       * <code>string gatewayId = 24;</code>
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          xyz.redtorch.pb.CoreField.GatewayField, xyz.redtorch.pb.CoreField.GatewayField.Builder, xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder> 
-          getGatewayFieldBuilder() {
-        if (gatewayBuilder_ == null) {
-          gatewayBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              xyz.redtorch.pb.CoreField.GatewayField, xyz.redtorch.pb.CoreField.GatewayField.Builder, xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder>(
-                  getGateway(),
-                  getParentForChildren(),
-                  isClean());
-          gateway_ = null;
-        }
-        return gatewayBuilder_;
+      public Builder setGatewayIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        gatewayId_ = value;
+        onChanged();
+        return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -13901,7 +17153,7 @@ public final class CoreField {
 
     /**
      * <pre>
-     * 持仓在系统中的唯一代码,通常是&lt;合约代码&#64;交易所代码&#64;产品类型&#64;方向&#64;账户&#64;网关&gt;
+     * 持仓在系统中的唯一代码,通常是&lt;合约代码&#64;交易所代码&#64;产品类型&#64;方向&#64;投机套保标志&#64;账户&#64;币种&#64;网关&gt;
      * </pre>
      *
      * <code>string positionId = 1;</code>
@@ -13909,7 +17161,7 @@ public final class CoreField {
     java.lang.String getPositionId();
     /**
      * <pre>
-     * 持仓在系统中的唯一代码,通常是&lt;合约代码&#64;交易所代码&#64;产品类型&#64;方向&#64;账户&#64;网关&gt;
+     * 持仓在系统中的唯一代码,通常是&lt;合约代码&#64;交易所代码&#64;产品类型&#64;方向&#64;投机套保标志&#64;账户&#64;币种&#64;网关&gt;
      * </pre>
      *
      * <code>string positionId = 1;</code>
@@ -13940,17 +17192,17 @@ public final class CoreField {
      * 持仓方向
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.DirectionEnum direction = 3;</code>
+     * <code>.xyz.redtorch.pb.PositionDirectionEnum positionDirection = 3;</code>
      */
-    int getDirectionValue();
+    int getPositionDirectionValue();
     /**
      * <pre>
      * 持仓方向
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.DirectionEnum direction = 3;</code>
+     * <code>.xyz.redtorch.pb.PositionDirectionEnum positionDirection = 3;</code>
      */
-    xyz.redtorch.pb.CoreEnum.DirectionEnum getDirection();
+    xyz.redtorch.pb.CoreEnum.PositionDirectionEnum getPositionDirection();
 
     /**
      * <pre>
@@ -14116,10 +17368,27 @@ public final class CoreField {
 
     /**
      * <pre>
+     * 投机套保标识
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 22;</code>
+     */
+    int getHedgeFlagValue();
+    /**
+     * <pre>
+     * 投机套保标识
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 22;</code>
+     */
+    xyz.redtorch.pb.CoreEnum.HedgeFlagEnum getHedgeFlag();
+
+    /**
+     * <pre>
      * 合约
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+     * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
      */
     boolean hasContract();
     /**
@@ -14127,7 +17396,7 @@ public final class CoreField {
      * 合约
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+     * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
      */
     xyz.redtorch.pb.CoreField.ContractField getContract();
     /**
@@ -14135,34 +17404,27 @@ public final class CoreField {
      * 合约
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+     * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
      */
     xyz.redtorch.pb.CoreField.ContractFieldOrBuilder getContractOrBuilder();
 
     /**
      * <pre>
-     * 网关
+     * 网关ID
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
+     * <code>string gatewayId = 24;</code>
      */
-    boolean hasGateway();
+    java.lang.String getGatewayId();
     /**
      * <pre>
-     * 网关
+     * 网关ID
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
+     * <code>string gatewayId = 24;</code>
      */
-    xyz.redtorch.pb.CoreField.GatewayField getGateway();
-    /**
-     * <pre>
-     * 网关
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
-     */
-    xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder getGatewayOrBuilder();
+    com.google.protobuf.ByteString
+        getGatewayIdBytes();
   }
   /**
    * <pre>
@@ -14183,7 +17445,7 @@ public final class CoreField {
     private PositionField() {
       positionId_ = "";
       accountId_ = "";
-      direction_ = 0;
+      positionDirection_ = 0;
       position_ = 0;
       frozen_ = 0;
       ydPosition_ = 0;
@@ -14202,6 +17464,8 @@ public final class CoreField {
       useMargin_ = 0D;
       exchangeMargin_ = 0D;
       contractValue_ = 0D;
+      hedgeFlag_ = 0;
+      gatewayId_ = "";
     }
 
     @java.lang.Override
@@ -14243,7 +17507,7 @@ public final class CoreField {
             case 24: {
               int rawValue = input.readEnum();
 
-              direction_ = rawValue;
+              positionDirection_ = rawValue;
               break;
             }
             case 37: {
@@ -14336,7 +17600,13 @@ public final class CoreField {
               contractValue_ = input.readDouble();
               break;
             }
-            case 178: {
+            case 176: {
+              int rawValue = input.readEnum();
+
+              hedgeFlag_ = rawValue;
+              break;
+            }
+            case 186: {
               xyz.redtorch.pb.CoreField.ContractField.Builder subBuilder = null;
               if (contract_ != null) {
                 subBuilder = contract_.toBuilder();
@@ -14349,17 +17619,10 @@ public final class CoreField {
 
               break;
             }
-            case 186: {
-              xyz.redtorch.pb.CoreField.GatewayField.Builder subBuilder = null;
-              if (gateway_ != null) {
-                subBuilder = gateway_.toBuilder();
-              }
-              gateway_ = input.readMessage(xyz.redtorch.pb.CoreField.GatewayField.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(gateway_);
-                gateway_ = subBuilder.buildPartial();
-              }
+            case 194: {
+              java.lang.String s = input.readStringRequireUtf8();
 
+              gatewayId_ = s;
               break;
             }
             default: {
@@ -14398,7 +17661,7 @@ public final class CoreField {
     private volatile java.lang.Object positionId_;
     /**
      * <pre>
-     * 持仓在系统中的唯一代码,通常是&lt;合约代码&#64;交易所代码&#64;产品类型&#64;方向&#64;账户&#64;网关&gt;
+     * 持仓在系统中的唯一代码,通常是&lt;合约代码&#64;交易所代码&#64;产品类型&#64;方向&#64;投机套保标志&#64;账户&#64;币种&#64;网关&gt;
      * </pre>
      *
      * <code>string positionId = 1;</code>
@@ -14417,7 +17680,7 @@ public final class CoreField {
     }
     /**
      * <pre>
-     * 持仓在系统中的唯一代码,通常是&lt;合约代码&#64;交易所代码&#64;产品类型&#64;方向&#64;账户&#64;网关&gt;
+     * 持仓在系统中的唯一代码,通常是&lt;合约代码&#64;交易所代码&#64;产品类型&#64;方向&#64;投机套保标志&#64;账户&#64;币种&#64;网关&gt;
      * </pre>
      *
      * <code>string positionId = 1;</code>
@@ -14478,29 +17741,29 @@ public final class CoreField {
       }
     }
 
-    public static final int DIRECTION_FIELD_NUMBER = 3;
-    private int direction_;
+    public static final int POSITIONDIRECTION_FIELD_NUMBER = 3;
+    private int positionDirection_;
     /**
      * <pre>
      * 持仓方向
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.DirectionEnum direction = 3;</code>
+     * <code>.xyz.redtorch.pb.PositionDirectionEnum positionDirection = 3;</code>
      */
-    public int getDirectionValue() {
-      return direction_;
+    public int getPositionDirectionValue() {
+      return positionDirection_;
     }
     /**
      * <pre>
      * 持仓方向
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.DirectionEnum direction = 3;</code>
+     * <code>.xyz.redtorch.pb.PositionDirectionEnum positionDirection = 3;</code>
      */
-    public xyz.redtorch.pb.CoreEnum.DirectionEnum getDirection() {
+    public xyz.redtorch.pb.CoreEnum.PositionDirectionEnum getPositionDirection() {
       @SuppressWarnings("deprecation")
-      xyz.redtorch.pb.CoreEnum.DirectionEnum result = xyz.redtorch.pb.CoreEnum.DirectionEnum.valueOf(direction_);
-      return result == null ? xyz.redtorch.pb.CoreEnum.DirectionEnum.UNRECOGNIZED : result;
+      xyz.redtorch.pb.CoreEnum.PositionDirectionEnum result = xyz.redtorch.pb.CoreEnum.PositionDirectionEnum.valueOf(positionDirection_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.PositionDirectionEnum.UNRECOGNIZED : result;
     }
 
     public static final int POSITION_FIELD_NUMBER = 4;
@@ -14737,14 +18000,39 @@ public final class CoreField {
       return contractValue_;
     }
 
-    public static final int CONTRACT_FIELD_NUMBER = 22;
+    public static final int HEDGEFLAG_FIELD_NUMBER = 22;
+    private int hedgeFlag_;
+    /**
+     * <pre>
+     * 投机套保标识
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 22;</code>
+     */
+    public int getHedgeFlagValue() {
+      return hedgeFlag_;
+    }
+    /**
+     * <pre>
+     * 投机套保标识
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 22;</code>
+     */
+    public xyz.redtorch.pb.CoreEnum.HedgeFlagEnum getHedgeFlag() {
+      @SuppressWarnings("deprecation")
+      xyz.redtorch.pb.CoreEnum.HedgeFlagEnum result = xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.valueOf(hedgeFlag_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.UNRECOGNIZED : result;
+    }
+
+    public static final int CONTRACT_FIELD_NUMBER = 23;
     private xyz.redtorch.pb.CoreField.ContractField contract_;
     /**
      * <pre>
      * 合约
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+     * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
      */
     public boolean hasContract() {
       return contract_ != null;
@@ -14754,7 +18042,7 @@ public final class CoreField {
      * 合约
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+     * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
      */
     public xyz.redtorch.pb.CoreField.ContractField getContract() {
       return contract_ == null ? xyz.redtorch.pb.CoreField.ContractField.getDefaultInstance() : contract_;
@@ -14764,43 +18052,52 @@ public final class CoreField {
      * 合约
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+     * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
      */
     public xyz.redtorch.pb.CoreField.ContractFieldOrBuilder getContractOrBuilder() {
       return getContract();
     }
 
-    public static final int GATEWAY_FIELD_NUMBER = 23;
-    private xyz.redtorch.pb.CoreField.GatewayField gateway_;
+    public static final int GATEWAYID_FIELD_NUMBER = 24;
+    private volatile java.lang.Object gatewayId_;
     /**
      * <pre>
-     * 网关
+     * 网关ID
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
+     * <code>string gatewayId = 24;</code>
      */
-    public boolean hasGateway() {
-      return gateway_ != null;
+    public java.lang.String getGatewayId() {
+      java.lang.Object ref = gatewayId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        gatewayId_ = s;
+        return s;
+      }
     }
     /**
      * <pre>
-     * 网关
+     * 网关ID
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
+     * <code>string gatewayId = 24;</code>
      */
-    public xyz.redtorch.pb.CoreField.GatewayField getGateway() {
-      return gateway_ == null ? xyz.redtorch.pb.CoreField.GatewayField.getDefaultInstance() : gateway_;
-    }
-    /**
-     * <pre>
-     * 网关
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
-     */
-    public xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder getGatewayOrBuilder() {
-      return getGateway();
+    public com.google.protobuf.ByteString
+        getGatewayIdBytes() {
+      java.lang.Object ref = gatewayId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        gatewayId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     private byte memoizedIsInitialized = -1;
@@ -14823,8 +18120,8 @@ public final class CoreField {
       if (!getAccountIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, accountId_);
       }
-      if (direction_ != xyz.redtorch.pb.CoreEnum.DirectionEnum.UNKNOWN_DIRECTION.getNumber()) {
-        output.writeEnum(3, direction_);
+      if (positionDirection_ != xyz.redtorch.pb.CoreEnum.PositionDirectionEnum.PD_Unknown.getNumber()) {
+        output.writeEnum(3, positionDirection_);
       }
       if (position_ != 0) {
         output.writeFixed32(4, position_);
@@ -14880,11 +18177,14 @@ public final class CoreField {
       if (contractValue_ != 0D) {
         output.writeDouble(21, contractValue_);
       }
-      if (contract_ != null) {
-        output.writeMessage(22, getContract());
+      if (hedgeFlag_ != xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.HF_Unknown.getNumber()) {
+        output.writeEnum(22, hedgeFlag_);
       }
-      if (gateway_ != null) {
-        output.writeMessage(23, getGateway());
+      if (contract_ != null) {
+        output.writeMessage(23, getContract());
+      }
+      if (!getGatewayIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 24, gatewayId_);
       }
       unknownFields.writeTo(output);
     }
@@ -14901,9 +18201,9 @@ public final class CoreField {
       if (!getAccountIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, accountId_);
       }
-      if (direction_ != xyz.redtorch.pb.CoreEnum.DirectionEnum.UNKNOWN_DIRECTION.getNumber()) {
+      if (positionDirection_ != xyz.redtorch.pb.CoreEnum.PositionDirectionEnum.PD_Unknown.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(3, direction_);
+          .computeEnumSize(3, positionDirection_);
       }
       if (position_ != 0) {
         size += com.google.protobuf.CodedOutputStream
@@ -14977,13 +18277,16 @@ public final class CoreField {
         size += com.google.protobuf.CodedOutputStream
           .computeDoubleSize(21, contractValue_);
       }
+      if (hedgeFlag_ != xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.HF_Unknown.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(22, hedgeFlag_);
+      }
       if (contract_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(22, getContract());
+          .computeMessageSize(23, getContract());
       }
-      if (gateway_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(23, getGateway());
+      if (!getGatewayIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(24, gatewayId_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -15005,7 +18308,7 @@ public final class CoreField {
           .equals(other.getPositionId());
       result = result && getAccountId()
           .equals(other.getAccountId());
-      result = result && direction_ == other.direction_;
+      result = result && positionDirection_ == other.positionDirection_;
       result = result && (getPosition()
           == other.getPosition());
       result = result && (getFrozen()
@@ -15066,16 +18369,14 @@ public final class CoreField {
           java.lang.Double.doubleToLongBits(getContractValue())
           == java.lang.Double.doubleToLongBits(
               other.getContractValue()));
+      result = result && hedgeFlag_ == other.hedgeFlag_;
       result = result && (hasContract() == other.hasContract());
       if (hasContract()) {
         result = result && getContract()
             .equals(other.getContract());
       }
-      result = result && (hasGateway() == other.hasGateway());
-      if (hasGateway()) {
-        result = result && getGateway()
-            .equals(other.getGateway());
-      }
+      result = result && getGatewayId()
+          .equals(other.getGatewayId());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -15091,8 +18392,8 @@ public final class CoreField {
       hash = (53 * hash) + getPositionId().hashCode();
       hash = (37 * hash) + ACCOUNTID_FIELD_NUMBER;
       hash = (53 * hash) + getAccountId().hashCode();
-      hash = (37 * hash) + DIRECTION_FIELD_NUMBER;
-      hash = (53 * hash) + direction_;
+      hash = (37 * hash) + POSITIONDIRECTION_FIELD_NUMBER;
+      hash = (53 * hash) + positionDirection_;
       hash = (37 * hash) + POSITION_FIELD_NUMBER;
       hash = (53 * hash) + getPosition();
       hash = (37 * hash) + FROZEN_FIELD_NUMBER;
@@ -15141,14 +18442,14 @@ public final class CoreField {
       hash = (37 * hash) + CONTRACTVALUE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           java.lang.Double.doubleToLongBits(getContractValue()));
+      hash = (37 * hash) + HEDGEFLAG_FIELD_NUMBER;
+      hash = (53 * hash) + hedgeFlag_;
       if (hasContract()) {
         hash = (37 * hash) + CONTRACT_FIELD_NUMBER;
         hash = (53 * hash) + getContract().hashCode();
       }
-      if (hasGateway()) {
-        hash = (37 * hash) + GATEWAY_FIELD_NUMBER;
-        hash = (53 * hash) + getGateway().hashCode();
-      }
+      hash = (37 * hash) + GATEWAYID_FIELD_NUMBER;
+      hash = (53 * hash) + getGatewayId().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -15290,7 +18591,7 @@ public final class CoreField {
 
         accountId_ = "";
 
-        direction_ = 0;
+        positionDirection_ = 0;
 
         position_ = 0;
 
@@ -15328,18 +18629,16 @@ public final class CoreField {
 
         contractValue_ = 0D;
 
+        hedgeFlag_ = 0;
+
         if (contractBuilder_ == null) {
           contract_ = null;
         } else {
           contract_ = null;
           contractBuilder_ = null;
         }
-        if (gatewayBuilder_ == null) {
-          gateway_ = null;
-        } else {
-          gateway_ = null;
-          gatewayBuilder_ = null;
-        }
+        gatewayId_ = "";
+
         return this;
       }
 
@@ -15368,7 +18667,7 @@ public final class CoreField {
         xyz.redtorch.pb.CoreField.PositionField result = new xyz.redtorch.pb.CoreField.PositionField(this);
         result.positionId_ = positionId_;
         result.accountId_ = accountId_;
-        result.direction_ = direction_;
+        result.positionDirection_ = positionDirection_;
         result.position_ = position_;
         result.frozen_ = frozen_;
         result.ydPosition_ = ydPosition_;
@@ -15387,16 +18686,13 @@ public final class CoreField {
         result.useMargin_ = useMargin_;
         result.exchangeMargin_ = exchangeMargin_;
         result.contractValue_ = contractValue_;
+        result.hedgeFlag_ = hedgeFlag_;
         if (contractBuilder_ == null) {
           result.contract_ = contract_;
         } else {
           result.contract_ = contractBuilder_.build();
         }
-        if (gatewayBuilder_ == null) {
-          result.gateway_ = gateway_;
-        } else {
-          result.gateway_ = gatewayBuilder_.build();
-        }
+        result.gatewayId_ = gatewayId_;
         onBuilt();
         return result;
       }
@@ -15453,8 +18749,8 @@ public final class CoreField {
           accountId_ = other.accountId_;
           onChanged();
         }
-        if (other.direction_ != 0) {
-          setDirectionValue(other.getDirectionValue());
+        if (other.positionDirection_ != 0) {
+          setPositionDirectionValue(other.getPositionDirectionValue());
         }
         if (other.getPosition() != 0) {
           setPosition(other.getPosition());
@@ -15510,11 +18806,15 @@ public final class CoreField {
         if (other.getContractValue() != 0D) {
           setContractValue(other.getContractValue());
         }
+        if (other.hedgeFlag_ != 0) {
+          setHedgeFlagValue(other.getHedgeFlagValue());
+        }
         if (other.hasContract()) {
           mergeContract(other.getContract());
         }
-        if (other.hasGateway()) {
-          mergeGateway(other.getGateway());
+        if (!other.getGatewayId().isEmpty()) {
+          gatewayId_ = other.gatewayId_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -15548,7 +18848,7 @@ public final class CoreField {
       private java.lang.Object positionId_ = "";
       /**
        * <pre>
-       * 持仓在系统中的唯一代码,通常是&lt;合约代码&#64;交易所代码&#64;产品类型&#64;方向&#64;账户&#64;网关&gt;
+       * 持仓在系统中的唯一代码,通常是&lt;合约代码&#64;交易所代码&#64;产品类型&#64;方向&#64;投机套保标志&#64;账户&#64;币种&#64;网关&gt;
        * </pre>
        *
        * <code>string positionId = 1;</code>
@@ -15567,7 +18867,7 @@ public final class CoreField {
       }
       /**
        * <pre>
-       * 持仓在系统中的唯一代码,通常是&lt;合约代码&#64;交易所代码&#64;产品类型&#64;方向&#64;账户&#64;网关&gt;
+       * 持仓在系统中的唯一代码,通常是&lt;合约代码&#64;交易所代码&#64;产品类型&#64;方向&#64;投机套保标志&#64;账户&#64;币种&#64;网关&gt;
        * </pre>
        *
        * <code>string positionId = 1;</code>
@@ -15587,7 +18887,7 @@ public final class CoreField {
       }
       /**
        * <pre>
-       * 持仓在系统中的唯一代码,通常是&lt;合约代码&#64;交易所代码&#64;产品类型&#64;方向&#64;账户&#64;网关&gt;
+       * 持仓在系统中的唯一代码,通常是&lt;合约代码&#64;交易所代码&#64;产品类型&#64;方向&#64;投机套保标志&#64;账户&#64;币种&#64;网关&gt;
        * </pre>
        *
        * <code>string positionId = 1;</code>
@@ -15604,7 +18904,7 @@ public final class CoreField {
       }
       /**
        * <pre>
-       * 持仓在系统中的唯一代码,通常是&lt;合约代码&#64;交易所代码&#64;产品类型&#64;方向&#64;账户&#64;网关&gt;
+       * 持仓在系统中的唯一代码,通常是&lt;合约代码&#64;交易所代码&#64;产品类型&#64;方向&#64;投机套保标志&#64;账户&#64;币种&#64;网关&gt;
        * </pre>
        *
        * <code>string positionId = 1;</code>
@@ -15617,7 +18917,7 @@ public final class CoreField {
       }
       /**
        * <pre>
-       * 持仓在系统中的唯一代码,通常是&lt;合约代码&#64;交易所代码&#64;产品类型&#64;方向&#64;账户&#64;网关&gt;
+       * 持仓在系统中的唯一代码,通常是&lt;合约代码&#64;交易所代码&#64;产品类型&#64;方向&#64;投机套保标志&#64;账户&#64;币种&#64;网关&gt;
        * </pre>
        *
        * <code>string positionId = 1;</code>
@@ -15723,26 +19023,26 @@ public final class CoreField {
         return this;
       }
 
-      private int direction_ = 0;
+      private int positionDirection_ = 0;
       /**
        * <pre>
        * 持仓方向
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.DirectionEnum direction = 3;</code>
+       * <code>.xyz.redtorch.pb.PositionDirectionEnum positionDirection = 3;</code>
        */
-      public int getDirectionValue() {
-        return direction_;
+      public int getPositionDirectionValue() {
+        return positionDirection_;
       }
       /**
        * <pre>
        * 持仓方向
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.DirectionEnum direction = 3;</code>
+       * <code>.xyz.redtorch.pb.PositionDirectionEnum positionDirection = 3;</code>
        */
-      public Builder setDirectionValue(int value) {
-        direction_ = value;
+      public Builder setPositionDirectionValue(int value) {
+        positionDirection_ = value;
         onChanged();
         return this;
       }
@@ -15751,26 +19051,26 @@ public final class CoreField {
        * 持仓方向
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.DirectionEnum direction = 3;</code>
+       * <code>.xyz.redtorch.pb.PositionDirectionEnum positionDirection = 3;</code>
        */
-      public xyz.redtorch.pb.CoreEnum.DirectionEnum getDirection() {
+      public xyz.redtorch.pb.CoreEnum.PositionDirectionEnum getPositionDirection() {
         @SuppressWarnings("deprecation")
-        xyz.redtorch.pb.CoreEnum.DirectionEnum result = xyz.redtorch.pb.CoreEnum.DirectionEnum.valueOf(direction_);
-        return result == null ? xyz.redtorch.pb.CoreEnum.DirectionEnum.UNRECOGNIZED : result;
+        xyz.redtorch.pb.CoreEnum.PositionDirectionEnum result = xyz.redtorch.pb.CoreEnum.PositionDirectionEnum.valueOf(positionDirection_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.PositionDirectionEnum.UNRECOGNIZED : result;
       }
       /**
        * <pre>
        * 持仓方向
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.DirectionEnum direction = 3;</code>
+       * <code>.xyz.redtorch.pb.PositionDirectionEnum positionDirection = 3;</code>
        */
-      public Builder setDirection(xyz.redtorch.pb.CoreEnum.DirectionEnum value) {
+      public Builder setPositionDirection(xyz.redtorch.pb.CoreEnum.PositionDirectionEnum value) {
         if (value == null) {
           throw new NullPointerException();
         }
         
-        direction_ = value.getNumber();
+        positionDirection_ = value.getNumber();
         onChanged();
         return this;
       }
@@ -15779,11 +19079,11 @@ public final class CoreField {
        * 持仓方向
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.DirectionEnum direction = 3;</code>
+       * <code>.xyz.redtorch.pb.PositionDirectionEnum positionDirection = 3;</code>
        */
-      public Builder clearDirection() {
+      public Builder clearPositionDirection() {
         
-        direction_ = 0;
+        positionDirection_ = 0;
         onChanged();
         return this;
       }
@@ -16472,6 +19772,71 @@ public final class CoreField {
         return this;
       }
 
+      private int hedgeFlag_ = 0;
+      /**
+       * <pre>
+       * 投机套保标识
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 22;</code>
+       */
+      public int getHedgeFlagValue() {
+        return hedgeFlag_;
+      }
+      /**
+       * <pre>
+       * 投机套保标识
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 22;</code>
+       */
+      public Builder setHedgeFlagValue(int value) {
+        hedgeFlag_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 投机套保标识
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 22;</code>
+       */
+      public xyz.redtorch.pb.CoreEnum.HedgeFlagEnum getHedgeFlag() {
+        @SuppressWarnings("deprecation")
+        xyz.redtorch.pb.CoreEnum.HedgeFlagEnum result = xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.valueOf(hedgeFlag_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 投机套保标识
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 22;</code>
+       */
+      public Builder setHedgeFlag(xyz.redtorch.pb.CoreEnum.HedgeFlagEnum value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        hedgeFlag_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 投机套保标识
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 22;</code>
+       */
+      public Builder clearHedgeFlag() {
+        
+        hedgeFlag_ = 0;
+        onChanged();
+        return this;
+      }
+
       private xyz.redtorch.pb.CoreField.ContractField contract_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
           xyz.redtorch.pb.CoreField.ContractField, xyz.redtorch.pb.CoreField.ContractField.Builder, xyz.redtorch.pb.CoreField.ContractFieldOrBuilder> contractBuilder_;
@@ -16480,7 +19845,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
        */
       public boolean hasContract() {
         return contractBuilder_ != null || contract_ != null;
@@ -16490,7 +19855,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
        */
       public xyz.redtorch.pb.CoreField.ContractField getContract() {
         if (contractBuilder_ == null) {
@@ -16504,7 +19869,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
        */
       public Builder setContract(xyz.redtorch.pb.CoreField.ContractField value) {
         if (contractBuilder_ == null) {
@@ -16524,7 +19889,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
        */
       public Builder setContract(
           xyz.redtorch.pb.CoreField.ContractField.Builder builderForValue) {
@@ -16542,7 +19907,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
        */
       public Builder mergeContract(xyz.redtorch.pb.CoreField.ContractField value) {
         if (contractBuilder_ == null) {
@@ -16564,7 +19929,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
        */
       public Builder clearContract() {
         if (contractBuilder_ == null) {
@@ -16582,7 +19947,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
        */
       public xyz.redtorch.pb.CoreField.ContractField.Builder getContractBuilder() {
         
@@ -16594,7 +19959,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
        */
       public xyz.redtorch.pb.CoreField.ContractFieldOrBuilder getContractOrBuilder() {
         if (contractBuilder_ != null) {
@@ -16609,7 +19974,7 @@ public final class CoreField {
        * 合约
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 22;</code>
+       * <code>.xyz.redtorch.pb.ContractField contract = 23;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           xyz.redtorch.pb.CoreField.ContractField, xyz.redtorch.pb.CoreField.ContractField.Builder, xyz.redtorch.pb.CoreField.ContractFieldOrBuilder> 
@@ -16625,157 +19990,93 @@ public final class CoreField {
         return contractBuilder_;
       }
 
-      private xyz.redtorch.pb.CoreField.GatewayField gateway_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          xyz.redtorch.pb.CoreField.GatewayField, xyz.redtorch.pb.CoreField.GatewayField.Builder, xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder> gatewayBuilder_;
+      private java.lang.Object gatewayId_ = "";
       /**
        * <pre>
-       * 网关
+       * 网关ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
+       * <code>string gatewayId = 24;</code>
        */
-      public boolean hasGateway() {
-        return gatewayBuilder_ != null || gateway_ != null;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
-       */
-      public xyz.redtorch.pb.CoreField.GatewayField getGateway() {
-        if (gatewayBuilder_ == null) {
-          return gateway_ == null ? xyz.redtorch.pb.CoreField.GatewayField.getDefaultInstance() : gateway_;
+      public java.lang.String getGatewayId() {
+        java.lang.Object ref = gatewayId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          gatewayId_ = s;
+          return s;
         } else {
-          return gatewayBuilder_.getMessage();
+          return (java.lang.String) ref;
         }
       }
       /**
        * <pre>
-       * 网关
+       * 网关ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
+       * <code>string gatewayId = 24;</code>
        */
-      public Builder setGateway(xyz.redtorch.pb.CoreField.GatewayField value) {
-        if (gatewayBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          gateway_ = value;
-          onChanged();
+      public com.google.protobuf.ByteString
+          getGatewayIdBytes() {
+        java.lang.Object ref = gatewayId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          gatewayId_ = b;
+          return b;
         } else {
-          gatewayBuilder_.setMessage(value);
+          return (com.google.protobuf.ByteString) ref;
         }
-
-        return this;
       }
       /**
        * <pre>
-       * 网关
+       * 网关ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
+       * <code>string gatewayId = 24;</code>
        */
-      public Builder setGateway(
-          xyz.redtorch.pb.CoreField.GatewayField.Builder builderForValue) {
-        if (gatewayBuilder_ == null) {
-          gateway_ = builderForValue.build();
-          onChanged();
-        } else {
-          gatewayBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
-       */
-      public Builder mergeGateway(xyz.redtorch.pb.CoreField.GatewayField value) {
-        if (gatewayBuilder_ == null) {
-          if (gateway_ != null) {
-            gateway_ =
-              xyz.redtorch.pb.CoreField.GatewayField.newBuilder(gateway_).mergeFrom(value).buildPartial();
-          } else {
-            gateway_ = value;
-          }
-          onChanged();
-        } else {
-          gatewayBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
-       */
-      public Builder clearGateway() {
-        if (gatewayBuilder_ == null) {
-          gateway_ = null;
-          onChanged();
-        } else {
-          gateway_ = null;
-          gatewayBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
-       */
-      public xyz.redtorch.pb.CoreField.GatewayField.Builder getGatewayBuilder() {
-        
+      public Builder setGatewayId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        gatewayId_ = value;
         onChanged();
-        return getGatewayFieldBuilder().getBuilder();
+        return this;
       }
       /**
        * <pre>
-       * 网关
+       * 网关ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
+       * <code>string gatewayId = 24;</code>
        */
-      public xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder getGatewayOrBuilder() {
-        if (gatewayBuilder_ != null) {
-          return gatewayBuilder_.getMessageOrBuilder();
-        } else {
-          return gateway_ == null ?
-              xyz.redtorch.pb.CoreField.GatewayField.getDefaultInstance() : gateway_;
-        }
+      public Builder clearGatewayId() {
+        
+        gatewayId_ = getDefaultInstance().getGatewayId();
+        onChanged();
+        return this;
       }
       /**
        * <pre>
-       * 网关
+       * 网关ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 23;</code>
+       * <code>string gatewayId = 24;</code>
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          xyz.redtorch.pb.CoreField.GatewayField, xyz.redtorch.pb.CoreField.GatewayField.Builder, xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder> 
-          getGatewayFieldBuilder() {
-        if (gatewayBuilder_ == null) {
-          gatewayBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              xyz.redtorch.pb.CoreField.GatewayField, xyz.redtorch.pb.CoreField.GatewayField.Builder, xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder>(
-                  getGateway(),
-                  getParentForChildren(),
-                  isClean());
-          gateway_ = null;
-        }
-        return gatewayBuilder_;
+      public Builder setGatewayIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        gatewayId_ = value;
+        onChanged();
+        return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -16836,28 +20137,46 @@ public final class CoreField {
 
     /**
      * <pre>
-     * 数据源ID &lt;合约代码&#64;交易所代码&#64;产品类型&#64;网关ID&gt;
+     * 统一合约标识
      * </pre>
      *
-     * <code>string dataSourceId = 1;</code>
+     * <code>string unifiedSymbol = 1;</code>
      */
-    java.lang.String getDataSourceId();
+    java.lang.String getUnifiedSymbol();
     /**
      * <pre>
-     * 数据源ID &lt;合约代码&#64;交易所代码&#64;产品类型&#64;网关ID&gt;
+     * 统一合约标识
      * </pre>
      *
-     * <code>string dataSourceId = 1;</code>
+     * <code>string unifiedSymbol = 1;</code>
      */
     com.google.protobuf.ByteString
-        getDataSourceIdBytes();
+        getUnifiedSymbolBytes();
+
+    /**
+     * <pre>
+     * 网关ID
+     * </pre>
+     *
+     * <code>string gatewayId = 2;</code>
+     */
+    java.lang.String getGatewayId();
+    /**
+     * <pre>
+     * 网关ID
+     * </pre>
+     *
+     * <code>string gatewayId = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getGatewayIdBytes();
 
     /**
      * <pre>
      * 交易日
      * </pre>
      *
-     * <code>string tradingDay = 2;</code>
+     * <code>string tradingDay = 3;</code>
      */
     java.lang.String getTradingDay();
     /**
@@ -16865,7 +20184,7 @@ public final class CoreField {
      * 交易日
      * </pre>
      *
-     * <code>string tradingDay = 2;</code>
+     * <code>string tradingDay = 3;</code>
      */
     com.google.protobuf.ByteString
         getTradingDayBytes();
@@ -16875,7 +20194,7 @@ public final class CoreField {
      * 业务发生日
      * </pre>
      *
-     * <code>string actionDay = 3;</code>
+     * <code>string actionDay = 4;</code>
      */
     java.lang.String getActionDay();
     /**
@@ -16883,7 +20202,7 @@ public final class CoreField {
      * 业务发生日
      * </pre>
      *
-     * <code>string actionDay = 3;</code>
+     * <code>string actionDay = 4;</code>
      */
     com.google.protobuf.ByteString
         getActionDayBytes();
@@ -16893,7 +20212,7 @@ public final class CoreField {
      * 时间(HHmmssSSS)
      * </pre>
      *
-     * <code>string actionTime = 4;</code>
+     * <code>string actionTime = 5;</code>
      */
     java.lang.String getActionTime();
     /**
@@ -16901,7 +20220,7 @@ public final class CoreField {
      * 时间(HHmmssSSS)
      * </pre>
      *
-     * <code>string actionTime = 4;</code>
+     * <code>string actionTime = 5;</code>
      */
     com.google.protobuf.ByteString
         getActionTimeBytes();
@@ -16911,7 +20230,7 @@ public final class CoreField {
      * 时间戳
      * </pre>
      *
-     * <code>fixed64 actionTimestamp = 5;</code>
+     * <code>fixed64 actionTimestamp = 6;</code>
      */
     long getActionTimestamp();
 
@@ -16920,7 +20239,7 @@ public final class CoreField {
      * 状态
      * </pre>
      *
-     * <code>fixed32 status = 6;</code>
+     * <code>fixed32 status = 7;</code>
      */
     int getStatus();
 
@@ -16929,7 +20248,7 @@ public final class CoreField {
      * 最新成交价
      * </pre>
      *
-     * <code>double lastPrice = 7;</code>
+     * <code>double lastPrice = 8;</code>
      */
     double getLastPrice();
 
@@ -16938,7 +20257,7 @@ public final class CoreField {
      * 均价
      * </pre>
      *
-     * <code>double avgPrice = 8;</code>
+     * <code>double avgPrice = 9;</code>
      */
     double getAvgPrice();
 
@@ -16947,7 +20266,7 @@ public final class CoreField {
      * 定单买入总量
      * </pre>
      *
-     * <code>fixed64 totalBidVol = 9;</code>
+     * <code>fixed64 totalBidVol = 10;</code>
      */
     long getTotalBidVol();
 
@@ -16956,7 +20275,7 @@ public final class CoreField {
      * 定单卖出总量
      * </pre>
      *
-     * <code>fixed64 totalAskVol = 10;</code>
+     * <code>fixed64 totalAskVol = 11;</code>
      */
     long getTotalAskVol();
 
@@ -16965,7 +20284,7 @@ public final class CoreField {
      * 加权平均委买价格
      * </pre>
      *
-     * <code>double weightedAvgBidPrice = 11;</code>
+     * <code>double weightedAvgBidPrice = 12;</code>
      */
     double getWeightedAvgBidPrice();
 
@@ -16974,7 +20293,7 @@ public final class CoreField {
      * 加权平均卖价格
      * </pre>
      *
-     * <code>double weightedAvgAskPrice = 12;</code>
+     * <code>double weightedAvgAskPrice = 13;</code>
      */
     double getWeightedAvgAskPrice();
 
@@ -16983,7 +20302,7 @@ public final class CoreField {
      * 净值估值
      * </pre>
      *
-     * <code>double iopv = 13;</code>
+     * <code>double iopv = 14;</code>
      */
     double getIopv();
 
@@ -16992,7 +20311,7 @@ public final class CoreField {
      * 到期收益率
      * </pre>
      *
-     * <code>double yieldToMaturity = 14;</code>
+     * <code>double yieldToMaturity = 15;</code>
      */
     double getYieldToMaturity();
 
@@ -17001,16 +20320,16 @@ public final class CoreField {
      * 成交量变化
      * </pre>
      *
-     * <code>fixed32 volumeChange = 15;</code>
+     * <code>fixed64 volumeDelta = 16;</code>
      */
-    int getVolumeChange();
+    long getVolumeDelta();
 
     /**
      * <pre>
      * 总成交量
      * </pre>
      *
-     * <code>fixed64 volume = 16;</code>
+     * <code>fixed64 volume = 17;</code>
      */
     long getVolume();
 
@@ -17019,7 +20338,7 @@ public final class CoreField {
      * 成交总额
      * </pre>
      *
-     * <code>double turnover = 17;</code>
+     * <code>double turnover = 18;</code>
      */
     double getTurnover();
 
@@ -17028,16 +20347,16 @@ public final class CoreField {
      * 成交总额变化
      * </pre>
      *
-     * <code>double turnoverChange = 18;</code>
+     * <code>double turnoverDelta = 19;</code>
      */
-    double getTurnoverChange();
+    double getTurnoverDelta();
 
     /**
      * <pre>
      * 成交笔数
      * </pre>
      *
-     * <code>fixed64 numTrades = 19;</code>
+     * <code>fixed64 numTrades = 20;</code>
      */
     long getNumTrades();
 
@@ -17046,16 +20365,16 @@ public final class CoreField {
      * 成交笔数
      * </pre>
      *
-     * <code>fixed64 numTradesChange = 20;</code>
+     * <code>fixed64 numTradesDelta = 21;</code>
      */
-    long getNumTradesChange();
+    long getNumTradesDelta();
 
     /**
      * <pre>
      * 持仓量
      * </pre>
      *
-     * <code>double openInterest = 21;</code>
+     * <code>double openInterest = 22;</code>
      */
     double getOpenInterest();
 
@@ -17064,16 +20383,16 @@ public final class CoreField {
      * 持仓量变化
      * </pre>
      *
-     * <code>fixed32 openInterestChange = 22;</code>
+     * <code>double openInterestDelta = 23;</code>
      */
-    int getOpenInterestChange();
+    double getOpenInterestDelta();
 
     /**
      * <pre>
      * 昨持仓
      * </pre>
      *
-     * <code>double preOpenInterest = 23;</code>
+     * <code>double preOpenInterest = 24;</code>
      */
     double getPreOpenInterest();
 
@@ -17248,56 +20567,6 @@ public final class CoreField {
      * <code>repeated fixed32 askVolume = 36;</code>
      */
     int getAskVolume(int index);
-
-    /**
-     * <pre>
-     * 合约
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
-     */
-    boolean hasContract();
-    /**
-     * <pre>
-     * 合约
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
-     */
-    xyz.redtorch.pb.CoreField.ContractField getContract();
-    /**
-     * <pre>
-     * 合约
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
-     */
-    xyz.redtorch.pb.CoreField.ContractFieldOrBuilder getContractOrBuilder();
-
-    /**
-     * <pre>
-     * 网关
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 38;</code>
-     */
-    boolean hasGateway();
-    /**
-     * <pre>
-     * 网关
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 38;</code>
-     */
-    xyz.redtorch.pb.CoreField.GatewayField getGateway();
-    /**
-     * <pre>
-     * 网关
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 38;</code>
-     */
-    xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder getGatewayOrBuilder();
   }
   /**
    * <pre>
@@ -17316,7 +20585,8 @@ public final class CoreField {
       super(builder);
     }
     private TickField() {
-      dataSourceId_ = "";
+      unifiedSymbol_ = "";
+      gatewayId_ = "";
       tradingDay_ = "";
       actionDay_ = "";
       actionTime_ = "";
@@ -17330,14 +20600,14 @@ public final class CoreField {
       weightedAvgAskPrice_ = 0D;
       iopv_ = 0D;
       yieldToMaturity_ = 0D;
-      volumeChange_ = 0;
+      volumeDelta_ = 0L;
       volume_ = 0L;
       turnover_ = 0D;
-      turnoverChange_ = 0D;
+      turnoverDelta_ = 0D;
       numTrades_ = 0L;
-      numTradesChange_ = 0L;
+      numTradesDelta_ = 0L;
       openInterest_ = 0D;
-      openInterestChange_ = 0;
+      openInterestDelta_ = 0D;
       preOpenInterest_ = 0D;
       preClosePrice_ = 0D;
       settlePrice_ = 0D;
@@ -17381,118 +20651,124 @@ public final class CoreField {
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              dataSourceId_ = s;
+              unifiedSymbol_ = s;
               break;
             }
             case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              tradingDay_ = s;
+              gatewayId_ = s;
               break;
             }
             case 26: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              actionDay_ = s;
+              tradingDay_ = s;
               break;
             }
             case 34: {
               java.lang.String s = input.readStringRequireUtf8();
 
+              actionDay_ = s;
+              break;
+            }
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
+
               actionTime_ = s;
               break;
             }
-            case 41: {
+            case 49: {
 
               actionTimestamp_ = input.readFixed64();
               break;
             }
-            case 53: {
+            case 61: {
 
               status_ = input.readFixed32();
               break;
             }
-            case 57: {
+            case 65: {
 
               lastPrice_ = input.readDouble();
               break;
             }
-            case 65: {
+            case 73: {
 
               avgPrice_ = input.readDouble();
               break;
             }
-            case 73: {
+            case 81: {
 
               totalBidVol_ = input.readFixed64();
               break;
             }
-            case 81: {
+            case 89: {
 
               totalAskVol_ = input.readFixed64();
               break;
             }
-            case 89: {
+            case 97: {
 
               weightedAvgBidPrice_ = input.readDouble();
               break;
             }
-            case 97: {
+            case 105: {
 
               weightedAvgAskPrice_ = input.readDouble();
               break;
             }
-            case 105: {
+            case 113: {
 
               iopv_ = input.readDouble();
               break;
             }
-            case 113: {
+            case 121: {
 
               yieldToMaturity_ = input.readDouble();
               break;
             }
-            case 125: {
-
-              volumeChange_ = input.readFixed32();
-              break;
-            }
             case 129: {
 
-              volume_ = input.readFixed64();
+              volumeDelta_ = input.readFixed64();
               break;
             }
             case 137: {
 
-              turnover_ = input.readDouble();
+              volume_ = input.readFixed64();
               break;
             }
             case 145: {
 
-              turnoverChange_ = input.readDouble();
+              turnover_ = input.readDouble();
               break;
             }
             case 153: {
 
-              numTrades_ = input.readFixed64();
+              turnoverDelta_ = input.readDouble();
               break;
             }
             case 161: {
 
-              numTradesChange_ = input.readFixed64();
+              numTrades_ = input.readFixed64();
               break;
             }
             case 169: {
 
+              numTradesDelta_ = input.readFixed64();
+              break;
+            }
+            case 177: {
+
               openInterest_ = input.readDouble();
               break;
             }
-            case 181: {
+            case 185: {
 
-              openInterestChange_ = input.readFixed32();
+              openInterestDelta_ = input.readDouble();
               break;
             }
-            case 185: {
+            case 193: {
 
               preOpenInterest_ = input.readDouble();
               break;
@@ -17538,9 +20814,9 @@ public final class CoreField {
               break;
             }
             case 265: {
-              if (!((mutable_bitField0_ & 0x80000000) == 0x80000000)) {
+              if (!((mutable_bitField1_ & 0x00000001) == 0x00000001)) {
                 bidPrice_ = new java.util.ArrayList<java.lang.Double>();
-                mutable_bitField0_ |= 0x80000000;
+                mutable_bitField1_ |= 0x00000001;
               }
               bidPrice_.add(input.readDouble());
               break;
@@ -17548,9 +20824,9 @@ public final class CoreField {
             case 266: {
               int length = input.readRawVarint32();
               int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x80000000) == 0x80000000) && input.getBytesUntilLimit() > 0) {
+              if (!((mutable_bitField1_ & 0x00000001) == 0x00000001) && input.getBytesUntilLimit() > 0) {
                 bidPrice_ = new java.util.ArrayList<java.lang.Double>();
-                mutable_bitField0_ |= 0x80000000;
+                mutable_bitField1_ |= 0x00000001;
               }
               while (input.getBytesUntilLimit() > 0) {
                 bidPrice_.add(input.readDouble());
@@ -17559,9 +20835,9 @@ public final class CoreField {
               break;
             }
             case 273: {
-              if (!((mutable_bitField1_ & 0x00000001) == 0x00000001)) {
+              if (!((mutable_bitField1_ & 0x00000002) == 0x00000002)) {
                 askPrice_ = new java.util.ArrayList<java.lang.Double>();
-                mutable_bitField1_ |= 0x00000001;
+                mutable_bitField1_ |= 0x00000002;
               }
               askPrice_.add(input.readDouble());
               break;
@@ -17569,9 +20845,9 @@ public final class CoreField {
             case 274: {
               int length = input.readRawVarint32();
               int limit = input.pushLimit(length);
-              if (!((mutable_bitField1_ & 0x00000001) == 0x00000001) && input.getBytesUntilLimit() > 0) {
+              if (!((mutable_bitField1_ & 0x00000002) == 0x00000002) && input.getBytesUntilLimit() > 0) {
                 askPrice_ = new java.util.ArrayList<java.lang.Double>();
-                mutable_bitField1_ |= 0x00000001;
+                mutable_bitField1_ |= 0x00000002;
               }
               while (input.getBytesUntilLimit() > 0) {
                 askPrice_.add(input.readDouble());
@@ -17580,9 +20856,9 @@ public final class CoreField {
               break;
             }
             case 285: {
-              if (!((mutable_bitField1_ & 0x00000002) == 0x00000002)) {
+              if (!((mutable_bitField1_ & 0x00000004) == 0x00000004)) {
                 bidVolume_ = new java.util.ArrayList<java.lang.Integer>();
-                mutable_bitField1_ |= 0x00000002;
+                mutable_bitField1_ |= 0x00000004;
               }
               bidVolume_.add(input.readFixed32());
               break;
@@ -17590,9 +20866,9 @@ public final class CoreField {
             case 282: {
               int length = input.readRawVarint32();
               int limit = input.pushLimit(length);
-              if (!((mutable_bitField1_ & 0x00000002) == 0x00000002) && input.getBytesUntilLimit() > 0) {
+              if (!((mutable_bitField1_ & 0x00000004) == 0x00000004) && input.getBytesUntilLimit() > 0) {
                 bidVolume_ = new java.util.ArrayList<java.lang.Integer>();
-                mutable_bitField1_ |= 0x00000002;
+                mutable_bitField1_ |= 0x00000004;
               }
               while (input.getBytesUntilLimit() > 0) {
                 bidVolume_.add(input.readFixed32());
@@ -17601,9 +20877,9 @@ public final class CoreField {
               break;
             }
             case 293: {
-              if (!((mutable_bitField1_ & 0x00000004) == 0x00000004)) {
+              if (!((mutable_bitField1_ & 0x00000008) == 0x00000008)) {
                 askVolume_ = new java.util.ArrayList<java.lang.Integer>();
-                mutable_bitField1_ |= 0x00000004;
+                mutable_bitField1_ |= 0x00000008;
               }
               askVolume_.add(input.readFixed32());
               break;
@@ -17611,40 +20887,14 @@ public final class CoreField {
             case 290: {
               int length = input.readRawVarint32();
               int limit = input.pushLimit(length);
-              if (!((mutable_bitField1_ & 0x00000004) == 0x00000004) && input.getBytesUntilLimit() > 0) {
+              if (!((mutable_bitField1_ & 0x00000008) == 0x00000008) && input.getBytesUntilLimit() > 0) {
                 askVolume_ = new java.util.ArrayList<java.lang.Integer>();
-                mutable_bitField1_ |= 0x00000004;
+                mutable_bitField1_ |= 0x00000008;
               }
               while (input.getBytesUntilLimit() > 0) {
                 askVolume_.add(input.readFixed32());
               }
               input.popLimit(limit);
-              break;
-            }
-            case 298: {
-              xyz.redtorch.pb.CoreField.ContractField.Builder subBuilder = null;
-              if (contract_ != null) {
-                subBuilder = contract_.toBuilder();
-              }
-              contract_ = input.readMessage(xyz.redtorch.pb.CoreField.ContractField.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(contract_);
-                contract_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 306: {
-              xyz.redtorch.pb.CoreField.GatewayField.Builder subBuilder = null;
-              if (gateway_ != null) {
-                subBuilder = gateway_.toBuilder();
-              }
-              gateway_ = input.readMessage(xyz.redtorch.pb.CoreField.GatewayField.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(gateway_);
-                gateway_ = subBuilder.buildPartial();
-              }
-
               break;
             }
             default: {
@@ -17662,16 +20912,16 @@ public final class CoreField {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x80000000) == 0x80000000)) {
+        if (((mutable_bitField1_ & 0x00000001) == 0x00000001)) {
           bidPrice_ = java.util.Collections.unmodifiableList(bidPrice_);
         }
-        if (((mutable_bitField1_ & 0x00000001) == 0x00000001)) {
+        if (((mutable_bitField1_ & 0x00000002) == 0x00000002)) {
           askPrice_ = java.util.Collections.unmodifiableList(askPrice_);
         }
-        if (((mutable_bitField1_ & 0x00000002) == 0x00000002)) {
+        if (((mutable_bitField1_ & 0x00000004) == 0x00000004)) {
           bidVolume_ = java.util.Collections.unmodifiableList(bidVolume_);
         }
-        if (((mutable_bitField1_ & 0x00000004) == 0x00000004)) {
+        if (((mutable_bitField1_ & 0x00000008) == 0x00000008)) {
           askVolume_ = java.util.Collections.unmodifiableList(askVolume_);
         }
         this.unknownFields = unknownFields.build();
@@ -17692,57 +20942,98 @@ public final class CoreField {
     }
 
     private int bitField0_;
-    private int bitField1_;
-    public static final int DATASOURCEID_FIELD_NUMBER = 1;
-    private volatile java.lang.Object dataSourceId_;
+    public static final int UNIFIEDSYMBOL_FIELD_NUMBER = 1;
+    private volatile java.lang.Object unifiedSymbol_;
     /**
      * <pre>
-     * 数据源ID &lt;合约代码&#64;交易所代码&#64;产品类型&#64;网关ID&gt;
+     * 统一合约标识
      * </pre>
      *
-     * <code>string dataSourceId = 1;</code>
+     * <code>string unifiedSymbol = 1;</code>
      */
-    public java.lang.String getDataSourceId() {
-      java.lang.Object ref = dataSourceId_;
+    public java.lang.String getUnifiedSymbol() {
+      java.lang.Object ref = unifiedSymbol_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        dataSourceId_ = s;
+        unifiedSymbol_ = s;
         return s;
       }
     }
     /**
      * <pre>
-     * 数据源ID &lt;合约代码&#64;交易所代码&#64;产品类型&#64;网关ID&gt;
+     * 统一合约标识
      * </pre>
      *
-     * <code>string dataSourceId = 1;</code>
+     * <code>string unifiedSymbol = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getDataSourceIdBytes() {
-      java.lang.Object ref = dataSourceId_;
+        getUnifiedSymbolBytes() {
+      java.lang.Object ref = unifiedSymbol_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        dataSourceId_ = b;
+        unifiedSymbol_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
 
-    public static final int TRADINGDAY_FIELD_NUMBER = 2;
+    public static final int GATEWAYID_FIELD_NUMBER = 2;
+    private volatile java.lang.Object gatewayId_;
+    /**
+     * <pre>
+     * 网关ID
+     * </pre>
+     *
+     * <code>string gatewayId = 2;</code>
+     */
+    public java.lang.String getGatewayId() {
+      java.lang.Object ref = gatewayId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        gatewayId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 网关ID
+     * </pre>
+     *
+     * <code>string gatewayId = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getGatewayIdBytes() {
+      java.lang.Object ref = gatewayId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        gatewayId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TRADINGDAY_FIELD_NUMBER = 3;
     private volatile java.lang.Object tradingDay_;
     /**
      * <pre>
      * 交易日
      * </pre>
      *
-     * <code>string tradingDay = 2;</code>
+     * <code>string tradingDay = 3;</code>
      */
     public java.lang.String getTradingDay() {
       java.lang.Object ref = tradingDay_;
@@ -17761,7 +21052,7 @@ public final class CoreField {
      * 交易日
      * </pre>
      *
-     * <code>string tradingDay = 2;</code>
+     * <code>string tradingDay = 3;</code>
      */
     public com.google.protobuf.ByteString
         getTradingDayBytes() {
@@ -17777,14 +21068,14 @@ public final class CoreField {
       }
     }
 
-    public static final int ACTIONDAY_FIELD_NUMBER = 3;
+    public static final int ACTIONDAY_FIELD_NUMBER = 4;
     private volatile java.lang.Object actionDay_;
     /**
      * <pre>
      * 业务发生日
      * </pre>
      *
-     * <code>string actionDay = 3;</code>
+     * <code>string actionDay = 4;</code>
      */
     public java.lang.String getActionDay() {
       java.lang.Object ref = actionDay_;
@@ -17803,7 +21094,7 @@ public final class CoreField {
      * 业务发生日
      * </pre>
      *
-     * <code>string actionDay = 3;</code>
+     * <code>string actionDay = 4;</code>
      */
     public com.google.protobuf.ByteString
         getActionDayBytes() {
@@ -17819,14 +21110,14 @@ public final class CoreField {
       }
     }
 
-    public static final int ACTIONTIME_FIELD_NUMBER = 4;
+    public static final int ACTIONTIME_FIELD_NUMBER = 5;
     private volatile java.lang.Object actionTime_;
     /**
      * <pre>
      * 时间(HHmmssSSS)
      * </pre>
      *
-     * <code>string actionTime = 4;</code>
+     * <code>string actionTime = 5;</code>
      */
     public java.lang.String getActionTime() {
       java.lang.Object ref = actionTime_;
@@ -17845,7 +21136,7 @@ public final class CoreField {
      * 时间(HHmmssSSS)
      * </pre>
      *
-     * <code>string actionTime = 4;</code>
+     * <code>string actionTime = 5;</code>
      */
     public com.google.protobuf.ByteString
         getActionTimeBytes() {
@@ -17861,248 +21152,248 @@ public final class CoreField {
       }
     }
 
-    public static final int ACTIONTIMESTAMP_FIELD_NUMBER = 5;
+    public static final int ACTIONTIMESTAMP_FIELD_NUMBER = 6;
     private long actionTimestamp_;
     /**
      * <pre>
      * 时间戳
      * </pre>
      *
-     * <code>fixed64 actionTimestamp = 5;</code>
+     * <code>fixed64 actionTimestamp = 6;</code>
      */
     public long getActionTimestamp() {
       return actionTimestamp_;
     }
 
-    public static final int STATUS_FIELD_NUMBER = 6;
+    public static final int STATUS_FIELD_NUMBER = 7;
     private int status_;
     /**
      * <pre>
      * 状态
      * </pre>
      *
-     * <code>fixed32 status = 6;</code>
+     * <code>fixed32 status = 7;</code>
      */
     public int getStatus() {
       return status_;
     }
 
-    public static final int LASTPRICE_FIELD_NUMBER = 7;
+    public static final int LASTPRICE_FIELD_NUMBER = 8;
     private double lastPrice_;
     /**
      * <pre>
      * 最新成交价
      * </pre>
      *
-     * <code>double lastPrice = 7;</code>
+     * <code>double lastPrice = 8;</code>
      */
     public double getLastPrice() {
       return lastPrice_;
     }
 
-    public static final int AVGPRICE_FIELD_NUMBER = 8;
+    public static final int AVGPRICE_FIELD_NUMBER = 9;
     private double avgPrice_;
     /**
      * <pre>
      * 均价
      * </pre>
      *
-     * <code>double avgPrice = 8;</code>
+     * <code>double avgPrice = 9;</code>
      */
     public double getAvgPrice() {
       return avgPrice_;
     }
 
-    public static final int TOTALBIDVOL_FIELD_NUMBER = 9;
+    public static final int TOTALBIDVOL_FIELD_NUMBER = 10;
     private long totalBidVol_;
     /**
      * <pre>
      * 定单买入总量
      * </pre>
      *
-     * <code>fixed64 totalBidVol = 9;</code>
+     * <code>fixed64 totalBidVol = 10;</code>
      */
     public long getTotalBidVol() {
       return totalBidVol_;
     }
 
-    public static final int TOTALASKVOL_FIELD_NUMBER = 10;
+    public static final int TOTALASKVOL_FIELD_NUMBER = 11;
     private long totalAskVol_;
     /**
      * <pre>
      * 定单卖出总量
      * </pre>
      *
-     * <code>fixed64 totalAskVol = 10;</code>
+     * <code>fixed64 totalAskVol = 11;</code>
      */
     public long getTotalAskVol() {
       return totalAskVol_;
     }
 
-    public static final int WEIGHTEDAVGBIDPRICE_FIELD_NUMBER = 11;
+    public static final int WEIGHTEDAVGBIDPRICE_FIELD_NUMBER = 12;
     private double weightedAvgBidPrice_;
     /**
      * <pre>
      * 加权平均委买价格
      * </pre>
      *
-     * <code>double weightedAvgBidPrice = 11;</code>
+     * <code>double weightedAvgBidPrice = 12;</code>
      */
     public double getWeightedAvgBidPrice() {
       return weightedAvgBidPrice_;
     }
 
-    public static final int WEIGHTEDAVGASKPRICE_FIELD_NUMBER = 12;
+    public static final int WEIGHTEDAVGASKPRICE_FIELD_NUMBER = 13;
     private double weightedAvgAskPrice_;
     /**
      * <pre>
      * 加权平均卖价格
      * </pre>
      *
-     * <code>double weightedAvgAskPrice = 12;</code>
+     * <code>double weightedAvgAskPrice = 13;</code>
      */
     public double getWeightedAvgAskPrice() {
       return weightedAvgAskPrice_;
     }
 
-    public static final int IOPV_FIELD_NUMBER = 13;
+    public static final int IOPV_FIELD_NUMBER = 14;
     private double iopv_;
     /**
      * <pre>
      * 净值估值
      * </pre>
      *
-     * <code>double iopv = 13;</code>
+     * <code>double iopv = 14;</code>
      */
     public double getIopv() {
       return iopv_;
     }
 
-    public static final int YIELDTOMATURITY_FIELD_NUMBER = 14;
+    public static final int YIELDTOMATURITY_FIELD_NUMBER = 15;
     private double yieldToMaturity_;
     /**
      * <pre>
      * 到期收益率
      * </pre>
      *
-     * <code>double yieldToMaturity = 14;</code>
+     * <code>double yieldToMaturity = 15;</code>
      */
     public double getYieldToMaturity() {
       return yieldToMaturity_;
     }
 
-    public static final int VOLUMECHANGE_FIELD_NUMBER = 15;
-    private int volumeChange_;
+    public static final int VOLUMEDELTA_FIELD_NUMBER = 16;
+    private long volumeDelta_;
     /**
      * <pre>
      * 成交量变化
      * </pre>
      *
-     * <code>fixed32 volumeChange = 15;</code>
+     * <code>fixed64 volumeDelta = 16;</code>
      */
-    public int getVolumeChange() {
-      return volumeChange_;
+    public long getVolumeDelta() {
+      return volumeDelta_;
     }
 
-    public static final int VOLUME_FIELD_NUMBER = 16;
+    public static final int VOLUME_FIELD_NUMBER = 17;
     private long volume_;
     /**
      * <pre>
      * 总成交量
      * </pre>
      *
-     * <code>fixed64 volume = 16;</code>
+     * <code>fixed64 volume = 17;</code>
      */
     public long getVolume() {
       return volume_;
     }
 
-    public static final int TURNOVER_FIELD_NUMBER = 17;
+    public static final int TURNOVER_FIELD_NUMBER = 18;
     private double turnover_;
     /**
      * <pre>
      * 成交总额
      * </pre>
      *
-     * <code>double turnover = 17;</code>
+     * <code>double turnover = 18;</code>
      */
     public double getTurnover() {
       return turnover_;
     }
 
-    public static final int TURNOVERCHANGE_FIELD_NUMBER = 18;
-    private double turnoverChange_;
+    public static final int TURNOVERDELTA_FIELD_NUMBER = 19;
+    private double turnoverDelta_;
     /**
      * <pre>
      * 成交总额变化
      * </pre>
      *
-     * <code>double turnoverChange = 18;</code>
+     * <code>double turnoverDelta = 19;</code>
      */
-    public double getTurnoverChange() {
-      return turnoverChange_;
+    public double getTurnoverDelta() {
+      return turnoverDelta_;
     }
 
-    public static final int NUMTRADES_FIELD_NUMBER = 19;
+    public static final int NUMTRADES_FIELD_NUMBER = 20;
     private long numTrades_;
     /**
      * <pre>
      * 成交笔数
      * </pre>
      *
-     * <code>fixed64 numTrades = 19;</code>
+     * <code>fixed64 numTrades = 20;</code>
      */
     public long getNumTrades() {
       return numTrades_;
     }
 
-    public static final int NUMTRADESCHANGE_FIELD_NUMBER = 20;
-    private long numTradesChange_;
+    public static final int NUMTRADESDELTA_FIELD_NUMBER = 21;
+    private long numTradesDelta_;
     /**
      * <pre>
      * 成交笔数
      * </pre>
      *
-     * <code>fixed64 numTradesChange = 20;</code>
+     * <code>fixed64 numTradesDelta = 21;</code>
      */
-    public long getNumTradesChange() {
-      return numTradesChange_;
+    public long getNumTradesDelta() {
+      return numTradesDelta_;
     }
 
-    public static final int OPENINTEREST_FIELD_NUMBER = 21;
+    public static final int OPENINTEREST_FIELD_NUMBER = 22;
     private double openInterest_;
     /**
      * <pre>
      * 持仓量
      * </pre>
      *
-     * <code>double openInterest = 21;</code>
+     * <code>double openInterest = 22;</code>
      */
     public double getOpenInterest() {
       return openInterest_;
     }
 
-    public static final int OPENINTERESTCHANGE_FIELD_NUMBER = 22;
-    private int openInterestChange_;
+    public static final int OPENINTERESTDELTA_FIELD_NUMBER = 23;
+    private double openInterestDelta_;
     /**
      * <pre>
      * 持仓量变化
      * </pre>
      *
-     * <code>fixed32 openInterestChange = 22;</code>
+     * <code>double openInterestDelta = 23;</code>
      */
-    public int getOpenInterestChange() {
-      return openInterestChange_;
+    public double getOpenInterestDelta() {
+      return openInterestDelta_;
     }
 
-    public static final int PREOPENINTEREST_FIELD_NUMBER = 23;
+    public static final int PREOPENINTEREST_FIELD_NUMBER = 24;
     private double preOpenInterest_;
     /**
      * <pre>
      * 昨持仓
      * </pre>
      *
-     * <code>double preOpenInterest = 23;</code>
+     * <code>double preOpenInterest = 24;</code>
      */
     public double getPreOpenInterest() {
       return preOpenInterest_;
@@ -18352,72 +21643,6 @@ public final class CoreField {
     }
     private int askVolumeMemoizedSerializedSize = -1;
 
-    public static final int CONTRACT_FIELD_NUMBER = 37;
-    private xyz.redtorch.pb.CoreField.ContractField contract_;
-    /**
-     * <pre>
-     * 合约
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
-     */
-    public boolean hasContract() {
-      return contract_ != null;
-    }
-    /**
-     * <pre>
-     * 合约
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
-     */
-    public xyz.redtorch.pb.CoreField.ContractField getContract() {
-      return contract_ == null ? xyz.redtorch.pb.CoreField.ContractField.getDefaultInstance() : contract_;
-    }
-    /**
-     * <pre>
-     * 合约
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
-     */
-    public xyz.redtorch.pb.CoreField.ContractFieldOrBuilder getContractOrBuilder() {
-      return getContract();
-    }
-
-    public static final int GATEWAY_FIELD_NUMBER = 38;
-    private xyz.redtorch.pb.CoreField.GatewayField gateway_;
-    /**
-     * <pre>
-     * 网关
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 38;</code>
-     */
-    public boolean hasGateway() {
-      return gateway_ != null;
-    }
-    /**
-     * <pre>
-     * 网关
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 38;</code>
-     */
-    public xyz.redtorch.pb.CoreField.GatewayField getGateway() {
-      return gateway_ == null ? xyz.redtorch.pb.CoreField.GatewayField.getDefaultInstance() : gateway_;
-    }
-    /**
-     * <pre>
-     * 网关
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 38;</code>
-     */
-    public xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder getGatewayOrBuilder() {
-      return getGateway();
-    }
-
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -18433,74 +21658,77 @@ public final class CoreField {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
-      if (!getDataSourceIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, dataSourceId_);
+      if (!getUnifiedSymbolBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, unifiedSymbol_);
+      }
+      if (!getGatewayIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, gatewayId_);
       }
       if (!getTradingDayBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, tradingDay_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, tradingDay_);
       }
       if (!getActionDayBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, actionDay_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, actionDay_);
       }
       if (!getActionTimeBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, actionTime_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, actionTime_);
       }
       if (actionTimestamp_ != 0L) {
-        output.writeFixed64(5, actionTimestamp_);
+        output.writeFixed64(6, actionTimestamp_);
       }
       if (status_ != 0) {
-        output.writeFixed32(6, status_);
+        output.writeFixed32(7, status_);
       }
       if (lastPrice_ != 0D) {
-        output.writeDouble(7, lastPrice_);
+        output.writeDouble(8, lastPrice_);
       }
       if (avgPrice_ != 0D) {
-        output.writeDouble(8, avgPrice_);
+        output.writeDouble(9, avgPrice_);
       }
       if (totalBidVol_ != 0L) {
-        output.writeFixed64(9, totalBidVol_);
+        output.writeFixed64(10, totalBidVol_);
       }
       if (totalAskVol_ != 0L) {
-        output.writeFixed64(10, totalAskVol_);
+        output.writeFixed64(11, totalAskVol_);
       }
       if (weightedAvgBidPrice_ != 0D) {
-        output.writeDouble(11, weightedAvgBidPrice_);
+        output.writeDouble(12, weightedAvgBidPrice_);
       }
       if (weightedAvgAskPrice_ != 0D) {
-        output.writeDouble(12, weightedAvgAskPrice_);
+        output.writeDouble(13, weightedAvgAskPrice_);
       }
       if (iopv_ != 0D) {
-        output.writeDouble(13, iopv_);
+        output.writeDouble(14, iopv_);
       }
       if (yieldToMaturity_ != 0D) {
-        output.writeDouble(14, yieldToMaturity_);
+        output.writeDouble(15, yieldToMaturity_);
       }
-      if (volumeChange_ != 0) {
-        output.writeFixed32(15, volumeChange_);
+      if (volumeDelta_ != 0L) {
+        output.writeFixed64(16, volumeDelta_);
       }
       if (volume_ != 0L) {
-        output.writeFixed64(16, volume_);
+        output.writeFixed64(17, volume_);
       }
       if (turnover_ != 0D) {
-        output.writeDouble(17, turnover_);
+        output.writeDouble(18, turnover_);
       }
-      if (turnoverChange_ != 0D) {
-        output.writeDouble(18, turnoverChange_);
+      if (turnoverDelta_ != 0D) {
+        output.writeDouble(19, turnoverDelta_);
       }
       if (numTrades_ != 0L) {
-        output.writeFixed64(19, numTrades_);
+        output.writeFixed64(20, numTrades_);
       }
-      if (numTradesChange_ != 0L) {
-        output.writeFixed64(20, numTradesChange_);
+      if (numTradesDelta_ != 0L) {
+        output.writeFixed64(21, numTradesDelta_);
       }
       if (openInterest_ != 0D) {
-        output.writeDouble(21, openInterest_);
+        output.writeDouble(22, openInterest_);
       }
-      if (openInterestChange_ != 0) {
-        output.writeFixed32(22, openInterestChange_);
+      if (openInterestDelta_ != 0D) {
+        output.writeDouble(23, openInterestDelta_);
       }
       if (preOpenInterest_ != 0D) {
-        output.writeDouble(23, preOpenInterest_);
+        output.writeDouble(24, preOpenInterest_);
       }
       if (preClosePrice_ != 0D) {
         output.writeDouble(25, preClosePrice_);
@@ -18554,12 +21782,6 @@ public final class CoreField {
       for (int i = 0; i < askVolume_.size(); i++) {
         output.writeFixed32NoTag(askVolume_.get(i));
       }
-      if (contract_ != null) {
-        output.writeMessage(37, getContract());
-      }
-      if (gateway_ != null) {
-        output.writeMessage(38, getGateway());
-      }
       unknownFields.writeTo(output);
     }
 
@@ -18569,93 +21791,96 @@ public final class CoreField {
       if (size != -1) return size;
 
       size = 0;
-      if (!getDataSourceIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, dataSourceId_);
+      if (!getUnifiedSymbolBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, unifiedSymbol_);
+      }
+      if (!getGatewayIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, gatewayId_);
       }
       if (!getTradingDayBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, tradingDay_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, tradingDay_);
       }
       if (!getActionDayBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, actionDay_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, actionDay_);
       }
       if (!getActionTimeBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, actionTime_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, actionTime_);
       }
       if (actionTimestamp_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed64Size(5, actionTimestamp_);
+          .computeFixed64Size(6, actionTimestamp_);
       }
       if (status_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed32Size(6, status_);
+          .computeFixed32Size(7, status_);
       }
       if (lastPrice_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(7, lastPrice_);
+          .computeDoubleSize(8, lastPrice_);
       }
       if (avgPrice_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(8, avgPrice_);
+          .computeDoubleSize(9, avgPrice_);
       }
       if (totalBidVol_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed64Size(9, totalBidVol_);
+          .computeFixed64Size(10, totalBidVol_);
       }
       if (totalAskVol_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed64Size(10, totalAskVol_);
+          .computeFixed64Size(11, totalAskVol_);
       }
       if (weightedAvgBidPrice_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(11, weightedAvgBidPrice_);
+          .computeDoubleSize(12, weightedAvgBidPrice_);
       }
       if (weightedAvgAskPrice_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(12, weightedAvgAskPrice_);
+          .computeDoubleSize(13, weightedAvgAskPrice_);
       }
       if (iopv_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(13, iopv_);
+          .computeDoubleSize(14, iopv_);
       }
       if (yieldToMaturity_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(14, yieldToMaturity_);
+          .computeDoubleSize(15, yieldToMaturity_);
       }
-      if (volumeChange_ != 0) {
+      if (volumeDelta_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed32Size(15, volumeChange_);
+          .computeFixed64Size(16, volumeDelta_);
       }
       if (volume_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed64Size(16, volume_);
+          .computeFixed64Size(17, volume_);
       }
       if (turnover_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(17, turnover_);
+          .computeDoubleSize(18, turnover_);
       }
-      if (turnoverChange_ != 0D) {
+      if (turnoverDelta_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(18, turnoverChange_);
+          .computeDoubleSize(19, turnoverDelta_);
       }
       if (numTrades_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed64Size(19, numTrades_);
+          .computeFixed64Size(20, numTrades_);
       }
-      if (numTradesChange_ != 0L) {
+      if (numTradesDelta_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed64Size(20, numTradesChange_);
+          .computeFixed64Size(21, numTradesDelta_);
       }
       if (openInterest_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(21, openInterest_);
+          .computeDoubleSize(22, openInterest_);
       }
-      if (openInterestChange_ != 0) {
+      if (openInterestDelta_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed32Size(22, openInterestChange_);
+          .computeDoubleSize(23, openInterestDelta_);
       }
       if (preOpenInterest_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(23, preOpenInterest_);
+          .computeDoubleSize(24, preOpenInterest_);
       }
       if (preClosePrice_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
@@ -18733,14 +21958,6 @@ public final class CoreField {
         }
         askVolumeMemoizedSerializedSize = dataSize;
       }
-      if (contract_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(37, getContract());
-      }
-      if (gateway_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(38, getGateway());
-      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -18757,8 +21974,10 @@ public final class CoreField {
       xyz.redtorch.pb.CoreField.TickField other = (xyz.redtorch.pb.CoreField.TickField) obj;
 
       boolean result = true;
-      result = result && getDataSourceId()
-          .equals(other.getDataSourceId());
+      result = result && getUnifiedSymbol()
+          .equals(other.getUnifiedSymbol());
+      result = result && getGatewayId()
+          .equals(other.getGatewayId());
       result = result && getTradingDay()
           .equals(other.getTradingDay());
       result = result && getActionDay()
@@ -18797,8 +22016,8 @@ public final class CoreField {
           java.lang.Double.doubleToLongBits(getYieldToMaturity())
           == java.lang.Double.doubleToLongBits(
               other.getYieldToMaturity()));
-      result = result && (getVolumeChange()
-          == other.getVolumeChange());
+      result = result && (getVolumeDelta()
+          == other.getVolumeDelta());
       result = result && (getVolume()
           == other.getVolume());
       result = result && (
@@ -18806,19 +22025,21 @@ public final class CoreField {
           == java.lang.Double.doubleToLongBits(
               other.getTurnover()));
       result = result && (
-          java.lang.Double.doubleToLongBits(getTurnoverChange())
+          java.lang.Double.doubleToLongBits(getTurnoverDelta())
           == java.lang.Double.doubleToLongBits(
-              other.getTurnoverChange()));
+              other.getTurnoverDelta()));
       result = result && (getNumTrades()
           == other.getNumTrades());
-      result = result && (getNumTradesChange()
-          == other.getNumTradesChange());
+      result = result && (getNumTradesDelta()
+          == other.getNumTradesDelta());
       result = result && (
           java.lang.Double.doubleToLongBits(getOpenInterest())
           == java.lang.Double.doubleToLongBits(
               other.getOpenInterest()));
-      result = result && (getOpenInterestChange()
-          == other.getOpenInterestChange());
+      result = result && (
+          java.lang.Double.doubleToLongBits(getOpenInterestDelta())
+          == java.lang.Double.doubleToLongBits(
+              other.getOpenInterestDelta()));
       result = result && (
           java.lang.Double.doubleToLongBits(getPreOpenInterest())
           == java.lang.Double.doubleToLongBits(
@@ -18863,16 +22084,6 @@ public final class CoreField {
           .equals(other.getBidVolumeList());
       result = result && getAskVolumeList()
           .equals(other.getAskVolumeList());
-      result = result && (hasContract() == other.hasContract());
-      if (hasContract()) {
-        result = result && getContract()
-            .equals(other.getContract());
-      }
-      result = result && (hasGateway() == other.hasGateway());
-      if (hasGateway()) {
-        result = result && getGateway()
-            .equals(other.getGateway());
-      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -18884,8 +22095,10 @@ public final class CoreField {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + DATASOURCEID_FIELD_NUMBER;
-      hash = (53 * hash) + getDataSourceId().hashCode();
+      hash = (37 * hash) + UNIFIEDSYMBOL_FIELD_NUMBER;
+      hash = (53 * hash) + getUnifiedSymbol().hashCode();
+      hash = (37 * hash) + GATEWAYID_FIELD_NUMBER;
+      hash = (53 * hash) + getGatewayId().hashCode();
       hash = (37 * hash) + TRADINGDAY_FIELD_NUMBER;
       hash = (53 * hash) + getTradingDay().hashCode();
       hash = (37 * hash) + ACTIONDAY_FIELD_NUMBER;
@@ -18921,28 +22134,30 @@ public final class CoreField {
       hash = (37 * hash) + YIELDTOMATURITY_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           java.lang.Double.doubleToLongBits(getYieldToMaturity()));
-      hash = (37 * hash) + VOLUMECHANGE_FIELD_NUMBER;
-      hash = (53 * hash) + getVolumeChange();
+      hash = (37 * hash) + VOLUMEDELTA_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getVolumeDelta());
       hash = (37 * hash) + VOLUME_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getVolume());
       hash = (37 * hash) + TURNOVER_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           java.lang.Double.doubleToLongBits(getTurnover()));
-      hash = (37 * hash) + TURNOVERCHANGE_FIELD_NUMBER;
+      hash = (37 * hash) + TURNOVERDELTA_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          java.lang.Double.doubleToLongBits(getTurnoverChange()));
+          java.lang.Double.doubleToLongBits(getTurnoverDelta()));
       hash = (37 * hash) + NUMTRADES_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getNumTrades());
-      hash = (37 * hash) + NUMTRADESCHANGE_FIELD_NUMBER;
+      hash = (37 * hash) + NUMTRADESDELTA_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getNumTradesChange());
+          getNumTradesDelta());
       hash = (37 * hash) + OPENINTEREST_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           java.lang.Double.doubleToLongBits(getOpenInterest()));
-      hash = (37 * hash) + OPENINTERESTCHANGE_FIELD_NUMBER;
-      hash = (53 * hash) + getOpenInterestChange();
+      hash = (37 * hash) + OPENINTERESTDELTA_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          java.lang.Double.doubleToLongBits(getOpenInterestDelta()));
       hash = (37 * hash) + PREOPENINTEREST_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           java.lang.Double.doubleToLongBits(getPreOpenInterest()));
@@ -18985,14 +22200,6 @@ public final class CoreField {
       if (getAskVolumeCount() > 0) {
         hash = (37 * hash) + ASKVOLUME_FIELD_NUMBER;
         hash = (53 * hash) + getAskVolumeList().hashCode();
-      }
-      if (hasContract()) {
-        hash = (37 * hash) + CONTRACT_FIELD_NUMBER;
-        hash = (53 * hash) + getContract().hashCode();
-      }
-      if (hasGateway()) {
-        hash = (37 * hash) + GATEWAY_FIELD_NUMBER;
-        hash = (53 * hash) + getGateway().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -19131,7 +22338,9 @@ public final class CoreField {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        dataSourceId_ = "";
+        unifiedSymbol_ = "";
+
+        gatewayId_ = "";
 
         tradingDay_ = "";
 
@@ -19159,21 +22368,21 @@ public final class CoreField {
 
         yieldToMaturity_ = 0D;
 
-        volumeChange_ = 0;
+        volumeDelta_ = 0L;
 
         volume_ = 0L;
 
         turnover_ = 0D;
 
-        turnoverChange_ = 0D;
+        turnoverDelta_ = 0D;
 
         numTrades_ = 0L;
 
-        numTradesChange_ = 0L;
+        numTradesDelta_ = 0L;
 
         openInterest_ = 0D;
 
-        openInterestChange_ = 0;
+        openInterestDelta_ = 0D;
 
         preOpenInterest_ = 0D;
 
@@ -19194,25 +22403,13 @@ public final class CoreField {
         lowerLimit_ = 0D;
 
         bidPrice_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x80000000);
-        askPrice_ = java.util.Collections.emptyList();
         bitField1_ = (bitField1_ & ~0x00000001);
-        bidVolume_ = java.util.Collections.emptyList();
+        askPrice_ = java.util.Collections.emptyList();
         bitField1_ = (bitField1_ & ~0x00000002);
-        askVolume_ = java.util.Collections.emptyList();
+        bidVolume_ = java.util.Collections.emptyList();
         bitField1_ = (bitField1_ & ~0x00000004);
-        if (contractBuilder_ == null) {
-          contract_ = null;
-        } else {
-          contract_ = null;
-          contractBuilder_ = null;
-        }
-        if (gatewayBuilder_ == null) {
-          gateway_ = null;
-        } else {
-          gateway_ = null;
-          gatewayBuilder_ = null;
-        }
+        askVolume_ = java.util.Collections.emptyList();
+        bitField1_ = (bitField1_ & ~0x00000008);
         return this;
       }
 
@@ -19242,8 +22439,8 @@ public final class CoreField {
         int from_bitField0_ = bitField0_;
         int from_bitField1_ = bitField1_;
         int to_bitField0_ = 0;
-        int to_bitField1_ = 0;
-        result.dataSourceId_ = dataSourceId_;
+        result.unifiedSymbol_ = unifiedSymbol_;
+        result.gatewayId_ = gatewayId_;
         result.tradingDay_ = tradingDay_;
         result.actionDay_ = actionDay_;
         result.actionTime_ = actionTime_;
@@ -19257,14 +22454,14 @@ public final class CoreField {
         result.weightedAvgAskPrice_ = weightedAvgAskPrice_;
         result.iopv_ = iopv_;
         result.yieldToMaturity_ = yieldToMaturity_;
-        result.volumeChange_ = volumeChange_;
+        result.volumeDelta_ = volumeDelta_;
         result.volume_ = volume_;
         result.turnover_ = turnover_;
-        result.turnoverChange_ = turnoverChange_;
+        result.turnoverDelta_ = turnoverDelta_;
         result.numTrades_ = numTrades_;
-        result.numTradesChange_ = numTradesChange_;
+        result.numTradesDelta_ = numTradesDelta_;
         result.openInterest_ = openInterest_;
-        result.openInterestChange_ = openInterestChange_;
+        result.openInterestDelta_ = openInterestDelta_;
         result.preOpenInterest_ = preOpenInterest_;
         result.preClosePrice_ = preClosePrice_;
         result.settlePrice_ = settlePrice_;
@@ -19274,38 +22471,27 @@ public final class CoreField {
         result.lowPrice_ = lowPrice_;
         result.upperLimit_ = upperLimit_;
         result.lowerLimit_ = lowerLimit_;
-        if (((bitField0_ & 0x80000000) == 0x80000000)) {
-          bidPrice_ = java.util.Collections.unmodifiableList(bidPrice_);
-          bitField0_ = (bitField0_ & ~0x80000000);
-        }
-        result.bidPrice_ = bidPrice_;
         if (((bitField1_ & 0x00000001) == 0x00000001)) {
-          askPrice_ = java.util.Collections.unmodifiableList(askPrice_);
+          bidPrice_ = java.util.Collections.unmodifiableList(bidPrice_);
           bitField1_ = (bitField1_ & ~0x00000001);
         }
-        result.askPrice_ = askPrice_;
+        result.bidPrice_ = bidPrice_;
         if (((bitField1_ & 0x00000002) == 0x00000002)) {
-          bidVolume_ = java.util.Collections.unmodifiableList(bidVolume_);
+          askPrice_ = java.util.Collections.unmodifiableList(askPrice_);
           bitField1_ = (bitField1_ & ~0x00000002);
         }
-        result.bidVolume_ = bidVolume_;
+        result.askPrice_ = askPrice_;
         if (((bitField1_ & 0x00000004) == 0x00000004)) {
-          askVolume_ = java.util.Collections.unmodifiableList(askVolume_);
+          bidVolume_ = java.util.Collections.unmodifiableList(bidVolume_);
           bitField1_ = (bitField1_ & ~0x00000004);
         }
+        result.bidVolume_ = bidVolume_;
+        if (((bitField1_ & 0x00000008) == 0x00000008)) {
+          askVolume_ = java.util.Collections.unmodifiableList(askVolume_);
+          bitField1_ = (bitField1_ & ~0x00000008);
+        }
         result.askVolume_ = askVolume_;
-        if (contractBuilder_ == null) {
-          result.contract_ = contract_;
-        } else {
-          result.contract_ = contractBuilder_.build();
-        }
-        if (gatewayBuilder_ == null) {
-          result.gateway_ = gateway_;
-        } else {
-          result.gateway_ = gatewayBuilder_.build();
-        }
         result.bitField0_ = to_bitField0_;
-        result.bitField1_ = to_bitField1_;
         onBuilt();
         return result;
       }
@@ -19354,8 +22540,12 @@ public final class CoreField {
 
       public Builder mergeFrom(xyz.redtorch.pb.CoreField.TickField other) {
         if (other == xyz.redtorch.pb.CoreField.TickField.getDefaultInstance()) return this;
-        if (!other.getDataSourceId().isEmpty()) {
-          dataSourceId_ = other.dataSourceId_;
+        if (!other.getUnifiedSymbol().isEmpty()) {
+          unifiedSymbol_ = other.unifiedSymbol_;
+          onChanged();
+        }
+        if (!other.getGatewayId().isEmpty()) {
+          gatewayId_ = other.gatewayId_;
           onChanged();
         }
         if (!other.getTradingDay().isEmpty()) {
@@ -19400,8 +22590,8 @@ public final class CoreField {
         if (other.getYieldToMaturity() != 0D) {
           setYieldToMaturity(other.getYieldToMaturity());
         }
-        if (other.getVolumeChange() != 0) {
-          setVolumeChange(other.getVolumeChange());
+        if (other.getVolumeDelta() != 0L) {
+          setVolumeDelta(other.getVolumeDelta());
         }
         if (other.getVolume() != 0L) {
           setVolume(other.getVolume());
@@ -19409,20 +22599,20 @@ public final class CoreField {
         if (other.getTurnover() != 0D) {
           setTurnover(other.getTurnover());
         }
-        if (other.getTurnoverChange() != 0D) {
-          setTurnoverChange(other.getTurnoverChange());
+        if (other.getTurnoverDelta() != 0D) {
+          setTurnoverDelta(other.getTurnoverDelta());
         }
         if (other.getNumTrades() != 0L) {
           setNumTrades(other.getNumTrades());
         }
-        if (other.getNumTradesChange() != 0L) {
-          setNumTradesChange(other.getNumTradesChange());
+        if (other.getNumTradesDelta() != 0L) {
+          setNumTradesDelta(other.getNumTradesDelta());
         }
         if (other.getOpenInterest() != 0D) {
           setOpenInterest(other.getOpenInterest());
         }
-        if (other.getOpenInterestChange() != 0) {
-          setOpenInterestChange(other.getOpenInterestChange());
+        if (other.getOpenInterestDelta() != 0D) {
+          setOpenInterestDelta(other.getOpenInterestDelta());
         }
         if (other.getPreOpenInterest() != 0D) {
           setPreOpenInterest(other.getPreOpenInterest());
@@ -19454,7 +22644,7 @@ public final class CoreField {
         if (!other.bidPrice_.isEmpty()) {
           if (bidPrice_.isEmpty()) {
             bidPrice_ = other.bidPrice_;
-            bitField0_ = (bitField0_ & ~0x80000000);
+            bitField1_ = (bitField1_ & ~0x00000001);
           } else {
             ensureBidPriceIsMutable();
             bidPrice_.addAll(other.bidPrice_);
@@ -19464,7 +22654,7 @@ public final class CoreField {
         if (!other.askPrice_.isEmpty()) {
           if (askPrice_.isEmpty()) {
             askPrice_ = other.askPrice_;
-            bitField1_ = (bitField1_ & ~0x00000001);
+            bitField1_ = (bitField1_ & ~0x00000002);
           } else {
             ensureAskPriceIsMutable();
             askPrice_.addAll(other.askPrice_);
@@ -19474,7 +22664,7 @@ public final class CoreField {
         if (!other.bidVolume_.isEmpty()) {
           if (bidVolume_.isEmpty()) {
             bidVolume_ = other.bidVolume_;
-            bitField1_ = (bitField1_ & ~0x00000002);
+            bitField1_ = (bitField1_ & ~0x00000004);
           } else {
             ensureBidVolumeIsMutable();
             bidVolume_.addAll(other.bidVolume_);
@@ -19484,18 +22674,12 @@ public final class CoreField {
         if (!other.askVolume_.isEmpty()) {
           if (askVolume_.isEmpty()) {
             askVolume_ = other.askVolume_;
-            bitField1_ = (bitField1_ & ~0x00000004);
+            bitField1_ = (bitField1_ & ~0x00000008);
           } else {
             ensureAskVolumeIsMutable();
             askVolume_.addAll(other.askVolume_);
           }
           onChanged();
-        }
-        if (other.hasContract()) {
-          mergeContract(other.getContract());
-        }
-        if (other.hasGateway()) {
-          mergeGateway(other.getGateway());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -19528,21 +22712,21 @@ public final class CoreField {
       private int bitField0_;
       private int bitField1_;
 
-      private java.lang.Object dataSourceId_ = "";
+      private java.lang.Object unifiedSymbol_ = "";
       /**
        * <pre>
-       * 数据源ID &lt;合约代码&#64;交易所代码&#64;产品类型&#64;网关ID&gt;
+       * 统一合约标识
        * </pre>
        *
-       * <code>string dataSourceId = 1;</code>
+       * <code>string unifiedSymbol = 1;</code>
        */
-      public java.lang.String getDataSourceId() {
-        java.lang.Object ref = dataSourceId_;
+      public java.lang.String getUnifiedSymbol() {
+        java.lang.Object ref = unifiedSymbol_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          dataSourceId_ = s;
+          unifiedSymbol_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -19550,19 +22734,19 @@ public final class CoreField {
       }
       /**
        * <pre>
-       * 数据源ID &lt;合约代码&#64;交易所代码&#64;产品类型&#64;网关ID&gt;
+       * 统一合约标识
        * </pre>
        *
-       * <code>string dataSourceId = 1;</code>
+       * <code>string unifiedSymbol = 1;</code>
        */
       public com.google.protobuf.ByteString
-          getDataSourceIdBytes() {
-        java.lang.Object ref = dataSourceId_;
+          getUnifiedSymbolBytes() {
+        java.lang.Object ref = unifiedSymbol_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          dataSourceId_ = b;
+          unifiedSymbol_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -19570,49 +22754,138 @@ public final class CoreField {
       }
       /**
        * <pre>
-       * 数据源ID &lt;合约代码&#64;交易所代码&#64;产品类型&#64;网关ID&gt;
+       * 统一合约标识
        * </pre>
        *
-       * <code>string dataSourceId = 1;</code>
+       * <code>string unifiedSymbol = 1;</code>
        */
-      public Builder setDataSourceId(
+      public Builder setUnifiedSymbol(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        dataSourceId_ = value;
+        unifiedSymbol_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * 数据源ID &lt;合约代码&#64;交易所代码&#64;产品类型&#64;网关ID&gt;
+       * 统一合约标识
        * </pre>
        *
-       * <code>string dataSourceId = 1;</code>
+       * <code>string unifiedSymbol = 1;</code>
        */
-      public Builder clearDataSourceId() {
+      public Builder clearUnifiedSymbol() {
         
-        dataSourceId_ = getDefaultInstance().getDataSourceId();
+        unifiedSymbol_ = getDefaultInstance().getUnifiedSymbol();
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * 数据源ID &lt;合约代码&#64;交易所代码&#64;产品类型&#64;网关ID&gt;
+       * 统一合约标识
        * </pre>
        *
-       * <code>string dataSourceId = 1;</code>
+       * <code>string unifiedSymbol = 1;</code>
        */
-      public Builder setDataSourceIdBytes(
+      public Builder setUnifiedSymbolBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        dataSourceId_ = value;
+        unifiedSymbol_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object gatewayId_ = "";
+      /**
+       * <pre>
+       * 网关ID
+       * </pre>
+       *
+       * <code>string gatewayId = 2;</code>
+       */
+      public java.lang.String getGatewayId() {
+        java.lang.Object ref = gatewayId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          gatewayId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 网关ID
+       * </pre>
+       *
+       * <code>string gatewayId = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getGatewayIdBytes() {
+        java.lang.Object ref = gatewayId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          gatewayId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 网关ID
+       * </pre>
+       *
+       * <code>string gatewayId = 2;</code>
+       */
+      public Builder setGatewayId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        gatewayId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 网关ID
+       * </pre>
+       *
+       * <code>string gatewayId = 2;</code>
+       */
+      public Builder clearGatewayId() {
+        
+        gatewayId_ = getDefaultInstance().getGatewayId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 网关ID
+       * </pre>
+       *
+       * <code>string gatewayId = 2;</code>
+       */
+      public Builder setGatewayIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        gatewayId_ = value;
         onChanged();
         return this;
       }
@@ -19623,7 +22896,7 @@ public final class CoreField {
        * 交易日
        * </pre>
        *
-       * <code>string tradingDay = 2;</code>
+       * <code>string tradingDay = 3;</code>
        */
       public java.lang.String getTradingDay() {
         java.lang.Object ref = tradingDay_;
@@ -19642,7 +22915,7 @@ public final class CoreField {
        * 交易日
        * </pre>
        *
-       * <code>string tradingDay = 2;</code>
+       * <code>string tradingDay = 3;</code>
        */
       public com.google.protobuf.ByteString
           getTradingDayBytes() {
@@ -19662,7 +22935,7 @@ public final class CoreField {
        * 交易日
        * </pre>
        *
-       * <code>string tradingDay = 2;</code>
+       * <code>string tradingDay = 3;</code>
        */
       public Builder setTradingDay(
           java.lang.String value) {
@@ -19679,7 +22952,7 @@ public final class CoreField {
        * 交易日
        * </pre>
        *
-       * <code>string tradingDay = 2;</code>
+       * <code>string tradingDay = 3;</code>
        */
       public Builder clearTradingDay() {
         
@@ -19692,7 +22965,7 @@ public final class CoreField {
        * 交易日
        * </pre>
        *
-       * <code>string tradingDay = 2;</code>
+       * <code>string tradingDay = 3;</code>
        */
       public Builder setTradingDayBytes(
           com.google.protobuf.ByteString value) {
@@ -19712,7 +22985,7 @@ public final class CoreField {
        * 业务发生日
        * </pre>
        *
-       * <code>string actionDay = 3;</code>
+       * <code>string actionDay = 4;</code>
        */
       public java.lang.String getActionDay() {
         java.lang.Object ref = actionDay_;
@@ -19731,7 +23004,7 @@ public final class CoreField {
        * 业务发生日
        * </pre>
        *
-       * <code>string actionDay = 3;</code>
+       * <code>string actionDay = 4;</code>
        */
       public com.google.protobuf.ByteString
           getActionDayBytes() {
@@ -19751,7 +23024,7 @@ public final class CoreField {
        * 业务发生日
        * </pre>
        *
-       * <code>string actionDay = 3;</code>
+       * <code>string actionDay = 4;</code>
        */
       public Builder setActionDay(
           java.lang.String value) {
@@ -19768,7 +23041,7 @@ public final class CoreField {
        * 业务发生日
        * </pre>
        *
-       * <code>string actionDay = 3;</code>
+       * <code>string actionDay = 4;</code>
        */
       public Builder clearActionDay() {
         
@@ -19781,7 +23054,7 @@ public final class CoreField {
        * 业务发生日
        * </pre>
        *
-       * <code>string actionDay = 3;</code>
+       * <code>string actionDay = 4;</code>
        */
       public Builder setActionDayBytes(
           com.google.protobuf.ByteString value) {
@@ -19801,7 +23074,7 @@ public final class CoreField {
        * 时间(HHmmssSSS)
        * </pre>
        *
-       * <code>string actionTime = 4;</code>
+       * <code>string actionTime = 5;</code>
        */
       public java.lang.String getActionTime() {
         java.lang.Object ref = actionTime_;
@@ -19820,7 +23093,7 @@ public final class CoreField {
        * 时间(HHmmssSSS)
        * </pre>
        *
-       * <code>string actionTime = 4;</code>
+       * <code>string actionTime = 5;</code>
        */
       public com.google.protobuf.ByteString
           getActionTimeBytes() {
@@ -19840,7 +23113,7 @@ public final class CoreField {
        * 时间(HHmmssSSS)
        * </pre>
        *
-       * <code>string actionTime = 4;</code>
+       * <code>string actionTime = 5;</code>
        */
       public Builder setActionTime(
           java.lang.String value) {
@@ -19857,7 +23130,7 @@ public final class CoreField {
        * 时间(HHmmssSSS)
        * </pre>
        *
-       * <code>string actionTime = 4;</code>
+       * <code>string actionTime = 5;</code>
        */
       public Builder clearActionTime() {
         
@@ -19870,7 +23143,7 @@ public final class CoreField {
        * 时间(HHmmssSSS)
        * </pre>
        *
-       * <code>string actionTime = 4;</code>
+       * <code>string actionTime = 5;</code>
        */
       public Builder setActionTimeBytes(
           com.google.protobuf.ByteString value) {
@@ -19890,7 +23163,7 @@ public final class CoreField {
        * 时间戳
        * </pre>
        *
-       * <code>fixed64 actionTimestamp = 5;</code>
+       * <code>fixed64 actionTimestamp = 6;</code>
        */
       public long getActionTimestamp() {
         return actionTimestamp_;
@@ -19900,7 +23173,7 @@ public final class CoreField {
        * 时间戳
        * </pre>
        *
-       * <code>fixed64 actionTimestamp = 5;</code>
+       * <code>fixed64 actionTimestamp = 6;</code>
        */
       public Builder setActionTimestamp(long value) {
         
@@ -19913,7 +23186,7 @@ public final class CoreField {
        * 时间戳
        * </pre>
        *
-       * <code>fixed64 actionTimestamp = 5;</code>
+       * <code>fixed64 actionTimestamp = 6;</code>
        */
       public Builder clearActionTimestamp() {
         
@@ -19928,7 +23201,7 @@ public final class CoreField {
        * 状态
        * </pre>
        *
-       * <code>fixed32 status = 6;</code>
+       * <code>fixed32 status = 7;</code>
        */
       public int getStatus() {
         return status_;
@@ -19938,7 +23211,7 @@ public final class CoreField {
        * 状态
        * </pre>
        *
-       * <code>fixed32 status = 6;</code>
+       * <code>fixed32 status = 7;</code>
        */
       public Builder setStatus(int value) {
         
@@ -19951,7 +23224,7 @@ public final class CoreField {
        * 状态
        * </pre>
        *
-       * <code>fixed32 status = 6;</code>
+       * <code>fixed32 status = 7;</code>
        */
       public Builder clearStatus() {
         
@@ -19966,7 +23239,7 @@ public final class CoreField {
        * 最新成交价
        * </pre>
        *
-       * <code>double lastPrice = 7;</code>
+       * <code>double lastPrice = 8;</code>
        */
       public double getLastPrice() {
         return lastPrice_;
@@ -19976,7 +23249,7 @@ public final class CoreField {
        * 最新成交价
        * </pre>
        *
-       * <code>double lastPrice = 7;</code>
+       * <code>double lastPrice = 8;</code>
        */
       public Builder setLastPrice(double value) {
         
@@ -19989,7 +23262,7 @@ public final class CoreField {
        * 最新成交价
        * </pre>
        *
-       * <code>double lastPrice = 7;</code>
+       * <code>double lastPrice = 8;</code>
        */
       public Builder clearLastPrice() {
         
@@ -20004,7 +23277,7 @@ public final class CoreField {
        * 均价
        * </pre>
        *
-       * <code>double avgPrice = 8;</code>
+       * <code>double avgPrice = 9;</code>
        */
       public double getAvgPrice() {
         return avgPrice_;
@@ -20014,7 +23287,7 @@ public final class CoreField {
        * 均价
        * </pre>
        *
-       * <code>double avgPrice = 8;</code>
+       * <code>double avgPrice = 9;</code>
        */
       public Builder setAvgPrice(double value) {
         
@@ -20027,7 +23300,7 @@ public final class CoreField {
        * 均价
        * </pre>
        *
-       * <code>double avgPrice = 8;</code>
+       * <code>double avgPrice = 9;</code>
        */
       public Builder clearAvgPrice() {
         
@@ -20042,7 +23315,7 @@ public final class CoreField {
        * 定单买入总量
        * </pre>
        *
-       * <code>fixed64 totalBidVol = 9;</code>
+       * <code>fixed64 totalBidVol = 10;</code>
        */
       public long getTotalBidVol() {
         return totalBidVol_;
@@ -20052,7 +23325,7 @@ public final class CoreField {
        * 定单买入总量
        * </pre>
        *
-       * <code>fixed64 totalBidVol = 9;</code>
+       * <code>fixed64 totalBidVol = 10;</code>
        */
       public Builder setTotalBidVol(long value) {
         
@@ -20065,7 +23338,7 @@ public final class CoreField {
        * 定单买入总量
        * </pre>
        *
-       * <code>fixed64 totalBidVol = 9;</code>
+       * <code>fixed64 totalBidVol = 10;</code>
        */
       public Builder clearTotalBidVol() {
         
@@ -20080,7 +23353,7 @@ public final class CoreField {
        * 定单卖出总量
        * </pre>
        *
-       * <code>fixed64 totalAskVol = 10;</code>
+       * <code>fixed64 totalAskVol = 11;</code>
        */
       public long getTotalAskVol() {
         return totalAskVol_;
@@ -20090,7 +23363,7 @@ public final class CoreField {
        * 定单卖出总量
        * </pre>
        *
-       * <code>fixed64 totalAskVol = 10;</code>
+       * <code>fixed64 totalAskVol = 11;</code>
        */
       public Builder setTotalAskVol(long value) {
         
@@ -20103,7 +23376,7 @@ public final class CoreField {
        * 定单卖出总量
        * </pre>
        *
-       * <code>fixed64 totalAskVol = 10;</code>
+       * <code>fixed64 totalAskVol = 11;</code>
        */
       public Builder clearTotalAskVol() {
         
@@ -20118,7 +23391,7 @@ public final class CoreField {
        * 加权平均委买价格
        * </pre>
        *
-       * <code>double weightedAvgBidPrice = 11;</code>
+       * <code>double weightedAvgBidPrice = 12;</code>
        */
       public double getWeightedAvgBidPrice() {
         return weightedAvgBidPrice_;
@@ -20128,7 +23401,7 @@ public final class CoreField {
        * 加权平均委买价格
        * </pre>
        *
-       * <code>double weightedAvgBidPrice = 11;</code>
+       * <code>double weightedAvgBidPrice = 12;</code>
        */
       public Builder setWeightedAvgBidPrice(double value) {
         
@@ -20141,7 +23414,7 @@ public final class CoreField {
        * 加权平均委买价格
        * </pre>
        *
-       * <code>double weightedAvgBidPrice = 11;</code>
+       * <code>double weightedAvgBidPrice = 12;</code>
        */
       public Builder clearWeightedAvgBidPrice() {
         
@@ -20156,7 +23429,7 @@ public final class CoreField {
        * 加权平均卖价格
        * </pre>
        *
-       * <code>double weightedAvgAskPrice = 12;</code>
+       * <code>double weightedAvgAskPrice = 13;</code>
        */
       public double getWeightedAvgAskPrice() {
         return weightedAvgAskPrice_;
@@ -20166,7 +23439,7 @@ public final class CoreField {
        * 加权平均卖价格
        * </pre>
        *
-       * <code>double weightedAvgAskPrice = 12;</code>
+       * <code>double weightedAvgAskPrice = 13;</code>
        */
       public Builder setWeightedAvgAskPrice(double value) {
         
@@ -20179,7 +23452,7 @@ public final class CoreField {
        * 加权平均卖价格
        * </pre>
        *
-       * <code>double weightedAvgAskPrice = 12;</code>
+       * <code>double weightedAvgAskPrice = 13;</code>
        */
       public Builder clearWeightedAvgAskPrice() {
         
@@ -20194,7 +23467,7 @@ public final class CoreField {
        * 净值估值
        * </pre>
        *
-       * <code>double iopv = 13;</code>
+       * <code>double iopv = 14;</code>
        */
       public double getIopv() {
         return iopv_;
@@ -20204,7 +23477,7 @@ public final class CoreField {
        * 净值估值
        * </pre>
        *
-       * <code>double iopv = 13;</code>
+       * <code>double iopv = 14;</code>
        */
       public Builder setIopv(double value) {
         
@@ -20217,7 +23490,7 @@ public final class CoreField {
        * 净值估值
        * </pre>
        *
-       * <code>double iopv = 13;</code>
+       * <code>double iopv = 14;</code>
        */
       public Builder clearIopv() {
         
@@ -20232,7 +23505,7 @@ public final class CoreField {
        * 到期收益率
        * </pre>
        *
-       * <code>double yieldToMaturity = 14;</code>
+       * <code>double yieldToMaturity = 15;</code>
        */
       public double getYieldToMaturity() {
         return yieldToMaturity_;
@@ -20242,7 +23515,7 @@ public final class CoreField {
        * 到期收益率
        * </pre>
        *
-       * <code>double yieldToMaturity = 14;</code>
+       * <code>double yieldToMaturity = 15;</code>
        */
       public Builder setYieldToMaturity(double value) {
         
@@ -20255,7 +23528,7 @@ public final class CoreField {
        * 到期收益率
        * </pre>
        *
-       * <code>double yieldToMaturity = 14;</code>
+       * <code>double yieldToMaturity = 15;</code>
        */
       public Builder clearYieldToMaturity() {
         
@@ -20264,27 +23537,27 @@ public final class CoreField {
         return this;
       }
 
-      private int volumeChange_ ;
+      private long volumeDelta_ ;
       /**
        * <pre>
        * 成交量变化
        * </pre>
        *
-       * <code>fixed32 volumeChange = 15;</code>
+       * <code>fixed64 volumeDelta = 16;</code>
        */
-      public int getVolumeChange() {
-        return volumeChange_;
+      public long getVolumeDelta() {
+        return volumeDelta_;
       }
       /**
        * <pre>
        * 成交量变化
        * </pre>
        *
-       * <code>fixed32 volumeChange = 15;</code>
+       * <code>fixed64 volumeDelta = 16;</code>
        */
-      public Builder setVolumeChange(int value) {
+      public Builder setVolumeDelta(long value) {
         
-        volumeChange_ = value;
+        volumeDelta_ = value;
         onChanged();
         return this;
       }
@@ -20293,11 +23566,11 @@ public final class CoreField {
        * 成交量变化
        * </pre>
        *
-       * <code>fixed32 volumeChange = 15;</code>
+       * <code>fixed64 volumeDelta = 16;</code>
        */
-      public Builder clearVolumeChange() {
+      public Builder clearVolumeDelta() {
         
-        volumeChange_ = 0;
+        volumeDelta_ = 0L;
         onChanged();
         return this;
       }
@@ -20308,7 +23581,7 @@ public final class CoreField {
        * 总成交量
        * </pre>
        *
-       * <code>fixed64 volume = 16;</code>
+       * <code>fixed64 volume = 17;</code>
        */
       public long getVolume() {
         return volume_;
@@ -20318,7 +23591,7 @@ public final class CoreField {
        * 总成交量
        * </pre>
        *
-       * <code>fixed64 volume = 16;</code>
+       * <code>fixed64 volume = 17;</code>
        */
       public Builder setVolume(long value) {
         
@@ -20331,7 +23604,7 @@ public final class CoreField {
        * 总成交量
        * </pre>
        *
-       * <code>fixed64 volume = 16;</code>
+       * <code>fixed64 volume = 17;</code>
        */
       public Builder clearVolume() {
         
@@ -20346,7 +23619,7 @@ public final class CoreField {
        * 成交总额
        * </pre>
        *
-       * <code>double turnover = 17;</code>
+       * <code>double turnover = 18;</code>
        */
       public double getTurnover() {
         return turnover_;
@@ -20356,7 +23629,7 @@ public final class CoreField {
        * 成交总额
        * </pre>
        *
-       * <code>double turnover = 17;</code>
+       * <code>double turnover = 18;</code>
        */
       public Builder setTurnover(double value) {
         
@@ -20369,7 +23642,7 @@ public final class CoreField {
        * 成交总额
        * </pre>
        *
-       * <code>double turnover = 17;</code>
+       * <code>double turnover = 18;</code>
        */
       public Builder clearTurnover() {
         
@@ -20378,27 +23651,27 @@ public final class CoreField {
         return this;
       }
 
-      private double turnoverChange_ ;
+      private double turnoverDelta_ ;
       /**
        * <pre>
        * 成交总额变化
        * </pre>
        *
-       * <code>double turnoverChange = 18;</code>
+       * <code>double turnoverDelta = 19;</code>
        */
-      public double getTurnoverChange() {
-        return turnoverChange_;
+      public double getTurnoverDelta() {
+        return turnoverDelta_;
       }
       /**
        * <pre>
        * 成交总额变化
        * </pre>
        *
-       * <code>double turnoverChange = 18;</code>
+       * <code>double turnoverDelta = 19;</code>
        */
-      public Builder setTurnoverChange(double value) {
+      public Builder setTurnoverDelta(double value) {
         
-        turnoverChange_ = value;
+        turnoverDelta_ = value;
         onChanged();
         return this;
       }
@@ -20407,11 +23680,11 @@ public final class CoreField {
        * 成交总额变化
        * </pre>
        *
-       * <code>double turnoverChange = 18;</code>
+       * <code>double turnoverDelta = 19;</code>
        */
-      public Builder clearTurnoverChange() {
+      public Builder clearTurnoverDelta() {
         
-        turnoverChange_ = 0D;
+        turnoverDelta_ = 0D;
         onChanged();
         return this;
       }
@@ -20422,7 +23695,7 @@ public final class CoreField {
        * 成交笔数
        * </pre>
        *
-       * <code>fixed64 numTrades = 19;</code>
+       * <code>fixed64 numTrades = 20;</code>
        */
       public long getNumTrades() {
         return numTrades_;
@@ -20432,7 +23705,7 @@ public final class CoreField {
        * 成交笔数
        * </pre>
        *
-       * <code>fixed64 numTrades = 19;</code>
+       * <code>fixed64 numTrades = 20;</code>
        */
       public Builder setNumTrades(long value) {
         
@@ -20445,7 +23718,7 @@ public final class CoreField {
        * 成交笔数
        * </pre>
        *
-       * <code>fixed64 numTrades = 19;</code>
+       * <code>fixed64 numTrades = 20;</code>
        */
       public Builder clearNumTrades() {
         
@@ -20454,27 +23727,27 @@ public final class CoreField {
         return this;
       }
 
-      private long numTradesChange_ ;
+      private long numTradesDelta_ ;
       /**
        * <pre>
        * 成交笔数
        * </pre>
        *
-       * <code>fixed64 numTradesChange = 20;</code>
+       * <code>fixed64 numTradesDelta = 21;</code>
        */
-      public long getNumTradesChange() {
-        return numTradesChange_;
+      public long getNumTradesDelta() {
+        return numTradesDelta_;
       }
       /**
        * <pre>
        * 成交笔数
        * </pre>
        *
-       * <code>fixed64 numTradesChange = 20;</code>
+       * <code>fixed64 numTradesDelta = 21;</code>
        */
-      public Builder setNumTradesChange(long value) {
+      public Builder setNumTradesDelta(long value) {
         
-        numTradesChange_ = value;
+        numTradesDelta_ = value;
         onChanged();
         return this;
       }
@@ -20483,11 +23756,11 @@ public final class CoreField {
        * 成交笔数
        * </pre>
        *
-       * <code>fixed64 numTradesChange = 20;</code>
+       * <code>fixed64 numTradesDelta = 21;</code>
        */
-      public Builder clearNumTradesChange() {
+      public Builder clearNumTradesDelta() {
         
-        numTradesChange_ = 0L;
+        numTradesDelta_ = 0L;
         onChanged();
         return this;
       }
@@ -20498,7 +23771,7 @@ public final class CoreField {
        * 持仓量
        * </pre>
        *
-       * <code>double openInterest = 21;</code>
+       * <code>double openInterest = 22;</code>
        */
       public double getOpenInterest() {
         return openInterest_;
@@ -20508,7 +23781,7 @@ public final class CoreField {
        * 持仓量
        * </pre>
        *
-       * <code>double openInterest = 21;</code>
+       * <code>double openInterest = 22;</code>
        */
       public Builder setOpenInterest(double value) {
         
@@ -20521,7 +23794,7 @@ public final class CoreField {
        * 持仓量
        * </pre>
        *
-       * <code>double openInterest = 21;</code>
+       * <code>double openInterest = 22;</code>
        */
       public Builder clearOpenInterest() {
         
@@ -20530,27 +23803,27 @@ public final class CoreField {
         return this;
       }
 
-      private int openInterestChange_ ;
+      private double openInterestDelta_ ;
       /**
        * <pre>
        * 持仓量变化
        * </pre>
        *
-       * <code>fixed32 openInterestChange = 22;</code>
+       * <code>double openInterestDelta = 23;</code>
        */
-      public int getOpenInterestChange() {
-        return openInterestChange_;
+      public double getOpenInterestDelta() {
+        return openInterestDelta_;
       }
       /**
        * <pre>
        * 持仓量变化
        * </pre>
        *
-       * <code>fixed32 openInterestChange = 22;</code>
+       * <code>double openInterestDelta = 23;</code>
        */
-      public Builder setOpenInterestChange(int value) {
+      public Builder setOpenInterestDelta(double value) {
         
-        openInterestChange_ = value;
+        openInterestDelta_ = value;
         onChanged();
         return this;
       }
@@ -20559,11 +23832,11 @@ public final class CoreField {
        * 持仓量变化
        * </pre>
        *
-       * <code>fixed32 openInterestChange = 22;</code>
+       * <code>double openInterestDelta = 23;</code>
        */
-      public Builder clearOpenInterestChange() {
+      public Builder clearOpenInterestDelta() {
         
-        openInterestChange_ = 0;
+        openInterestDelta_ = 0D;
         onChanged();
         return this;
       }
@@ -20574,7 +23847,7 @@ public final class CoreField {
        * 昨持仓
        * </pre>
        *
-       * <code>double preOpenInterest = 23;</code>
+       * <code>double preOpenInterest = 24;</code>
        */
       public double getPreOpenInterest() {
         return preOpenInterest_;
@@ -20584,7 +23857,7 @@ public final class CoreField {
        * 昨持仓
        * </pre>
        *
-       * <code>double preOpenInterest = 23;</code>
+       * <code>double preOpenInterest = 24;</code>
        */
       public Builder setPreOpenInterest(double value) {
         
@@ -20597,7 +23870,7 @@ public final class CoreField {
        * 昨持仓
        * </pre>
        *
-       * <code>double preOpenInterest = 23;</code>
+       * <code>double preOpenInterest = 24;</code>
        */
       public Builder clearPreOpenInterest() {
         
@@ -20912,9 +24185,9 @@ public final class CoreField {
 
       private java.util.List<java.lang.Double> bidPrice_ = java.util.Collections.emptyList();
       private void ensureBidPriceIsMutable() {
-        if (!((bitField0_ & 0x80000000) == 0x80000000)) {
+        if (!((bitField1_ & 0x00000001) == 0x00000001)) {
           bidPrice_ = new java.util.ArrayList<java.lang.Double>(bidPrice_);
-          bitField0_ |= 0x80000000;
+          bitField1_ |= 0x00000001;
          }
       }
       /**
@@ -20999,16 +24272,16 @@ public final class CoreField {
        */
       public Builder clearBidPrice() {
         bidPrice_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x80000000);
+        bitField1_ = (bitField1_ & ~0x00000001);
         onChanged();
         return this;
       }
 
       private java.util.List<java.lang.Double> askPrice_ = java.util.Collections.emptyList();
       private void ensureAskPriceIsMutable() {
-        if (!((bitField1_ & 0x00000001) == 0x00000001)) {
+        if (!((bitField1_ & 0x00000002) == 0x00000002)) {
           askPrice_ = new java.util.ArrayList<java.lang.Double>(askPrice_);
-          bitField1_ |= 0x00000001;
+          bitField1_ |= 0x00000002;
          }
       }
       /**
@@ -21093,16 +24366,16 @@ public final class CoreField {
        */
       public Builder clearAskPrice() {
         askPrice_ = java.util.Collections.emptyList();
-        bitField1_ = (bitField1_ & ~0x00000001);
+        bitField1_ = (bitField1_ & ~0x00000002);
         onChanged();
         return this;
       }
 
       private java.util.List<java.lang.Integer> bidVolume_ = java.util.Collections.emptyList();
       private void ensureBidVolumeIsMutable() {
-        if (!((bitField1_ & 0x00000002) == 0x00000002)) {
+        if (!((bitField1_ & 0x00000004) == 0x00000004)) {
           bidVolume_ = new java.util.ArrayList<java.lang.Integer>(bidVolume_);
-          bitField1_ |= 0x00000002;
+          bitField1_ |= 0x00000004;
          }
       }
       /**
@@ -21187,16 +24460,16 @@ public final class CoreField {
        */
       public Builder clearBidVolume() {
         bidVolume_ = java.util.Collections.emptyList();
-        bitField1_ = (bitField1_ & ~0x00000002);
+        bitField1_ = (bitField1_ & ~0x00000004);
         onChanged();
         return this;
       }
 
       private java.util.List<java.lang.Integer> askVolume_ = java.util.Collections.emptyList();
       private void ensureAskVolumeIsMutable() {
-        if (!((bitField1_ & 0x00000004) == 0x00000004)) {
+        if (!((bitField1_ & 0x00000008) == 0x00000008)) {
           askVolume_ = new java.util.ArrayList<java.lang.Integer>(askVolume_);
-          bitField1_ |= 0x00000004;
+          bitField1_ |= 0x00000008;
          }
       }
       /**
@@ -21281,315 +24554,9 @@ public final class CoreField {
        */
       public Builder clearAskVolume() {
         askVolume_ = java.util.Collections.emptyList();
-        bitField1_ = (bitField1_ & ~0x00000004);
+        bitField1_ = (bitField1_ & ~0x00000008);
         onChanged();
         return this;
-      }
-
-      private xyz.redtorch.pb.CoreField.ContractField contract_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          xyz.redtorch.pb.CoreField.ContractField, xyz.redtorch.pb.CoreField.ContractField.Builder, xyz.redtorch.pb.CoreField.ContractFieldOrBuilder> contractBuilder_;
-      /**
-       * <pre>
-       * 合约
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
-       */
-      public boolean hasContract() {
-        return contractBuilder_ != null || contract_ != null;
-      }
-      /**
-       * <pre>
-       * 合约
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
-       */
-      public xyz.redtorch.pb.CoreField.ContractField getContract() {
-        if (contractBuilder_ == null) {
-          return contract_ == null ? xyz.redtorch.pb.CoreField.ContractField.getDefaultInstance() : contract_;
-        } else {
-          return contractBuilder_.getMessage();
-        }
-      }
-      /**
-       * <pre>
-       * 合约
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
-       */
-      public Builder setContract(xyz.redtorch.pb.CoreField.ContractField value) {
-        if (contractBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          contract_ = value;
-          onChanged();
-        } else {
-          contractBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 合约
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
-       */
-      public Builder setContract(
-          xyz.redtorch.pb.CoreField.ContractField.Builder builderForValue) {
-        if (contractBuilder_ == null) {
-          contract_ = builderForValue.build();
-          onChanged();
-        } else {
-          contractBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 合约
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
-       */
-      public Builder mergeContract(xyz.redtorch.pb.CoreField.ContractField value) {
-        if (contractBuilder_ == null) {
-          if (contract_ != null) {
-            contract_ =
-              xyz.redtorch.pb.CoreField.ContractField.newBuilder(contract_).mergeFrom(value).buildPartial();
-          } else {
-            contract_ = value;
-          }
-          onChanged();
-        } else {
-          contractBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 合约
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
-       */
-      public Builder clearContract() {
-        if (contractBuilder_ == null) {
-          contract_ = null;
-          onChanged();
-        } else {
-          contract_ = null;
-          contractBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 合约
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
-       */
-      public xyz.redtorch.pb.CoreField.ContractField.Builder getContractBuilder() {
-        
-        onChanged();
-        return getContractFieldBuilder().getBuilder();
-      }
-      /**
-       * <pre>
-       * 合约
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
-       */
-      public xyz.redtorch.pb.CoreField.ContractFieldOrBuilder getContractOrBuilder() {
-        if (contractBuilder_ != null) {
-          return contractBuilder_.getMessageOrBuilder();
-        } else {
-          return contract_ == null ?
-              xyz.redtorch.pb.CoreField.ContractField.getDefaultInstance() : contract_;
-        }
-      }
-      /**
-       * <pre>
-       * 合约
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.ContractField contract = 37;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          xyz.redtorch.pb.CoreField.ContractField, xyz.redtorch.pb.CoreField.ContractField.Builder, xyz.redtorch.pb.CoreField.ContractFieldOrBuilder> 
-          getContractFieldBuilder() {
-        if (contractBuilder_ == null) {
-          contractBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              xyz.redtorch.pb.CoreField.ContractField, xyz.redtorch.pb.CoreField.ContractField.Builder, xyz.redtorch.pb.CoreField.ContractFieldOrBuilder>(
-                  getContract(),
-                  getParentForChildren(),
-                  isClean());
-          contract_ = null;
-        }
-        return contractBuilder_;
-      }
-
-      private xyz.redtorch.pb.CoreField.GatewayField gateway_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          xyz.redtorch.pb.CoreField.GatewayField, xyz.redtorch.pb.CoreField.GatewayField.Builder, xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder> gatewayBuilder_;
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 38;</code>
-       */
-      public boolean hasGateway() {
-        return gatewayBuilder_ != null || gateway_ != null;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 38;</code>
-       */
-      public xyz.redtorch.pb.CoreField.GatewayField getGateway() {
-        if (gatewayBuilder_ == null) {
-          return gateway_ == null ? xyz.redtorch.pb.CoreField.GatewayField.getDefaultInstance() : gateway_;
-        } else {
-          return gatewayBuilder_.getMessage();
-        }
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 38;</code>
-       */
-      public Builder setGateway(xyz.redtorch.pb.CoreField.GatewayField value) {
-        if (gatewayBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          gateway_ = value;
-          onChanged();
-        } else {
-          gatewayBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 38;</code>
-       */
-      public Builder setGateway(
-          xyz.redtorch.pb.CoreField.GatewayField.Builder builderForValue) {
-        if (gatewayBuilder_ == null) {
-          gateway_ = builderForValue.build();
-          onChanged();
-        } else {
-          gatewayBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 38;</code>
-       */
-      public Builder mergeGateway(xyz.redtorch.pb.CoreField.GatewayField value) {
-        if (gatewayBuilder_ == null) {
-          if (gateway_ != null) {
-            gateway_ =
-              xyz.redtorch.pb.CoreField.GatewayField.newBuilder(gateway_).mergeFrom(value).buildPartial();
-          } else {
-            gateway_ = value;
-          }
-          onChanged();
-        } else {
-          gatewayBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 38;</code>
-       */
-      public Builder clearGateway() {
-        if (gatewayBuilder_ == null) {
-          gateway_ = null;
-          onChanged();
-        } else {
-          gateway_ = null;
-          gatewayBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 38;</code>
-       */
-      public xyz.redtorch.pb.CoreField.GatewayField.Builder getGatewayBuilder() {
-        
-        onChanged();
-        return getGatewayFieldBuilder().getBuilder();
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 38;</code>
-       */
-      public xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder getGatewayOrBuilder() {
-        if (gatewayBuilder_ != null) {
-          return gatewayBuilder_.getMessageOrBuilder();
-        } else {
-          return gateway_ == null ?
-              xyz.redtorch.pb.CoreField.GatewayField.getDefaultInstance() : gateway_;
-        }
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 38;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          xyz.redtorch.pb.CoreField.GatewayField, xyz.redtorch.pb.CoreField.GatewayField.Builder, xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder> 
-          getGatewayFieldBuilder() {
-        if (gatewayBuilder_ == null) {
-          gatewayBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              xyz.redtorch.pb.CoreField.GatewayField, xyz.redtorch.pb.CoreField.GatewayField.Builder, xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder>(
-                  getGateway(),
-                  getParentForChildren(),
-                  isClean());
-          gateway_ = null;
-        }
-        return gatewayBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -21650,28 +24617,46 @@ public final class CoreField {
 
     /**
      * <pre>
-     * 数据源ID &lt;合约代码&#64;交易所代码&#64;产品类型&#64;网关ID&gt;
+     * 统一合约标识
      * </pre>
      *
-     * <code>string dataSourceId = 1;</code>
+     * <code>string unifiedSymbol = 1;</code>
      */
-    java.lang.String getDataSourceId();
+    java.lang.String getUnifiedSymbol();
     /**
      * <pre>
-     * 数据源ID &lt;合约代码&#64;交易所代码&#64;产品类型&#64;网关ID&gt;
+     * 统一合约标识
      * </pre>
      *
-     * <code>string dataSourceId = 1;</code>
+     * <code>string unifiedSymbol = 1;</code>
      */
     com.google.protobuf.ByteString
-        getDataSourceIdBytes();
+        getUnifiedSymbolBytes();
+
+    /**
+     * <pre>
+     * 网关ID
+     * </pre>
+     *
+     * <code>string gatewayId = 2;</code>
+     */
+    java.lang.String getGatewayId();
+    /**
+     * <pre>
+     * 网关ID
+     * </pre>
+     *
+     * <code>string gatewayId = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getGatewayIdBytes();
 
     /**
      * <pre>
      * 交易日
      * </pre>
      *
-     * <code>string tradingDay = 2;</code>
+     * <code>string tradingDay = 3;</code>
      */
     java.lang.String getTradingDay();
     /**
@@ -21679,7 +24664,7 @@ public final class CoreField {
      * 交易日
      * </pre>
      *
-     * <code>string tradingDay = 2;</code>
+     * <code>string tradingDay = 3;</code>
      */
     com.google.protobuf.ByteString
         getTradingDayBytes();
@@ -21689,7 +24674,7 @@ public final class CoreField {
      * 业务发生日
      * </pre>
      *
-     * <code>string actionDay = 3;</code>
+     * <code>string actionDay = 4;</code>
      */
     java.lang.String getActionDay();
     /**
@@ -21697,7 +24682,7 @@ public final class CoreField {
      * 业务发生日
      * </pre>
      *
-     * <code>string actionDay = 3;</code>
+     * <code>string actionDay = 4;</code>
      */
     com.google.protobuf.ByteString
         getActionDayBytes();
@@ -21707,7 +24692,7 @@ public final class CoreField {
      * 时间(HHmmssSSS)
      * </pre>
      *
-     * <code>string actionTime = 4;</code>
+     * <code>string actionTime = 5;</code>
      */
     java.lang.String getActionTime();
     /**
@@ -21715,7 +24700,7 @@ public final class CoreField {
      * 时间(HHmmssSSS)
      * </pre>
      *
-     * <code>string actionTime = 4;</code>
+     * <code>string actionTime = 5;</code>
      */
     com.google.protobuf.ByteString
         getActionTimeBytes();
@@ -21725,7 +24710,7 @@ public final class CoreField {
      * 时间戳
      * </pre>
      *
-     * <code>fixed64 actionTimestamp = 5;</code>
+     * <code>fixed64 actionTimestamp = 6;</code>
      */
     long getActionTimestamp();
 
@@ -21734,7 +24719,7 @@ public final class CoreField {
      * 开
      * </pre>
      *
-     * <code>double openPrice = 6;</code>
+     * <code>double openPrice = 7;</code>
      */
     double getOpenPrice();
 
@@ -21743,7 +24728,7 @@ public final class CoreField {
      * 高
      * </pre>
      *
-     * <code>double highPrice = 7;</code>
+     * <code>double highPrice = 8;</code>
      */
     double getHighPrice();
 
@@ -21752,7 +24737,7 @@ public final class CoreField {
      * 低
      * </pre>
      *
-     * <code>double lowPrice = 8;</code>
+     * <code>double lowPrice = 9;</code>
      */
     double getLowPrice();
 
@@ -21761,7 +24746,7 @@ public final class CoreField {
      * 收
      * </pre>
      *
-     * <code>double closePrice = 9;</code>
+     * <code>double closePrice = 10;</code>
      */
     double getClosePrice();
 
@@ -21770,7 +24755,7 @@ public final class CoreField {
      * 最后持仓量
      * </pre>
      *
-     * <code>double openInterest = 10;</code>
+     * <code>double openInterest = 11;</code>
      */
     double getOpenInterest();
 
@@ -21779,16 +24764,16 @@ public final class CoreField {
      * 持仓量（Bar）
      * </pre>
      *
-     * <code>double openInterestChange = 11;</code>
+     * <code>double openInterestDelta = 12;</code>
      */
-    double getOpenInterestChange();
+    double getOpenInterestDelta();
 
     /**
      * <pre>
      * 最后总成交量
      * </pre>
      *
-     * <code>fixed64 volume = 12;</code>
+     * <code>fixed64 volume = 13;</code>
      */
     long getVolume();
 
@@ -21797,16 +24782,16 @@ public final class CoreField {
      * 成交量（Bar）
      * </pre>
      *
-     * <code>fixed64 volumeChange = 13;</code>
+     * <code>fixed64 volumeDelta = 14;</code>
      */
-    long getVolumeChange();
+    long getVolumeDelta();
 
     /**
      * <pre>
      * 最后成交总额
      * </pre>
      *
-     * <code>double turnover = 14;</code>
+     * <code>double turnover = 15;</code>
      */
     double getTurnover();
 
@@ -21815,16 +24800,16 @@ public final class CoreField {
      * 成交总额（Bar）
      * </pre>
      *
-     * <code>double turnoverChange = 15;</code>
+     * <code>double turnoverDelta = 16;</code>
      */
-    double getTurnoverChange();
+    double getTurnoverDelta();
 
     /**
      * <pre>
      * 最新成交笔数
      * </pre>
      *
-     * <code>fixed64 numTrades = 16;</code>
+     * <code>fixed64 numTrades = 17;</code>
      */
     long getNumTrades();
 
@@ -21833,59 +24818,36 @@ public final class CoreField {
      * 成交笔数（Bar）
      * </pre>
      *
-     * <code>fixed64 numTradesChange = 17;</code>
+     * <code>fixed64 numTradesDelta = 18;</code>
      */
-    long getNumTradesChange();
+    long getNumTradesDelta();
 
     /**
      * <pre>
-     * 合约
+     * 昨持仓
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ContractField contract = 18;</code>
+     * <code>double preOpenInterest = 19;</code>
      */
-    boolean hasContract();
-    /**
-     * <pre>
-     * 合约
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.ContractField contract = 18;</code>
-     */
-    xyz.redtorch.pb.CoreField.ContractField getContract();
-    /**
-     * <pre>
-     * 合约
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.ContractField contract = 18;</code>
-     */
-    xyz.redtorch.pb.CoreField.ContractFieldOrBuilder getContractOrBuilder();
+    double getPreOpenInterest();
 
     /**
      * <pre>
-     * 网关
+     * 前收盘价
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 19;</code>
+     * <code>double preClosePrice = 20;</code>
      */
-    boolean hasGateway();
+    double getPreClosePrice();
+
     /**
      * <pre>
-     * 网关
+     * 昨结算价
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 19;</code>
+     * <code>double preSettlePrice = 21;</code>
      */
-    xyz.redtorch.pb.CoreField.GatewayField getGateway();
-    /**
-     * <pre>
-     * 网关
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 19;</code>
-     */
-    xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder getGatewayOrBuilder();
+    double getPreSettlePrice();
   }
   /**
    * <pre>
@@ -21904,7 +24866,8 @@ public final class CoreField {
       super(builder);
     }
     private BarField() {
-      dataSourceId_ = "";
+      unifiedSymbol_ = "";
+      gatewayId_ = "";
       tradingDay_ = "";
       actionDay_ = "";
       actionTime_ = "";
@@ -21914,13 +24877,16 @@ public final class CoreField {
       lowPrice_ = 0D;
       closePrice_ = 0D;
       openInterest_ = 0D;
-      openInterestChange_ = 0D;
+      openInterestDelta_ = 0D;
       volume_ = 0L;
-      volumeChange_ = 0L;
+      volumeDelta_ = 0L;
       turnover_ = 0D;
-      turnoverChange_ = 0D;
+      turnoverDelta_ = 0D;
       numTrades_ = 0L;
-      numTradesChange_ = 0L;
+      numTradesDelta_ = 0L;
+      preOpenInterest_ = 0D;
+      preClosePrice_ = 0D;
+      preSettlePrice_ = 0D;
     }
 
     @java.lang.Override
@@ -21950,116 +24916,111 @@ public final class CoreField {
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              dataSourceId_ = s;
+              unifiedSymbol_ = s;
               break;
             }
             case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              tradingDay_ = s;
+              gatewayId_ = s;
               break;
             }
             case 26: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              actionDay_ = s;
+              tradingDay_ = s;
               break;
             }
             case 34: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              actionTime_ = s;
+              actionDay_ = s;
               break;
             }
-            case 41: {
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
 
-              actionTimestamp_ = input.readFixed64();
+              actionTime_ = s;
               break;
             }
             case 49: {
 
-              openPrice_ = input.readDouble();
+              actionTimestamp_ = input.readFixed64();
               break;
             }
             case 57: {
 
-              highPrice_ = input.readDouble();
+              openPrice_ = input.readDouble();
               break;
             }
             case 65: {
 
-              lowPrice_ = input.readDouble();
+              highPrice_ = input.readDouble();
               break;
             }
             case 73: {
 
-              closePrice_ = input.readDouble();
+              lowPrice_ = input.readDouble();
               break;
             }
             case 81: {
 
-              openInterest_ = input.readDouble();
+              closePrice_ = input.readDouble();
               break;
             }
             case 89: {
 
-              openInterestChange_ = input.readDouble();
+              openInterest_ = input.readDouble();
               break;
             }
             case 97: {
 
-              volume_ = input.readFixed64();
+              openInterestDelta_ = input.readDouble();
               break;
             }
             case 105: {
 
-              volumeChange_ = input.readFixed64();
+              volume_ = input.readFixed64();
               break;
             }
             case 113: {
 
-              turnover_ = input.readDouble();
+              volumeDelta_ = input.readFixed64();
               break;
             }
             case 121: {
 
-              turnoverChange_ = input.readDouble();
+              turnover_ = input.readDouble();
               break;
             }
             case 129: {
 
-              numTrades_ = input.readFixed64();
+              turnoverDelta_ = input.readDouble();
               break;
             }
             case 137: {
 
-              numTradesChange_ = input.readFixed64();
+              numTrades_ = input.readFixed64();
               break;
             }
-            case 146: {
-              xyz.redtorch.pb.CoreField.ContractField.Builder subBuilder = null;
-              if (contract_ != null) {
-                subBuilder = contract_.toBuilder();
-              }
-              contract_ = input.readMessage(xyz.redtorch.pb.CoreField.ContractField.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(contract_);
-                contract_ = subBuilder.buildPartial();
-              }
+            case 145: {
 
+              numTradesDelta_ = input.readFixed64();
               break;
             }
-            case 154: {
-              xyz.redtorch.pb.CoreField.GatewayField.Builder subBuilder = null;
-              if (gateway_ != null) {
-                subBuilder = gateway_.toBuilder();
-              }
-              gateway_ = input.readMessage(xyz.redtorch.pb.CoreField.GatewayField.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(gateway_);
-                gateway_ = subBuilder.buildPartial();
-              }
+            case 153: {
 
+              preOpenInterest_ = input.readDouble();
+              break;
+            }
+            case 161: {
+
+              preClosePrice_ = input.readDouble();
+              break;
+            }
+            case 169: {
+
+              preSettlePrice_ = input.readDouble();
               break;
             }
             default: {
@@ -22094,56 +25055,98 @@ public final class CoreField {
               xyz.redtorch.pb.CoreField.BarField.class, xyz.redtorch.pb.CoreField.BarField.Builder.class);
     }
 
-    public static final int DATASOURCEID_FIELD_NUMBER = 1;
-    private volatile java.lang.Object dataSourceId_;
+    public static final int UNIFIEDSYMBOL_FIELD_NUMBER = 1;
+    private volatile java.lang.Object unifiedSymbol_;
     /**
      * <pre>
-     * 数据源ID &lt;合约代码&#64;交易所代码&#64;产品类型&#64;网关ID&gt;
+     * 统一合约标识
      * </pre>
      *
-     * <code>string dataSourceId = 1;</code>
+     * <code>string unifiedSymbol = 1;</code>
      */
-    public java.lang.String getDataSourceId() {
-      java.lang.Object ref = dataSourceId_;
+    public java.lang.String getUnifiedSymbol() {
+      java.lang.Object ref = unifiedSymbol_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        dataSourceId_ = s;
+        unifiedSymbol_ = s;
         return s;
       }
     }
     /**
      * <pre>
-     * 数据源ID &lt;合约代码&#64;交易所代码&#64;产品类型&#64;网关ID&gt;
+     * 统一合约标识
      * </pre>
      *
-     * <code>string dataSourceId = 1;</code>
+     * <code>string unifiedSymbol = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getDataSourceIdBytes() {
-      java.lang.Object ref = dataSourceId_;
+        getUnifiedSymbolBytes() {
+      java.lang.Object ref = unifiedSymbol_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        dataSourceId_ = b;
+        unifiedSymbol_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
 
-    public static final int TRADINGDAY_FIELD_NUMBER = 2;
+    public static final int GATEWAYID_FIELD_NUMBER = 2;
+    private volatile java.lang.Object gatewayId_;
+    /**
+     * <pre>
+     * 网关ID
+     * </pre>
+     *
+     * <code>string gatewayId = 2;</code>
+     */
+    public java.lang.String getGatewayId() {
+      java.lang.Object ref = gatewayId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        gatewayId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 网关ID
+     * </pre>
+     *
+     * <code>string gatewayId = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getGatewayIdBytes() {
+      java.lang.Object ref = gatewayId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        gatewayId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TRADINGDAY_FIELD_NUMBER = 3;
     private volatile java.lang.Object tradingDay_;
     /**
      * <pre>
      * 交易日
      * </pre>
      *
-     * <code>string tradingDay = 2;</code>
+     * <code>string tradingDay = 3;</code>
      */
     public java.lang.String getTradingDay() {
       java.lang.Object ref = tradingDay_;
@@ -22162,7 +25165,7 @@ public final class CoreField {
      * 交易日
      * </pre>
      *
-     * <code>string tradingDay = 2;</code>
+     * <code>string tradingDay = 3;</code>
      */
     public com.google.protobuf.ByteString
         getTradingDayBytes() {
@@ -22178,14 +25181,14 @@ public final class CoreField {
       }
     }
 
-    public static final int ACTIONDAY_FIELD_NUMBER = 3;
+    public static final int ACTIONDAY_FIELD_NUMBER = 4;
     private volatile java.lang.Object actionDay_;
     /**
      * <pre>
      * 业务发生日
      * </pre>
      *
-     * <code>string actionDay = 3;</code>
+     * <code>string actionDay = 4;</code>
      */
     public java.lang.String getActionDay() {
       java.lang.Object ref = actionDay_;
@@ -22204,7 +25207,7 @@ public final class CoreField {
      * 业务发生日
      * </pre>
      *
-     * <code>string actionDay = 3;</code>
+     * <code>string actionDay = 4;</code>
      */
     public com.google.protobuf.ByteString
         getActionDayBytes() {
@@ -22220,14 +25223,14 @@ public final class CoreField {
       }
     }
 
-    public static final int ACTIONTIME_FIELD_NUMBER = 4;
+    public static final int ACTIONTIME_FIELD_NUMBER = 5;
     private volatile java.lang.Object actionTime_;
     /**
      * <pre>
      * 时间(HHmmssSSS)
      * </pre>
      *
-     * <code>string actionTime = 4;</code>
+     * <code>string actionTime = 5;</code>
      */
     public java.lang.String getActionTime() {
       java.lang.Object ref = actionTime_;
@@ -22246,7 +25249,7 @@ public final class CoreField {
      * 时间(HHmmssSSS)
      * </pre>
      *
-     * <code>string actionTime = 4;</code>
+     * <code>string actionTime = 5;</code>
      */
     public com.google.protobuf.ByteString
         getActionTimeBytes() {
@@ -22262,239 +25265,212 @@ public final class CoreField {
       }
     }
 
-    public static final int ACTIONTIMESTAMP_FIELD_NUMBER = 5;
+    public static final int ACTIONTIMESTAMP_FIELD_NUMBER = 6;
     private long actionTimestamp_;
     /**
      * <pre>
      * 时间戳
      * </pre>
      *
-     * <code>fixed64 actionTimestamp = 5;</code>
+     * <code>fixed64 actionTimestamp = 6;</code>
      */
     public long getActionTimestamp() {
       return actionTimestamp_;
     }
 
-    public static final int OPENPRICE_FIELD_NUMBER = 6;
+    public static final int OPENPRICE_FIELD_NUMBER = 7;
     private double openPrice_;
     /**
      * <pre>
      * 开
      * </pre>
      *
-     * <code>double openPrice = 6;</code>
+     * <code>double openPrice = 7;</code>
      */
     public double getOpenPrice() {
       return openPrice_;
     }
 
-    public static final int HIGHPRICE_FIELD_NUMBER = 7;
+    public static final int HIGHPRICE_FIELD_NUMBER = 8;
     private double highPrice_;
     /**
      * <pre>
      * 高
      * </pre>
      *
-     * <code>double highPrice = 7;</code>
+     * <code>double highPrice = 8;</code>
      */
     public double getHighPrice() {
       return highPrice_;
     }
 
-    public static final int LOWPRICE_FIELD_NUMBER = 8;
+    public static final int LOWPRICE_FIELD_NUMBER = 9;
     private double lowPrice_;
     /**
      * <pre>
      * 低
      * </pre>
      *
-     * <code>double lowPrice = 8;</code>
+     * <code>double lowPrice = 9;</code>
      */
     public double getLowPrice() {
       return lowPrice_;
     }
 
-    public static final int CLOSEPRICE_FIELD_NUMBER = 9;
+    public static final int CLOSEPRICE_FIELD_NUMBER = 10;
     private double closePrice_;
     /**
      * <pre>
      * 收
      * </pre>
      *
-     * <code>double closePrice = 9;</code>
+     * <code>double closePrice = 10;</code>
      */
     public double getClosePrice() {
       return closePrice_;
     }
 
-    public static final int OPENINTEREST_FIELD_NUMBER = 10;
+    public static final int OPENINTEREST_FIELD_NUMBER = 11;
     private double openInterest_;
     /**
      * <pre>
      * 最后持仓量
      * </pre>
      *
-     * <code>double openInterest = 10;</code>
+     * <code>double openInterest = 11;</code>
      */
     public double getOpenInterest() {
       return openInterest_;
     }
 
-    public static final int OPENINTERESTCHANGE_FIELD_NUMBER = 11;
-    private double openInterestChange_;
+    public static final int OPENINTERESTDELTA_FIELD_NUMBER = 12;
+    private double openInterestDelta_;
     /**
      * <pre>
      * 持仓量（Bar）
      * </pre>
      *
-     * <code>double openInterestChange = 11;</code>
+     * <code>double openInterestDelta = 12;</code>
      */
-    public double getOpenInterestChange() {
-      return openInterestChange_;
+    public double getOpenInterestDelta() {
+      return openInterestDelta_;
     }
 
-    public static final int VOLUME_FIELD_NUMBER = 12;
+    public static final int VOLUME_FIELD_NUMBER = 13;
     private long volume_;
     /**
      * <pre>
      * 最后总成交量
      * </pre>
      *
-     * <code>fixed64 volume = 12;</code>
+     * <code>fixed64 volume = 13;</code>
      */
     public long getVolume() {
       return volume_;
     }
 
-    public static final int VOLUMECHANGE_FIELD_NUMBER = 13;
-    private long volumeChange_;
+    public static final int VOLUMEDELTA_FIELD_NUMBER = 14;
+    private long volumeDelta_;
     /**
      * <pre>
      * 成交量（Bar）
      * </pre>
      *
-     * <code>fixed64 volumeChange = 13;</code>
+     * <code>fixed64 volumeDelta = 14;</code>
      */
-    public long getVolumeChange() {
-      return volumeChange_;
+    public long getVolumeDelta() {
+      return volumeDelta_;
     }
 
-    public static final int TURNOVER_FIELD_NUMBER = 14;
+    public static final int TURNOVER_FIELD_NUMBER = 15;
     private double turnover_;
     /**
      * <pre>
      * 最后成交总额
      * </pre>
      *
-     * <code>double turnover = 14;</code>
+     * <code>double turnover = 15;</code>
      */
     public double getTurnover() {
       return turnover_;
     }
 
-    public static final int TURNOVERCHANGE_FIELD_NUMBER = 15;
-    private double turnoverChange_;
+    public static final int TURNOVERDELTA_FIELD_NUMBER = 16;
+    private double turnoverDelta_;
     /**
      * <pre>
      * 成交总额（Bar）
      * </pre>
      *
-     * <code>double turnoverChange = 15;</code>
+     * <code>double turnoverDelta = 16;</code>
      */
-    public double getTurnoverChange() {
-      return turnoverChange_;
+    public double getTurnoverDelta() {
+      return turnoverDelta_;
     }
 
-    public static final int NUMTRADES_FIELD_NUMBER = 16;
+    public static final int NUMTRADES_FIELD_NUMBER = 17;
     private long numTrades_;
     /**
      * <pre>
      * 最新成交笔数
      * </pre>
      *
-     * <code>fixed64 numTrades = 16;</code>
+     * <code>fixed64 numTrades = 17;</code>
      */
     public long getNumTrades() {
       return numTrades_;
     }
 
-    public static final int NUMTRADESCHANGE_FIELD_NUMBER = 17;
-    private long numTradesChange_;
+    public static final int NUMTRADESDELTA_FIELD_NUMBER = 18;
+    private long numTradesDelta_;
     /**
      * <pre>
      * 成交笔数（Bar）
      * </pre>
      *
-     * <code>fixed64 numTradesChange = 17;</code>
+     * <code>fixed64 numTradesDelta = 18;</code>
      */
-    public long getNumTradesChange() {
-      return numTradesChange_;
+    public long getNumTradesDelta() {
+      return numTradesDelta_;
     }
 
-    public static final int CONTRACT_FIELD_NUMBER = 18;
-    private xyz.redtorch.pb.CoreField.ContractField contract_;
+    public static final int PREOPENINTEREST_FIELD_NUMBER = 19;
+    private double preOpenInterest_;
     /**
      * <pre>
-     * 合约
+     * 昨持仓
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.ContractField contract = 18;</code>
+     * <code>double preOpenInterest = 19;</code>
      */
-    public boolean hasContract() {
-      return contract_ != null;
-    }
-    /**
-     * <pre>
-     * 合约
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.ContractField contract = 18;</code>
-     */
-    public xyz.redtorch.pb.CoreField.ContractField getContract() {
-      return contract_ == null ? xyz.redtorch.pb.CoreField.ContractField.getDefaultInstance() : contract_;
-    }
-    /**
-     * <pre>
-     * 合约
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.ContractField contract = 18;</code>
-     */
-    public xyz.redtorch.pb.CoreField.ContractFieldOrBuilder getContractOrBuilder() {
-      return getContract();
+    public double getPreOpenInterest() {
+      return preOpenInterest_;
     }
 
-    public static final int GATEWAY_FIELD_NUMBER = 19;
-    private xyz.redtorch.pb.CoreField.GatewayField gateway_;
+    public static final int PRECLOSEPRICE_FIELD_NUMBER = 20;
+    private double preClosePrice_;
     /**
      * <pre>
-     * 网关
+     * 前收盘价
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 19;</code>
+     * <code>double preClosePrice = 20;</code>
      */
-    public boolean hasGateway() {
-      return gateway_ != null;
+    public double getPreClosePrice() {
+      return preClosePrice_;
     }
+
+    public static final int PRESETTLEPRICE_FIELD_NUMBER = 21;
+    private double preSettlePrice_;
     /**
      * <pre>
-     * 网关
+     * 昨结算价
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 19;</code>
+     * <code>double preSettlePrice = 21;</code>
      */
-    public xyz.redtorch.pb.CoreField.GatewayField getGateway() {
-      return gateway_ == null ? xyz.redtorch.pb.CoreField.GatewayField.getDefaultInstance() : gateway_;
-    }
-    /**
-     * <pre>
-     * 网关
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.GatewayField gateway = 19;</code>
-     */
-    public xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder getGatewayOrBuilder() {
-      return getGateway();
+    public double getPreSettlePrice() {
+      return preSettlePrice_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -22511,62 +25487,68 @@ public final class CoreField {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!getDataSourceIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, dataSourceId_);
+      if (!getUnifiedSymbolBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, unifiedSymbol_);
+      }
+      if (!getGatewayIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, gatewayId_);
       }
       if (!getTradingDayBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, tradingDay_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, tradingDay_);
       }
       if (!getActionDayBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, actionDay_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, actionDay_);
       }
       if (!getActionTimeBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, actionTime_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, actionTime_);
       }
       if (actionTimestamp_ != 0L) {
-        output.writeFixed64(5, actionTimestamp_);
+        output.writeFixed64(6, actionTimestamp_);
       }
       if (openPrice_ != 0D) {
-        output.writeDouble(6, openPrice_);
+        output.writeDouble(7, openPrice_);
       }
       if (highPrice_ != 0D) {
-        output.writeDouble(7, highPrice_);
+        output.writeDouble(8, highPrice_);
       }
       if (lowPrice_ != 0D) {
-        output.writeDouble(8, lowPrice_);
+        output.writeDouble(9, lowPrice_);
       }
       if (closePrice_ != 0D) {
-        output.writeDouble(9, closePrice_);
+        output.writeDouble(10, closePrice_);
       }
       if (openInterest_ != 0D) {
-        output.writeDouble(10, openInterest_);
+        output.writeDouble(11, openInterest_);
       }
-      if (openInterestChange_ != 0D) {
-        output.writeDouble(11, openInterestChange_);
+      if (openInterestDelta_ != 0D) {
+        output.writeDouble(12, openInterestDelta_);
       }
       if (volume_ != 0L) {
-        output.writeFixed64(12, volume_);
+        output.writeFixed64(13, volume_);
       }
-      if (volumeChange_ != 0L) {
-        output.writeFixed64(13, volumeChange_);
+      if (volumeDelta_ != 0L) {
+        output.writeFixed64(14, volumeDelta_);
       }
       if (turnover_ != 0D) {
-        output.writeDouble(14, turnover_);
+        output.writeDouble(15, turnover_);
       }
-      if (turnoverChange_ != 0D) {
-        output.writeDouble(15, turnoverChange_);
+      if (turnoverDelta_ != 0D) {
+        output.writeDouble(16, turnoverDelta_);
       }
       if (numTrades_ != 0L) {
-        output.writeFixed64(16, numTrades_);
+        output.writeFixed64(17, numTrades_);
       }
-      if (numTradesChange_ != 0L) {
-        output.writeFixed64(17, numTradesChange_);
+      if (numTradesDelta_ != 0L) {
+        output.writeFixed64(18, numTradesDelta_);
       }
-      if (contract_ != null) {
-        output.writeMessage(18, getContract());
+      if (preOpenInterest_ != 0D) {
+        output.writeDouble(19, preOpenInterest_);
       }
-      if (gateway_ != null) {
-        output.writeMessage(19, getGateway());
+      if (preClosePrice_ != 0D) {
+        output.writeDouble(20, preClosePrice_);
+      }
+      if (preSettlePrice_ != 0D) {
+        output.writeDouble(21, preSettlePrice_);
       }
       unknownFields.writeTo(output);
     }
@@ -22577,77 +25559,84 @@ public final class CoreField {
       if (size != -1) return size;
 
       size = 0;
-      if (!getDataSourceIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, dataSourceId_);
+      if (!getUnifiedSymbolBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, unifiedSymbol_);
+      }
+      if (!getGatewayIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, gatewayId_);
       }
       if (!getTradingDayBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, tradingDay_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, tradingDay_);
       }
       if (!getActionDayBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, actionDay_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, actionDay_);
       }
       if (!getActionTimeBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, actionTime_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, actionTime_);
       }
       if (actionTimestamp_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed64Size(5, actionTimestamp_);
+          .computeFixed64Size(6, actionTimestamp_);
       }
       if (openPrice_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(6, openPrice_);
+          .computeDoubleSize(7, openPrice_);
       }
       if (highPrice_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(7, highPrice_);
+          .computeDoubleSize(8, highPrice_);
       }
       if (lowPrice_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(8, lowPrice_);
+          .computeDoubleSize(9, lowPrice_);
       }
       if (closePrice_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(9, closePrice_);
+          .computeDoubleSize(10, closePrice_);
       }
       if (openInterest_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(10, openInterest_);
+          .computeDoubleSize(11, openInterest_);
       }
-      if (openInterestChange_ != 0D) {
+      if (openInterestDelta_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(11, openInterestChange_);
+          .computeDoubleSize(12, openInterestDelta_);
       }
       if (volume_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed64Size(12, volume_);
+          .computeFixed64Size(13, volume_);
       }
-      if (volumeChange_ != 0L) {
+      if (volumeDelta_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed64Size(13, volumeChange_);
+          .computeFixed64Size(14, volumeDelta_);
       }
       if (turnover_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(14, turnover_);
+          .computeDoubleSize(15, turnover_);
       }
-      if (turnoverChange_ != 0D) {
+      if (turnoverDelta_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(15, turnoverChange_);
+          .computeDoubleSize(16, turnoverDelta_);
       }
       if (numTrades_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed64Size(16, numTrades_);
+          .computeFixed64Size(17, numTrades_);
       }
-      if (numTradesChange_ != 0L) {
+      if (numTradesDelta_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed64Size(17, numTradesChange_);
+          .computeFixed64Size(18, numTradesDelta_);
       }
-      if (contract_ != null) {
+      if (preOpenInterest_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(18, getContract());
+          .computeDoubleSize(19, preOpenInterest_);
       }
-      if (gateway_ != null) {
+      if (preClosePrice_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(19, getGateway());
+          .computeDoubleSize(20, preClosePrice_);
+      }
+      if (preSettlePrice_ != 0D) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(21, preSettlePrice_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -22665,8 +25654,10 @@ public final class CoreField {
       xyz.redtorch.pb.CoreField.BarField other = (xyz.redtorch.pb.CoreField.BarField) obj;
 
       boolean result = true;
-      result = result && getDataSourceId()
-          .equals(other.getDataSourceId());
+      result = result && getUnifiedSymbol()
+          .equals(other.getUnifiedSymbol());
+      result = result && getGatewayId()
+          .equals(other.getGatewayId());
       result = result && getTradingDay()
           .equals(other.getTradingDay());
       result = result && getActionDay()
@@ -22696,35 +25687,37 @@ public final class CoreField {
           == java.lang.Double.doubleToLongBits(
               other.getOpenInterest()));
       result = result && (
-          java.lang.Double.doubleToLongBits(getOpenInterestChange())
+          java.lang.Double.doubleToLongBits(getOpenInterestDelta())
           == java.lang.Double.doubleToLongBits(
-              other.getOpenInterestChange()));
+              other.getOpenInterestDelta()));
       result = result && (getVolume()
           == other.getVolume());
-      result = result && (getVolumeChange()
-          == other.getVolumeChange());
+      result = result && (getVolumeDelta()
+          == other.getVolumeDelta());
       result = result && (
           java.lang.Double.doubleToLongBits(getTurnover())
           == java.lang.Double.doubleToLongBits(
               other.getTurnover()));
       result = result && (
-          java.lang.Double.doubleToLongBits(getTurnoverChange())
+          java.lang.Double.doubleToLongBits(getTurnoverDelta())
           == java.lang.Double.doubleToLongBits(
-              other.getTurnoverChange()));
+              other.getTurnoverDelta()));
       result = result && (getNumTrades()
           == other.getNumTrades());
-      result = result && (getNumTradesChange()
-          == other.getNumTradesChange());
-      result = result && (hasContract() == other.hasContract());
-      if (hasContract()) {
-        result = result && getContract()
-            .equals(other.getContract());
-      }
-      result = result && (hasGateway() == other.hasGateway());
-      if (hasGateway()) {
-        result = result && getGateway()
-            .equals(other.getGateway());
-      }
+      result = result && (getNumTradesDelta()
+          == other.getNumTradesDelta());
+      result = result && (
+          java.lang.Double.doubleToLongBits(getPreOpenInterest())
+          == java.lang.Double.doubleToLongBits(
+              other.getPreOpenInterest()));
+      result = result && (
+          java.lang.Double.doubleToLongBits(getPreClosePrice())
+          == java.lang.Double.doubleToLongBits(
+              other.getPreClosePrice()));
+      result = result && (
+          java.lang.Double.doubleToLongBits(getPreSettlePrice())
+          == java.lang.Double.doubleToLongBits(
+              other.getPreSettlePrice()));
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -22736,8 +25729,10 @@ public final class CoreField {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + DATASOURCEID_FIELD_NUMBER;
-      hash = (53 * hash) + getDataSourceId().hashCode();
+      hash = (37 * hash) + UNIFIEDSYMBOL_FIELD_NUMBER;
+      hash = (53 * hash) + getUnifiedSymbol().hashCode();
+      hash = (37 * hash) + GATEWAYID_FIELD_NUMBER;
+      hash = (53 * hash) + getGatewayId().hashCode();
       hash = (37 * hash) + TRADINGDAY_FIELD_NUMBER;
       hash = (53 * hash) + getTradingDay().hashCode();
       hash = (37 * hash) + ACTIONDAY_FIELD_NUMBER;
@@ -22762,35 +25757,36 @@ public final class CoreField {
       hash = (37 * hash) + OPENINTEREST_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           java.lang.Double.doubleToLongBits(getOpenInterest()));
-      hash = (37 * hash) + OPENINTERESTCHANGE_FIELD_NUMBER;
+      hash = (37 * hash) + OPENINTERESTDELTA_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          java.lang.Double.doubleToLongBits(getOpenInterestChange()));
+          java.lang.Double.doubleToLongBits(getOpenInterestDelta()));
       hash = (37 * hash) + VOLUME_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getVolume());
-      hash = (37 * hash) + VOLUMECHANGE_FIELD_NUMBER;
+      hash = (37 * hash) + VOLUMEDELTA_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getVolumeChange());
+          getVolumeDelta());
       hash = (37 * hash) + TURNOVER_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           java.lang.Double.doubleToLongBits(getTurnover()));
-      hash = (37 * hash) + TURNOVERCHANGE_FIELD_NUMBER;
+      hash = (37 * hash) + TURNOVERDELTA_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          java.lang.Double.doubleToLongBits(getTurnoverChange()));
+          java.lang.Double.doubleToLongBits(getTurnoverDelta()));
       hash = (37 * hash) + NUMTRADES_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getNumTrades());
-      hash = (37 * hash) + NUMTRADESCHANGE_FIELD_NUMBER;
+      hash = (37 * hash) + NUMTRADESDELTA_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getNumTradesChange());
-      if (hasContract()) {
-        hash = (37 * hash) + CONTRACT_FIELD_NUMBER;
-        hash = (53 * hash) + getContract().hashCode();
-      }
-      if (hasGateway()) {
-        hash = (37 * hash) + GATEWAY_FIELD_NUMBER;
-        hash = (53 * hash) + getGateway().hashCode();
-      }
+          getNumTradesDelta());
+      hash = (37 * hash) + PREOPENINTEREST_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          java.lang.Double.doubleToLongBits(getPreOpenInterest()));
+      hash = (37 * hash) + PRECLOSEPRICE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          java.lang.Double.doubleToLongBits(getPreClosePrice()));
+      hash = (37 * hash) + PRESETTLEPRICE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          java.lang.Double.doubleToLongBits(getPreSettlePrice()));
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -22928,7 +25924,9 @@ public final class CoreField {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        dataSourceId_ = "";
+        unifiedSymbol_ = "";
+
+        gatewayId_ = "";
 
         tradingDay_ = "";
 
@@ -22948,32 +25946,26 @@ public final class CoreField {
 
         openInterest_ = 0D;
 
-        openInterestChange_ = 0D;
+        openInterestDelta_ = 0D;
 
         volume_ = 0L;
 
-        volumeChange_ = 0L;
+        volumeDelta_ = 0L;
 
         turnover_ = 0D;
 
-        turnoverChange_ = 0D;
+        turnoverDelta_ = 0D;
 
         numTrades_ = 0L;
 
-        numTradesChange_ = 0L;
+        numTradesDelta_ = 0L;
 
-        if (contractBuilder_ == null) {
-          contract_ = null;
-        } else {
-          contract_ = null;
-          contractBuilder_ = null;
-        }
-        if (gatewayBuilder_ == null) {
-          gateway_ = null;
-        } else {
-          gateway_ = null;
-          gatewayBuilder_ = null;
-        }
+        preOpenInterest_ = 0D;
+
+        preClosePrice_ = 0D;
+
+        preSettlePrice_ = 0D;
+
         return this;
       }
 
@@ -23000,7 +25992,8 @@ public final class CoreField {
       @java.lang.Override
       public xyz.redtorch.pb.CoreField.BarField buildPartial() {
         xyz.redtorch.pb.CoreField.BarField result = new xyz.redtorch.pb.CoreField.BarField(this);
-        result.dataSourceId_ = dataSourceId_;
+        result.unifiedSymbol_ = unifiedSymbol_;
+        result.gatewayId_ = gatewayId_;
         result.tradingDay_ = tradingDay_;
         result.actionDay_ = actionDay_;
         result.actionTime_ = actionTime_;
@@ -23010,23 +26003,16 @@ public final class CoreField {
         result.lowPrice_ = lowPrice_;
         result.closePrice_ = closePrice_;
         result.openInterest_ = openInterest_;
-        result.openInterestChange_ = openInterestChange_;
+        result.openInterestDelta_ = openInterestDelta_;
         result.volume_ = volume_;
-        result.volumeChange_ = volumeChange_;
+        result.volumeDelta_ = volumeDelta_;
         result.turnover_ = turnover_;
-        result.turnoverChange_ = turnoverChange_;
+        result.turnoverDelta_ = turnoverDelta_;
         result.numTrades_ = numTrades_;
-        result.numTradesChange_ = numTradesChange_;
-        if (contractBuilder_ == null) {
-          result.contract_ = contract_;
-        } else {
-          result.contract_ = contractBuilder_.build();
-        }
-        if (gatewayBuilder_ == null) {
-          result.gateway_ = gateway_;
-        } else {
-          result.gateway_ = gatewayBuilder_.build();
-        }
+        result.numTradesDelta_ = numTradesDelta_;
+        result.preOpenInterest_ = preOpenInterest_;
+        result.preClosePrice_ = preClosePrice_;
+        result.preSettlePrice_ = preSettlePrice_;
         onBuilt();
         return result;
       }
@@ -23075,8 +26061,12 @@ public final class CoreField {
 
       public Builder mergeFrom(xyz.redtorch.pb.CoreField.BarField other) {
         if (other == xyz.redtorch.pb.CoreField.BarField.getDefaultInstance()) return this;
-        if (!other.getDataSourceId().isEmpty()) {
-          dataSourceId_ = other.dataSourceId_;
+        if (!other.getUnifiedSymbol().isEmpty()) {
+          unifiedSymbol_ = other.unifiedSymbol_;
+          onChanged();
+        }
+        if (!other.getGatewayId().isEmpty()) {
+          gatewayId_ = other.gatewayId_;
           onChanged();
         }
         if (!other.getTradingDay().isEmpty()) {
@@ -23109,32 +26099,35 @@ public final class CoreField {
         if (other.getOpenInterest() != 0D) {
           setOpenInterest(other.getOpenInterest());
         }
-        if (other.getOpenInterestChange() != 0D) {
-          setOpenInterestChange(other.getOpenInterestChange());
+        if (other.getOpenInterestDelta() != 0D) {
+          setOpenInterestDelta(other.getOpenInterestDelta());
         }
         if (other.getVolume() != 0L) {
           setVolume(other.getVolume());
         }
-        if (other.getVolumeChange() != 0L) {
-          setVolumeChange(other.getVolumeChange());
+        if (other.getVolumeDelta() != 0L) {
+          setVolumeDelta(other.getVolumeDelta());
         }
         if (other.getTurnover() != 0D) {
           setTurnover(other.getTurnover());
         }
-        if (other.getTurnoverChange() != 0D) {
-          setTurnoverChange(other.getTurnoverChange());
+        if (other.getTurnoverDelta() != 0D) {
+          setTurnoverDelta(other.getTurnoverDelta());
         }
         if (other.getNumTrades() != 0L) {
           setNumTrades(other.getNumTrades());
         }
-        if (other.getNumTradesChange() != 0L) {
-          setNumTradesChange(other.getNumTradesChange());
+        if (other.getNumTradesDelta() != 0L) {
+          setNumTradesDelta(other.getNumTradesDelta());
         }
-        if (other.hasContract()) {
-          mergeContract(other.getContract());
+        if (other.getPreOpenInterest() != 0D) {
+          setPreOpenInterest(other.getPreOpenInterest());
         }
-        if (other.hasGateway()) {
-          mergeGateway(other.getGateway());
+        if (other.getPreClosePrice() != 0D) {
+          setPreClosePrice(other.getPreClosePrice());
+        }
+        if (other.getPreSettlePrice() != 0D) {
+          setPreSettlePrice(other.getPreSettlePrice());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -23165,21 +26158,21 @@ public final class CoreField {
         return this;
       }
 
-      private java.lang.Object dataSourceId_ = "";
+      private java.lang.Object unifiedSymbol_ = "";
       /**
        * <pre>
-       * 数据源ID &lt;合约代码&#64;交易所代码&#64;产品类型&#64;网关ID&gt;
+       * 统一合约标识
        * </pre>
        *
-       * <code>string dataSourceId = 1;</code>
+       * <code>string unifiedSymbol = 1;</code>
        */
-      public java.lang.String getDataSourceId() {
-        java.lang.Object ref = dataSourceId_;
+      public java.lang.String getUnifiedSymbol() {
+        java.lang.Object ref = unifiedSymbol_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          dataSourceId_ = s;
+          unifiedSymbol_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -23187,19 +26180,19 @@ public final class CoreField {
       }
       /**
        * <pre>
-       * 数据源ID &lt;合约代码&#64;交易所代码&#64;产品类型&#64;网关ID&gt;
+       * 统一合约标识
        * </pre>
        *
-       * <code>string dataSourceId = 1;</code>
+       * <code>string unifiedSymbol = 1;</code>
        */
       public com.google.protobuf.ByteString
-          getDataSourceIdBytes() {
-        java.lang.Object ref = dataSourceId_;
+          getUnifiedSymbolBytes() {
+        java.lang.Object ref = unifiedSymbol_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          dataSourceId_ = b;
+          unifiedSymbol_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -23207,49 +26200,138 @@ public final class CoreField {
       }
       /**
        * <pre>
-       * 数据源ID &lt;合约代码&#64;交易所代码&#64;产品类型&#64;网关ID&gt;
+       * 统一合约标识
        * </pre>
        *
-       * <code>string dataSourceId = 1;</code>
+       * <code>string unifiedSymbol = 1;</code>
        */
-      public Builder setDataSourceId(
+      public Builder setUnifiedSymbol(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        dataSourceId_ = value;
+        unifiedSymbol_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * 数据源ID &lt;合约代码&#64;交易所代码&#64;产品类型&#64;网关ID&gt;
+       * 统一合约标识
        * </pre>
        *
-       * <code>string dataSourceId = 1;</code>
+       * <code>string unifiedSymbol = 1;</code>
        */
-      public Builder clearDataSourceId() {
+      public Builder clearUnifiedSymbol() {
         
-        dataSourceId_ = getDefaultInstance().getDataSourceId();
+        unifiedSymbol_ = getDefaultInstance().getUnifiedSymbol();
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * 数据源ID &lt;合约代码&#64;交易所代码&#64;产品类型&#64;网关ID&gt;
+       * 统一合约标识
        * </pre>
        *
-       * <code>string dataSourceId = 1;</code>
+       * <code>string unifiedSymbol = 1;</code>
        */
-      public Builder setDataSourceIdBytes(
+      public Builder setUnifiedSymbolBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        dataSourceId_ = value;
+        unifiedSymbol_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object gatewayId_ = "";
+      /**
+       * <pre>
+       * 网关ID
+       * </pre>
+       *
+       * <code>string gatewayId = 2;</code>
+       */
+      public java.lang.String getGatewayId() {
+        java.lang.Object ref = gatewayId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          gatewayId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 网关ID
+       * </pre>
+       *
+       * <code>string gatewayId = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getGatewayIdBytes() {
+        java.lang.Object ref = gatewayId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          gatewayId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 网关ID
+       * </pre>
+       *
+       * <code>string gatewayId = 2;</code>
+       */
+      public Builder setGatewayId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        gatewayId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 网关ID
+       * </pre>
+       *
+       * <code>string gatewayId = 2;</code>
+       */
+      public Builder clearGatewayId() {
+        
+        gatewayId_ = getDefaultInstance().getGatewayId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 网关ID
+       * </pre>
+       *
+       * <code>string gatewayId = 2;</code>
+       */
+      public Builder setGatewayIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        gatewayId_ = value;
         onChanged();
         return this;
       }
@@ -23260,7 +26342,7 @@ public final class CoreField {
        * 交易日
        * </pre>
        *
-       * <code>string tradingDay = 2;</code>
+       * <code>string tradingDay = 3;</code>
        */
       public java.lang.String getTradingDay() {
         java.lang.Object ref = tradingDay_;
@@ -23279,7 +26361,7 @@ public final class CoreField {
        * 交易日
        * </pre>
        *
-       * <code>string tradingDay = 2;</code>
+       * <code>string tradingDay = 3;</code>
        */
       public com.google.protobuf.ByteString
           getTradingDayBytes() {
@@ -23299,7 +26381,7 @@ public final class CoreField {
        * 交易日
        * </pre>
        *
-       * <code>string tradingDay = 2;</code>
+       * <code>string tradingDay = 3;</code>
        */
       public Builder setTradingDay(
           java.lang.String value) {
@@ -23316,7 +26398,7 @@ public final class CoreField {
        * 交易日
        * </pre>
        *
-       * <code>string tradingDay = 2;</code>
+       * <code>string tradingDay = 3;</code>
        */
       public Builder clearTradingDay() {
         
@@ -23329,7 +26411,7 @@ public final class CoreField {
        * 交易日
        * </pre>
        *
-       * <code>string tradingDay = 2;</code>
+       * <code>string tradingDay = 3;</code>
        */
       public Builder setTradingDayBytes(
           com.google.protobuf.ByteString value) {
@@ -23349,7 +26431,7 @@ public final class CoreField {
        * 业务发生日
        * </pre>
        *
-       * <code>string actionDay = 3;</code>
+       * <code>string actionDay = 4;</code>
        */
       public java.lang.String getActionDay() {
         java.lang.Object ref = actionDay_;
@@ -23368,7 +26450,7 @@ public final class CoreField {
        * 业务发生日
        * </pre>
        *
-       * <code>string actionDay = 3;</code>
+       * <code>string actionDay = 4;</code>
        */
       public com.google.protobuf.ByteString
           getActionDayBytes() {
@@ -23388,7 +26470,7 @@ public final class CoreField {
        * 业务发生日
        * </pre>
        *
-       * <code>string actionDay = 3;</code>
+       * <code>string actionDay = 4;</code>
        */
       public Builder setActionDay(
           java.lang.String value) {
@@ -23405,7 +26487,7 @@ public final class CoreField {
        * 业务发生日
        * </pre>
        *
-       * <code>string actionDay = 3;</code>
+       * <code>string actionDay = 4;</code>
        */
       public Builder clearActionDay() {
         
@@ -23418,7 +26500,7 @@ public final class CoreField {
        * 业务发生日
        * </pre>
        *
-       * <code>string actionDay = 3;</code>
+       * <code>string actionDay = 4;</code>
        */
       public Builder setActionDayBytes(
           com.google.protobuf.ByteString value) {
@@ -23438,7 +26520,7 @@ public final class CoreField {
        * 时间(HHmmssSSS)
        * </pre>
        *
-       * <code>string actionTime = 4;</code>
+       * <code>string actionTime = 5;</code>
        */
       public java.lang.String getActionTime() {
         java.lang.Object ref = actionTime_;
@@ -23457,7 +26539,7 @@ public final class CoreField {
        * 时间(HHmmssSSS)
        * </pre>
        *
-       * <code>string actionTime = 4;</code>
+       * <code>string actionTime = 5;</code>
        */
       public com.google.protobuf.ByteString
           getActionTimeBytes() {
@@ -23477,7 +26559,7 @@ public final class CoreField {
        * 时间(HHmmssSSS)
        * </pre>
        *
-       * <code>string actionTime = 4;</code>
+       * <code>string actionTime = 5;</code>
        */
       public Builder setActionTime(
           java.lang.String value) {
@@ -23494,7 +26576,7 @@ public final class CoreField {
        * 时间(HHmmssSSS)
        * </pre>
        *
-       * <code>string actionTime = 4;</code>
+       * <code>string actionTime = 5;</code>
        */
       public Builder clearActionTime() {
         
@@ -23507,7 +26589,7 @@ public final class CoreField {
        * 时间(HHmmssSSS)
        * </pre>
        *
-       * <code>string actionTime = 4;</code>
+       * <code>string actionTime = 5;</code>
        */
       public Builder setActionTimeBytes(
           com.google.protobuf.ByteString value) {
@@ -23527,7 +26609,7 @@ public final class CoreField {
        * 时间戳
        * </pre>
        *
-       * <code>fixed64 actionTimestamp = 5;</code>
+       * <code>fixed64 actionTimestamp = 6;</code>
        */
       public long getActionTimestamp() {
         return actionTimestamp_;
@@ -23537,7 +26619,7 @@ public final class CoreField {
        * 时间戳
        * </pre>
        *
-       * <code>fixed64 actionTimestamp = 5;</code>
+       * <code>fixed64 actionTimestamp = 6;</code>
        */
       public Builder setActionTimestamp(long value) {
         
@@ -23550,7 +26632,7 @@ public final class CoreField {
        * 时间戳
        * </pre>
        *
-       * <code>fixed64 actionTimestamp = 5;</code>
+       * <code>fixed64 actionTimestamp = 6;</code>
        */
       public Builder clearActionTimestamp() {
         
@@ -23565,7 +26647,7 @@ public final class CoreField {
        * 开
        * </pre>
        *
-       * <code>double openPrice = 6;</code>
+       * <code>double openPrice = 7;</code>
        */
       public double getOpenPrice() {
         return openPrice_;
@@ -23575,7 +26657,7 @@ public final class CoreField {
        * 开
        * </pre>
        *
-       * <code>double openPrice = 6;</code>
+       * <code>double openPrice = 7;</code>
        */
       public Builder setOpenPrice(double value) {
         
@@ -23588,7 +26670,7 @@ public final class CoreField {
        * 开
        * </pre>
        *
-       * <code>double openPrice = 6;</code>
+       * <code>double openPrice = 7;</code>
        */
       public Builder clearOpenPrice() {
         
@@ -23603,7 +26685,7 @@ public final class CoreField {
        * 高
        * </pre>
        *
-       * <code>double highPrice = 7;</code>
+       * <code>double highPrice = 8;</code>
        */
       public double getHighPrice() {
         return highPrice_;
@@ -23613,7 +26695,7 @@ public final class CoreField {
        * 高
        * </pre>
        *
-       * <code>double highPrice = 7;</code>
+       * <code>double highPrice = 8;</code>
        */
       public Builder setHighPrice(double value) {
         
@@ -23626,7 +26708,7 @@ public final class CoreField {
        * 高
        * </pre>
        *
-       * <code>double highPrice = 7;</code>
+       * <code>double highPrice = 8;</code>
        */
       public Builder clearHighPrice() {
         
@@ -23641,7 +26723,7 @@ public final class CoreField {
        * 低
        * </pre>
        *
-       * <code>double lowPrice = 8;</code>
+       * <code>double lowPrice = 9;</code>
        */
       public double getLowPrice() {
         return lowPrice_;
@@ -23651,7 +26733,7 @@ public final class CoreField {
        * 低
        * </pre>
        *
-       * <code>double lowPrice = 8;</code>
+       * <code>double lowPrice = 9;</code>
        */
       public Builder setLowPrice(double value) {
         
@@ -23664,7 +26746,7 @@ public final class CoreField {
        * 低
        * </pre>
        *
-       * <code>double lowPrice = 8;</code>
+       * <code>double lowPrice = 9;</code>
        */
       public Builder clearLowPrice() {
         
@@ -23679,7 +26761,7 @@ public final class CoreField {
        * 收
        * </pre>
        *
-       * <code>double closePrice = 9;</code>
+       * <code>double closePrice = 10;</code>
        */
       public double getClosePrice() {
         return closePrice_;
@@ -23689,7 +26771,7 @@ public final class CoreField {
        * 收
        * </pre>
        *
-       * <code>double closePrice = 9;</code>
+       * <code>double closePrice = 10;</code>
        */
       public Builder setClosePrice(double value) {
         
@@ -23702,7 +26784,7 @@ public final class CoreField {
        * 收
        * </pre>
        *
-       * <code>double closePrice = 9;</code>
+       * <code>double closePrice = 10;</code>
        */
       public Builder clearClosePrice() {
         
@@ -23717,7 +26799,7 @@ public final class CoreField {
        * 最后持仓量
        * </pre>
        *
-       * <code>double openInterest = 10;</code>
+       * <code>double openInterest = 11;</code>
        */
       public double getOpenInterest() {
         return openInterest_;
@@ -23727,7 +26809,7 @@ public final class CoreField {
        * 最后持仓量
        * </pre>
        *
-       * <code>double openInterest = 10;</code>
+       * <code>double openInterest = 11;</code>
        */
       public Builder setOpenInterest(double value) {
         
@@ -23740,7 +26822,7 @@ public final class CoreField {
        * 最后持仓量
        * </pre>
        *
-       * <code>double openInterest = 10;</code>
+       * <code>double openInterest = 11;</code>
        */
       public Builder clearOpenInterest() {
         
@@ -23749,27 +26831,27 @@ public final class CoreField {
         return this;
       }
 
-      private double openInterestChange_ ;
+      private double openInterestDelta_ ;
       /**
        * <pre>
        * 持仓量（Bar）
        * </pre>
        *
-       * <code>double openInterestChange = 11;</code>
+       * <code>double openInterestDelta = 12;</code>
        */
-      public double getOpenInterestChange() {
-        return openInterestChange_;
+      public double getOpenInterestDelta() {
+        return openInterestDelta_;
       }
       /**
        * <pre>
        * 持仓量（Bar）
        * </pre>
        *
-       * <code>double openInterestChange = 11;</code>
+       * <code>double openInterestDelta = 12;</code>
        */
-      public Builder setOpenInterestChange(double value) {
+      public Builder setOpenInterestDelta(double value) {
         
-        openInterestChange_ = value;
+        openInterestDelta_ = value;
         onChanged();
         return this;
       }
@@ -23778,11 +26860,11 @@ public final class CoreField {
        * 持仓量（Bar）
        * </pre>
        *
-       * <code>double openInterestChange = 11;</code>
+       * <code>double openInterestDelta = 12;</code>
        */
-      public Builder clearOpenInterestChange() {
+      public Builder clearOpenInterestDelta() {
         
-        openInterestChange_ = 0D;
+        openInterestDelta_ = 0D;
         onChanged();
         return this;
       }
@@ -23793,7 +26875,7 @@ public final class CoreField {
        * 最后总成交量
        * </pre>
        *
-       * <code>fixed64 volume = 12;</code>
+       * <code>fixed64 volume = 13;</code>
        */
       public long getVolume() {
         return volume_;
@@ -23803,7 +26885,7 @@ public final class CoreField {
        * 最后总成交量
        * </pre>
        *
-       * <code>fixed64 volume = 12;</code>
+       * <code>fixed64 volume = 13;</code>
        */
       public Builder setVolume(long value) {
         
@@ -23816,7 +26898,7 @@ public final class CoreField {
        * 最后总成交量
        * </pre>
        *
-       * <code>fixed64 volume = 12;</code>
+       * <code>fixed64 volume = 13;</code>
        */
       public Builder clearVolume() {
         
@@ -23825,27 +26907,27 @@ public final class CoreField {
         return this;
       }
 
-      private long volumeChange_ ;
+      private long volumeDelta_ ;
       /**
        * <pre>
        * 成交量（Bar）
        * </pre>
        *
-       * <code>fixed64 volumeChange = 13;</code>
+       * <code>fixed64 volumeDelta = 14;</code>
        */
-      public long getVolumeChange() {
-        return volumeChange_;
+      public long getVolumeDelta() {
+        return volumeDelta_;
       }
       /**
        * <pre>
        * 成交量（Bar）
        * </pre>
        *
-       * <code>fixed64 volumeChange = 13;</code>
+       * <code>fixed64 volumeDelta = 14;</code>
        */
-      public Builder setVolumeChange(long value) {
+      public Builder setVolumeDelta(long value) {
         
-        volumeChange_ = value;
+        volumeDelta_ = value;
         onChanged();
         return this;
       }
@@ -23854,11 +26936,11 @@ public final class CoreField {
        * 成交量（Bar）
        * </pre>
        *
-       * <code>fixed64 volumeChange = 13;</code>
+       * <code>fixed64 volumeDelta = 14;</code>
        */
-      public Builder clearVolumeChange() {
+      public Builder clearVolumeDelta() {
         
-        volumeChange_ = 0L;
+        volumeDelta_ = 0L;
         onChanged();
         return this;
       }
@@ -23869,7 +26951,7 @@ public final class CoreField {
        * 最后成交总额
        * </pre>
        *
-       * <code>double turnover = 14;</code>
+       * <code>double turnover = 15;</code>
        */
       public double getTurnover() {
         return turnover_;
@@ -23879,7 +26961,7 @@ public final class CoreField {
        * 最后成交总额
        * </pre>
        *
-       * <code>double turnover = 14;</code>
+       * <code>double turnover = 15;</code>
        */
       public Builder setTurnover(double value) {
         
@@ -23892,7 +26974,7 @@ public final class CoreField {
        * 最后成交总额
        * </pre>
        *
-       * <code>double turnover = 14;</code>
+       * <code>double turnover = 15;</code>
        */
       public Builder clearTurnover() {
         
@@ -23901,27 +26983,27 @@ public final class CoreField {
         return this;
       }
 
-      private double turnoverChange_ ;
+      private double turnoverDelta_ ;
       /**
        * <pre>
        * 成交总额（Bar）
        * </pre>
        *
-       * <code>double turnoverChange = 15;</code>
+       * <code>double turnoverDelta = 16;</code>
        */
-      public double getTurnoverChange() {
-        return turnoverChange_;
+      public double getTurnoverDelta() {
+        return turnoverDelta_;
       }
       /**
        * <pre>
        * 成交总额（Bar）
        * </pre>
        *
-       * <code>double turnoverChange = 15;</code>
+       * <code>double turnoverDelta = 16;</code>
        */
-      public Builder setTurnoverChange(double value) {
+      public Builder setTurnoverDelta(double value) {
         
-        turnoverChange_ = value;
+        turnoverDelta_ = value;
         onChanged();
         return this;
       }
@@ -23930,11 +27012,11 @@ public final class CoreField {
        * 成交总额（Bar）
        * </pre>
        *
-       * <code>double turnoverChange = 15;</code>
+       * <code>double turnoverDelta = 16;</code>
        */
-      public Builder clearTurnoverChange() {
+      public Builder clearTurnoverDelta() {
         
-        turnoverChange_ = 0D;
+        turnoverDelta_ = 0D;
         onChanged();
         return this;
       }
@@ -23945,7 +27027,7 @@ public final class CoreField {
        * 最新成交笔数
        * </pre>
        *
-       * <code>fixed64 numTrades = 16;</code>
+       * <code>fixed64 numTrades = 17;</code>
        */
       public long getNumTrades() {
         return numTrades_;
@@ -23955,7 +27037,7 @@ public final class CoreField {
        * 最新成交笔数
        * </pre>
        *
-       * <code>fixed64 numTrades = 16;</code>
+       * <code>fixed64 numTrades = 17;</code>
        */
       public Builder setNumTrades(long value) {
         
@@ -23968,7 +27050,7 @@ public final class CoreField {
        * 最新成交笔数
        * </pre>
        *
-       * <code>fixed64 numTrades = 16;</code>
+       * <code>fixed64 numTrades = 17;</code>
        */
       public Builder clearNumTrades() {
         
@@ -23977,348 +27059,156 @@ public final class CoreField {
         return this;
       }
 
-      private long numTradesChange_ ;
+      private long numTradesDelta_ ;
       /**
        * <pre>
        * 成交笔数（Bar）
        * </pre>
        *
-       * <code>fixed64 numTradesChange = 17;</code>
+       * <code>fixed64 numTradesDelta = 18;</code>
        */
-      public long getNumTradesChange() {
-        return numTradesChange_;
-      }
-      /**
-       * <pre>
-       * 成交笔数（Bar）
-       * </pre>
-       *
-       * <code>fixed64 numTradesChange = 17;</code>
-       */
-      public Builder setNumTradesChange(long value) {
-        
-        numTradesChange_ = value;
-        onChanged();
-        return this;
+      public long getNumTradesDelta() {
+        return numTradesDelta_;
       }
       /**
        * <pre>
        * 成交笔数（Bar）
        * </pre>
        *
-       * <code>fixed64 numTradesChange = 17;</code>
+       * <code>fixed64 numTradesDelta = 18;</code>
        */
-      public Builder clearNumTradesChange() {
+      public Builder setNumTradesDelta(long value) {
         
-        numTradesChange_ = 0L;
+        numTradesDelta_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 成交笔数（Bar）
+       * </pre>
+       *
+       * <code>fixed64 numTradesDelta = 18;</code>
+       */
+      public Builder clearNumTradesDelta() {
+        
+        numTradesDelta_ = 0L;
         onChanged();
         return this;
       }
 
-      private xyz.redtorch.pb.CoreField.ContractField contract_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          xyz.redtorch.pb.CoreField.ContractField, xyz.redtorch.pb.CoreField.ContractField.Builder, xyz.redtorch.pb.CoreField.ContractFieldOrBuilder> contractBuilder_;
+      private double preOpenInterest_ ;
       /**
        * <pre>
-       * 合约
+       * 昨持仓
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 18;</code>
+       * <code>double preOpenInterest = 19;</code>
        */
-      public boolean hasContract() {
-        return contractBuilder_ != null || contract_ != null;
+      public double getPreOpenInterest() {
+        return preOpenInterest_;
       }
       /**
        * <pre>
-       * 合约
+       * 昨持仓
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.ContractField contract = 18;</code>
+       * <code>double preOpenInterest = 19;</code>
        */
-      public xyz.redtorch.pb.CoreField.ContractField getContract() {
-        if (contractBuilder_ == null) {
-          return contract_ == null ? xyz.redtorch.pb.CoreField.ContractField.getDefaultInstance() : contract_;
-        } else {
-          return contractBuilder_.getMessage();
-        }
-      }
-      /**
-       * <pre>
-       * 合约
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.ContractField contract = 18;</code>
-       */
-      public Builder setContract(xyz.redtorch.pb.CoreField.ContractField value) {
-        if (contractBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          contract_ = value;
-          onChanged();
-        } else {
-          contractBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 合约
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.ContractField contract = 18;</code>
-       */
-      public Builder setContract(
-          xyz.redtorch.pb.CoreField.ContractField.Builder builderForValue) {
-        if (contractBuilder_ == null) {
-          contract_ = builderForValue.build();
-          onChanged();
-        } else {
-          contractBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 合约
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.ContractField contract = 18;</code>
-       */
-      public Builder mergeContract(xyz.redtorch.pb.CoreField.ContractField value) {
-        if (contractBuilder_ == null) {
-          if (contract_ != null) {
-            contract_ =
-              xyz.redtorch.pb.CoreField.ContractField.newBuilder(contract_).mergeFrom(value).buildPartial();
-          } else {
-            contract_ = value;
-          }
-          onChanged();
-        } else {
-          contractBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 合约
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.ContractField contract = 18;</code>
-       */
-      public Builder clearContract() {
-        if (contractBuilder_ == null) {
-          contract_ = null;
-          onChanged();
-        } else {
-          contract_ = null;
-          contractBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 合约
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.ContractField contract = 18;</code>
-       */
-      public xyz.redtorch.pb.CoreField.ContractField.Builder getContractBuilder() {
+      public Builder setPreOpenInterest(double value) {
         
+        preOpenInterest_ = value;
         onChanged();
-        return getContractFieldBuilder().getBuilder();
-      }
-      /**
-       * <pre>
-       * 合约
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.ContractField contract = 18;</code>
-       */
-      public xyz.redtorch.pb.CoreField.ContractFieldOrBuilder getContractOrBuilder() {
-        if (contractBuilder_ != null) {
-          return contractBuilder_.getMessageOrBuilder();
-        } else {
-          return contract_ == null ?
-              xyz.redtorch.pb.CoreField.ContractField.getDefaultInstance() : contract_;
-        }
-      }
-      /**
-       * <pre>
-       * 合约
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.ContractField contract = 18;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          xyz.redtorch.pb.CoreField.ContractField, xyz.redtorch.pb.CoreField.ContractField.Builder, xyz.redtorch.pb.CoreField.ContractFieldOrBuilder> 
-          getContractFieldBuilder() {
-        if (contractBuilder_ == null) {
-          contractBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              xyz.redtorch.pb.CoreField.ContractField, xyz.redtorch.pb.CoreField.ContractField.Builder, xyz.redtorch.pb.CoreField.ContractFieldOrBuilder>(
-                  getContract(),
-                  getParentForChildren(),
-                  isClean());
-          contract_ = null;
-        }
-        return contractBuilder_;
-      }
-
-      private xyz.redtorch.pb.CoreField.GatewayField gateway_ = null;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          xyz.redtorch.pb.CoreField.GatewayField, xyz.redtorch.pb.CoreField.GatewayField.Builder, xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder> gatewayBuilder_;
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 19;</code>
-       */
-      public boolean hasGateway() {
-        return gatewayBuilder_ != null || gateway_ != null;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 19;</code>
-       */
-      public xyz.redtorch.pb.CoreField.GatewayField getGateway() {
-        if (gatewayBuilder_ == null) {
-          return gateway_ == null ? xyz.redtorch.pb.CoreField.GatewayField.getDefaultInstance() : gateway_;
-        } else {
-          return gatewayBuilder_.getMessage();
-        }
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 19;</code>
-       */
-      public Builder setGateway(xyz.redtorch.pb.CoreField.GatewayField value) {
-        if (gatewayBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          gateway_ = value;
-          onChanged();
-        } else {
-          gatewayBuilder_.setMessage(value);
-        }
-
         return this;
       }
       /**
        * <pre>
-       * 网关
+       * 昨持仓
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 19;</code>
+       * <code>double preOpenInterest = 19;</code>
        */
-      public Builder setGateway(
-          xyz.redtorch.pb.CoreField.GatewayField.Builder builderForValue) {
-        if (gatewayBuilder_ == null) {
-          gateway_ = builderForValue.build();
-          onChanged();
-        } else {
-          gatewayBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 19;</code>
-       */
-      public Builder mergeGateway(xyz.redtorch.pb.CoreField.GatewayField value) {
-        if (gatewayBuilder_ == null) {
-          if (gateway_ != null) {
-            gateway_ =
-              xyz.redtorch.pb.CoreField.GatewayField.newBuilder(gateway_).mergeFrom(value).buildPartial();
-          } else {
-            gateway_ = value;
-          }
-          onChanged();
-        } else {
-          gatewayBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 19;</code>
-       */
-      public Builder clearGateway() {
-        if (gatewayBuilder_ == null) {
-          gateway_ = null;
-          onChanged();
-        } else {
-          gateway_ = null;
-          gatewayBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 网关
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 19;</code>
-       */
-      public xyz.redtorch.pb.CoreField.GatewayField.Builder getGatewayBuilder() {
+      public Builder clearPreOpenInterest() {
         
+        preOpenInterest_ = 0D;
         onChanged();
-        return getGatewayFieldBuilder().getBuilder();
+        return this;
+      }
+
+      private double preClosePrice_ ;
+      /**
+       * <pre>
+       * 前收盘价
+       * </pre>
+       *
+       * <code>double preClosePrice = 20;</code>
+       */
+      public double getPreClosePrice() {
+        return preClosePrice_;
       }
       /**
        * <pre>
-       * 网关
+       * 前收盘价
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 19;</code>
+       * <code>double preClosePrice = 20;</code>
        */
-      public xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder getGatewayOrBuilder() {
-        if (gatewayBuilder_ != null) {
-          return gatewayBuilder_.getMessageOrBuilder();
-        } else {
-          return gateway_ == null ?
-              xyz.redtorch.pb.CoreField.GatewayField.getDefaultInstance() : gateway_;
-        }
+      public Builder setPreClosePrice(double value) {
+        
+        preClosePrice_ = value;
+        onChanged();
+        return this;
       }
       /**
        * <pre>
-       * 网关
+       * 前收盘价
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.GatewayField gateway = 19;</code>
+       * <code>double preClosePrice = 20;</code>
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          xyz.redtorch.pb.CoreField.GatewayField, xyz.redtorch.pb.CoreField.GatewayField.Builder, xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder> 
-          getGatewayFieldBuilder() {
-        if (gatewayBuilder_ == null) {
-          gatewayBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              xyz.redtorch.pb.CoreField.GatewayField, xyz.redtorch.pb.CoreField.GatewayField.Builder, xyz.redtorch.pb.CoreField.GatewayFieldOrBuilder>(
-                  getGateway(),
-                  getParentForChildren(),
-                  isClean());
-          gateway_ = null;
-        }
-        return gatewayBuilder_;
+      public Builder clearPreClosePrice() {
+        
+        preClosePrice_ = 0D;
+        onChanged();
+        return this;
+      }
+
+      private double preSettlePrice_ ;
+      /**
+       * <pre>
+       * 昨结算价
+       * </pre>
+       *
+       * <code>double preSettlePrice = 21;</code>
+       */
+      public double getPreSettlePrice() {
+        return preSettlePrice_;
+      }
+      /**
+       * <pre>
+       * 昨结算价
+       * </pre>
+       *
+       * <code>double preSettlePrice = 21;</code>
+       */
+      public Builder setPreSettlePrice(double value) {
+        
+        preSettlePrice_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 昨结算价
+       * </pre>
+       *
+       * <code>double preSettlePrice = 21;</code>
+       */
+      public Builder clearPreSettlePrice() {
+        
+        preSettlePrice_ = 0D;
+        onChanged();
+        return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -25306,766 +28196,6 @@ public final class CoreField {
 
   }
 
-  public interface CommonRtnFieldOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:xyz.redtorch.pb.CommonRtnField)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <pre>
-     * 请求ID
-     * </pre>
-     *
-     * <code>string reqId = 1;</code>
-     */
-    java.lang.String getReqId();
-    /**
-     * <pre>
-     * 请求ID
-     * </pre>
-     *
-     * <code>string reqId = 1;</code>
-     */
-    com.google.protobuf.ByteString
-        getReqIdBytes();
-
-    /**
-     * <pre>
-     * 目标节点ID
-     * </pre>
-     *
-     * <code>fixed32 targetNodeId = 2;</code>
-     */
-    int getTargetNodeId();
-
-    /**
-     * <pre>
-     * 来源节点ID
-     * </pre>
-     *
-     * <code>fixed32 sourceNodeId = 3;</code>
-     */
-    int getSourceNodeId();
-  }
-  /**
-   * <pre>
-   * 通用推送回报
-   * </pre>
-   *
-   * Protobuf type {@code xyz.redtorch.pb.CommonRtnField}
-   */
-  public  static final class CommonRtnField extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:xyz.redtorch.pb.CommonRtnField)
-      CommonRtnFieldOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use CommonRtnField.newBuilder() to construct.
-    private CommonRtnField(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private CommonRtnField() {
-      reqId_ = "";
-      targetNodeId_ = 0;
-      sourceNodeId_ = 0;
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private CommonRtnField(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              reqId_ = s;
-              break;
-            }
-            case 21: {
-
-              targetNodeId_ = input.readFixed32();
-              break;
-            }
-            case 29: {
-
-              sourceNodeId_ = input.readFixed32();
-              break;
-            }
-            default: {
-              if (!parseUnknownFieldProto3(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return xyz.redtorch.pb.CoreField.internal_static_xyz_redtorch_pb_CommonRtnField_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return xyz.redtorch.pb.CoreField.internal_static_xyz_redtorch_pb_CommonRtnField_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              xyz.redtorch.pb.CoreField.CommonRtnField.class, xyz.redtorch.pb.CoreField.CommonRtnField.Builder.class);
-    }
-
-    public static final int REQID_FIELD_NUMBER = 1;
-    private volatile java.lang.Object reqId_;
-    /**
-     * <pre>
-     * 请求ID
-     * </pre>
-     *
-     * <code>string reqId = 1;</code>
-     */
-    public java.lang.String getReqId() {
-      java.lang.Object ref = reqId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        reqId_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     * 请求ID
-     * </pre>
-     *
-     * <code>string reqId = 1;</code>
-     */
-    public com.google.protobuf.ByteString
-        getReqIdBytes() {
-      java.lang.Object ref = reqId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        reqId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int TARGETNODEID_FIELD_NUMBER = 2;
-    private int targetNodeId_;
-    /**
-     * <pre>
-     * 目标节点ID
-     * </pre>
-     *
-     * <code>fixed32 targetNodeId = 2;</code>
-     */
-    public int getTargetNodeId() {
-      return targetNodeId_;
-    }
-
-    public static final int SOURCENODEID_FIELD_NUMBER = 3;
-    private int sourceNodeId_;
-    /**
-     * <pre>
-     * 来源节点ID
-     * </pre>
-     *
-     * <code>fixed32 sourceNodeId = 3;</code>
-     */
-    public int getSourceNodeId() {
-      return sourceNodeId_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (!getReqIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, reqId_);
-      }
-      if (targetNodeId_ != 0) {
-        output.writeFixed32(2, targetNodeId_);
-      }
-      if (sourceNodeId_ != 0) {
-        output.writeFixed32(3, sourceNodeId_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (!getReqIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, reqId_);
-      }
-      if (targetNodeId_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeFixed32Size(2, targetNodeId_);
-      }
-      if (sourceNodeId_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeFixed32Size(3, sourceNodeId_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof xyz.redtorch.pb.CoreField.CommonRtnField)) {
-        return super.equals(obj);
-      }
-      xyz.redtorch.pb.CoreField.CommonRtnField other = (xyz.redtorch.pb.CoreField.CommonRtnField) obj;
-
-      boolean result = true;
-      result = result && getReqId()
-          .equals(other.getReqId());
-      result = result && (getTargetNodeId()
-          == other.getTargetNodeId());
-      result = result && (getSourceNodeId()
-          == other.getSourceNodeId());
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + REQID_FIELD_NUMBER;
-      hash = (53 * hash) + getReqId().hashCode();
-      hash = (37 * hash) + TARGETNODEID_FIELD_NUMBER;
-      hash = (53 * hash) + getTargetNodeId();
-      hash = (37 * hash) + SOURCENODEID_FIELD_NUMBER;
-      hash = (53 * hash) + getSourceNodeId();
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static xyz.redtorch.pb.CoreField.CommonRtnField parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static xyz.redtorch.pb.CoreField.CommonRtnField parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static xyz.redtorch.pb.CoreField.CommonRtnField parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static xyz.redtorch.pb.CoreField.CommonRtnField parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static xyz.redtorch.pb.CoreField.CommonRtnField parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static xyz.redtorch.pb.CoreField.CommonRtnField parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static xyz.redtorch.pb.CoreField.CommonRtnField parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static xyz.redtorch.pb.CoreField.CommonRtnField parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static xyz.redtorch.pb.CoreField.CommonRtnField parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static xyz.redtorch.pb.CoreField.CommonRtnField parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static xyz.redtorch.pb.CoreField.CommonRtnField parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static xyz.redtorch.pb.CoreField.CommonRtnField parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(xyz.redtorch.pb.CoreField.CommonRtnField prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * <pre>
-     * 通用推送回报
-     * </pre>
-     *
-     * Protobuf type {@code xyz.redtorch.pb.CommonRtnField}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:xyz.redtorch.pb.CommonRtnField)
-        xyz.redtorch.pb.CoreField.CommonRtnFieldOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return xyz.redtorch.pb.CoreField.internal_static_xyz_redtorch_pb_CommonRtnField_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return xyz.redtorch.pb.CoreField.internal_static_xyz_redtorch_pb_CommonRtnField_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                xyz.redtorch.pb.CoreField.CommonRtnField.class, xyz.redtorch.pb.CoreField.CommonRtnField.Builder.class);
-      }
-
-      // Construct using xyz.redtorch.pb.CoreField.CommonRtnField.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        reqId_ = "";
-
-        targetNodeId_ = 0;
-
-        sourceNodeId_ = 0;
-
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return xyz.redtorch.pb.CoreField.internal_static_xyz_redtorch_pb_CommonRtnField_descriptor;
-      }
-
-      @java.lang.Override
-      public xyz.redtorch.pb.CoreField.CommonRtnField getDefaultInstanceForType() {
-        return xyz.redtorch.pb.CoreField.CommonRtnField.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public xyz.redtorch.pb.CoreField.CommonRtnField build() {
-        xyz.redtorch.pb.CoreField.CommonRtnField result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public xyz.redtorch.pb.CoreField.CommonRtnField buildPartial() {
-        xyz.redtorch.pb.CoreField.CommonRtnField result = new xyz.redtorch.pb.CoreField.CommonRtnField(this);
-        result.reqId_ = reqId_;
-        result.targetNodeId_ = targetNodeId_;
-        result.sourceNodeId_ = sourceNodeId_;
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return (Builder) super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return (Builder) super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return (Builder) super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof xyz.redtorch.pb.CoreField.CommonRtnField) {
-          return mergeFrom((xyz.redtorch.pb.CoreField.CommonRtnField)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(xyz.redtorch.pb.CoreField.CommonRtnField other) {
-        if (other == xyz.redtorch.pb.CoreField.CommonRtnField.getDefaultInstance()) return this;
-        if (!other.getReqId().isEmpty()) {
-          reqId_ = other.reqId_;
-          onChanged();
-        }
-        if (other.getTargetNodeId() != 0) {
-          setTargetNodeId(other.getTargetNodeId());
-        }
-        if (other.getSourceNodeId() != 0) {
-          setSourceNodeId(other.getSourceNodeId());
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        xyz.redtorch.pb.CoreField.CommonRtnField parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (xyz.redtorch.pb.CoreField.CommonRtnField) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private java.lang.Object reqId_ = "";
-      /**
-       * <pre>
-       * 请求ID
-       * </pre>
-       *
-       * <code>string reqId = 1;</code>
-       */
-      public java.lang.String getReqId() {
-        java.lang.Object ref = reqId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          reqId_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 请求ID
-       * </pre>
-       *
-       * <code>string reqId = 1;</code>
-       */
-      public com.google.protobuf.ByteString
-          getReqIdBytes() {
-        java.lang.Object ref = reqId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          reqId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 请求ID
-       * </pre>
-       *
-       * <code>string reqId = 1;</code>
-       */
-      public Builder setReqId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        reqId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 请求ID
-       * </pre>
-       *
-       * <code>string reqId = 1;</code>
-       */
-      public Builder clearReqId() {
-        
-        reqId_ = getDefaultInstance().getReqId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 请求ID
-       * </pre>
-       *
-       * <code>string reqId = 1;</code>
-       */
-      public Builder setReqIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        reqId_ = value;
-        onChanged();
-        return this;
-      }
-
-      private int targetNodeId_ ;
-      /**
-       * <pre>
-       * 目标节点ID
-       * </pre>
-       *
-       * <code>fixed32 targetNodeId = 2;</code>
-       */
-      public int getTargetNodeId() {
-        return targetNodeId_;
-      }
-      /**
-       * <pre>
-       * 目标节点ID
-       * </pre>
-       *
-       * <code>fixed32 targetNodeId = 2;</code>
-       */
-      public Builder setTargetNodeId(int value) {
-        
-        targetNodeId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 目标节点ID
-       * </pre>
-       *
-       * <code>fixed32 targetNodeId = 2;</code>
-       */
-      public Builder clearTargetNodeId() {
-        
-        targetNodeId_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private int sourceNodeId_ ;
-      /**
-       * <pre>
-       * 来源节点ID
-       * </pre>
-       *
-       * <code>fixed32 sourceNodeId = 3;</code>
-       */
-      public int getSourceNodeId() {
-        return sourceNodeId_;
-      }
-      /**
-       * <pre>
-       * 来源节点ID
-       * </pre>
-       *
-       * <code>fixed32 sourceNodeId = 3;</code>
-       */
-      public Builder setSourceNodeId(int value) {
-        
-        sourceNodeId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 来源节点ID
-       * </pre>
-       *
-       * <code>fixed32 sourceNodeId = 3;</code>
-       */
-      public Builder clearSourceNodeId() {
-        
-        sourceNodeId_ = 0;
-        onChanged();
-        return this;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFieldsProto3(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:xyz.redtorch.pb.CommonRtnField)
-    }
-
-    // @@protoc_insertion_point(class_scope:xyz.redtorch.pb.CommonRtnField)
-    private static final xyz.redtorch.pb.CoreField.CommonRtnField DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new xyz.redtorch.pb.CoreField.CommonRtnField();
-    }
-
-    public static xyz.redtorch.pb.CoreField.CommonRtnField getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<CommonRtnField>
-        PARSER = new com.google.protobuf.AbstractParser<CommonRtnField>() {
-      @java.lang.Override
-      public CommonRtnField parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new CommonRtnField(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<CommonRtnField> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<CommonRtnField> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public xyz.redtorch.pb.CoreField.CommonRtnField getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
   public interface CommonRspFieldOrBuilder extends
       // @@protoc_insertion_point(interface_extends:xyz.redtorch.pb.CommonRspField)
       com.google.protobuf.MessageOrBuilder {
@@ -26090,56 +28220,30 @@ public final class CoreField {
 
     /**
      * <pre>
-     * 请求状态
+     * 错误ID
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.CommonStatusEnum requestStatus = 2;</code>
+     * <code>fixed32 errorId = 2;</code>
      */
-    int getRequestStatusValue();
-    /**
-     * <pre>
-     * 请求状态
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.CommonStatusEnum requestStatus = 2;</code>
-     */
-    xyz.redtorch.pb.CoreEnum.CommonStatusEnum getRequestStatus();
+    int getErrorId();
 
     /**
      * <pre>
-     * 信息
+     * 错误信息
      * </pre>
      *
-     * <code>string info = 3;</code>
+     * <code>string errorMsg = 3;</code>
      */
-    java.lang.String getInfo();
+    java.lang.String getErrorMsg();
     /**
      * <pre>
-     * 信息
+     * 错误信息
      * </pre>
      *
-     * <code>string info = 3;</code>
+     * <code>string errorMsg = 3;</code>
      */
     com.google.protobuf.ByteString
-        getInfoBytes();
-
-    /**
-     * <pre>
-     * 目标节点ID
-     * </pre>
-     *
-     * <code>fixed32 targetNodeId = 4;</code>
-     */
-    int getTargetNodeId();
-
-    /**
-     * <pre>
-     * 来源节点ID
-     * </pre>
-     *
-     * <code>fixed32 sourceNodeId = 5;</code>
-     */
-    int getSourceNodeId();
+        getErrorMsgBytes();
   }
   /**
    * <pre>
@@ -26159,10 +28263,8 @@ public final class CoreField {
     }
     private CommonRspField() {
       reqId_ = "";
-      requestStatus_ = 0;
-      info_ = "";
-      targetNodeId_ = 0;
-      sourceNodeId_ = 0;
+      errorId_ = 0;
+      errorMsg_ = "";
     }
 
     @java.lang.Override
@@ -26195,26 +28297,15 @@ public final class CoreField {
               reqId_ = s;
               break;
             }
-            case 16: {
-              int rawValue = input.readEnum();
+            case 21: {
 
-              requestStatus_ = rawValue;
+              errorId_ = input.readFixed32();
               break;
             }
             case 26: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              info_ = s;
-              break;
-            }
-            case 37: {
-
-              targetNodeId_ = input.readFixed32();
-              break;
-            }
-            case 45: {
-
-              sourceNodeId_ = input.readFixed32();
+              errorMsg_ = s;
               break;
             }
             default: {
@@ -26291,97 +28382,59 @@ public final class CoreField {
       }
     }
 
-    public static final int REQUESTSTATUS_FIELD_NUMBER = 2;
-    private int requestStatus_;
+    public static final int ERRORID_FIELD_NUMBER = 2;
+    private int errorId_;
     /**
      * <pre>
-     * 请求状态
+     * 错误ID
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.CommonStatusEnum requestStatus = 2;</code>
+     * <code>fixed32 errorId = 2;</code>
      */
-    public int getRequestStatusValue() {
-      return requestStatus_;
-    }
-    /**
-     * <pre>
-     * 请求状态
-     * </pre>
-     *
-     * <code>.xyz.redtorch.pb.CommonStatusEnum requestStatus = 2;</code>
-     */
-    public xyz.redtorch.pb.CoreEnum.CommonStatusEnum getRequestStatus() {
-      @SuppressWarnings("deprecation")
-      xyz.redtorch.pb.CoreEnum.CommonStatusEnum result = xyz.redtorch.pb.CoreEnum.CommonStatusEnum.valueOf(requestStatus_);
-      return result == null ? xyz.redtorch.pb.CoreEnum.CommonStatusEnum.UNRECOGNIZED : result;
+    public int getErrorId() {
+      return errorId_;
     }
 
-    public static final int INFO_FIELD_NUMBER = 3;
-    private volatile java.lang.Object info_;
+    public static final int ERRORMSG_FIELD_NUMBER = 3;
+    private volatile java.lang.Object errorMsg_;
     /**
      * <pre>
-     * 信息
+     * 错误信息
      * </pre>
      *
-     * <code>string info = 3;</code>
+     * <code>string errorMsg = 3;</code>
      */
-    public java.lang.String getInfo() {
-      java.lang.Object ref = info_;
+    public java.lang.String getErrorMsg() {
+      java.lang.Object ref = errorMsg_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        info_ = s;
+        errorMsg_ = s;
         return s;
       }
     }
     /**
      * <pre>
-     * 信息
+     * 错误信息
      * </pre>
      *
-     * <code>string info = 3;</code>
+     * <code>string errorMsg = 3;</code>
      */
     public com.google.protobuf.ByteString
-        getInfoBytes() {
-      java.lang.Object ref = info_;
+        getErrorMsgBytes() {
+      java.lang.Object ref = errorMsg_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        info_ = b;
+        errorMsg_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
-    }
-
-    public static final int TARGETNODEID_FIELD_NUMBER = 4;
-    private int targetNodeId_;
-    /**
-     * <pre>
-     * 目标节点ID
-     * </pre>
-     *
-     * <code>fixed32 targetNodeId = 4;</code>
-     */
-    public int getTargetNodeId() {
-      return targetNodeId_;
-    }
-
-    public static final int SOURCENODEID_FIELD_NUMBER = 5;
-    private int sourceNodeId_;
-    /**
-     * <pre>
-     * 来源节点ID
-     * </pre>
-     *
-     * <code>fixed32 sourceNodeId = 5;</code>
-     */
-    public int getSourceNodeId() {
-      return sourceNodeId_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -26401,17 +28454,11 @@ public final class CoreField {
       if (!getReqIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, reqId_);
       }
-      if (requestStatus_ != xyz.redtorch.pb.CoreEnum.CommonStatusEnum.SUCCESS.getNumber()) {
-        output.writeEnum(2, requestStatus_);
+      if (errorId_ != 0) {
+        output.writeFixed32(2, errorId_);
       }
-      if (!getInfoBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, info_);
-      }
-      if (targetNodeId_ != 0) {
-        output.writeFixed32(4, targetNodeId_);
-      }
-      if (sourceNodeId_ != 0) {
-        output.writeFixed32(5, sourceNodeId_);
+      if (!getErrorMsgBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, errorMsg_);
       }
       unknownFields.writeTo(output);
     }
@@ -26425,20 +28472,12 @@ public final class CoreField {
       if (!getReqIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, reqId_);
       }
-      if (requestStatus_ != xyz.redtorch.pb.CoreEnum.CommonStatusEnum.SUCCESS.getNumber()) {
+      if (errorId_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(2, requestStatus_);
+          .computeFixed32Size(2, errorId_);
       }
-      if (!getInfoBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, info_);
-      }
-      if (targetNodeId_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeFixed32Size(4, targetNodeId_);
-      }
-      if (sourceNodeId_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeFixed32Size(5, sourceNodeId_);
+      if (!getErrorMsgBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, errorMsg_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -26458,13 +28497,10 @@ public final class CoreField {
       boolean result = true;
       result = result && getReqId()
           .equals(other.getReqId());
-      result = result && requestStatus_ == other.requestStatus_;
-      result = result && getInfo()
-          .equals(other.getInfo());
-      result = result && (getTargetNodeId()
-          == other.getTargetNodeId());
-      result = result && (getSourceNodeId()
-          == other.getSourceNodeId());
+      result = result && (getErrorId()
+          == other.getErrorId());
+      result = result && getErrorMsg()
+          .equals(other.getErrorMsg());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -26478,14 +28514,10 @@ public final class CoreField {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + REQID_FIELD_NUMBER;
       hash = (53 * hash) + getReqId().hashCode();
-      hash = (37 * hash) + REQUESTSTATUS_FIELD_NUMBER;
-      hash = (53 * hash) + requestStatus_;
-      hash = (37 * hash) + INFO_FIELD_NUMBER;
-      hash = (53 * hash) + getInfo().hashCode();
-      hash = (37 * hash) + TARGETNODEID_FIELD_NUMBER;
-      hash = (53 * hash) + getTargetNodeId();
-      hash = (37 * hash) + SOURCENODEID_FIELD_NUMBER;
-      hash = (53 * hash) + getSourceNodeId();
+      hash = (37 * hash) + ERRORID_FIELD_NUMBER;
+      hash = (53 * hash) + getErrorId();
+      hash = (37 * hash) + ERRORMSG_FIELD_NUMBER;
+      hash = (53 * hash) + getErrorMsg().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -26625,13 +28657,9 @@ public final class CoreField {
         super.clear();
         reqId_ = "";
 
-        requestStatus_ = 0;
+        errorId_ = 0;
 
-        info_ = "";
-
-        targetNodeId_ = 0;
-
-        sourceNodeId_ = 0;
+        errorMsg_ = "";
 
         return this;
       }
@@ -26660,10 +28688,8 @@ public final class CoreField {
       public xyz.redtorch.pb.CoreField.CommonRspField buildPartial() {
         xyz.redtorch.pb.CoreField.CommonRspField result = new xyz.redtorch.pb.CoreField.CommonRspField(this);
         result.reqId_ = reqId_;
-        result.requestStatus_ = requestStatus_;
-        result.info_ = info_;
-        result.targetNodeId_ = targetNodeId_;
-        result.sourceNodeId_ = sourceNodeId_;
+        result.errorId_ = errorId_;
+        result.errorMsg_ = errorMsg_;
         onBuilt();
         return result;
       }
@@ -26716,18 +28742,12 @@ public final class CoreField {
           reqId_ = other.reqId_;
           onChanged();
         }
-        if (other.requestStatus_ != 0) {
-          setRequestStatusValue(other.getRequestStatusValue());
+        if (other.getErrorId() != 0) {
+          setErrorId(other.getErrorId());
         }
-        if (!other.getInfo().isEmpty()) {
-          info_ = other.info_;
+        if (!other.getErrorMsg().isEmpty()) {
+          errorMsg_ = other.errorMsg_;
           onChanged();
-        }
-        if (other.getTargetNodeId() != 0) {
-          setTargetNodeId(other.getTargetNodeId());
-        }
-        if (other.getSourceNodeId() != 0) {
-          setSourceNodeId(other.getSourceNodeId());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -26847,86 +28867,59 @@ public final class CoreField {
         return this;
       }
 
-      private int requestStatus_ = 0;
+      private int errorId_ ;
       /**
        * <pre>
-       * 请求状态
+       * 错误ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.CommonStatusEnum requestStatus = 2;</code>
+       * <code>fixed32 errorId = 2;</code>
        */
-      public int getRequestStatusValue() {
-        return requestStatus_;
+      public int getErrorId() {
+        return errorId_;
       }
       /**
        * <pre>
-       * 请求状态
+       * 错误ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.CommonStatusEnum requestStatus = 2;</code>
+       * <code>fixed32 errorId = 2;</code>
        */
-      public Builder setRequestStatusValue(int value) {
-        requestStatus_ = value;
+      public Builder setErrorId(int value) {
+        
+        errorId_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * 请求状态
+       * 错误ID
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.CommonStatusEnum requestStatus = 2;</code>
+       * <code>fixed32 errorId = 2;</code>
        */
-      public xyz.redtorch.pb.CoreEnum.CommonStatusEnum getRequestStatus() {
-        @SuppressWarnings("deprecation")
-        xyz.redtorch.pb.CoreEnum.CommonStatusEnum result = xyz.redtorch.pb.CoreEnum.CommonStatusEnum.valueOf(requestStatus_);
-        return result == null ? xyz.redtorch.pb.CoreEnum.CommonStatusEnum.UNRECOGNIZED : result;
-      }
-      /**
-       * <pre>
-       * 请求状态
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.CommonStatusEnum requestStatus = 2;</code>
-       */
-      public Builder setRequestStatus(xyz.redtorch.pb.CoreEnum.CommonStatusEnum value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
+      public Builder clearErrorId() {
         
-        requestStatus_ = value.getNumber();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 请求状态
-       * </pre>
-       *
-       * <code>.xyz.redtorch.pb.CommonStatusEnum requestStatus = 2;</code>
-       */
-      public Builder clearRequestStatus() {
-        
-        requestStatus_ = 0;
+        errorId_ = 0;
         onChanged();
         return this;
       }
 
-      private java.lang.Object info_ = "";
+      private java.lang.Object errorMsg_ = "";
       /**
        * <pre>
-       * 信息
+       * 错误信息
        * </pre>
        *
-       * <code>string info = 3;</code>
+       * <code>string errorMsg = 3;</code>
        */
-      public java.lang.String getInfo() {
-        java.lang.Object ref = info_;
+      public java.lang.String getErrorMsg() {
+        java.lang.Object ref = errorMsg_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          info_ = s;
+          errorMsg_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
@@ -26934,19 +28927,19 @@ public final class CoreField {
       }
       /**
        * <pre>
-       * 信息
+       * 错误信息
        * </pre>
        *
-       * <code>string info = 3;</code>
+       * <code>string errorMsg = 3;</code>
        */
       public com.google.protobuf.ByteString
-          getInfoBytes() {
-        java.lang.Object ref = info_;
+          getErrorMsgBytes() {
+        java.lang.Object ref = errorMsg_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          info_ = b;
+          errorMsg_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -26954,125 +28947,49 @@ public final class CoreField {
       }
       /**
        * <pre>
-       * 信息
+       * 错误信息
        * </pre>
        *
-       * <code>string info = 3;</code>
+       * <code>string errorMsg = 3;</code>
        */
-      public Builder setInfo(
+      public Builder setErrorMsg(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   
-        info_ = value;
+        errorMsg_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * 信息
+       * 错误信息
        * </pre>
        *
-       * <code>string info = 3;</code>
+       * <code>string errorMsg = 3;</code>
        */
-      public Builder clearInfo() {
+      public Builder clearErrorMsg() {
         
-        info_ = getDefaultInstance().getInfo();
+        errorMsg_ = getDefaultInstance().getErrorMsg();
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * 信息
+       * 错误信息
        * </pre>
        *
-       * <code>string info = 3;</code>
+       * <code>string errorMsg = 3;</code>
        */
-      public Builder setInfoBytes(
+      public Builder setErrorMsgBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
         
-        info_ = value;
-        onChanged();
-        return this;
-      }
-
-      private int targetNodeId_ ;
-      /**
-       * <pre>
-       * 目标节点ID
-       * </pre>
-       *
-       * <code>fixed32 targetNodeId = 4;</code>
-       */
-      public int getTargetNodeId() {
-        return targetNodeId_;
-      }
-      /**
-       * <pre>
-       * 目标节点ID
-       * </pre>
-       *
-       * <code>fixed32 targetNodeId = 4;</code>
-       */
-      public Builder setTargetNodeId(int value) {
-        
-        targetNodeId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 目标节点ID
-       * </pre>
-       *
-       * <code>fixed32 targetNodeId = 4;</code>
-       */
-      public Builder clearTargetNodeId() {
-        
-        targetNodeId_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private int sourceNodeId_ ;
-      /**
-       * <pre>
-       * 来源节点ID
-       * </pre>
-       *
-       * <code>fixed32 sourceNodeId = 5;</code>
-       */
-      public int getSourceNodeId() {
-        return sourceNodeId_;
-      }
-      /**
-       * <pre>
-       * 来源节点ID
-       * </pre>
-       *
-       * <code>fixed32 sourceNodeId = 5;</code>
-       */
-      public Builder setSourceNodeId(int value) {
-        
-        sourceNodeId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 来源节点ID
-       * </pre>
-       *
-       * <code>fixed32 sourceNodeId = 5;</code>
-       */
-      public Builder clearSourceNodeId() {
-        
-        sourceNodeId_ = 0;
+        errorMsg_ = value;
         onChanged();
         return this;
       }
@@ -27231,28 +29148,45 @@ public final class CoreField {
 
     /**
      * <pre>
+     * 数量
+     * </pre>
+     *
+     * <code>fixed32 volume = 6;</code>
+     */
+    int getVolume();
+
+    /**
+     * <pre>
      * 价格
      * </pre>
      *
-     * <code>double price = 6;</code>
+     * <code>double price = 7;</code>
      */
     double getPrice();
 
     /**
      * <pre>
-     * 数量
+     * 价格类型
      * </pre>
      *
-     * <code>fixed32 volume = 7;</code>
+     * <code>.xyz.redtorch.pb.OrderPriceTypeEnum orderPriceType = 8;</code>
      */
-    int getVolume();
+    int getOrderPriceTypeValue();
+    /**
+     * <pre>
+     * 价格类型
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.OrderPriceTypeEnum orderPriceType = 8;</code>
+     */
+    xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum getOrderPriceType();
 
     /**
      * <pre>
      * 方向
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.DirectionEnum direction = 8;</code>
+     * <code>.xyz.redtorch.pb.DirectionEnum direction = 9;</code>
      */
     int getDirectionValue();
     /**
@@ -27260,60 +29194,174 @@ public final class CoreField {
      * 方向
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.DirectionEnum direction = 8;</code>
+     * <code>.xyz.redtorch.pb.DirectionEnum direction = 9;</code>
      */
     xyz.redtorch.pb.CoreEnum.DirectionEnum getDirection();
 
     /**
      * <pre>
-     * 开平
+     * 组合开平标志
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.OffsetEnum offset = 9;</code>
+     * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 10;</code>
      */
-    int getOffsetValue();
+    int getOffsetFlagValue();
     /**
      * <pre>
-     * 开平
+     * 组合开平标志
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.OffsetEnum offset = 9;</code>
+     * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 10;</code>
      */
-    xyz.redtorch.pb.CoreEnum.OffsetEnum getOffset();
+    xyz.redtorch.pb.CoreEnum.OffsetFlagEnum getOffsetFlag();
 
     /**
      * <pre>
-     * 价格类型
+     * 组合投机套保标志
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.PriceTypeEnum priceType = 10;</code>
+     * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 11;</code>
      */
-    int getPriceTypeValue();
+    int getHedgeFlagValue();
     /**
      * <pre>
-     * 价格类型
+     * 组合投机套保标志
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.PriceTypeEnum priceType = 10;</code>
+     * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 11;</code>
      */
-    xyz.redtorch.pb.CoreEnum.PriceTypeEnum getPriceType();
+    xyz.redtorch.pb.CoreEnum.HedgeFlagEnum getHedgeFlag();
 
     /**
      * <pre>
      * 时效
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.TimeConditionTypeEnum timeConditionType = 11;</code>
+     * <code>.xyz.redtorch.pb.TimeConditionEnum timeCondition = 12;</code>
      */
-    int getTimeConditionTypeValue();
+    int getTimeConditionValue();
     /**
      * <pre>
      * 时效
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.TimeConditionTypeEnum timeConditionType = 11;</code>
+     * <code>.xyz.redtorch.pb.TimeConditionEnum timeCondition = 12;</code>
      */
-    xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum getTimeConditionType();
+    xyz.redtorch.pb.CoreEnum.TimeConditionEnum getTimeCondition();
+
+    /**
+     * <pre>
+     * GTD日期
+     * </pre>
+     *
+     * <code>string gtdDate = 13;</code>
+     */
+    java.lang.String getGtdDate();
+    /**
+     * <pre>
+     * GTD日期
+     * </pre>
+     *
+     * <code>string gtdDate = 13;</code>
+     */
+    com.google.protobuf.ByteString
+        getGtdDateBytes();
+
+    /**
+     * <pre>
+     * 成交量类型
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.VolumeConditionEnum volumeCondition = 14;</code>
+     */
+    int getVolumeConditionValue();
+    /**
+     * <pre>
+     * 成交量类型
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.VolumeConditionEnum volumeCondition = 14;</code>
+     */
+    xyz.redtorch.pb.CoreEnum.VolumeConditionEnum getVolumeCondition();
+
+    /**
+     * <pre>
+     * 最小成交量
+     * </pre>
+     *
+     * <code>fixed32 minVolume = 15;</code>
+     */
+    int getMinVolume();
+
+    /**
+     * <pre>
+     * 触发条件
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.ContingentConditionEnum contingentCondition = 16;</code>
+     */
+    int getContingentConditionValue();
+    /**
+     * <pre>
+     * 触发条件
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.ContingentConditionEnum contingentCondition = 16;</code>
+     */
+    xyz.redtorch.pb.CoreEnum.ContingentConditionEnum getContingentCondition();
+
+    /**
+     * <pre>
+     * 止损价
+     * </pre>
+     *
+     * <code>double stopPrice = 17;</code>
+     */
+    double getStopPrice();
+
+    /**
+     * <pre>
+     * 强平原因
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.ForceCloseReasonEnum forceCloseReason = 18;</code>
+     */
+    int getForceCloseReasonValue();
+    /**
+     * <pre>
+     * 强平原因
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.ForceCloseReasonEnum forceCloseReason = 18;</code>
+     */
+    xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum getForceCloseReason();
+
+    /**
+     * <pre>
+     * 自动挂起标志
+     * </pre>
+     *
+     * <code>fixed32 autoSuspend = 19;</code>
+     */
+    int getAutoSuspend();
+
+    /**
+     * <pre>
+     * 用户强评标志
+     * </pre>
+     *
+     * <code>fixed32 userForceClose = 20;</code>
+     */
+    int getUserForceClose();
+
+    /**
+     * <pre>
+     * 互换单标志
+     * </pre>
+     *
+     * <code>fixed32 swapOrder = 21;</code>
+     */
+    int getSwapOrder();
   }
   /**
    * <pre>
@@ -27336,12 +29384,22 @@ public final class CoreField {
       accountCode_ = "";
       currency_ = 0;
       gatewayId_ = "";
-      price_ = 0D;
       volume_ = 0;
+      price_ = 0D;
+      orderPriceType_ = 0;
       direction_ = 0;
-      offset_ = 0;
-      priceType_ = 0;
-      timeConditionType_ = 0;
+      offsetFlag_ = 0;
+      hedgeFlag_ = 0;
+      timeCondition_ = 0;
+      gtdDate_ = "";
+      volumeCondition_ = 0;
+      minVolume_ = 0;
+      contingentCondition_ = 0;
+      stopPrice_ = 0D;
+      forceCloseReason_ = 0;
+      autoSuspend_ = 0;
+      userForceClose_ = 0;
+      swapOrder_ = 0;
     }
 
     @java.lang.Override
@@ -27405,38 +29463,93 @@ public final class CoreField {
               gatewayId_ = s;
               break;
             }
-            case 49: {
-
-              price_ = input.readDouble();
-              break;
-            }
-            case 61: {
+            case 53: {
 
               volume_ = input.readFixed32();
+              break;
+            }
+            case 57: {
+
+              price_ = input.readDouble();
               break;
             }
             case 64: {
               int rawValue = input.readEnum();
 
-              direction_ = rawValue;
+              orderPriceType_ = rawValue;
               break;
             }
             case 72: {
               int rawValue = input.readEnum();
 
-              offset_ = rawValue;
+              direction_ = rawValue;
               break;
             }
             case 80: {
               int rawValue = input.readEnum();
 
-              priceType_ = rawValue;
+              offsetFlag_ = rawValue;
               break;
             }
             case 88: {
               int rawValue = input.readEnum();
 
-              timeConditionType_ = rawValue;
+              hedgeFlag_ = rawValue;
+              break;
+            }
+            case 96: {
+              int rawValue = input.readEnum();
+
+              timeCondition_ = rawValue;
+              break;
+            }
+            case 106: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              gtdDate_ = s;
+              break;
+            }
+            case 112: {
+              int rawValue = input.readEnum();
+
+              volumeCondition_ = rawValue;
+              break;
+            }
+            case 125: {
+
+              minVolume_ = input.readFixed32();
+              break;
+            }
+            case 128: {
+              int rawValue = input.readEnum();
+
+              contingentCondition_ = rawValue;
+              break;
+            }
+            case 137: {
+
+              stopPrice_ = input.readDouble();
+              break;
+            }
+            case 144: {
+              int rawValue = input.readEnum();
+
+              forceCloseReason_ = rawValue;
+              break;
+            }
+            case 157: {
+
+              autoSuspend_ = input.readFixed32();
+              break;
+            }
+            case 165: {
+
+              userForceClose_ = input.readFixed32();
+              break;
+            }
+            case 173: {
+
+              swapOrder_ = input.readFixed32();
               break;
             }
             default: {
@@ -27655,40 +29768,65 @@ public final class CoreField {
       }
     }
 
-    public static final int PRICE_FIELD_NUMBER = 6;
-    private double price_;
-    /**
-     * <pre>
-     * 价格
-     * </pre>
-     *
-     * <code>double price = 6;</code>
-     */
-    public double getPrice() {
-      return price_;
-    }
-
-    public static final int VOLUME_FIELD_NUMBER = 7;
+    public static final int VOLUME_FIELD_NUMBER = 6;
     private int volume_;
     /**
      * <pre>
      * 数量
      * </pre>
      *
-     * <code>fixed32 volume = 7;</code>
+     * <code>fixed32 volume = 6;</code>
      */
     public int getVolume() {
       return volume_;
     }
 
-    public static final int DIRECTION_FIELD_NUMBER = 8;
+    public static final int PRICE_FIELD_NUMBER = 7;
+    private double price_;
+    /**
+     * <pre>
+     * 价格
+     * </pre>
+     *
+     * <code>double price = 7;</code>
+     */
+    public double getPrice() {
+      return price_;
+    }
+
+    public static final int ORDERPRICETYPE_FIELD_NUMBER = 8;
+    private int orderPriceType_;
+    /**
+     * <pre>
+     * 价格类型
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.OrderPriceTypeEnum orderPriceType = 8;</code>
+     */
+    public int getOrderPriceTypeValue() {
+      return orderPriceType_;
+    }
+    /**
+     * <pre>
+     * 价格类型
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.OrderPriceTypeEnum orderPriceType = 8;</code>
+     */
+    public xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum getOrderPriceType() {
+      @SuppressWarnings("deprecation")
+      xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum result = xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum.valueOf(orderPriceType_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum.UNRECOGNIZED : result;
+    }
+
+    public static final int DIRECTION_FIELD_NUMBER = 9;
     private int direction_;
     /**
      * <pre>
      * 方向
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.DirectionEnum direction = 8;</code>
+     * <code>.xyz.redtorch.pb.DirectionEnum direction = 9;</code>
      */
     public int getDirectionValue() {
       return direction_;
@@ -27698,7 +29836,7 @@ public final class CoreField {
      * 方向
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.DirectionEnum direction = 8;</code>
+     * <code>.xyz.redtorch.pb.DirectionEnum direction = 9;</code>
      */
     public xyz.redtorch.pb.CoreEnum.DirectionEnum getDirection() {
       @SuppressWarnings("deprecation")
@@ -27706,79 +29844,261 @@ public final class CoreField {
       return result == null ? xyz.redtorch.pb.CoreEnum.DirectionEnum.UNRECOGNIZED : result;
     }
 
-    public static final int OFFSET_FIELD_NUMBER = 9;
-    private int offset_;
+    public static final int OFFSETFLAG_FIELD_NUMBER = 10;
+    private int offsetFlag_;
     /**
      * <pre>
-     * 开平
+     * 组合开平标志
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.OffsetEnum offset = 9;</code>
+     * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 10;</code>
      */
-    public int getOffsetValue() {
-      return offset_;
+    public int getOffsetFlagValue() {
+      return offsetFlag_;
     }
     /**
      * <pre>
-     * 开平
+     * 组合开平标志
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.OffsetEnum offset = 9;</code>
+     * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 10;</code>
      */
-    public xyz.redtorch.pb.CoreEnum.OffsetEnum getOffset() {
+    public xyz.redtorch.pb.CoreEnum.OffsetFlagEnum getOffsetFlag() {
       @SuppressWarnings("deprecation")
-      xyz.redtorch.pb.CoreEnum.OffsetEnum result = xyz.redtorch.pb.CoreEnum.OffsetEnum.valueOf(offset_);
-      return result == null ? xyz.redtorch.pb.CoreEnum.OffsetEnum.UNRECOGNIZED : result;
+      xyz.redtorch.pb.CoreEnum.OffsetFlagEnum result = xyz.redtorch.pb.CoreEnum.OffsetFlagEnum.valueOf(offsetFlag_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.OffsetFlagEnum.UNRECOGNIZED : result;
     }
 
-    public static final int PRICETYPE_FIELD_NUMBER = 10;
-    private int priceType_;
+    public static final int HEDGEFLAG_FIELD_NUMBER = 11;
+    private int hedgeFlag_;
     /**
      * <pre>
-     * 价格类型
+     * 组合投机套保标志
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.PriceTypeEnum priceType = 10;</code>
+     * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 11;</code>
      */
-    public int getPriceTypeValue() {
-      return priceType_;
+    public int getHedgeFlagValue() {
+      return hedgeFlag_;
     }
     /**
      * <pre>
-     * 价格类型
+     * 组合投机套保标志
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.PriceTypeEnum priceType = 10;</code>
+     * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 11;</code>
      */
-    public xyz.redtorch.pb.CoreEnum.PriceTypeEnum getPriceType() {
+    public xyz.redtorch.pb.CoreEnum.HedgeFlagEnum getHedgeFlag() {
       @SuppressWarnings("deprecation")
-      xyz.redtorch.pb.CoreEnum.PriceTypeEnum result = xyz.redtorch.pb.CoreEnum.PriceTypeEnum.valueOf(priceType_);
-      return result == null ? xyz.redtorch.pb.CoreEnum.PriceTypeEnum.UNRECOGNIZED : result;
+      xyz.redtorch.pb.CoreEnum.HedgeFlagEnum result = xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.valueOf(hedgeFlag_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.UNRECOGNIZED : result;
     }
 
-    public static final int TIMECONDITIONTYPE_FIELD_NUMBER = 11;
-    private int timeConditionType_;
+    public static final int TIMECONDITION_FIELD_NUMBER = 12;
+    private int timeCondition_;
     /**
      * <pre>
      * 时效
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.TimeConditionTypeEnum timeConditionType = 11;</code>
+     * <code>.xyz.redtorch.pb.TimeConditionEnum timeCondition = 12;</code>
      */
-    public int getTimeConditionTypeValue() {
-      return timeConditionType_;
+    public int getTimeConditionValue() {
+      return timeCondition_;
     }
     /**
      * <pre>
      * 时效
      * </pre>
      *
-     * <code>.xyz.redtorch.pb.TimeConditionTypeEnum timeConditionType = 11;</code>
+     * <code>.xyz.redtorch.pb.TimeConditionEnum timeCondition = 12;</code>
      */
-    public xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum getTimeConditionType() {
+    public xyz.redtorch.pb.CoreEnum.TimeConditionEnum getTimeCondition() {
       @SuppressWarnings("deprecation")
-      xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum result = xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum.valueOf(timeConditionType_);
-      return result == null ? xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum.UNRECOGNIZED : result;
+      xyz.redtorch.pb.CoreEnum.TimeConditionEnum result = xyz.redtorch.pb.CoreEnum.TimeConditionEnum.valueOf(timeCondition_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.TimeConditionEnum.UNRECOGNIZED : result;
+    }
+
+    public static final int GTDDATE_FIELD_NUMBER = 13;
+    private volatile java.lang.Object gtdDate_;
+    /**
+     * <pre>
+     * GTD日期
+     * </pre>
+     *
+     * <code>string gtdDate = 13;</code>
+     */
+    public java.lang.String getGtdDate() {
+      java.lang.Object ref = gtdDate_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        gtdDate_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * GTD日期
+     * </pre>
+     *
+     * <code>string gtdDate = 13;</code>
+     */
+    public com.google.protobuf.ByteString
+        getGtdDateBytes() {
+      java.lang.Object ref = gtdDate_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        gtdDate_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int VOLUMECONDITION_FIELD_NUMBER = 14;
+    private int volumeCondition_;
+    /**
+     * <pre>
+     * 成交量类型
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.VolumeConditionEnum volumeCondition = 14;</code>
+     */
+    public int getVolumeConditionValue() {
+      return volumeCondition_;
+    }
+    /**
+     * <pre>
+     * 成交量类型
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.VolumeConditionEnum volumeCondition = 14;</code>
+     */
+    public xyz.redtorch.pb.CoreEnum.VolumeConditionEnum getVolumeCondition() {
+      @SuppressWarnings("deprecation")
+      xyz.redtorch.pb.CoreEnum.VolumeConditionEnum result = xyz.redtorch.pb.CoreEnum.VolumeConditionEnum.valueOf(volumeCondition_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.VolumeConditionEnum.UNRECOGNIZED : result;
+    }
+
+    public static final int MINVOLUME_FIELD_NUMBER = 15;
+    private int minVolume_;
+    /**
+     * <pre>
+     * 最小成交量
+     * </pre>
+     *
+     * <code>fixed32 minVolume = 15;</code>
+     */
+    public int getMinVolume() {
+      return minVolume_;
+    }
+
+    public static final int CONTINGENTCONDITION_FIELD_NUMBER = 16;
+    private int contingentCondition_;
+    /**
+     * <pre>
+     * 触发条件
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.ContingentConditionEnum contingentCondition = 16;</code>
+     */
+    public int getContingentConditionValue() {
+      return contingentCondition_;
+    }
+    /**
+     * <pre>
+     * 触发条件
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.ContingentConditionEnum contingentCondition = 16;</code>
+     */
+    public xyz.redtorch.pb.CoreEnum.ContingentConditionEnum getContingentCondition() {
+      @SuppressWarnings("deprecation")
+      xyz.redtorch.pb.CoreEnum.ContingentConditionEnum result = xyz.redtorch.pb.CoreEnum.ContingentConditionEnum.valueOf(contingentCondition_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.ContingentConditionEnum.UNRECOGNIZED : result;
+    }
+
+    public static final int STOPPRICE_FIELD_NUMBER = 17;
+    private double stopPrice_;
+    /**
+     * <pre>
+     * 止损价
+     * </pre>
+     *
+     * <code>double stopPrice = 17;</code>
+     */
+    public double getStopPrice() {
+      return stopPrice_;
+    }
+
+    public static final int FORCECLOSEREASON_FIELD_NUMBER = 18;
+    private int forceCloseReason_;
+    /**
+     * <pre>
+     * 强平原因
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.ForceCloseReasonEnum forceCloseReason = 18;</code>
+     */
+    public int getForceCloseReasonValue() {
+      return forceCloseReason_;
+    }
+    /**
+     * <pre>
+     * 强平原因
+     * </pre>
+     *
+     * <code>.xyz.redtorch.pb.ForceCloseReasonEnum forceCloseReason = 18;</code>
+     */
+    public xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum getForceCloseReason() {
+      @SuppressWarnings("deprecation")
+      xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum result = xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum.valueOf(forceCloseReason_);
+      return result == null ? xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum.UNRECOGNIZED : result;
+    }
+
+    public static final int AUTOSUSPEND_FIELD_NUMBER = 19;
+    private int autoSuspend_;
+    /**
+     * <pre>
+     * 自动挂起标志
+     * </pre>
+     *
+     * <code>fixed32 autoSuspend = 19;</code>
+     */
+    public int getAutoSuspend() {
+      return autoSuspend_;
+    }
+
+    public static final int USERFORCECLOSE_FIELD_NUMBER = 20;
+    private int userForceClose_;
+    /**
+     * <pre>
+     * 用户强评标志
+     * </pre>
+     *
+     * <code>fixed32 userForceClose = 20;</code>
+     */
+    public int getUserForceClose() {
+      return userForceClose_;
+    }
+
+    public static final int SWAPORDER_FIELD_NUMBER = 21;
+    private int swapOrder_;
+    /**
+     * <pre>
+     * 互换单标志
+     * </pre>
+     *
+     * <code>fixed32 swapOrder = 21;</code>
+     */
+    public int getSwapOrder() {
+      return swapOrder_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -27801,7 +30121,7 @@ public final class CoreField {
       if (!getAccountCodeBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, accountCode_);
       }
-      if (currency_ != xyz.redtorch.pb.CoreEnum.CurrencyEnum.UNKNOWN_CURRENCY.getNumber()) {
+      if (currency_ != xyz.redtorch.pb.CoreEnum.CurrencyEnum.UnknownCurrency.getNumber()) {
         output.writeEnum(3, currency_);
       }
       if (contract_ != null) {
@@ -27810,23 +30130,53 @@ public final class CoreField {
       if (!getGatewayIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, gatewayId_);
       }
-      if (price_ != 0D) {
-        output.writeDouble(6, price_);
-      }
       if (volume_ != 0) {
-        output.writeFixed32(7, volume_);
+        output.writeFixed32(6, volume_);
       }
-      if (direction_ != xyz.redtorch.pb.CoreEnum.DirectionEnum.UNKNOWN_DIRECTION.getNumber()) {
-        output.writeEnum(8, direction_);
+      if (price_ != 0D) {
+        output.writeDouble(7, price_);
       }
-      if (offset_ != xyz.redtorch.pb.CoreEnum.OffsetEnum.UNKNOWN_OFFSET.getNumber()) {
-        output.writeEnum(9, offset_);
+      if (orderPriceType_ != xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum.OPT_Unknown.getNumber()) {
+        output.writeEnum(8, orderPriceType_);
       }
-      if (priceType_ != xyz.redtorch.pb.CoreEnum.PriceTypeEnum.UNKNOWN_PRICE_TYPE.getNumber()) {
-        output.writeEnum(10, priceType_);
+      if (direction_ != xyz.redtorch.pb.CoreEnum.DirectionEnum.D_Unknown.getNumber()) {
+        output.writeEnum(9, direction_);
       }
-      if (timeConditionType_ != xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum.UNKNOWN_TIME_CONDITION_TYPE.getNumber()) {
-        output.writeEnum(11, timeConditionType_);
+      if (offsetFlag_ != xyz.redtorch.pb.CoreEnum.OffsetFlagEnum.OF_Unkonwn.getNumber()) {
+        output.writeEnum(10, offsetFlag_);
+      }
+      if (hedgeFlag_ != xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.HF_Unknown.getNumber()) {
+        output.writeEnum(11, hedgeFlag_);
+      }
+      if (timeCondition_ != xyz.redtorch.pb.CoreEnum.TimeConditionEnum.TC_Unkonwn.getNumber()) {
+        output.writeEnum(12, timeCondition_);
+      }
+      if (!getGtdDateBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 13, gtdDate_);
+      }
+      if (volumeCondition_ != xyz.redtorch.pb.CoreEnum.VolumeConditionEnum.VC_Unkonwn.getNumber()) {
+        output.writeEnum(14, volumeCondition_);
+      }
+      if (minVolume_ != 0) {
+        output.writeFixed32(15, minVolume_);
+      }
+      if (contingentCondition_ != xyz.redtorch.pb.CoreEnum.ContingentConditionEnum.CC_Unkonwn.getNumber()) {
+        output.writeEnum(16, contingentCondition_);
+      }
+      if (stopPrice_ != 0D) {
+        output.writeDouble(17, stopPrice_);
+      }
+      if (forceCloseReason_ != xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum.FCR_Unkonwn.getNumber()) {
+        output.writeEnum(18, forceCloseReason_);
+      }
+      if (autoSuspend_ != 0) {
+        output.writeFixed32(19, autoSuspend_);
+      }
+      if (userForceClose_ != 0) {
+        output.writeFixed32(20, userForceClose_);
+      }
+      if (swapOrder_ != 0) {
+        output.writeFixed32(21, swapOrder_);
       }
       unknownFields.writeTo(output);
     }
@@ -27843,7 +30193,7 @@ public final class CoreField {
       if (!getAccountCodeBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, accountCode_);
       }
-      if (currency_ != xyz.redtorch.pb.CoreEnum.CurrencyEnum.UNKNOWN_CURRENCY.getNumber()) {
+      if (currency_ != xyz.redtorch.pb.CoreEnum.CurrencyEnum.UnknownCurrency.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(3, currency_);
       }
@@ -27854,29 +30204,68 @@ public final class CoreField {
       if (!getGatewayIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, gatewayId_);
       }
-      if (price_ != 0D) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(6, price_);
-      }
       if (volume_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFixed32Size(7, volume_);
+          .computeFixed32Size(6, volume_);
       }
-      if (direction_ != xyz.redtorch.pb.CoreEnum.DirectionEnum.UNKNOWN_DIRECTION.getNumber()) {
+      if (price_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(8, direction_);
+          .computeDoubleSize(7, price_);
       }
-      if (offset_ != xyz.redtorch.pb.CoreEnum.OffsetEnum.UNKNOWN_OFFSET.getNumber()) {
+      if (orderPriceType_ != xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum.OPT_Unknown.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(9, offset_);
+          .computeEnumSize(8, orderPriceType_);
       }
-      if (priceType_ != xyz.redtorch.pb.CoreEnum.PriceTypeEnum.UNKNOWN_PRICE_TYPE.getNumber()) {
+      if (direction_ != xyz.redtorch.pb.CoreEnum.DirectionEnum.D_Unknown.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(10, priceType_);
+          .computeEnumSize(9, direction_);
       }
-      if (timeConditionType_ != xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum.UNKNOWN_TIME_CONDITION_TYPE.getNumber()) {
+      if (offsetFlag_ != xyz.redtorch.pb.CoreEnum.OffsetFlagEnum.OF_Unkonwn.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(11, timeConditionType_);
+          .computeEnumSize(10, offsetFlag_);
+      }
+      if (hedgeFlag_ != xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.HF_Unknown.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(11, hedgeFlag_);
+      }
+      if (timeCondition_ != xyz.redtorch.pb.CoreEnum.TimeConditionEnum.TC_Unkonwn.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(12, timeCondition_);
+      }
+      if (!getGtdDateBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(13, gtdDate_);
+      }
+      if (volumeCondition_ != xyz.redtorch.pb.CoreEnum.VolumeConditionEnum.VC_Unkonwn.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(14, volumeCondition_);
+      }
+      if (minVolume_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed32Size(15, minVolume_);
+      }
+      if (contingentCondition_ != xyz.redtorch.pb.CoreEnum.ContingentConditionEnum.CC_Unkonwn.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(16, contingentCondition_);
+      }
+      if (stopPrice_ != 0D) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(17, stopPrice_);
+      }
+      if (forceCloseReason_ != xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum.FCR_Unkonwn.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(18, forceCloseReason_);
+      }
+      if (autoSuspend_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed32Size(19, autoSuspend_);
+      }
+      if (userForceClose_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed32Size(20, userForceClose_);
+      }
+      if (swapOrder_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFixed32Size(21, swapOrder_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -27906,16 +30295,34 @@ public final class CoreField {
       }
       result = result && getGatewayId()
           .equals(other.getGatewayId());
+      result = result && (getVolume()
+          == other.getVolume());
       result = result && (
           java.lang.Double.doubleToLongBits(getPrice())
           == java.lang.Double.doubleToLongBits(
               other.getPrice()));
-      result = result && (getVolume()
-          == other.getVolume());
+      result = result && orderPriceType_ == other.orderPriceType_;
       result = result && direction_ == other.direction_;
-      result = result && offset_ == other.offset_;
-      result = result && priceType_ == other.priceType_;
-      result = result && timeConditionType_ == other.timeConditionType_;
+      result = result && offsetFlag_ == other.offsetFlag_;
+      result = result && hedgeFlag_ == other.hedgeFlag_;
+      result = result && timeCondition_ == other.timeCondition_;
+      result = result && getGtdDate()
+          .equals(other.getGtdDate());
+      result = result && volumeCondition_ == other.volumeCondition_;
+      result = result && (getMinVolume()
+          == other.getMinVolume());
+      result = result && contingentCondition_ == other.contingentCondition_;
+      result = result && (
+          java.lang.Double.doubleToLongBits(getStopPrice())
+          == java.lang.Double.doubleToLongBits(
+              other.getStopPrice()));
+      result = result && forceCloseReason_ == other.forceCloseReason_;
+      result = result && (getAutoSuspend()
+          == other.getAutoSuspend());
+      result = result && (getUserForceClose()
+          == other.getUserForceClose());
+      result = result && (getSwapOrder()
+          == other.getSwapOrder());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -27939,19 +30346,40 @@ public final class CoreField {
       }
       hash = (37 * hash) + GATEWAYID_FIELD_NUMBER;
       hash = (53 * hash) + getGatewayId().hashCode();
+      hash = (37 * hash) + VOLUME_FIELD_NUMBER;
+      hash = (53 * hash) + getVolume();
       hash = (37 * hash) + PRICE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           java.lang.Double.doubleToLongBits(getPrice()));
-      hash = (37 * hash) + VOLUME_FIELD_NUMBER;
-      hash = (53 * hash) + getVolume();
+      hash = (37 * hash) + ORDERPRICETYPE_FIELD_NUMBER;
+      hash = (53 * hash) + orderPriceType_;
       hash = (37 * hash) + DIRECTION_FIELD_NUMBER;
       hash = (53 * hash) + direction_;
-      hash = (37 * hash) + OFFSET_FIELD_NUMBER;
-      hash = (53 * hash) + offset_;
-      hash = (37 * hash) + PRICETYPE_FIELD_NUMBER;
-      hash = (53 * hash) + priceType_;
-      hash = (37 * hash) + TIMECONDITIONTYPE_FIELD_NUMBER;
-      hash = (53 * hash) + timeConditionType_;
+      hash = (37 * hash) + OFFSETFLAG_FIELD_NUMBER;
+      hash = (53 * hash) + offsetFlag_;
+      hash = (37 * hash) + HEDGEFLAG_FIELD_NUMBER;
+      hash = (53 * hash) + hedgeFlag_;
+      hash = (37 * hash) + TIMECONDITION_FIELD_NUMBER;
+      hash = (53 * hash) + timeCondition_;
+      hash = (37 * hash) + GTDDATE_FIELD_NUMBER;
+      hash = (53 * hash) + getGtdDate().hashCode();
+      hash = (37 * hash) + VOLUMECONDITION_FIELD_NUMBER;
+      hash = (53 * hash) + volumeCondition_;
+      hash = (37 * hash) + MINVOLUME_FIELD_NUMBER;
+      hash = (53 * hash) + getMinVolume();
+      hash = (37 * hash) + CONTINGENTCONDITION_FIELD_NUMBER;
+      hash = (53 * hash) + contingentCondition_;
+      hash = (37 * hash) + STOPPRICE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          java.lang.Double.doubleToLongBits(getStopPrice()));
+      hash = (37 * hash) + FORCECLOSEREASON_FIELD_NUMBER;
+      hash = (53 * hash) + forceCloseReason_;
+      hash = (37 * hash) + AUTOSUSPEND_FIELD_NUMBER;
+      hash = (53 * hash) + getAutoSuspend();
+      hash = (37 * hash) + USERFORCECLOSE_FIELD_NUMBER;
+      hash = (53 * hash) + getUserForceClose();
+      hash = (37 * hash) + SWAPORDER_FIELD_NUMBER;
+      hash = (53 * hash) + getSwapOrder();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -28103,17 +30531,37 @@ public final class CoreField {
         }
         gatewayId_ = "";
 
+        volume_ = 0;
+
         price_ = 0D;
 
-        volume_ = 0;
+        orderPriceType_ = 0;
 
         direction_ = 0;
 
-        offset_ = 0;
+        offsetFlag_ = 0;
 
-        priceType_ = 0;
+        hedgeFlag_ = 0;
 
-        timeConditionType_ = 0;
+        timeCondition_ = 0;
+
+        gtdDate_ = "";
+
+        volumeCondition_ = 0;
+
+        minVolume_ = 0;
+
+        contingentCondition_ = 0;
+
+        stopPrice_ = 0D;
+
+        forceCloseReason_ = 0;
+
+        autoSuspend_ = 0;
+
+        userForceClose_ = 0;
+
+        swapOrder_ = 0;
 
         return this;
       }
@@ -28150,12 +30598,22 @@ public final class CoreField {
           result.contract_ = contractBuilder_.build();
         }
         result.gatewayId_ = gatewayId_;
-        result.price_ = price_;
         result.volume_ = volume_;
+        result.price_ = price_;
+        result.orderPriceType_ = orderPriceType_;
         result.direction_ = direction_;
-        result.offset_ = offset_;
-        result.priceType_ = priceType_;
-        result.timeConditionType_ = timeConditionType_;
+        result.offsetFlag_ = offsetFlag_;
+        result.hedgeFlag_ = hedgeFlag_;
+        result.timeCondition_ = timeCondition_;
+        result.gtdDate_ = gtdDate_;
+        result.volumeCondition_ = volumeCondition_;
+        result.minVolume_ = minVolume_;
+        result.contingentCondition_ = contingentCondition_;
+        result.stopPrice_ = stopPrice_;
+        result.forceCloseReason_ = forceCloseReason_;
+        result.autoSuspend_ = autoSuspend_;
+        result.userForceClose_ = userForceClose_;
+        result.swapOrder_ = swapOrder_;
         onBuilt();
         return result;
       }
@@ -28222,23 +30680,54 @@ public final class CoreField {
           gatewayId_ = other.gatewayId_;
           onChanged();
         }
+        if (other.getVolume() != 0) {
+          setVolume(other.getVolume());
+        }
         if (other.getPrice() != 0D) {
           setPrice(other.getPrice());
         }
-        if (other.getVolume() != 0) {
-          setVolume(other.getVolume());
+        if (other.orderPriceType_ != 0) {
+          setOrderPriceTypeValue(other.getOrderPriceTypeValue());
         }
         if (other.direction_ != 0) {
           setDirectionValue(other.getDirectionValue());
         }
-        if (other.offset_ != 0) {
-          setOffsetValue(other.getOffsetValue());
+        if (other.offsetFlag_ != 0) {
+          setOffsetFlagValue(other.getOffsetFlagValue());
         }
-        if (other.priceType_ != 0) {
-          setPriceTypeValue(other.getPriceTypeValue());
+        if (other.hedgeFlag_ != 0) {
+          setHedgeFlagValue(other.getHedgeFlagValue());
         }
-        if (other.timeConditionType_ != 0) {
-          setTimeConditionTypeValue(other.getTimeConditionTypeValue());
+        if (other.timeCondition_ != 0) {
+          setTimeConditionValue(other.getTimeConditionValue());
+        }
+        if (!other.getGtdDate().isEmpty()) {
+          gtdDate_ = other.gtdDate_;
+          onChanged();
+        }
+        if (other.volumeCondition_ != 0) {
+          setVolumeConditionValue(other.getVolumeConditionValue());
+        }
+        if (other.getMinVolume() != 0) {
+          setMinVolume(other.getMinVolume());
+        }
+        if (other.contingentCondition_ != 0) {
+          setContingentConditionValue(other.getContingentConditionValue());
+        }
+        if (other.getStopPrice() != 0D) {
+          setStopPrice(other.getStopPrice());
+        }
+        if (other.forceCloseReason_ != 0) {
+          setForceCloseReasonValue(other.getForceCloseReasonValue());
+        }
+        if (other.getAutoSuspend() != 0) {
+          setAutoSuspend(other.getAutoSuspend());
+        }
+        if (other.getUserForceClose() != 0) {
+          setUserForceClose(other.getUserForceClose());
+        }
+        if (other.getSwapOrder() != 0) {
+          setSwapOrder(other.getSwapOrder());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -28754,51 +31243,13 @@ public final class CoreField {
         return this;
       }
 
-      private double price_ ;
-      /**
-       * <pre>
-       * 价格
-       * </pre>
-       *
-       * <code>double price = 6;</code>
-       */
-      public double getPrice() {
-        return price_;
-      }
-      /**
-       * <pre>
-       * 价格
-       * </pre>
-       *
-       * <code>double price = 6;</code>
-       */
-      public Builder setPrice(double value) {
-        
-        price_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 价格
-       * </pre>
-       *
-       * <code>double price = 6;</code>
-       */
-      public Builder clearPrice() {
-        
-        price_ = 0D;
-        onChanged();
-        return this;
-      }
-
       private int volume_ ;
       /**
        * <pre>
        * 数量
        * </pre>
        *
-       * <code>fixed32 volume = 7;</code>
+       * <code>fixed32 volume = 6;</code>
        */
       public int getVolume() {
         return volume_;
@@ -28808,7 +31259,7 @@ public final class CoreField {
        * 数量
        * </pre>
        *
-       * <code>fixed32 volume = 7;</code>
+       * <code>fixed32 volume = 6;</code>
        */
       public Builder setVolume(int value) {
         
@@ -28821,11 +31272,114 @@ public final class CoreField {
        * 数量
        * </pre>
        *
-       * <code>fixed32 volume = 7;</code>
+       * <code>fixed32 volume = 6;</code>
        */
       public Builder clearVolume() {
         
         volume_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private double price_ ;
+      /**
+       * <pre>
+       * 价格
+       * </pre>
+       *
+       * <code>double price = 7;</code>
+       */
+      public double getPrice() {
+        return price_;
+      }
+      /**
+       * <pre>
+       * 价格
+       * </pre>
+       *
+       * <code>double price = 7;</code>
+       */
+      public Builder setPrice(double value) {
+        
+        price_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 价格
+       * </pre>
+       *
+       * <code>double price = 7;</code>
+       */
+      public Builder clearPrice() {
+        
+        price_ = 0D;
+        onChanged();
+        return this;
+      }
+
+      private int orderPriceType_ = 0;
+      /**
+       * <pre>
+       * 价格类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.OrderPriceTypeEnum orderPriceType = 8;</code>
+       */
+      public int getOrderPriceTypeValue() {
+        return orderPriceType_;
+      }
+      /**
+       * <pre>
+       * 价格类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.OrderPriceTypeEnum orderPriceType = 8;</code>
+       */
+      public Builder setOrderPriceTypeValue(int value) {
+        orderPriceType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 价格类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.OrderPriceTypeEnum orderPriceType = 8;</code>
+       */
+      public xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum getOrderPriceType() {
+        @SuppressWarnings("deprecation")
+        xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum result = xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum.valueOf(orderPriceType_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 价格类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.OrderPriceTypeEnum orderPriceType = 8;</code>
+       */
+      public Builder setOrderPriceType(xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        orderPriceType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 价格类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.OrderPriceTypeEnum orderPriceType = 8;</code>
+       */
+      public Builder clearOrderPriceType() {
+        
+        orderPriceType_ = 0;
         onChanged();
         return this;
       }
@@ -28836,7 +31390,7 @@ public final class CoreField {
        * 方向
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.DirectionEnum direction = 8;</code>
+       * <code>.xyz.redtorch.pb.DirectionEnum direction = 9;</code>
        */
       public int getDirectionValue() {
         return direction_;
@@ -28846,7 +31400,7 @@ public final class CoreField {
        * 方向
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.DirectionEnum direction = 8;</code>
+       * <code>.xyz.redtorch.pb.DirectionEnum direction = 9;</code>
        */
       public Builder setDirectionValue(int value) {
         direction_ = value;
@@ -28858,7 +31412,7 @@ public final class CoreField {
        * 方向
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.DirectionEnum direction = 8;</code>
+       * <code>.xyz.redtorch.pb.DirectionEnum direction = 9;</code>
        */
       public xyz.redtorch.pb.CoreEnum.DirectionEnum getDirection() {
         @SuppressWarnings("deprecation")
@@ -28870,7 +31424,7 @@ public final class CoreField {
        * 方向
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.DirectionEnum direction = 8;</code>
+       * <code>.xyz.redtorch.pb.DirectionEnum direction = 9;</code>
        */
       public Builder setDirection(xyz.redtorch.pb.CoreEnum.DirectionEnum value) {
         if (value == null) {
@@ -28886,7 +31440,7 @@ public final class CoreField {
        * 方向
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.DirectionEnum direction = 8;</code>
+       * <code>.xyz.redtorch.pb.DirectionEnum direction = 9;</code>
        */
       public Builder clearDirection() {
         
@@ -28895,156 +31449,156 @@ public final class CoreField {
         return this;
       }
 
-      private int offset_ = 0;
+      private int offsetFlag_ = 0;
       /**
        * <pre>
-       * 开平
+       * 组合开平标志
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OffsetEnum offset = 9;</code>
+       * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 10;</code>
        */
-      public int getOffsetValue() {
-        return offset_;
+      public int getOffsetFlagValue() {
+        return offsetFlag_;
       }
       /**
        * <pre>
-       * 开平
+       * 组合开平标志
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OffsetEnum offset = 9;</code>
+       * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 10;</code>
        */
-      public Builder setOffsetValue(int value) {
-        offset_ = value;
+      public Builder setOffsetFlagValue(int value) {
+        offsetFlag_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * 开平
+       * 组合开平标志
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OffsetEnum offset = 9;</code>
+       * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 10;</code>
        */
-      public xyz.redtorch.pb.CoreEnum.OffsetEnum getOffset() {
+      public xyz.redtorch.pb.CoreEnum.OffsetFlagEnum getOffsetFlag() {
         @SuppressWarnings("deprecation")
-        xyz.redtorch.pb.CoreEnum.OffsetEnum result = xyz.redtorch.pb.CoreEnum.OffsetEnum.valueOf(offset_);
-        return result == null ? xyz.redtorch.pb.CoreEnum.OffsetEnum.UNRECOGNIZED : result;
+        xyz.redtorch.pb.CoreEnum.OffsetFlagEnum result = xyz.redtorch.pb.CoreEnum.OffsetFlagEnum.valueOf(offsetFlag_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.OffsetFlagEnum.UNRECOGNIZED : result;
       }
       /**
        * <pre>
-       * 开平
+       * 组合开平标志
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OffsetEnum offset = 9;</code>
+       * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 10;</code>
        */
-      public Builder setOffset(xyz.redtorch.pb.CoreEnum.OffsetEnum value) {
+      public Builder setOffsetFlag(xyz.redtorch.pb.CoreEnum.OffsetFlagEnum value) {
         if (value == null) {
           throw new NullPointerException();
         }
         
-        offset_ = value.getNumber();
+        offsetFlag_ = value.getNumber();
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * 开平
+       * 组合开平标志
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.OffsetEnum offset = 9;</code>
+       * <code>.xyz.redtorch.pb.OffsetFlagEnum offsetFlag = 10;</code>
        */
-      public Builder clearOffset() {
+      public Builder clearOffsetFlag() {
         
-        offset_ = 0;
+        offsetFlag_ = 0;
         onChanged();
         return this;
       }
 
-      private int priceType_ = 0;
+      private int hedgeFlag_ = 0;
       /**
        * <pre>
-       * 价格类型
+       * 组合投机套保标志
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.PriceTypeEnum priceType = 10;</code>
+       * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 11;</code>
        */
-      public int getPriceTypeValue() {
-        return priceType_;
+      public int getHedgeFlagValue() {
+        return hedgeFlag_;
       }
       /**
        * <pre>
-       * 价格类型
+       * 组合投机套保标志
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.PriceTypeEnum priceType = 10;</code>
+       * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 11;</code>
        */
-      public Builder setPriceTypeValue(int value) {
-        priceType_ = value;
+      public Builder setHedgeFlagValue(int value) {
+        hedgeFlag_ = value;
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * 价格类型
+       * 组合投机套保标志
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.PriceTypeEnum priceType = 10;</code>
+       * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 11;</code>
        */
-      public xyz.redtorch.pb.CoreEnum.PriceTypeEnum getPriceType() {
+      public xyz.redtorch.pb.CoreEnum.HedgeFlagEnum getHedgeFlag() {
         @SuppressWarnings("deprecation")
-        xyz.redtorch.pb.CoreEnum.PriceTypeEnum result = xyz.redtorch.pb.CoreEnum.PriceTypeEnum.valueOf(priceType_);
-        return result == null ? xyz.redtorch.pb.CoreEnum.PriceTypeEnum.UNRECOGNIZED : result;
+        xyz.redtorch.pb.CoreEnum.HedgeFlagEnum result = xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.valueOf(hedgeFlag_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.HedgeFlagEnum.UNRECOGNIZED : result;
       }
       /**
        * <pre>
-       * 价格类型
+       * 组合投机套保标志
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.PriceTypeEnum priceType = 10;</code>
+       * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 11;</code>
        */
-      public Builder setPriceType(xyz.redtorch.pb.CoreEnum.PriceTypeEnum value) {
+      public Builder setHedgeFlag(xyz.redtorch.pb.CoreEnum.HedgeFlagEnum value) {
         if (value == null) {
           throw new NullPointerException();
         }
         
-        priceType_ = value.getNumber();
+        hedgeFlag_ = value.getNumber();
         onChanged();
         return this;
       }
       /**
        * <pre>
-       * 价格类型
+       * 组合投机套保标志
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.PriceTypeEnum priceType = 10;</code>
+       * <code>.xyz.redtorch.pb.HedgeFlagEnum hedgeFlag = 11;</code>
        */
-      public Builder clearPriceType() {
+      public Builder clearHedgeFlag() {
         
-        priceType_ = 0;
+        hedgeFlag_ = 0;
         onChanged();
         return this;
       }
 
-      private int timeConditionType_ = 0;
+      private int timeCondition_ = 0;
       /**
        * <pre>
        * 时效
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.TimeConditionTypeEnum timeConditionType = 11;</code>
+       * <code>.xyz.redtorch.pb.TimeConditionEnum timeCondition = 12;</code>
        */
-      public int getTimeConditionTypeValue() {
-        return timeConditionType_;
+      public int getTimeConditionValue() {
+        return timeCondition_;
       }
       /**
        * <pre>
        * 时效
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.TimeConditionTypeEnum timeConditionType = 11;</code>
+       * <code>.xyz.redtorch.pb.TimeConditionEnum timeCondition = 12;</code>
        */
-      public Builder setTimeConditionTypeValue(int value) {
-        timeConditionType_ = value;
+      public Builder setTimeConditionValue(int value) {
+        timeCondition_ = value;
         onChanged();
         return this;
       }
@@ -29053,26 +31607,26 @@ public final class CoreField {
        * 时效
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.TimeConditionTypeEnum timeConditionType = 11;</code>
+       * <code>.xyz.redtorch.pb.TimeConditionEnum timeCondition = 12;</code>
        */
-      public xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum getTimeConditionType() {
+      public xyz.redtorch.pb.CoreEnum.TimeConditionEnum getTimeCondition() {
         @SuppressWarnings("deprecation")
-        xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum result = xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum.valueOf(timeConditionType_);
-        return result == null ? xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum.UNRECOGNIZED : result;
+        xyz.redtorch.pb.CoreEnum.TimeConditionEnum result = xyz.redtorch.pb.CoreEnum.TimeConditionEnum.valueOf(timeCondition_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.TimeConditionEnum.UNRECOGNIZED : result;
       }
       /**
        * <pre>
        * 时效
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.TimeConditionTypeEnum timeConditionType = 11;</code>
+       * <code>.xyz.redtorch.pb.TimeConditionEnum timeCondition = 12;</code>
        */
-      public Builder setTimeConditionType(xyz.redtorch.pb.CoreEnum.TimeConditionTypeEnum value) {
+      public Builder setTimeCondition(xyz.redtorch.pb.CoreEnum.TimeConditionEnum value) {
         if (value == null) {
           throw new NullPointerException();
         }
         
-        timeConditionType_ = value.getNumber();
+        timeCondition_ = value.getNumber();
         onChanged();
         return this;
       }
@@ -29081,11 +31635,485 @@ public final class CoreField {
        * 时效
        * </pre>
        *
-       * <code>.xyz.redtorch.pb.TimeConditionTypeEnum timeConditionType = 11;</code>
+       * <code>.xyz.redtorch.pb.TimeConditionEnum timeCondition = 12;</code>
        */
-      public Builder clearTimeConditionType() {
+      public Builder clearTimeCondition() {
         
-        timeConditionType_ = 0;
+        timeCondition_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object gtdDate_ = "";
+      /**
+       * <pre>
+       * GTD日期
+       * </pre>
+       *
+       * <code>string gtdDate = 13;</code>
+       */
+      public java.lang.String getGtdDate() {
+        java.lang.Object ref = gtdDate_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          gtdDate_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * GTD日期
+       * </pre>
+       *
+       * <code>string gtdDate = 13;</code>
+       */
+      public com.google.protobuf.ByteString
+          getGtdDateBytes() {
+        java.lang.Object ref = gtdDate_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          gtdDate_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * GTD日期
+       * </pre>
+       *
+       * <code>string gtdDate = 13;</code>
+       */
+      public Builder setGtdDate(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        gtdDate_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * GTD日期
+       * </pre>
+       *
+       * <code>string gtdDate = 13;</code>
+       */
+      public Builder clearGtdDate() {
+        
+        gtdDate_ = getDefaultInstance().getGtdDate();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * GTD日期
+       * </pre>
+       *
+       * <code>string gtdDate = 13;</code>
+       */
+      public Builder setGtdDateBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        gtdDate_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int volumeCondition_ = 0;
+      /**
+       * <pre>
+       * 成交量类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.VolumeConditionEnum volumeCondition = 14;</code>
+       */
+      public int getVolumeConditionValue() {
+        return volumeCondition_;
+      }
+      /**
+       * <pre>
+       * 成交量类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.VolumeConditionEnum volumeCondition = 14;</code>
+       */
+      public Builder setVolumeConditionValue(int value) {
+        volumeCondition_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 成交量类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.VolumeConditionEnum volumeCondition = 14;</code>
+       */
+      public xyz.redtorch.pb.CoreEnum.VolumeConditionEnum getVolumeCondition() {
+        @SuppressWarnings("deprecation")
+        xyz.redtorch.pb.CoreEnum.VolumeConditionEnum result = xyz.redtorch.pb.CoreEnum.VolumeConditionEnum.valueOf(volumeCondition_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.VolumeConditionEnum.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 成交量类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.VolumeConditionEnum volumeCondition = 14;</code>
+       */
+      public Builder setVolumeCondition(xyz.redtorch.pb.CoreEnum.VolumeConditionEnum value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        volumeCondition_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 成交量类型
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.VolumeConditionEnum volumeCondition = 14;</code>
+       */
+      public Builder clearVolumeCondition() {
+        
+        volumeCondition_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int minVolume_ ;
+      /**
+       * <pre>
+       * 最小成交量
+       * </pre>
+       *
+       * <code>fixed32 minVolume = 15;</code>
+       */
+      public int getMinVolume() {
+        return minVolume_;
+      }
+      /**
+       * <pre>
+       * 最小成交量
+       * </pre>
+       *
+       * <code>fixed32 minVolume = 15;</code>
+       */
+      public Builder setMinVolume(int value) {
+        
+        minVolume_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 最小成交量
+       * </pre>
+       *
+       * <code>fixed32 minVolume = 15;</code>
+       */
+      public Builder clearMinVolume() {
+        
+        minVolume_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int contingentCondition_ = 0;
+      /**
+       * <pre>
+       * 触发条件
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.ContingentConditionEnum contingentCondition = 16;</code>
+       */
+      public int getContingentConditionValue() {
+        return contingentCondition_;
+      }
+      /**
+       * <pre>
+       * 触发条件
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.ContingentConditionEnum contingentCondition = 16;</code>
+       */
+      public Builder setContingentConditionValue(int value) {
+        contingentCondition_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 触发条件
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.ContingentConditionEnum contingentCondition = 16;</code>
+       */
+      public xyz.redtorch.pb.CoreEnum.ContingentConditionEnum getContingentCondition() {
+        @SuppressWarnings("deprecation")
+        xyz.redtorch.pb.CoreEnum.ContingentConditionEnum result = xyz.redtorch.pb.CoreEnum.ContingentConditionEnum.valueOf(contingentCondition_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.ContingentConditionEnum.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 触发条件
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.ContingentConditionEnum contingentCondition = 16;</code>
+       */
+      public Builder setContingentCondition(xyz.redtorch.pb.CoreEnum.ContingentConditionEnum value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        contingentCondition_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 触发条件
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.ContingentConditionEnum contingentCondition = 16;</code>
+       */
+      public Builder clearContingentCondition() {
+        
+        contingentCondition_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private double stopPrice_ ;
+      /**
+       * <pre>
+       * 止损价
+       * </pre>
+       *
+       * <code>double stopPrice = 17;</code>
+       */
+      public double getStopPrice() {
+        return stopPrice_;
+      }
+      /**
+       * <pre>
+       * 止损价
+       * </pre>
+       *
+       * <code>double stopPrice = 17;</code>
+       */
+      public Builder setStopPrice(double value) {
+        
+        stopPrice_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 止损价
+       * </pre>
+       *
+       * <code>double stopPrice = 17;</code>
+       */
+      public Builder clearStopPrice() {
+        
+        stopPrice_ = 0D;
+        onChanged();
+        return this;
+      }
+
+      private int forceCloseReason_ = 0;
+      /**
+       * <pre>
+       * 强平原因
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.ForceCloseReasonEnum forceCloseReason = 18;</code>
+       */
+      public int getForceCloseReasonValue() {
+        return forceCloseReason_;
+      }
+      /**
+       * <pre>
+       * 强平原因
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.ForceCloseReasonEnum forceCloseReason = 18;</code>
+       */
+      public Builder setForceCloseReasonValue(int value) {
+        forceCloseReason_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 强平原因
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.ForceCloseReasonEnum forceCloseReason = 18;</code>
+       */
+      public xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum getForceCloseReason() {
+        @SuppressWarnings("deprecation")
+        xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum result = xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum.valueOf(forceCloseReason_);
+        return result == null ? xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 强平原因
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.ForceCloseReasonEnum forceCloseReason = 18;</code>
+       */
+      public Builder setForceCloseReason(xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        forceCloseReason_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 强平原因
+       * </pre>
+       *
+       * <code>.xyz.redtorch.pb.ForceCloseReasonEnum forceCloseReason = 18;</code>
+       */
+      public Builder clearForceCloseReason() {
+        
+        forceCloseReason_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int autoSuspend_ ;
+      /**
+       * <pre>
+       * 自动挂起标志
+       * </pre>
+       *
+       * <code>fixed32 autoSuspend = 19;</code>
+       */
+      public int getAutoSuspend() {
+        return autoSuspend_;
+      }
+      /**
+       * <pre>
+       * 自动挂起标志
+       * </pre>
+       *
+       * <code>fixed32 autoSuspend = 19;</code>
+       */
+      public Builder setAutoSuspend(int value) {
+        
+        autoSuspend_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 自动挂起标志
+       * </pre>
+       *
+       * <code>fixed32 autoSuspend = 19;</code>
+       */
+      public Builder clearAutoSuspend() {
+        
+        autoSuspend_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int userForceClose_ ;
+      /**
+       * <pre>
+       * 用户强评标志
+       * </pre>
+       *
+       * <code>fixed32 userForceClose = 20;</code>
+       */
+      public int getUserForceClose() {
+        return userForceClose_;
+      }
+      /**
+       * <pre>
+       * 用户强评标志
+       * </pre>
+       *
+       * <code>fixed32 userForceClose = 20;</code>
+       */
+      public Builder setUserForceClose(int value) {
+        
+        userForceClose_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户强评标志
+       * </pre>
+       *
+       * <code>fixed32 userForceClose = 20;</code>
+       */
+      public Builder clearUserForceClose() {
+        
+        userForceClose_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int swapOrder_ ;
+      /**
+       * <pre>
+       * 互换单标志
+       * </pre>
+       *
+       * <code>fixed32 swapOrder = 21;</code>
+       */
+      public int getSwapOrder() {
+        return swapOrder_;
+      }
+      /**
+       * <pre>
+       * 互换单标志
+       * </pre>
+       *
+       * <code>fixed32 swapOrder = 21;</code>
+       */
+      public Builder setSwapOrder(int value) {
+        
+        swapOrder_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 互换单标志
+       * </pre>
+       *
+       * <code>fixed32 swapOrder = 21;</code>
+       */
+      public Builder clearSwapOrder() {
+        
+        swapOrder_ = 0;
         onChanged();
         return this;
       }
@@ -29151,7 +32179,7 @@ public final class CoreField {
      * 原始定单ID
      * </pre>
      *
-     * <code>string originOrderId = 1;</code>
+     * <code>string originOrderId = 3;</code>
      */
     java.lang.String getOriginOrderId();
     /**
@@ -29159,7 +32187,7 @@ public final class CoreField {
      * 原始定单ID
      * </pre>
      *
-     * <code>string originOrderId = 1;</code>
+     * <code>string originOrderId = 3;</code>
      */
     com.google.protobuf.ByteString
         getOriginOrderIdBytes();
@@ -29169,7 +32197,7 @@ public final class CoreField {
      * 定单ID
      * </pre>
      *
-     * <code>string orderId = 2;</code>
+     * <code>string orderId = 4;</code>
      */
     java.lang.String getOrderId();
     /**
@@ -29177,7 +32205,7 @@ public final class CoreField {
      * 定单ID
      * </pre>
      *
-     * <code>string orderId = 2;</code>
+     * <code>string orderId = 4;</code>
      */
     com.google.protobuf.ByteString
         getOrderIdBytes();
@@ -29227,13 +32255,13 @@ public final class CoreField {
             case 0:
               done = true;
               break;
-            case 10: {
+            case 26: {
               java.lang.String s = input.readStringRequireUtf8();
 
               originOrderId_ = s;
               break;
             }
-            case 18: {
+            case 34: {
               java.lang.String s = input.readStringRequireUtf8();
 
               orderId_ = s;
@@ -29271,14 +32299,14 @@ public final class CoreField {
               xyz.redtorch.pb.CoreField.CancelOrderReqField.class, xyz.redtorch.pb.CoreField.CancelOrderReqField.Builder.class);
     }
 
-    public static final int ORIGINORDERID_FIELD_NUMBER = 1;
+    public static final int ORIGINORDERID_FIELD_NUMBER = 3;
     private volatile java.lang.Object originOrderId_;
     /**
      * <pre>
      * 原始定单ID
      * </pre>
      *
-     * <code>string originOrderId = 1;</code>
+     * <code>string originOrderId = 3;</code>
      */
     public java.lang.String getOriginOrderId() {
       java.lang.Object ref = originOrderId_;
@@ -29297,7 +32325,7 @@ public final class CoreField {
      * 原始定单ID
      * </pre>
      *
-     * <code>string originOrderId = 1;</code>
+     * <code>string originOrderId = 3;</code>
      */
     public com.google.protobuf.ByteString
         getOriginOrderIdBytes() {
@@ -29313,14 +32341,14 @@ public final class CoreField {
       }
     }
 
-    public static final int ORDERID_FIELD_NUMBER = 2;
+    public static final int ORDERID_FIELD_NUMBER = 4;
     private volatile java.lang.Object orderId_;
     /**
      * <pre>
      * 定单ID
      * </pre>
      *
-     * <code>string orderId = 2;</code>
+     * <code>string orderId = 4;</code>
      */
     public java.lang.String getOrderId() {
       java.lang.Object ref = orderId_;
@@ -29339,7 +32367,7 @@ public final class CoreField {
      * 定单ID
      * </pre>
      *
-     * <code>string orderId = 2;</code>
+     * <code>string orderId = 4;</code>
      */
     public com.google.protobuf.ByteString
         getOrderIdBytes() {
@@ -29370,10 +32398,10 @@ public final class CoreField {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!getOriginOrderIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, originOrderId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, originOrderId_);
       }
       if (!getOrderIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, orderId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, orderId_);
       }
       unknownFields.writeTo(output);
     }
@@ -29385,10 +32413,10 @@ public final class CoreField {
 
       size = 0;
       if (!getOriginOrderIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, originOrderId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, originOrderId_);
       }
       if (!getOrderIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, orderId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, orderId_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -29685,7 +32713,7 @@ public final class CoreField {
        * 原始定单ID
        * </pre>
        *
-       * <code>string originOrderId = 1;</code>
+       * <code>string originOrderId = 3;</code>
        */
       public java.lang.String getOriginOrderId() {
         java.lang.Object ref = originOrderId_;
@@ -29704,7 +32732,7 @@ public final class CoreField {
        * 原始定单ID
        * </pre>
        *
-       * <code>string originOrderId = 1;</code>
+       * <code>string originOrderId = 3;</code>
        */
       public com.google.protobuf.ByteString
           getOriginOrderIdBytes() {
@@ -29724,7 +32752,7 @@ public final class CoreField {
        * 原始定单ID
        * </pre>
        *
-       * <code>string originOrderId = 1;</code>
+       * <code>string originOrderId = 3;</code>
        */
       public Builder setOriginOrderId(
           java.lang.String value) {
@@ -29741,7 +32769,7 @@ public final class CoreField {
        * 原始定单ID
        * </pre>
        *
-       * <code>string originOrderId = 1;</code>
+       * <code>string originOrderId = 3;</code>
        */
       public Builder clearOriginOrderId() {
         
@@ -29754,7 +32782,7 @@ public final class CoreField {
        * 原始定单ID
        * </pre>
        *
-       * <code>string originOrderId = 1;</code>
+       * <code>string originOrderId = 3;</code>
        */
       public Builder setOriginOrderIdBytes(
           com.google.protobuf.ByteString value) {
@@ -29774,7 +32802,7 @@ public final class CoreField {
        * 定单ID
        * </pre>
        *
-       * <code>string orderId = 2;</code>
+       * <code>string orderId = 4;</code>
        */
       public java.lang.String getOrderId() {
         java.lang.Object ref = orderId_;
@@ -29793,7 +32821,7 @@ public final class CoreField {
        * 定单ID
        * </pre>
        *
-       * <code>string orderId = 2;</code>
+       * <code>string orderId = 4;</code>
        */
       public com.google.protobuf.ByteString
           getOrderIdBytes() {
@@ -29813,7 +32841,7 @@ public final class CoreField {
        * 定单ID
        * </pre>
        *
-       * <code>string orderId = 2;</code>
+       * <code>string orderId = 4;</code>
        */
       public Builder setOrderId(
           java.lang.String value) {
@@ -29830,7 +32858,7 @@ public final class CoreField {
        * 定单ID
        * </pre>
        *
-       * <code>string orderId = 2;</code>
+       * <code>string orderId = 4;</code>
        */
       public Builder clearOrderId() {
         
@@ -29843,7 +32871,7 @@ public final class CoreField {
        * 定单ID
        * </pre>
        *
-       * <code>string orderId = 2;</code>
+       * <code>string orderId = 4;</code>
        */
       public Builder setOrderIdBytes(
           com.google.protobuf.ByteString value) {
@@ -30058,6 +33086,16 @@ public final class CoreField {
      * <code>fixed64 version = 11;</code>
      */
     long getVersion();
+
+    /**
+     * <code>string autoConnectTimeRanges = 12;</code>
+     */
+    java.lang.String getAutoConnectTimeRanges();
+    /**
+     * <code>string autoConnectTimeRanges = 12;</code>
+     */
+    com.google.protobuf.ByteString
+        getAutoConnectTimeRangesBytes();
   }
   /**
    * <pre>
@@ -30084,6 +33122,7 @@ public final class CoreField {
       gatewayAdapterType_ = 0;
       status_ = 0;
       version_ = 0L;
+      autoConnectTimeRanges_ = "";
     }
 
     @java.lang.Override
@@ -30181,6 +33220,12 @@ public final class CoreField {
             case 89: {
 
               version_ = input.readFixed64();
+              break;
+            }
+            case 98: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              autoConnectTimeRanges_ = s;
               break;
             }
             default: {
@@ -32960,6 +36005,40 @@ public final class CoreField {
       return version_;
     }
 
+    public static final int AUTOCONNECTTIMERANGES_FIELD_NUMBER = 12;
+    private volatile java.lang.Object autoConnectTimeRanges_;
+    /**
+     * <code>string autoConnectTimeRanges = 12;</code>
+     */
+    public java.lang.String getAutoConnectTimeRanges() {
+      java.lang.Object ref = autoConnectTimeRanges_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        autoConnectTimeRanges_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string autoConnectTimeRanges = 12;</code>
+     */
+    public com.google.protobuf.ByteString
+        getAutoConnectTimeRangesBytes() {
+      java.lang.Object ref = autoConnectTimeRanges_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        autoConnectTimeRanges_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -32986,10 +36065,10 @@ public final class CoreField {
       if (!getImplementClassNameBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, implementClassName_);
       }
-      if (gatewayType_ != xyz.redtorch.pb.CoreEnum.GatewayTypeEnum.TRADE_AND_MARKET_DATA.getNumber()) {
+      if (gatewayType_ != xyz.redtorch.pb.CoreEnum.GatewayTypeEnum.GTE_TradeAndMarketData.getNumber()) {
         output.writeEnum(6, gatewayType_);
       }
-      if (gatewayAdapterType_ != xyz.redtorch.pb.CoreEnum.GatewayAdapterTypeEnum.CTP.getNumber()) {
+      if (gatewayAdapterType_ != xyz.redtorch.pb.CoreEnum.GatewayAdapterTypeEnum.GAT_CTP.getNumber()) {
         output.writeEnum(7, gatewayAdapterType_);
       }
       if (ctpApiSetting_ != null) {
@@ -32998,11 +36077,14 @@ public final class CoreField {
       if (ibApiSetting_ != null) {
         output.writeMessage(9, getIbApiSetting());
       }
-      if (status_ != xyz.redtorch.pb.CoreEnum.ConnectStatusEnum.DISCONNECTED.getNumber()) {
+      if (status_ != xyz.redtorch.pb.CoreEnum.ConnectStatusEnum.CS_Unkonwn.getNumber()) {
         output.writeEnum(10, status_);
       }
       if (version_ != 0L) {
         output.writeFixed64(11, version_);
+      }
+      if (!getAutoConnectTimeRangesBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 12, autoConnectTimeRanges_);
       }
       unknownFields.writeTo(output);
     }
@@ -33025,11 +36107,11 @@ public final class CoreField {
       if (!getImplementClassNameBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, implementClassName_);
       }
-      if (gatewayType_ != xyz.redtorch.pb.CoreEnum.GatewayTypeEnum.TRADE_AND_MARKET_DATA.getNumber()) {
+      if (gatewayType_ != xyz.redtorch.pb.CoreEnum.GatewayTypeEnum.GTE_TradeAndMarketData.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(6, gatewayType_);
       }
-      if (gatewayAdapterType_ != xyz.redtorch.pb.CoreEnum.GatewayAdapterTypeEnum.CTP.getNumber()) {
+      if (gatewayAdapterType_ != xyz.redtorch.pb.CoreEnum.GatewayAdapterTypeEnum.GAT_CTP.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(7, gatewayAdapterType_);
       }
@@ -33041,13 +36123,16 @@ public final class CoreField {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(9, getIbApiSetting());
       }
-      if (status_ != xyz.redtorch.pb.CoreEnum.ConnectStatusEnum.DISCONNECTED.getNumber()) {
+      if (status_ != xyz.redtorch.pb.CoreEnum.ConnectStatusEnum.CS_Unkonwn.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(10, status_);
       }
       if (version_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
           .computeFixed64Size(11, version_);
+      }
+      if (!getAutoConnectTimeRangesBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(12, autoConnectTimeRanges_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -33088,6 +36173,8 @@ public final class CoreField {
       result = result && status_ == other.status_;
       result = result && (getVersion()
           == other.getVersion());
+      result = result && getAutoConnectTimeRanges()
+          .equals(other.getAutoConnectTimeRanges());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -33124,6 +36211,8 @@ public final class CoreField {
       hash = (37 * hash) + VERSION_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getVersion());
+      hash = (37 * hash) + AUTOCONNECTTIMERANGES_FIELD_NUMBER;
+      hash = (53 * hash) + getAutoConnectTimeRanges().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -33289,6 +36378,8 @@ public final class CoreField {
 
         version_ = 0L;
 
+        autoConnectTimeRanges_ = "";
+
         return this;
       }
 
@@ -33333,6 +36424,7 @@ public final class CoreField {
         }
         result.status_ = status_;
         result.version_ = version_;
+        result.autoConnectTimeRanges_ = autoConnectTimeRanges_;
         onBuilt();
         return result;
       }
@@ -33414,6 +36506,10 @@ public final class CoreField {
         }
         if (other.getVersion() != 0L) {
           setVersion(other.getVersion());
+        }
+        if (!other.getAutoConnectTimeRanges().isEmpty()) {
+          autoConnectTimeRanges_ = other.autoConnectTimeRanges_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -34234,6 +37330,75 @@ public final class CoreField {
         onChanged();
         return this;
       }
+
+      private java.lang.Object autoConnectTimeRanges_ = "";
+      /**
+       * <code>string autoConnectTimeRanges = 12;</code>
+       */
+      public java.lang.String getAutoConnectTimeRanges() {
+        java.lang.Object ref = autoConnectTimeRanges_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          autoConnectTimeRanges_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string autoConnectTimeRanges = 12;</code>
+       */
+      public com.google.protobuf.ByteString
+          getAutoConnectTimeRangesBytes() {
+        java.lang.Object ref = autoConnectTimeRanges_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          autoConnectTimeRanges_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string autoConnectTimeRanges = 12;</code>
+       */
+      public Builder setAutoConnectTimeRanges(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        autoConnectTimeRanges_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string autoConnectTimeRanges = 12;</code>
+       */
+      public Builder clearAutoConnectTimeRanges() {
+        
+        autoConnectTimeRanges_ = getDefaultInstance().getAutoConnectTimeRanges();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string autoConnectTimeRanges = 12;</code>
+       */
+      public Builder setAutoConnectTimeRangesBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        autoConnectTimeRanges_ = value;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -34480,7 +37645,7 @@ public final class CoreField {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (logLevel_ != xyz.redtorch.pb.CoreEnum.LogLevelEnum.ALL_LOG_LEVEL.getNumber()) {
+      if (logLevel_ != xyz.redtorch.pb.CoreEnum.LogLevelEnum.LL_All.getNumber()) {
         output.writeEnum(1, logLevel_);
       }
       if (timestamp_ != 0L) {
@@ -34498,7 +37663,7 @@ public final class CoreField {
       if (size != -1) return size;
 
       size = 0;
-      if (logLevel_ != xyz.redtorch.pb.CoreEnum.LogLevelEnum.ALL_LOG_LEVEL.getNumber()) {
+      if (logLevel_ != xyz.redtorch.pb.CoreEnum.LogLevelEnum.LL_All.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(1, logLevel_);
       }
@@ -35188,7 +38353,7 @@ public final class CoreField {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (status_ != xyz.redtorch.pb.CoreEnum.CommonStatusEnum.SUCCESS.getNumber()) {
+      if (status_ != xyz.redtorch.pb.CoreEnum.CommonStatusEnum.COMS_SUCCESS.getNumber()) {
         output.writeEnum(1, status_);
       }
       if (timestamp_ != 0L) {
@@ -35206,7 +38371,7 @@ public final class CoreField {
       if (size != -1) return size;
 
       size = 0;
-      if (status_ != xyz.redtorch.pb.CoreEnum.CommonStatusEnum.SUCCESS.getNumber()) {
+      if (status_ != xyz.redtorch.pb.CoreEnum.CommonStatusEnum.COMS_SUCCESS.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(1, status_);
       }
@@ -35749,11 +38914,6 @@ public final class CoreField {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_xyz_redtorch_pb_CommonReqField_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_xyz_redtorch_pb_CommonRtnField_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_xyz_redtorch_pb_CommonRtnField_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_xyz_redtorch_pb_CommonRspField_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -35804,159 +38964,183 @@ public final class CoreField {
     java.lang.String[] descriptorData = {
       "\n xyz/redtorch/pb/core_field.proto\022\017xyz." +
       "redtorch.pb\032\037xyz/redtorch/pb/core_enum.p" +
-      "roto\"\364\001\n\014GatewayField\022\021\n\tgatewayId\030\001 \001(\t" +
+      "roto\"\213\002\n\014GatewayField\022\021\n\tgatewayId\030\001 \001(\t" +
       "\022\014\n\004name\030\002 \001(\t\022\023\n\013description\030\003 \001(\t\0225\n\013g" +
       "atewayType\030\004 \001(\0162 .xyz.redtorch.pb.Gatew" +
       "ayTypeEnum\022C\n\022gatewayAdapterType\030\005 \001(\0162\'" +
       ".xyz.redtorch.pb.GatewayAdapterTypeEnum\022" +
       "2\n\006status\030\006 \001(\0162\".xyz.redtorch.pb.Connec" +
-      "tStatusEnum\"\346\005\n\rContractField\022\022\n\ncontrac" +
-      "tId\030\001 \001(\t\022\021\n\tshortName\030\002 \001(\t\022\020\n\010fullName" +
-      "\030\003 \001(\t\022\024\n\014thirdPartyId\030\004 \001(\t\022\025\n\runifiedS" +
-      "ymbol\030\007 \001(\t\022\016\n\006symbol\030\010 \001(\t\022/\n\010exchange\030" +
-      "\t \001(\0162\035.xyz.redtorch.pb.ExchangeEnum\0225\n\013" +
-      "productType\030\n \001(\0162 .xyz.redtorch.pb.Prod" +
-      "uctTypeEnum\022/\n\010currency\030\013 \001(\0162\035.xyz.redt" +
-      "orch.pb.CurrencyEnum\022\022\n\nmultiplier\030\014 \001(\001" +
-      "\022\021\n\tpriceTick\030\r \001(\001\022\027\n\017longMarginRatio\030\016" +
-      " \001(\001\022\030\n\020shortMarginRatio\030\017 \001(\001\022\036\n\026maxMar" +
-      "ginSideAlgorithm\030\020 \001(\010\022\030\n\020underlyingSymb" +
-      "ol\030\021 \001(\t\022\023\n\013strikePrice\030\022 \001(\001\0223\n\noptionT" +
-      "ype\030\023 \001(\0162\037.xyz.redtorch.pb.OptionTypeEn" +
-      "um\022\034\n\024underlyingMultiplier\030\024 \001(\001\022$\n\034last" +
-      "TradeDateOrContractMonth\030\025 \001(\t\022\034\n\024maxMar" +
-      "ketOrderVolume\030\026 \001(\007\022\034\n\024minMarketOrderVo" +
-      "lume\030\027 \001(\007\022\033\n\023maxLimitOrderVolume\030\030 \001(\007\022" +
-      "\033\n\023minLimitOrderVolume\030\031 \001(\007\022.\n\007gateway\030" +
-      "\032 \001(\0132\035.xyz.redtorch.pb.GatewayField\"\332\002\n" +
-      "\014AccountField\022\021\n\taccountId\030\001 \001(\t\022\014\n\004code" +
-      "\030\002 \001(\t\022\014\n\004name\030\003 \001(\t\022\016\n\006holder\030\004 \001(\t\022/\n\010" +
-      "currency\030\005 \001(\0162\035.xyz.redtorch.pb.Currenc" +
-      "yEnum\022\022\n\npreBalance\030\006 \001(\001\022\017\n\007balance\030\007 \001" +
-      "(\001\022\021\n\tavailable\030\010 \001(\001\022\022\n\ncommission\030\t \001(" +
-      "\001\022\016\n\006margin\030\n \001(\001\022\023\n\013closeProfit\030\013 \001(\001\022\026" +
-      "\n\016positionProfit\030\014 \001(\001\022\017\n\007deposit\030\r \001(\001\022" +
-      "\020\n\010withdraw\030\016 \001(\001\022.\n\007gateway\030\017 \001(\0132\035.xyz" +
-      ".redtorch.pb.GatewayField\"\203\005\n\nOrderField" +
-      "\022\025\n\roriginOrderId\030\001 \001(\t\022\017\n\007orderId\030\002 \001(\t" +
-      "\022\026\n\016adapterOrderId\030\003 \001(\t\022\021\n\taccountId\030\004 " +
-      "\001(\t\0221\n\tdirection\030\005 \001(\0162\036.xyz.redtorch.pb" +
-      ".DirectionEnum\022+\n\006offset\030\006 \001(\0162\033.xyz.red" +
-      "torch.pb.OffsetEnum\0225\n\013orderStatus\030\007 \001(\016" +
-      "2 .xyz.redtorch.pb.OrderStatusEnum\022\r\n\005pr" +
-      "ice\030\010 \001(\001\022\023\n\013totalVolume\030\t \001(\007\022\024\n\014traded" +
-      "Volume\030\n \001(\007\022\022\n\ntradingDay\030\014 \001(\t\022\021\n\torde" +
-      "rDate\030\r \001(\t\022\021\n\torderTime\030\016 \001(\t\022\022\n\ncancel" +
-      "Time\030\017 \001(\t\022\022\n\nactiveTime\030\020 \001(\t\022\022\n\nupdate" +
-      "Time\030\021 \001(\t\022\022\n\nstatusInfo\030\022 \001(\t\022A\n\021timeCo" +
-      "nditionType\030\023 \001(\0162&.xyz.redtorch.pb.Time" +
-      "ConditionTypeEnum\022\017\n\007frontId\030\024 \001(\007\022\021\n\tse" +
-      "ssionId\030\025 \001(\007\0220\n\010contract\030\026 \001(\0132\036.xyz.re" +
-      "dtorch.pb.ContractField\022.\n\007gateway\030\027 \001(\013" +
-      "2\035.xyz.redtorch.pb.GatewayField\"\273\003\n\nTrad" +
-      "eField\022\017\n\007tradeId\030\001 \001(\t\022\026\n\016adapterTradeI" +
-      "d\030\002 \001(\t\022\025\n\roriginOrderId\030\003 \001(\t\022\017\n\007orderI" +
-      "d\030\004 \001(\t\022\026\n\016adapterOrderId\030\005 \001(\t\022\021\n\taccou" +
-      "ntId\030\006 \001(\t\0221\n\tdirection\030\007 \001(\0162\036.xyz.redt" +
-      "orch.pb.DirectionEnum\022+\n\006offset\030\010 \001(\0162\033." +
-      "xyz.redtorch.pb.OffsetEnum\022\r\n\005price\030\t \001(" +
-      "\001\022\016\n\006volume\030\n \001(\007\022\022\n\ntradingDay\030\013 \001(\t\022\021\n" +
-      "\ttradeDate\030\014 \001(\t\022\021\n\ttradeTime\030\r \001(\t\022\026\n\016t" +
-      "radeTimestamp\030\016 \001(\006\0220\n\010contract\030\017 \001(\0132\036." +
-      "xyz.redtorch.pb.ContractField\022.\n\007gateway" +
-      "\030\020 \001(\0132\035.xyz.redtorch.pb.GatewayField\"\314\004" +
-      "\n\rPositionField\022\022\n\npositionId\030\001 \001(\t\022\021\n\ta" +
-      "ccountId\030\002 \001(\t\0221\n\tdirection\030\003 \001(\0162\036.xyz." +
-      "redtorch.pb.DirectionEnum\022\020\n\010position\030\004 " +
-      "\001(\007\022\016\n\006frozen\030\005 \001(\007\022\022\n\nydPosition\030\006 \001(\007\022" +
-      "\020\n\010ydFrozen\030\007 \001(\007\022\022\n\ntdPosition\030\010 \001(\007\022\020\n" +
-      "\010tdFrozen\030\t \001(\007\022\021\n\tlastPrice\030\n \001(\001\022\r\n\005pr" +
-      "ice\030\013 \001(\001\022\021\n\tpriceDiff\030\014 \001(\001\022\021\n\topenPric" +
-      "e\030\r \001(\001\022\025\n\ropenPriceDiff\030\016 \001(\001\022\026\n\016positi" +
-      "onProfit\030\017 \001(\001\022\033\n\023positionProfitRatio\030\020 " +
-      "\001(\001\022\032\n\022openPositionProfit\030\021 \001(\001\022\037\n\027openP" +
-      "ositionProfitRatio\030\022 \001(\001\022\021\n\tuseMargin\030\023 " +
-      "\001(\001\022\026\n\016exchangeMargin\030\024 \001(\001\022\025\n\rcontractV" +
-      "alue\030\025 \001(\001\0220\n\010contract\030\026 \001(\0132\036.xyz.redto" +
-      "rch.pb.ContractField\022.\n\007gateway\030\027 \001(\0132\035." +
-      "xyz.redtorch.pb.GatewayField\"\314\006\n\tTickFie" +
-      "ld\022\024\n\014dataSourceId\030\001 \001(\t\022\022\n\ntradingDay\030\002" +
-      " \001(\t\022\021\n\tactionDay\030\003 \001(\t\022\022\n\nactionTime\030\004 " +
-      "\001(\t\022\027\n\017actionTimestamp\030\005 \001(\006\022\016\n\006status\030\006" +
-      " \001(\007\022\021\n\tlastPrice\030\007 \001(\001\022\020\n\010avgPrice\030\010 \001(" +
-      "\001\022\023\n\013totalBidVol\030\t \001(\006\022\023\n\013totalAskVol\030\n " +
-      "\001(\006\022\033\n\023weightedAvgBidPrice\030\013 \001(\001\022\033\n\023weig" +
-      "htedAvgAskPrice\030\014 \001(\001\022\014\n\004iopv\030\r \001(\001\022\027\n\017y" +
-      "ieldToMaturity\030\016 \001(\001\022\024\n\014volumeChange\030\017 \001" +
-      "(\007\022\016\n\006volume\030\020 \001(\006\022\020\n\010turnover\030\021 \001(\001\022\026\n\016" +
-      "turnoverChange\030\022 \001(\001\022\021\n\tnumTrades\030\023 \001(\006\022" +
-      "\027\n\017numTradesChange\030\024 \001(\006\022\024\n\014openInterest" +
-      "\030\025 \001(\001\022\032\n\022openInterestChange\030\026 \001(\007\022\027\n\017pr" +
-      "eOpenInterest\030\027 \001(\001\022\025\n\rpreClosePrice\030\031 \001" +
-      "(\001\022\023\n\013settlePrice\030\032 \001(\001\022\026\n\016preSettlePric" +
-      "e\030\033 \001(\001\022\021\n\topenPrice\030\034 \001(\001\022\021\n\thighPrice\030" +
-      "\035 \001(\001\022\020\n\010lowPrice\030\036 \001(\001\022\022\n\nupperLimit\030\037 " +
-      "\001(\001\022\022\n\nlowerLimit\030  \001(\001\022\020\n\010bidPrice\030! \003(" +
-      "\001\022\020\n\010askPrice\030\" \003(\001\022\021\n\tbidVolume\030# \003(\007\022\021" +
-      "\n\taskVolume\030$ \003(\007\0220\n\010contract\030% \001(\0132\036.xy" +
-      "z.redtorch.pb.ContractField\022.\n\007gateway\030&" +
-      " \001(\0132\035.xyz.redtorch.pb.GatewayField\"\320\003\n\010" +
-      "BarField\022\024\n\014dataSourceId\030\001 \001(\t\022\022\n\ntradin" +
-      "gDay\030\002 \001(\t\022\021\n\tactionDay\030\003 \001(\t\022\022\n\nactionT" +
-      "ime\030\004 \001(\t\022\027\n\017actionTimestamp\030\005 \001(\006\022\021\n\top" +
-      "enPrice\030\006 \001(\001\022\021\n\thighPrice\030\007 \001(\001\022\020\n\010lowP" +
-      "rice\030\010 \001(\001\022\022\n\nclosePrice\030\t \001(\001\022\024\n\014openIn" +
-      "terest\030\n \001(\001\022\032\n\022openInterestChange\030\013 \001(\001" +
-      "\022\016\n\006volume\030\014 \001(\006\022\024\n\014volumeChange\030\r \001(\006\022\020" +
-      "\n\010turnover\030\016 \001(\001\022\026\n\016turnoverChange\030\017 \001(\001" +
-      "\022\021\n\tnumTrades\030\020 \001(\006\022\027\n\017numTradesChange\030\021" +
-      " \001(\006\0220\n\010contract\030\022 \001(\0132\036.xyz.redtorch.pb" +
-      ".ContractField\022.\n\007gateway\030\023 \001(\0132\035.xyz.re" +
-      "dtorch.pb.GatewayField\"_\n\016CommonReqField" +
-      "\022\r\n\005reqId\030\001 \001(\t\022\022\n\noperatorId\030\002 \001(\t\022\024\n\014t" +
-      "argetNodeId\030\003 \001(\007\022\024\n\014sourceNodeId\030\004 \001(\007\"" +
-      "K\n\016CommonRtnField\022\r\n\005reqId\030\001 \001(\t\022\024\n\014targ" +
-      "etNodeId\030\002 \001(\007\022\024\n\014sourceNodeId\030\003 \001(\007\"\223\001\n" +
-      "\016CommonRspField\022\r\n\005reqId\030\001 \001(\t\0228\n\rreques" +
-      "tStatus\030\002 \001(\0162!.xyz.redtorch.pb.CommonSt" +
-      "atusEnum\022\014\n\004info\030\003 \001(\t\022\024\n\014targetNodeId\030\004" +
-      " \001(\007\022\024\n\014sourceNodeId\030\005 \001(\007\"\254\003\n\023SubmitOrd" +
-      "erReqField\022\025\n\roriginOrderId\030\001 \001(\t\022\023\n\013acc" +
-      "ountCode\030\002 \001(\t\022/\n\010currency\030\003 \001(\0162\035.xyz.r" +
-      "edtorch.pb.CurrencyEnum\0220\n\010contract\030\004 \001(" +
-      "\0132\036.xyz.redtorch.pb.ContractField\022\021\n\tgat" +
-      "ewayId\030\005 \001(\t\022\r\n\005price\030\006 \001(\001\022\016\n\006volume\030\007 " +
-      "\001(\007\0221\n\tdirection\030\010 \001(\0162\036.xyz.redtorch.pb" +
-      ".DirectionEnum\022+\n\006offset\030\t \001(\0162\033.xyz.red" +
-      "torch.pb.OffsetEnum\0221\n\tpriceType\030\n \001(\0162\036" +
-      ".xyz.redtorch.pb.PriceTypeEnum\022A\n\021timeCo" +
-      "nditionType\030\013 \001(\0162&.xyz.redtorch.pb.Time" +
-      "ConditionTypeEnum\"=\n\023CancelOrderReqField" +
-      "\022\025\n\roriginOrderId\030\001 \001(\t\022\017\n\007orderId\030\002 \001(\t" +
-      "\"\334\005\n\023GatewaySettingField\022\021\n\tgatewayId\030\001 " +
-      "\001(\t\022\023\n\013gatewayName\030\002 \001(\t\022\032\n\022gatewayDescr" +
-      "iption\030\004 \001(\t\022\032\n\022implementClassName\030\005 \001(\t" +
-      "\0225\n\013gatewayType\030\006 \001(\0162 .xyz.redtorch.pb." +
-      "GatewayTypeEnum\022C\n\022gatewayAdapterType\030\007 " +
-      "\001(\0162\'.xyz.redtorch.pb.GatewayAdapterType" +
-      "Enum\022N\n\rctpApiSetting\030\010 \001(\01327.xyz.redtor" +
-      "ch.pb.GatewaySettingField.CtpApiSettingF" +
-      "ield\022L\n\014ibApiSetting\030\t \001(\01326.xyz.redtorc" +
-      "h.pb.GatewaySettingField.IbApiSettingFie" +
-      "ld\0222\n\006status\030\n \001(\0162\".xyz.redtorch.pb.Con" +
-      "nectStatusEnum\022\017\n\007version\030\013 \001(\006\032\302\001\n\022CtpA" +
-      "piSettingField\022\016\n\006userId\030\001 \001(\t\022\020\n\010passwo" +
-      "rd\030\002 \001(\t\022\020\n\010brokerId\030\003 \001(\t\022\016\n\006tdHost\030\004 \001" +
-      "(\t\022\016\n\006tdPort\030\005 \001(\t\022\016\n\006mdHost\030\006 \001(\t\022\016\n\006md" +
-      "Port\030\007 \001(\t\022\020\n\010authCode\030\010 \001(\t\022\027\n\017userProd" +
-      "uctInfo\030\t \001(\t\022\r\n\005appId\030\n \001(\t\032A\n\021IbApiSet" +
-      "tingField\022\014\n\004host\030\001 \001(\t\022\014\n\004port\030\002 \001(\007\022\020\n" +
-      "\010clientId\030\003 \001(\007\"_\n\010LogField\022/\n\010logLevel\030" +
-      "\001 \001(\0162\035.xyz.redtorch.pb.LogLevelEnum\022\021\n\t" +
-      "timestamp\030\002 \001(\006\022\017\n\007content\030\003 \001(\t\"d\n\013Noti" +
-      "ceField\0221\n\006status\030\001 \001(\0162!.xyz.redtorch.p" +
-      "b.CommonStatusEnum\022\021\n\ttimestamp\030\002 \001(\006\022\017\n" +
-      "\007content\030\003 \001(\tb\006proto3"
+      "tStatusEnum\022\025\n\rauthErrorFlag\030\007 \001(\010\"\207\006\n\rC" +
+      "ontractField\022\022\n\ncontractId\030\001 \001(\t\022\014\n\004name" +
+      "\030\002 \001(\t\022\020\n\010fullName\030\003 \001(\t\022\024\n\014thirdPartyId" +
+      "\030\004 \001(\t\022\025\n\runifiedSymbol\030\007 \001(\t\022\016\n\006symbol\030" +
+      "\010 \001(\t\022/\n\010exchange\030\t \001(\0162\035.xyz.redtorch.p" +
+      "b.ExchangeEnum\0227\n\014productClass\030\n \001(\0162!.x" +
+      "yz.redtorch.pb.ProductClassEnum\022/\n\010curre" +
+      "ncy\030\013 \001(\0162\035.xyz.redtorch.pb.CurrencyEnum" +
+      "\022\022\n\nmultiplier\030\014 \001(\001\022\021\n\tpriceTick\030\r \001(\001\022" +
+      "\027\n\017longMarginRatio\030\016 \001(\001\022\030\n\020shortMarginR" +
+      "atio\030\017 \001(\001\022\036\n\026maxMarginSideAlgorithm\030\020 \001" +
+      "(\010\022\030\n\020underlyingSymbol\030\021 \001(\t\022\023\n\013strikePr" +
+      "ice\030\022 \001(\001\0225\n\013optionsType\030\023 \001(\0162 .xyz.red" +
+      "torch.pb.OptionsTypeEnum\022\034\n\024underlyingMu" +
+      "ltiplier\030\024 \001(\001\022$\n\034lastTradeDateOrContrac" +
+      "tMonth\030\025 \001(\t\022\034\n\024maxMarketOrderVolume\030\026 \001" +
+      "(\007\022\034\n\024minMarketOrderVolume\030\027 \001(\007\022\033\n\023maxL" +
+      "imitOrderVolume\030\030 \001(\007\022\033\n\023minLimitOrderVo" +
+      "lume\030\031 \001(\007\022=\n\017combinationType\030\032 \001(\0162$.xy" +
+      "z.redtorch.pb.CombinationTypeEnum\022\021\n\tgat" +
+      "ewayId\030\033 \001(\t\"\275\002\n\014AccountField\022\021\n\taccount" +
+      "Id\030\001 \001(\t\022\014\n\004code\030\002 \001(\t\022\014\n\004name\030\003 \001(\t\022\016\n\006" +
+      "holder\030\004 \001(\t\022/\n\010currency\030\005 \001(\0162\035.xyz.red" +
+      "torch.pb.CurrencyEnum\022\022\n\npreBalance\030\006 \001(" +
+      "\001\022\017\n\007balance\030\007 \001(\001\022\021\n\tavailable\030\010 \001(\001\022\022\n" +
+      "\ncommission\030\t \001(\001\022\016\n\006margin\030\n \001(\001\022\023\n\013clo" +
+      "seProfit\030\013 \001(\001\022\026\n\016positionProfit\030\014 \001(\001\022\017" +
+      "\n\007deposit\030\r \001(\001\022\020\n\010withdraw\030\016 \001(\001\022\021\n\tgat" +
+      "ewayId\030\017 \001(\t\"\376\010\n\nOrderField\022\025\n\roriginOrd" +
+      "erId\030\001 \001(\t\022\017\n\007orderId\030\002 \001(\t\022\026\n\016adapterOr" +
+      "derId\030\003 \001(\t\022\021\n\taccountId\030\004 \001(\t\022\024\n\014orderL" +
+      "ocalId\030\005 \001(\t\022\026\n\016brokerOrderSeq\030\006 \001(\t\022\022\n\n" +
+      "orderSysId\030\007 \001(\t\022\022\n\nsequenceNo\030\010 \001(\t\0221\n\t" +
+      "direction\030\t \001(\0162\036.xyz.redtorch.pb.Direct" +
+      "ionEnum\0223\n\noffsetFlag\030\n \001(\0162\037.xyz.redtor" +
+      "ch.pb.OffsetFlagEnum\0221\n\thedgeFlag\030\013 \001(\0162" +
+      "\036.xyz.redtorch.pb.HedgeFlagEnum\022;\n\016order" +
+      "PriceType\030\014 \001(\0162#.xyz.redtorch.pb.OrderP" +
+      "riceTypeEnum\0225\n\013orderStatus\030\r \001(\0162 .xyz." +
+      "redtorch.pb.OrderStatusEnum\022\r\n\005price\030\016 \001" +
+      "(\001\022\023\n\013totalVolume\030\017 \001(\007\022\024\n\014tradedVolume\030" +
+      "\020 \001(\007\0229\n\rtimeCondition\030\021 \001(\0162\".xyz.redto" +
+      "rch.pb.TimeConditionEnum\022\017\n\007gtdDate\030\022 \001(" +
+      "\t\022=\n\017volumeCondition\030\023 \001(\0162$.xyz.redtorc" +
+      "h.pb.VolumeConditionEnum\022\021\n\tminVolume\030\024 " +
+      "\001(\007\022E\n\023contingentCondition\030\025 \001(\0162(.xyz.r" +
+      "edtorch.pb.ContingentConditionEnum\022\021\n\tst" +
+      "opPrice\030\026 \001(\001\022?\n\020forceCloseReason\030\027 \001(\0162" +
+      "%.xyz.redtorch.pb.ForceCloseReasonEnum\022\023" +
+      "\n\013autoSuspend\030\030 \001(\007\022\026\n\016userForceClose\030\031 " +
+      "\001(\007\022\021\n\tswapOrder\030\032 \001(\007\022\022\n\ntradingDay\030\033 \001" +
+      "(\t\022\021\n\torderDate\030\034 \001(\t\022\021\n\torderTime\030\035 \001(\t" +
+      "\022\022\n\nactiveTime\030\036 \001(\t\022\023\n\013suspendTime\030\037 \001(" +
+      "\t\022\022\n\ncancelTime\030  \001(\t\022\022\n\nupdateTime\030! \001(" +
+      "\t\022\021\n\tstatusMsg\030\" \001(\t\022\017\n\007frontId\030# \001(\007\022\021\n" +
+      "\tsessionId\030$ \001(\007\0220\n\010contract\030% \001(\0132\036.xyz" +
+      ".redtorch.pb.ContractField\022\021\n\tgatewayId\030" +
+      "& \001(\t\"\257\005\n\nTradeField\022\017\n\007tradeId\030\001 \001(\t\022\026\n" +
+      "\016adapterTradeId\030\002 \001(\t\022\025\n\roriginOrderId\030\003" +
+      " \001(\t\022\017\n\007orderId\030\004 \001(\t\022\026\n\016adapterOrderId\030" +
+      "\005 \001(\t\022\024\n\014orderLocalId\030\006 \001(\t\022\026\n\016brokerOrd" +
+      "erSeq\030\007 \001(\t\022\022\n\norderSysId\030\010 \001(\t\022\024\n\014settl" +
+      "ementId\030\t \001(\t\022\022\n\nsequenceNo\030\n \001(\t\022\021\n\tacc" +
+      "ountId\030\013 \001(\t\0221\n\tdirection\030\014 \001(\0162\036.xyz.re" +
+      "dtorch.pb.DirectionEnum\0223\n\noffsetFlag\030\r " +
+      "\001(\0162\037.xyz.redtorch.pb.OffsetFlagEnum\0221\n\t" +
+      "hedgeFlag\030\016 \001(\0162\036.xyz.redtorch.pb.HedgeF" +
+      "lagEnum\022\r\n\005price\030\017 \001(\001\022\016\n\006volume\030\020 \001(\007\0221" +
+      "\n\ttradeType\030\021 \001(\0162\036.xyz.redtorch.pb.Trad" +
+      "eTypeEnum\0225\n\013priceSource\030\022 \001(\0162 .xyz.red" +
+      "torch.pb.PriceSourceEnum\022\022\n\ntradingDay\030\023" +
+      " \001(\t\022\021\n\ttradeDate\030\024 \001(\t\022\021\n\ttradeTime\030\025 \001" +
+      "(\t\022\026\n\016tradeTimestamp\030\026 \001(\006\0220\n\010contract\030\027" +
+      " \001(\0132\036.xyz.redtorch.pb.ContractField\022\021\n\t" +
+      "gatewayId\030\030 \001(\t\"\362\004\n\rPositionField\022\022\n\npos" +
+      "itionId\030\001 \001(\t\022\021\n\taccountId\030\002 \001(\t\022A\n\021posi" +
+      "tionDirection\030\003 \001(\0162&.xyz.redtorch.pb.Po" +
+      "sitionDirectionEnum\022\020\n\010position\030\004 \001(\007\022\016\n" +
+      "\006frozen\030\005 \001(\007\022\022\n\nydPosition\030\006 \001(\007\022\020\n\010ydF" +
+      "rozen\030\007 \001(\007\022\022\n\ntdPosition\030\010 \001(\007\022\020\n\010tdFro" +
+      "zen\030\t \001(\007\022\021\n\tlastPrice\030\n \001(\001\022\r\n\005price\030\013 " +
+      "\001(\001\022\021\n\tpriceDiff\030\014 \001(\001\022\021\n\topenPrice\030\r \001(" +
+      "\001\022\025\n\ropenPriceDiff\030\016 \001(\001\022\026\n\016positionProf" +
+      "it\030\017 \001(\001\022\033\n\023positionProfitRatio\030\020 \001(\001\022\032\n" +
+      "\022openPositionProfit\030\021 \001(\001\022\037\n\027openPositio" +
+      "nProfitRatio\030\022 \001(\001\022\021\n\tuseMargin\030\023 \001(\001\022\026\n" +
+      "\016exchangeMargin\030\024 \001(\001\022\025\n\rcontractValue\030\025" +
+      " \001(\001\0221\n\thedgeFlag\030\026 \001(\0162\036.xyz.redtorch.p" +
+      "b.HedgeFlagEnum\0220\n\010contract\030\027 \001(\0132\036.xyz." +
+      "redtorch.pb.ContractField\022\021\n\tgatewayId\030\030" +
+      " \001(\t\"\372\005\n\tTickField\022\025\n\runifiedSymbol\030\001 \001(" +
+      "\t\022\021\n\tgatewayId\030\002 \001(\t\022\022\n\ntradingDay\030\003 \001(\t" +
+      "\022\021\n\tactionDay\030\004 \001(\t\022\022\n\nactionTime\030\005 \001(\t\022" +
+      "\027\n\017actionTimestamp\030\006 \001(\006\022\016\n\006status\030\007 \001(\007" +
+      "\022\021\n\tlastPrice\030\010 \001(\001\022\020\n\010avgPrice\030\t \001(\001\022\023\n" +
+      "\013totalBidVol\030\n \001(\006\022\023\n\013totalAskVol\030\013 \001(\006\022" +
+      "\033\n\023weightedAvgBidPrice\030\014 \001(\001\022\033\n\023weighted" +
+      "AvgAskPrice\030\r \001(\001\022\014\n\004iopv\030\016 \001(\001\022\027\n\017yield" +
+      "ToMaturity\030\017 \001(\001\022\023\n\013volumeDelta\030\020 \001(\006\022\016\n" +
+      "\006volume\030\021 \001(\006\022\020\n\010turnover\030\022 \001(\001\022\025\n\rturno" +
+      "verDelta\030\023 \001(\001\022\021\n\tnumTrades\030\024 \001(\006\022\026\n\016num" +
+      "TradesDelta\030\025 \001(\006\022\024\n\014openInterest\030\026 \001(\001\022" +
+      "\031\n\021openInterestDelta\030\027 \001(\001\022\027\n\017preOpenInt" +
+      "erest\030\030 \001(\001\022\025\n\rpreClosePrice\030\031 \001(\001\022\023\n\013se" +
+      "ttlePrice\030\032 \001(\001\022\026\n\016preSettlePrice\030\033 \001(\001\022" +
+      "\021\n\topenPrice\030\034 \001(\001\022\021\n\thighPrice\030\035 \001(\001\022\020\n" +
+      "\010lowPrice\030\036 \001(\001\022\022\n\nupperLimit\030\037 \001(\001\022\022\n\nl" +
+      "owerLimit\030  \001(\001\022\020\n\010bidPrice\030! \003(\001\022\020\n\010ask" +
+      "Price\030\" \003(\001\022\021\n\tbidVolume\030# \003(\007\022\021\n\taskVol" +
+      "ume\030$ \003(\007\"\306\003\n\010BarField\022\025\n\runifiedSymbol\030" +
+      "\001 \001(\t\022\021\n\tgatewayId\030\002 \001(\t\022\022\n\ntradingDay\030\003" +
+      " \001(\t\022\021\n\tactionDay\030\004 \001(\t\022\022\n\nactionTime\030\005 " +
+      "\001(\t\022\027\n\017actionTimestamp\030\006 \001(\006\022\021\n\topenPric" +
+      "e\030\007 \001(\001\022\021\n\thighPrice\030\010 \001(\001\022\020\n\010lowPrice\030\t" +
+      " \001(\001\022\022\n\nclosePrice\030\n \001(\001\022\024\n\014openInterest" +
+      "\030\013 \001(\001\022\031\n\021openInterestDelta\030\014 \001(\001\022\016\n\006vol" +
+      "ume\030\r \001(\006\022\023\n\013volumeDelta\030\016 \001(\006\022\020\n\010turnov" +
+      "er\030\017 \001(\001\022\025\n\rturnoverDelta\030\020 \001(\001\022\021\n\tnumTr" +
+      "ades\030\021 \001(\006\022\026\n\016numTradesDelta\030\022 \001(\006\022\027\n\017pr" +
+      "eOpenInterest\030\023 \001(\001\022\025\n\rpreClosePrice\030\024 \001" +
+      "(\001\022\026\n\016preSettlePrice\030\025 \001(\001\"_\n\016CommonReqF" +
+      "ield\022\r\n\005reqId\030\001 \001(\t\022\022\n\noperatorId\030\002 \001(\t\022" +
+      "\024\n\014targetNodeId\030\003 \001(\007\022\024\n\014sourceNodeId\030\004 " +
+      "\001(\007\"B\n\016CommonRspField\022\r\n\005reqId\030\001 \001(\t\022\017\n\007" +
+      "errorId\030\002 \001(\007\022\020\n\010errorMsg\030\003 \001(\t\"\247\006\n\023Subm" +
+      "itOrderReqField\022\025\n\roriginOrderId\030\001 \001(\t\022\023" +
+      "\n\013accountCode\030\002 \001(\t\022/\n\010currency\030\003 \001(\0162\035." +
+      "xyz.redtorch.pb.CurrencyEnum\0220\n\010contract" +
+      "\030\004 \001(\0132\036.xyz.redtorch.pb.ContractField\022\021" +
+      "\n\tgatewayId\030\005 \001(\t\022\016\n\006volume\030\006 \001(\007\022\r\n\005pri" +
+      "ce\030\007 \001(\001\022;\n\016orderPriceType\030\010 \001(\0162#.xyz.r" +
+      "edtorch.pb.OrderPriceTypeEnum\0221\n\tdirecti" +
+      "on\030\t \001(\0162\036.xyz.redtorch.pb.DirectionEnum" +
+      "\0223\n\noffsetFlag\030\n \001(\0162\037.xyz.redtorch.pb.O" +
+      "ffsetFlagEnum\0221\n\thedgeFlag\030\013 \001(\0162\036.xyz.r" +
+      "edtorch.pb.HedgeFlagEnum\0229\n\rtimeConditio" +
+      "n\030\014 \001(\0162\".xyz.redtorch.pb.TimeConditionE" +
+      "num\022\017\n\007gtdDate\030\r \001(\t\022=\n\017volumeCondition\030" +
+      "\016 \001(\0162$.xyz.redtorch.pb.VolumeConditionE" +
+      "num\022\021\n\tminVolume\030\017 \001(\007\022E\n\023contingentCond" +
+      "ition\030\020 \001(\0162(.xyz.redtorch.pb.Contingent" +
+      "ConditionEnum\022\021\n\tstopPrice\030\021 \001(\001\022?\n\020forc" +
+      "eCloseReason\030\022 \001(\0162%.xyz.redtorch.pb.For" +
+      "ceCloseReasonEnum\022\023\n\013autoSuspend\030\023 \001(\007\022\026" +
+      "\n\016userForceClose\030\024 \001(\007\022\021\n\tswapOrder\030\025 \001(" +
+      "\007\"=\n\023CancelOrderReqField\022\025\n\roriginOrderI" +
+      "d\030\003 \001(\t\022\017\n\007orderId\030\004 \001(\t\"\373\005\n\023GatewaySett" +
+      "ingField\022\021\n\tgatewayId\030\001 \001(\t\022\023\n\013gatewayNa" +
+      "me\030\002 \001(\t\022\032\n\022gatewayDescription\030\004 \001(\t\022\032\n\022" +
+      "implementClassName\030\005 \001(\t\0225\n\013gatewayType\030" +
+      "\006 \001(\0162 .xyz.redtorch.pb.GatewayTypeEnum\022" +
+      "C\n\022gatewayAdapterType\030\007 \001(\0162\'.xyz.redtor" +
+      "ch.pb.GatewayAdapterTypeEnum\022N\n\rctpApiSe" +
+      "tting\030\010 \001(\01327.xyz.redtorch.pb.GatewaySet" +
+      "tingField.CtpApiSettingField\022L\n\014ibApiSet" +
+      "ting\030\t \001(\01326.xyz.redtorch.pb.GatewaySett" +
+      "ingField.IbApiSettingField\0222\n\006status\030\n \001" +
+      "(\0162\".xyz.redtorch.pb.ConnectStatusEnum\022\017" +
+      "\n\007version\030\013 \001(\006\022\035\n\025autoConnectTimeRanges" +
+      "\030\014 \001(\t\032\302\001\n\022CtpApiSettingField\022\016\n\006userId\030" +
+      "\001 \001(\t\022\020\n\010password\030\002 \001(\t\022\020\n\010brokerId\030\003 \001(" +
+      "\t\022\016\n\006tdHost\030\004 \001(\t\022\016\n\006tdPort\030\005 \001(\t\022\016\n\006mdH" +
+      "ost\030\006 \001(\t\022\016\n\006mdPort\030\007 \001(\t\022\020\n\010authCode\030\010 " +
+      "\001(\t\022\027\n\017userProductInfo\030\t \001(\t\022\r\n\005appId\030\n " +
+      "\001(\t\032A\n\021IbApiSettingField\022\014\n\004host\030\001 \001(\t\022\014" +
+      "\n\004port\030\002 \001(\007\022\020\n\010clientId\030\003 \001(\007\"_\n\010LogFie" +
+      "ld\022/\n\010logLevel\030\001 \001(\0162\035.xyz.redtorch.pb.L" +
+      "ogLevelEnum\022\021\n\ttimestamp\030\002 \001(\006\022\017\n\007conten" +
+      "t\030\003 \001(\t\"d\n\013NoticeField\0221\n\006status\030\001 \001(\0162!" +
+      ".xyz.redtorch.pb.CommonStatusEnum\022\021\n\ttim" +
+      "estamp\030\002 \001(\006\022\017\n\007content\030\003 \001(\tb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -35976,85 +39160,79 @@ public final class CoreField {
     internal_static_xyz_redtorch_pb_GatewayField_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_xyz_redtorch_pb_GatewayField_descriptor,
-        new java.lang.String[] { "GatewayId", "Name", "Description", "GatewayType", "GatewayAdapterType", "Status", });
+        new java.lang.String[] { "GatewayId", "Name", "Description", "GatewayType", "GatewayAdapterType", "Status", "AuthErrorFlag", });
     internal_static_xyz_redtorch_pb_ContractField_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_xyz_redtorch_pb_ContractField_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_xyz_redtorch_pb_ContractField_descriptor,
-        new java.lang.String[] { "ContractId", "ShortName", "FullName", "ThirdPartyId", "UnifiedSymbol", "Symbol", "Exchange", "ProductType", "Currency", "Multiplier", "PriceTick", "LongMarginRatio", "ShortMarginRatio", "MaxMarginSideAlgorithm", "UnderlyingSymbol", "StrikePrice", "OptionType", "UnderlyingMultiplier", "LastTradeDateOrContractMonth", "MaxMarketOrderVolume", "MinMarketOrderVolume", "MaxLimitOrderVolume", "MinLimitOrderVolume", "Gateway", });
+        new java.lang.String[] { "ContractId", "Name", "FullName", "ThirdPartyId", "UnifiedSymbol", "Symbol", "Exchange", "ProductClass", "Currency", "Multiplier", "PriceTick", "LongMarginRatio", "ShortMarginRatio", "MaxMarginSideAlgorithm", "UnderlyingSymbol", "StrikePrice", "OptionsType", "UnderlyingMultiplier", "LastTradeDateOrContractMonth", "MaxMarketOrderVolume", "MinMarketOrderVolume", "MaxLimitOrderVolume", "MinLimitOrderVolume", "CombinationType", "GatewayId", });
     internal_static_xyz_redtorch_pb_AccountField_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_xyz_redtorch_pb_AccountField_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_xyz_redtorch_pb_AccountField_descriptor,
-        new java.lang.String[] { "AccountId", "Code", "Name", "Holder", "Currency", "PreBalance", "Balance", "Available", "Commission", "Margin", "CloseProfit", "PositionProfit", "Deposit", "Withdraw", "Gateway", });
+        new java.lang.String[] { "AccountId", "Code", "Name", "Holder", "Currency", "PreBalance", "Balance", "Available", "Commission", "Margin", "CloseProfit", "PositionProfit", "Deposit", "Withdraw", "GatewayId", });
     internal_static_xyz_redtorch_pb_OrderField_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_xyz_redtorch_pb_OrderField_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_xyz_redtorch_pb_OrderField_descriptor,
-        new java.lang.String[] { "OriginOrderId", "OrderId", "AdapterOrderId", "AccountId", "Direction", "Offset", "OrderStatus", "Price", "TotalVolume", "TradedVolume", "TradingDay", "OrderDate", "OrderTime", "CancelTime", "ActiveTime", "UpdateTime", "StatusInfo", "TimeConditionType", "FrontId", "SessionId", "Contract", "Gateway", });
+        new java.lang.String[] { "OriginOrderId", "OrderId", "AdapterOrderId", "AccountId", "OrderLocalId", "BrokerOrderSeq", "OrderSysId", "SequenceNo", "Direction", "OffsetFlag", "HedgeFlag", "OrderPriceType", "OrderStatus", "Price", "TotalVolume", "TradedVolume", "TimeCondition", "GtdDate", "VolumeCondition", "MinVolume", "ContingentCondition", "StopPrice", "ForceCloseReason", "AutoSuspend", "UserForceClose", "SwapOrder", "TradingDay", "OrderDate", "OrderTime", "ActiveTime", "SuspendTime", "CancelTime", "UpdateTime", "StatusMsg", "FrontId", "SessionId", "Contract", "GatewayId", });
     internal_static_xyz_redtorch_pb_TradeField_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_xyz_redtorch_pb_TradeField_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_xyz_redtorch_pb_TradeField_descriptor,
-        new java.lang.String[] { "TradeId", "AdapterTradeId", "OriginOrderId", "OrderId", "AdapterOrderId", "AccountId", "Direction", "Offset", "Price", "Volume", "TradingDay", "TradeDate", "TradeTime", "TradeTimestamp", "Contract", "Gateway", });
+        new java.lang.String[] { "TradeId", "AdapterTradeId", "OriginOrderId", "OrderId", "AdapterOrderId", "OrderLocalId", "BrokerOrderSeq", "OrderSysId", "SettlementId", "SequenceNo", "AccountId", "Direction", "OffsetFlag", "HedgeFlag", "Price", "Volume", "TradeType", "PriceSource", "TradingDay", "TradeDate", "TradeTime", "TradeTimestamp", "Contract", "GatewayId", });
     internal_static_xyz_redtorch_pb_PositionField_descriptor =
       getDescriptor().getMessageTypes().get(5);
     internal_static_xyz_redtorch_pb_PositionField_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_xyz_redtorch_pb_PositionField_descriptor,
-        new java.lang.String[] { "PositionId", "AccountId", "Direction", "Position", "Frozen", "YdPosition", "YdFrozen", "TdPosition", "TdFrozen", "LastPrice", "Price", "PriceDiff", "OpenPrice", "OpenPriceDiff", "PositionProfit", "PositionProfitRatio", "OpenPositionProfit", "OpenPositionProfitRatio", "UseMargin", "ExchangeMargin", "ContractValue", "Contract", "Gateway", });
+        new java.lang.String[] { "PositionId", "AccountId", "PositionDirection", "Position", "Frozen", "YdPosition", "YdFrozen", "TdPosition", "TdFrozen", "LastPrice", "Price", "PriceDiff", "OpenPrice", "OpenPriceDiff", "PositionProfit", "PositionProfitRatio", "OpenPositionProfit", "OpenPositionProfitRatio", "UseMargin", "ExchangeMargin", "ContractValue", "HedgeFlag", "Contract", "GatewayId", });
     internal_static_xyz_redtorch_pb_TickField_descriptor =
       getDescriptor().getMessageTypes().get(6);
     internal_static_xyz_redtorch_pb_TickField_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_xyz_redtorch_pb_TickField_descriptor,
-        new java.lang.String[] { "DataSourceId", "TradingDay", "ActionDay", "ActionTime", "ActionTimestamp", "Status", "LastPrice", "AvgPrice", "TotalBidVol", "TotalAskVol", "WeightedAvgBidPrice", "WeightedAvgAskPrice", "Iopv", "YieldToMaturity", "VolumeChange", "Volume", "Turnover", "TurnoverChange", "NumTrades", "NumTradesChange", "OpenInterest", "OpenInterestChange", "PreOpenInterest", "PreClosePrice", "SettlePrice", "PreSettlePrice", "OpenPrice", "HighPrice", "LowPrice", "UpperLimit", "LowerLimit", "BidPrice", "AskPrice", "BidVolume", "AskVolume", "Contract", "Gateway", });
+        new java.lang.String[] { "UnifiedSymbol", "GatewayId", "TradingDay", "ActionDay", "ActionTime", "ActionTimestamp", "Status", "LastPrice", "AvgPrice", "TotalBidVol", "TotalAskVol", "WeightedAvgBidPrice", "WeightedAvgAskPrice", "Iopv", "YieldToMaturity", "VolumeDelta", "Volume", "Turnover", "TurnoverDelta", "NumTrades", "NumTradesDelta", "OpenInterest", "OpenInterestDelta", "PreOpenInterest", "PreClosePrice", "SettlePrice", "PreSettlePrice", "OpenPrice", "HighPrice", "LowPrice", "UpperLimit", "LowerLimit", "BidPrice", "AskPrice", "BidVolume", "AskVolume", });
     internal_static_xyz_redtorch_pb_BarField_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_xyz_redtorch_pb_BarField_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_xyz_redtorch_pb_BarField_descriptor,
-        new java.lang.String[] { "DataSourceId", "TradingDay", "ActionDay", "ActionTime", "ActionTimestamp", "OpenPrice", "HighPrice", "LowPrice", "ClosePrice", "OpenInterest", "OpenInterestChange", "Volume", "VolumeChange", "Turnover", "TurnoverChange", "NumTrades", "NumTradesChange", "Contract", "Gateway", });
+        new java.lang.String[] { "UnifiedSymbol", "GatewayId", "TradingDay", "ActionDay", "ActionTime", "ActionTimestamp", "OpenPrice", "HighPrice", "LowPrice", "ClosePrice", "OpenInterest", "OpenInterestDelta", "Volume", "VolumeDelta", "Turnover", "TurnoverDelta", "NumTrades", "NumTradesDelta", "PreOpenInterest", "PreClosePrice", "PreSettlePrice", });
     internal_static_xyz_redtorch_pb_CommonReqField_descriptor =
       getDescriptor().getMessageTypes().get(8);
     internal_static_xyz_redtorch_pb_CommonReqField_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_xyz_redtorch_pb_CommonReqField_descriptor,
         new java.lang.String[] { "ReqId", "OperatorId", "TargetNodeId", "SourceNodeId", });
-    internal_static_xyz_redtorch_pb_CommonRtnField_descriptor =
-      getDescriptor().getMessageTypes().get(9);
-    internal_static_xyz_redtorch_pb_CommonRtnField_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_xyz_redtorch_pb_CommonRtnField_descriptor,
-        new java.lang.String[] { "ReqId", "TargetNodeId", "SourceNodeId", });
     internal_static_xyz_redtorch_pb_CommonRspField_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_xyz_redtorch_pb_CommonRspField_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_xyz_redtorch_pb_CommonRspField_descriptor,
-        new java.lang.String[] { "ReqId", "RequestStatus", "Info", "TargetNodeId", "SourceNodeId", });
+        new java.lang.String[] { "ReqId", "ErrorId", "ErrorMsg", });
     internal_static_xyz_redtorch_pb_SubmitOrderReqField_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_xyz_redtorch_pb_SubmitOrderReqField_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_xyz_redtorch_pb_SubmitOrderReqField_descriptor,
-        new java.lang.String[] { "OriginOrderId", "AccountCode", "Currency", "Contract", "GatewayId", "Price", "Volume", "Direction", "Offset", "PriceType", "TimeConditionType", });
+        new java.lang.String[] { "OriginOrderId", "AccountCode", "Currency", "Contract", "GatewayId", "Volume", "Price", "OrderPriceType", "Direction", "OffsetFlag", "HedgeFlag", "TimeCondition", "GtdDate", "VolumeCondition", "MinVolume", "ContingentCondition", "StopPrice", "ForceCloseReason", "AutoSuspend", "UserForceClose", "SwapOrder", });
     internal_static_xyz_redtorch_pb_CancelOrderReqField_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_xyz_redtorch_pb_CancelOrderReqField_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_xyz_redtorch_pb_CancelOrderReqField_descriptor,
         new java.lang.String[] { "OriginOrderId", "OrderId", });
     internal_static_xyz_redtorch_pb_GatewaySettingField_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_xyz_redtorch_pb_GatewaySettingField_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_xyz_redtorch_pb_GatewaySettingField_descriptor,
-        new java.lang.String[] { "GatewayId", "GatewayName", "GatewayDescription", "ImplementClassName", "GatewayType", "GatewayAdapterType", "CtpApiSetting", "IbApiSetting", "Status", "Version", });
+        new java.lang.String[] { "GatewayId", "GatewayName", "GatewayDescription", "ImplementClassName", "GatewayType", "GatewayAdapterType", "CtpApiSetting", "IbApiSetting", "Status", "Version", "AutoConnectTimeRanges", });
     internal_static_xyz_redtorch_pb_GatewaySettingField_CtpApiSettingField_descriptor =
       internal_static_xyz_redtorch_pb_GatewaySettingField_descriptor.getNestedTypes().get(0);
     internal_static_xyz_redtorch_pb_GatewaySettingField_CtpApiSettingField_fieldAccessorTable = new
@@ -36068,13 +39246,13 @@ public final class CoreField {
         internal_static_xyz_redtorch_pb_GatewaySettingField_IbApiSettingField_descriptor,
         new java.lang.String[] { "Host", "Port", "ClientId", });
     internal_static_xyz_redtorch_pb_LogField_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_xyz_redtorch_pb_LogField_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_xyz_redtorch_pb_LogField_descriptor,
         new java.lang.String[] { "LogLevel", "Timestamp", "Content", });
     internal_static_xyz_redtorch_pb_NoticeField_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_xyz_redtorch_pb_NoticeField_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_xyz_redtorch_pb_NoticeField_descriptor,

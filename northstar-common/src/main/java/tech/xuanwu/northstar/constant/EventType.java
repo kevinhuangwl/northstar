@@ -9,16 +9,16 @@ public enum EventType {
 	
 	//更新TICK数据
 	TICK_UPDATE,
-	//注册账户
-	REGISTER_ACCOUNT,
 	//注册策略
 	REGISTER_STRATEGY,
 	//注册合约
 	REGISTER_CONTRACT,
 	//下单
-	SUBMIT_ORDER,
+	PLACE_ORDER,
 	//撤单
 	WITHDRAW_ORDER,
+	//订单回报
+	FEEDBACK_ORDER,
 	
 	
 	GATEWAY_CONNECTED,

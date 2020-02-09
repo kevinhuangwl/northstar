@@ -32,7 +32,7 @@ public class BarDataDaoImpl implements BarDataDao{
 	
 	@Override
 	public boolean saveBarData(BarField bar) {
-		String contractId = bar.getContract().getContractId();
+		String contractId = bar.getUnifiedSymbol();
 		try {
 			Document doc = MongoDBUtils.beanToDocument(bar.toBuilder());
 			mongodb.upsert(DB_BAR, contractId, doc, doc);

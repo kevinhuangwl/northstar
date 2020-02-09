@@ -16,9 +16,9 @@ public interface IAccountLike {
 	
 	double getMargin();
 	
-	void placeOrder(SubmitOrderReqField submitOrderReq);
+	String placeOrder(SubmitOrderReqField submitOrderReq);
 	
-	void cancelOrder(CancelOrderReqField cancelOrderReq);
+	boolean cancelOrder(CancelOrderReqField cancelOrderReq);
 	
 	void updatePosition(PositionField position);
 	

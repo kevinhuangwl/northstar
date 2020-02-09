@@ -28,7 +28,7 @@ public class TickDataDaoImpl implements TickDataDao{
 	
 	@Override
 	public boolean saveTickData(TickField tickField) {
-		String contractId = tickField.getContract().getContractId();
+		String contractId = tickField.getUnifiedSymbol();
 		try {
 			Document doc = MongoDBUtils.beanToDocument(tickField.toBuilder());
 			mongodb.upsert(DB_TICK, contractId, doc, doc);

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.core.dao.ContractDao;
@@ -14,6 +15,7 @@ import xyz.redtorch.common.mongo.MongoDBUtils;
 import xyz.redtorch.pb.CoreField.ContractField;
 
 @Slf4j
+@Repository
 public class ContractDaoImpl implements ContractDao{
 	
 	@Autowired

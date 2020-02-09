@@ -21,6 +21,8 @@ public abstract class GatewayApiAbstract implements GatewayApi {
 	protected String gatewayId;
 	protected String gatewayName;
 	protected String logInfo;
+	private boolean autoErrorFlag = false;
+	protected long lastConnectBeginTimestamp = 0;
 
 	protected GatewaySettingField gatewaySetting;
 
@@ -45,6 +47,21 @@ public abstract class GatewayApiAbstract implements GatewayApi {
 		gateway = gatewayBuilder.build();
 		log.info(logInfo + "开始初始化");
 
+	}
+
+	@Override
+	public boolean getAuthErrorFlag() {
+		return autoErrorFlag;
+	}
+
+	@Override
+	public void setAuthErrorFlag(boolean authErrorFlag) {
+		this.autoErrorFlag = authErrorFlag;
+	}
+
+	@Override
+	public long getLastConnectBeginTimestamp() {
+		return this.lastConnectBeginTimestamp;
 	}
 
 	@Override

@@ -1,14 +1,14 @@
 syntax = "proto3";
 
 import "xyz/redtorch/pb/core_field.proto";
+import "xyz/redtorch/pb/core_enum.proto";
 
 package xyz.redtorch.pb;
 
-/* 1 void subscribe(CommonReqField commonReq, ContractField contract, String gatewayId); */
+/* 1 void subscribe(CommonReqField commonReq, ContractField contract); */
 message RpcSubscribeReq {
 	CommonReqField commonReq = 1;
 	ContractField contract = 2;
-	string gatewayId = 3;
 }
 message RpcSubscribeRsp {
 	CommonRspField commonRsp = 1;
@@ -306,6 +306,45 @@ message RpcGetTickListRsp {
 	CommonRspField commonRsp = 1;
 	repeated TickField tick = 2;
 }
+/* 63 List<BarField> queryDBBarList(CommonReqField commonReq,long startTimestamp, long endTimestamp, String unifiedSymbol, BarCycleEnum barCycle,MarketDataDBTypeEnum marketDataDBType) */
+message RpcQueryDBBarListReq{
+	CommonReqField commonReq = 1;
+	fixed64 startTimestamp = 2;
+	fixed64 endTimestamp = 3;
+	string unifiedSymbol = 4;
+	BarCycleEnum barCycle = 5;
+	MarketDataDBTypeEnum marketDataDBType = 6;
+}
+message RpcQueryDBBarListRsp{
+	CommonRspField commonRsp = 1;
+	repeated BarField bar = 2;
+}
+
+/* 65 List<TickField> queryDBTickList(CommonReqField commonReq,long startTimestamp, long endTimestamp, String unifiedSymbol, MarketDataDBTypeEnum marketDataDBType) */
+message RpcQueryDBTickListReq{
+	CommonReqField commonReq = 1;
+	fixed64 startTimestamp = 2;
+	fixed64 endTimestamp = 3;
+	string unifiedSymbol = 4;
+	MarketDataDBTypeEnum marketDataDBType = 5;
+}
+message RpcQueryDBTickListRsp{
+	CommonRspField commonRsp = 1;
+	repeated TickField tick = 2;
+}
+
+/* 67 List<BarField> queryVolumeBarList(CommonReqField commonReq,long startTimestamp, long endTimestamp, String unifiedSymbol, int volume) */
+message RpcQueryVolumeBarListReq{
+	CommonReqField commonReq = 1;
+	fixed64 startTimestamp = 2;
+	fixed64 endTimestamp = 3;
+	string unifiedSymbol = 4;
+	fixed32 volume = 5;
+}
+message RpcQueryVolumeBarListRsp{
+	CommonRspField commonRsp = 1;
+	repeated BarField bar = 2;
+}
 
 /* 999999 */
 message RpcExceptionRsp {
@@ -317,77 +356,64 @@ message RpcExceptionRsp {
 
 /* 1001 */
 message RpcOrderRtn {
-	CommonRtnField commonRtn = 1;
-	OrderField order = 2;
+	OrderField order = 1;
 }
 
 /* 1002 */
 message RpcTradeRtn {
-	CommonRtnField commonRtn = 1;
-	TradeField trade = 2;
+	TradeField trade = 1;
 }
 
 /* 1003 */
 message RpcContractRtn {
-	CommonRtnField commonRtn = 1;
-	ContractField contract = 2;
+	ContractField contract =1;
 }
 
 /* 1004 */
 message RpcPositionRtn {
-	CommonRtnField commonRtn = 1;
-	PositionField position = 2;
+	PositionField position = 1;
 }
 
 /* 1005 */
 message RpcAccountRtn {
-	CommonRtnField commonRtn = 1;
-	AccountField account = 2;
+	AccountField account = 1;
 }
 /* 1006 */
 message RpcTickRtn {
-	CommonRtnField commonRtn = 1;
-	TickField tick = 2;
+	TickField tick = 1;
 }
 /* 1007 */
 message RpcOrderListRtn {
-	CommonRtnField commonRtn = 1;
-	repeated OrderField order = 2;
+	repeated OrderField order = 1;
 }
 
 /* 1008 */
 message RpcTradeListRtn {
-	CommonRtnField commonRtn = 1;
-	repeated TradeField trade = 2;
+	repeated TradeField trade = 1;
 }
 
 /* 1009 */
 message RpcContractListRtn {
-	CommonRtnField commonRtn = 1;
-	repeated ContractField contract = 2;
+	repeated ContractField contract = 1;
 }
 
 /* 1010 */
 message RpcPositionListRtn {
-	CommonRtnField commonRtn = 1;
-	repeated PositionField position = 2;
+	repeated PositionField position = 1;
 }
 
 /* 1011 */
 message RpcAccountListRtn {
-	CommonRtnField commonRtn = 1;
-	repeated AccountField account = 2;
+	repeated AccountField account = 1;
 }
 /* 1012 */
 message RpcTickListRtn {
-	CommonRtnField commonRtn = 1;
-	repeated TickField tick = 2;
+	repeated TickField tick = 1;
 }
 
 /* 1013 */
 message RpcNoticeRtn {
-	CommonRtnField commonRtn = 1;
-	NoticeField notice = 2;
+	NoticeField notice = 1;
 }
 
 //message RpcLogListRtn {
@@ -459,6 +485,12 @@ enum RpcId {
 	GET_MIX_CONTRACT_LIST_RSP = 60;
 	GET_TICK_LIST_REQ = 61;
 	GET_TICK_LIST_RSP = 62;
+	QUERY_DB_BAR_LIST_REQ = 63;
+	QUERY_DB_BAR_LIST_RSP = 64;
+	QUERY_DB_TICK_LIST_REQ = 65;
+	QUERY_DB_TICK_LIST_RSP = 66;
+	QUERY_VOLUME_BAR_LIST_REQ = 67;
+	QUERY_VOLUME_BAR_LIST_RSP = 68;
 	EXCEPTION_RSP = 999999;
 	///////////////////////
 	ORDER_RTN = 1001;

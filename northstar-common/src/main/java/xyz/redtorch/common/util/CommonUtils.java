@@ -522,8 +522,13 @@ public class CommonUtils {
 		address = address.trim();
 		return address;
 	}
+	
+	public static boolean isEquals(double d1,double d2) {
+		double eps=1e-6;
+		if(Math.abs(d1-d2)<eps){
+		 return true;
+		}
+		return false;
+	}
 
-//	public static void main(String[] args) {
-//		System.out.println(getMACAddress());
-//	}
 }

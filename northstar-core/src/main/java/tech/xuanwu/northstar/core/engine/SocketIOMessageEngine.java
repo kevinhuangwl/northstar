@@ -23,7 +23,7 @@ public class SocketIOMessageEngine implements MessageEngine{
 	@Override
 	public void emitTick(TickField tick) {
 		//以合约名称作为广播的房间号
-		String symbol = tick.getContract().getSymbol();
+		String symbol = tick.getUnifiedSymbol();
 		
 		server.getRoomOperations(symbol).sendEvent(MessageType.MARKET_TICK_DATA, tick.toByteArray());
 		log.info("收到{}数据", symbol);

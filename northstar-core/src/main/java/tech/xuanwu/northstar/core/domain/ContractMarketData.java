@@ -3,7 +3,7 @@ package tech.xuanwu.northstar.core.domain;
 import lombok.Setter;
 import tech.xuanwu.northstar.core.dao.BarDataDao;
 import tech.xuanwu.northstar.core.dao.TickDataDao;
-import xyz.redtorch.common.util.BarGenerator;
+import xyz.redtorch.common.util.bar.BarGenerator;
 import xyz.redtorch.pb.CoreField.BarField;
 import xyz.redtorch.pb.CoreField.TickField;
 

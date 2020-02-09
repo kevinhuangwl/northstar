@@ -14,6 +14,7 @@ import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.annotation.OnConnect;
 import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
+import com.google.protobuf.InvalidProtocolBufferException;
 
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.EventType;
@@ -22,7 +23,9 @@ import tech.xuanwu.northstar.core.util.ContractMap;
 import tech.xuanwu.northstar.dto.StrategyInfo;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.gateway.GatewayApi;
+import xyz.redtorch.pb.CoreField.CancelOrderReqField;
 import xyz.redtorch.pb.CoreField.ContractField;
+import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 
 @Slf4j
 @Component
@@ -60,7 +63,7 @@ public class CommonMsgEventHandler {
     }
     
     @OnEvent(MessageType.REG_STRATEGY)
-    private void registerStrategy(final SocketIOClient client, StrategyInfo s) {
+    private void onRegisterStrategy(final SocketIOClient client, StrategyInfo s) {
     	
     	log.info("【策略注册】-[{}],【{}】绑定账户：{}，订阅合约：{}", 
     			client.getSessionId(), 
@@ -99,12 +102,22 @@ public class CommonMsgEventHandler {
     }
     
     @OnEvent(MessageType.PLACE_ORDER)
-    private void placeOrder(final SocketIOClient client) {
-    	
+    private void onPlaceOrder(final SocketIOClient client, byte[] data) {
+    	try {
+			SubmitOrderReqField submitOrderReq = SubmitOrderReqField.parseFrom(data);
+			rtEngine.emitEvent(EventType.PLACE_ORDER.toString(), new EventObject(submitOrderReq));
+		} catch (InvalidProtocolBufferException e) {
+			log.error("", e);
+		}
     }
     
-    @OnEvent(MessageType.CANCEL_ORDER)
-    private void cancelOrder(final SocketIOClient client) {
-    	
+    @OnEvent(MessageType.WITHDRAW_ORDER)
+    private void onCancelOrder(final SocketIOClient client, byte[] data) {
+    	try {
+			CancelOrderReqField cancelOrderReq = CancelOrderReqField.parseFrom(data);
+			rtEngine.emitEvent(EventType.WITHDRAW_ORDER.toString(), new EventObject(cancelOrderReq));
+		} catch (InvalidProtocolBufferException e) {
+			log.error("", e);
+		}
     }
 }

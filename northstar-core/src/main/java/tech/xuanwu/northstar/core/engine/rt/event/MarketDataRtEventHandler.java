@@ -44,7 +44,7 @@ public class MarketDataRtEventHandler implements RuntimeEngine.Listener, Initial
 	public void onEvent(EventObject event) {
 		try {
 			TickField tick = (TickField) event.getSource();
-			String contractId = tick.getContract().getContractId();
+			String contractId = tick.getUnifiedSymbol();
 			if(!cmdMap.containsKey(contractId)) {
 				ContractMarketData cmd = new ContractMarketData();
 				cmd.setBarDao(barDao);

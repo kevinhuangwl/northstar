@@ -16,16 +16,16 @@ public class DemoStrategy extends TemplateStrategy {
 	@Override
 	protected void onTick(TickField tick) {
 		log.info("合约-[{}], 价：{}，仓：{}，量：{}", 
-				tick.getContract().getSymbol(), 
+				tick.getUnifiedSymbol(),
 				tick.getLastPrice(), 
-				tick.getOpenInterestChange(), 
-				tick.getVolumeChange());
+				tick.getOpenInterestDelta(),
+				tick.getVolumeDelta());
 	}
 
 	@Override
 	protected void onBar(BarField bar) {
 		log.info("合约-[{}]，开：{}，高：{}，低：{}，收：{}，仓：{}，量：{}",
-				bar.getContract().getContractId(),
+				bar.getUnifiedSymbol(),
 				bar.getOpenPrice(),
 				bar.getHighPrice(),
 				bar.getLowPrice(),

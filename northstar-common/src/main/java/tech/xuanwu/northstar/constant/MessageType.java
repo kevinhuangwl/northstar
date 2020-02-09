@@ -6,7 +6,7 @@ public interface MessageType {
 	//下单
 	String PLACE_ORDER = "PlaceOrder";
 	//撤单
-	String CANCEL_ORDER = "CancelOrder";
+	String WITHDRAW_ORDER = "WithdrawOrder";
 	//TICK行情数据
 	String MARKET_TICK_DATA = "TickData";
 	//Bar数据

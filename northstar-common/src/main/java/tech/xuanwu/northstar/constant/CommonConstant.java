@@ -34,18 +34,22 @@ public interface CommonConstant {
 	static final HashSet<OrderStatusEnum> ORDER_STATUS_FINISHED_SET = new HashSet<OrderStatusEnum>() {
 		private static final long serialVersionUID = 8777691797309945190L;
 		{
-			add(OrderStatusEnum.REJECTED);
-			add(OrderStatusEnum.CANCELLED);
-			add(OrderStatusEnum.ALL_TRADED);
+			add(OrderStatusEnum.OS_Rejected);
+			add(OrderStatusEnum.OS_Canceled);
+			add(OrderStatusEnum.OS_AllTraded);
+			add(OrderStatusEnum.OS_Touched);
 		}
 	};
 
 	static final HashSet<OrderStatusEnum> ORDER_STATUS_WORKING_SET = new HashSet<OrderStatusEnum>() {
 		private static final long serialVersionUID = 909683985291870766L;
 		{
-			add(OrderStatusEnum.UNKNOWN_ORDER_STATUS);
-			add(OrderStatusEnum.NOT_TRADED);
-			add(OrderStatusEnum.PART_TRADED);
+			add(OrderStatusEnum.OS_Unknown);
+			add(OrderStatusEnum.OS_NoTradeQueueing);
+			add(OrderStatusEnum.OS_NoTradeNotQueueing);
+			add(OrderStatusEnum.OS_PartTradedNotQueueing);
+			add(OrderStatusEnum.OS_PartTradedQueueing);
+			add(OrderStatusEnum.OS_NotTouched);
 		}
 	};
 }

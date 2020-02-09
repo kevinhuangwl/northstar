@@ -7,7 +7,7 @@ import tech.xuanwu.northstar.domain.IStrategy;
  * @author kevinhuangwl
  *
  */
-public final class Strategy extends Account implements IStrategy{
+public final class Strategy extends RealAccount implements IStrategy{
 
 	public Strategy(String name) {
 		this.name = name;

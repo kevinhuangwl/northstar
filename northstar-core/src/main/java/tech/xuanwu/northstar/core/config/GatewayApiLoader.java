@@ -1,16 +1,18 @@
 package tech.xuanwu.northstar.core.config;
 
 import java.lang.reflect.Constructor;
-import java.util.EventObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import tech.xuanwu.northstar.constant.EventType;
+import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.core.config.props.CtpGatewaySettingProperties;
-import tech.xuanwu.northstar.core.domain.Account;
+import tech.xuanwu.northstar.core.domain.RealAccount;
+import tech.xuanwu.northstar.core.domain.SimulateAccount;
+import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.FastEventEngine;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.gateway.GatewayApi;
@@ -21,6 +23,7 @@ import xyz.redtorch.pb.CoreField.GatewaySettingField;
  * @author kevinhuangwl
  *
  */
+@Slf4j
 @Configuration
 @EnableConfigurationProperties(CtpGatewaySettingProperties.class)
 public class GatewayApiLoader {
@@ -43,12 +46,22 @@ public class GatewayApiLoader {
 		return gateway;
 	}
 	
+	
 	@Bean
-	public Account getAccount() {
-		Account account = new Account("默认CTP账户", rtEngine);
-		EventObject e = new EventObject(account);
-		rtEngine.emitEvent(EventType.REGISTER_ACCOUNT.toString(), e);
+	@ConditionalOnProperty(name="account.type", havingValue="real")
+	public IAccount getAccount(@Autowired GatewayApi gatewayApi) {
+		log.info("使用真实账户交易");
+		IAccount account = new RealAccount(gatewayApi);
+		rtEngine.regAccount(account);
 		return account;
 	}
 	
+	@Bean
+	@ConditionalOnProperty(name="account.type", havingValue="simulate")
+	public IAccount getSimulateAccount(@Autowired GatewayApi gatewayApi) {
+		log.info("使用模拟账户交易");
+		IAccount account = new SimulateAccount();
+		rtEngine.regAccount(account);
+		return account;
+	}
 }

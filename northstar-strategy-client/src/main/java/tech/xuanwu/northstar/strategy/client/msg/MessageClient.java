@@ -87,7 +87,7 @@ public class MessageClient {
 	 * @param cancelOrderReq
 	 */
 	public void cancelOrder(CancelOrderReqField cancelOrderReq) {
-		client.emit(MessageType.CANCEL_ORDER, cancelOrderReq);
+		client.emit(MessageType.WITHDRAW_ORDER, cancelOrderReq);
 	}
 	
 }

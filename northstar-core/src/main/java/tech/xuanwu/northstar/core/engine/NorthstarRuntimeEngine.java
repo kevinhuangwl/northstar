@@ -13,7 +13,7 @@ import tech.xuanwu.northstar.engine.RuntimeEngine;
 
 @Slf4j
 @Component
-public class RealTraderRuntimeEngine extends AbstractTraderRuntimeEngine implements RuntimeEngine{
+public class NorthstarRuntimeEngine extends AbstractTraderRuntimeEngine implements RuntimeEngine{
 	
 	
 	private ConcurrentHashMap<String, ConcurrentLinkedQueue<Listener>> handlerMap = new ConcurrentHashMap<>();

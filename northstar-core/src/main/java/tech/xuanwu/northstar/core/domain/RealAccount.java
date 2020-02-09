@@ -15,6 +15,7 @@ import tech.xuanwu.northstar.core.dao.AccountDao;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.domain.IStrategy;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
+import tech.xuanwu.northstar.gateway.GatewayApi;
 import xyz.redtorch.pb.CoreField.AccountField;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
 import xyz.redtorch.pb.CoreField.OrderField;
@@ -29,13 +30,13 @@ import xyz.redtorch.pb.CoreField.TradeField;
  *
  */
 @Slf4j
-public class Account implements IAccount{
+public class RealAccount implements IAccount{
 	
 	@Autowired
 	private AccountDao accDao;
 	
-	/*运行时引擎*/
-	private RuntimeEngine rtEngine;
+	/*账户对应的网关接口，一对一关系*/
+	private GatewayApi gatewayApi;
 	
 	/*基本账户信息副本*/
 	private volatile AccountField account;
@@ -66,23 +67,22 @@ public class Account implements IAccount{
 	/*成交信息*/
 	protected List<TradeField> transactionList = new ArrayList<>();
 	
-	public Account(){}
+	public RealAccount(){}
 	
-	public Account(String name, RuntimeEngine rtEngine){
-		this.name = name;
-		this.rtEngine = rtEngine;
+	public RealAccount(GatewayApi gatewayApi){
+		this.name = gatewayApi.getGatewayName();
 	}
 
 	@Override
-	public void placeOrder(SubmitOrderReqField submitOrderReq) {
+	public String placeOrder(SubmitOrderReqField submitOrderReq) {
 		log.info("账户-【{}】委托下单，{}", name, submitOrderReq);
-		rtEngine.emitEvent(EventType.SUBMIT_ORDER.toString(), new EventObject(submitOrderReq));
+		return gatewayApi.submitOrder(submitOrderReq);
 	}
 
 	@Override
-	public void cancelOrder(CancelOrderReqField cancelOrderReq) {
+	public boolean cancelOrder(CancelOrderReqField cancelOrderReq) {
 		log.info("账户-【{}】委托撤单，{}", name, cancelOrderReq);
-		rtEngine.emitEvent(EventType.WITHDRAW_ORDER.toString(), new EventObject(cancelOrderReq));
+		return gatewayApi.cancelOrder(cancelOrderReq);
 	}
 
 	@Override

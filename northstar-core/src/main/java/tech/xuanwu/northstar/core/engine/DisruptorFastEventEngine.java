@@ -174,7 +174,7 @@ public class DisruptorFastEventEngine implements FastEventEngine, InitializingBe
 		try {
 			FastEvent fastEvent = ringBuffer.get(sequence); // Get the entry in the Disruptor for the sequence
 			fastEvent.setObj(tick);
-			fastEvent.setEvent(tick.getDataSourceId());
+			fastEvent.setEvent(tick.getUnifiedSymbol()+"@"+tick.getGatewayId());
 			fastEvent.setFastEventType(FastEventType.TICK);
 
 		} finally {

@@ -18,7 +18,7 @@ import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 
 public class CtpGatewayImpl extends GatewayApiAbstract {
 
-	private static Logger logger = LoggerFactory.getLogger(CtpGatewayImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(CtpGatewayImpl.class);
 
 	static {
 		String envTmpDir = "";
@@ -27,8 +27,8 @@ public class CtpGatewayImpl extends GatewayApiAbstract {
 			if (System.getProperties().getProperty("os.name").toUpperCase().indexOf("WINDOWS") != -1) {
 
 				envTmpDir = System.getProperty("java.io.tmpdir");
-				tempLibPath = envTmpDir + File.separator + "xyz" + File.separator + "redtorch" + File.separator + "api" + File.separator + "jctp"
-						+ File.separator + "lib" + File.separator + "jctpv6v3v16x64api" + File.separator;
+				tempLibPath = envTmpDir + File.separator + "xyz" + File.separator + "redtorch" + File.separator + "api" + File.separator + "jctp" + File.separator + "lib" + File.separator
+						+ "jctpv6v3v16x64api" + File.separator;
 
 				CommonUtils.copyURLToFileForTmp(tempLibPath, CtpGatewayImpl.class.getResource("/assembly/libiconv.dll"));
 				CommonUtils.copyURLToFileForTmp(tempLibPath, CtpGatewayImpl.class.getResource("/assembly/jctpv6v3v16x64api/thostmduserapi_se.dll"));
@@ -37,8 +37,8 @@ public class CtpGatewayImpl extends GatewayApiAbstract {
 			} else {
 
 				envTmpDir = "/tmp";
-				tempLibPath = envTmpDir + File.separator + "xyz" + File.separator + "redtorch" + File.separator + "api" + File.separator + "jctp"
-						+ File.separator + "lib" + File.separator + "jctpv6v3v16x64api" + File.separator;
+				tempLibPath = envTmpDir + File.separator + "xyz" + File.separator + "redtorch" + File.separator + "api" + File.separator + "jctp" + File.separator + "lib" + File.separator
+						+ "jctpv6v3v16x64api" + File.separator;
 
 				CommonUtils.copyURLToFileForTmp(tempLibPath, CtpGatewayImpl.class.getResource("/assembly/jctpv6v3v16x64api/libthostmduserapi_se.so"));
 				CommonUtils.copyURLToFileForTmp(tempLibPath, CtpGatewayImpl.class.getResource("/assembly/jctpv6v3v16x64api/libthosttraderapi_se.so"));
@@ -69,12 +69,12 @@ public class CtpGatewayImpl extends GatewayApiAbstract {
 
 	public Map<String, ContractField> contractMap = new HashMap<>();
 
-	public CtpGatewayImpl(FastEventEngine fastEventService, GatewaySettingField gatewaySetting) {
-		super(fastEventService, gatewaySetting);
+	public CtpGatewayImpl(FastEventEngine fastEventEngine, GatewaySettingField gatewaySetting) {
+		super(fastEventEngine, gatewaySetting);
 
-		if (gatewaySetting.getGatewayType() == GatewayTypeEnum.TRADE_ONLY) {
+		if (gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_Trade) {
 			tdSpi = new TdSpi(this);
-		} else if (gatewaySetting.getGatewayType() == GatewayTypeEnum.MARKET_DATA) {
+		} else if (gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_MarketData) {
 			mdSpi = new MdSpi(this);
 		} else {
 			mdSpi = new MdSpi(this);
@@ -84,13 +84,13 @@ public class CtpGatewayImpl extends GatewayApiAbstract {
 
 	@Override
 	public boolean subscribe(ContractField contractField) {
-		if (gatewaySetting.getGatewayType() == GatewayTypeEnum.MARKET_DATA || gatewaySetting.getGatewayType() == GatewayTypeEnum.TRADE_AND_MARKET_DATA) {
+		if (gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_MarketData || gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_TradeAndMarketData) {
 			if (mdSpi == null) {
 				logger.error(getLogInfo() + "行情接口尚未初始化或已断开");
 				return false;
 			} else {
 				// 如果网关类型仅为行情,那就无法通过交易接口拿到合约信息，以订阅时的合约信息为准
-				if (gatewaySetting.getGatewayType() == GatewayTypeEnum.MARKET_DATA) {
+				if (gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_MarketData) {
 					contractMap.put(contractField.getSymbol(), contractField);
 				}
 
@@ -104,7 +104,7 @@ public class CtpGatewayImpl extends GatewayApiAbstract {
 
 	@Override
 	public boolean unsubscribe(ContractField contractField) {
-		if (gatewaySetting.getGatewayType() == GatewayTypeEnum.MARKET_DATA || gatewaySetting.getGatewayType() == GatewayTypeEnum.TRADE_AND_MARKET_DATA) {
+		if (gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_MarketData || gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_TradeAndMarketData) {
 			if (mdSpi == null) {
 				logger.error(getLogInfo() + "行情接口尚未初始化或已断开");
 				return false;
@@ -119,7 +119,7 @@ public class CtpGatewayImpl extends GatewayApiAbstract {
 
 	@Override
 	public String submitOrder(SubmitOrderReqField submitOrderReq) {
-		if (gatewaySetting.getGatewayType() == GatewayTypeEnum.TRADE_ONLY || gatewaySetting.getGatewayType() == GatewayTypeEnum.TRADE_AND_MARKET_DATA) {
+		if (gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_Trade || gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_TradeAndMarketData) {
 			if (tdSpi == null || !tdSpi.isConnected()) {
 				logger.error(getLogInfo() + "交易接口尚未初始化或已断开");
 				return "";
@@ -134,7 +134,7 @@ public class CtpGatewayImpl extends GatewayApiAbstract {
 
 	@Override
 	public boolean cancelOrder(CancelOrderReqField cancelOrderReq) {
-		if (gatewaySetting.getGatewayType() == GatewayTypeEnum.TRADE_ONLY || gatewaySetting.getGatewayType() == GatewayTypeEnum.TRADE_AND_MARKET_DATA) {
+		if (gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_Trade || gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_TradeAndMarketData) {
 			if (tdSpi == null || !tdSpi.isConnected()) {
 				logger.error(getLogInfo() + "交易接口尚未初始化或已断开");
 				return false;
@@ -154,7 +154,9 @@ public class CtpGatewayImpl extends GatewayApiAbstract {
 
 	@Override
 	public void disconnect() {
-		
+
+		lastConnectBeginTimestamp = 0;
+
 		TdSpi tdSpiForDisconnect = tdSpi;
 		MdSpi mdSpiForDisconnect = mdSpi;
 		tdSpi = null;
@@ -163,49 +165,51 @@ public class CtpGatewayImpl extends GatewayApiAbstract {
 			@Override
 			public void run() {
 				try {
-					if (gatewaySetting.getGatewayType() == GatewayTypeEnum.TRADE_ONLY && tdSpiForDisconnect != null) {
+					if (gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_Trade && tdSpiForDisconnect != null) {
 						tdSpiForDisconnect.disconnect();
-					} else if (gatewaySetting.getGatewayType() == GatewayTypeEnum.MARKET_DATA && mdSpiForDisconnect != null) {
+					} else if (gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_MarketData && mdSpiForDisconnect != null) {
 						mdSpiForDisconnect.disconnect();
-					} else if (gatewaySetting.getGatewayType() == GatewayTypeEnum.TRADE_AND_MARKET_DATA && tdSpiForDisconnect != null && mdSpiForDisconnect != null) {
+					} else if (gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_TradeAndMarketData && tdSpiForDisconnect != null && mdSpiForDisconnect != null) {
 						tdSpiForDisconnect.disconnect();
 						mdSpiForDisconnect.disconnect();
 					} else {
 						logger.error(getLogInfo() + "检测到SPI实例为空");
 					}
-					logger.warn(getLogInfo()+"异步断开操作完成");
+					logger.warn(getLogInfo() + "异步断开操作完成");
 				} catch (Throwable t) {
-					logger.error(getLogInfo()+"异步断开操作错误",t);
+					logger.error(getLogInfo() + "异步断开操作错误", t);
 				}
-	
+
 			}
 		}).start();
 	}
 
 	@Override
 	public void connect() {
-		if (gatewaySetting.getGatewayType() == GatewayTypeEnum.TRADE_ONLY) {
-			if(tdSpi == null) {
+		lastConnectBeginTimestamp = System.currentTimeMillis();
+
+		if (gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_Trade) {
+			if (tdSpi == null) {
 				tdSpi = new TdSpi(this);
 			}
-		} else if (gatewaySetting.getGatewayType() == GatewayTypeEnum.MARKET_DATA) {
-			if(tdSpi == null) {
+		} else if (gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_MarketData) {
+			if (tdSpi == null) {
 				mdSpi = new MdSpi(this);
 			}
 		} else {
-			if(tdSpi == null) {
+			if (tdSpi == null) {
 				tdSpi = new TdSpi(this);
 			}
-			if(tdSpi == null) {
+			if (tdSpi == null) {
 				mdSpi = new MdSpi(this);
 			}
 		}
-		
-		if (gatewaySetting.getGatewayType() == GatewayTypeEnum.TRADE_ONLY && tdSpi != null) {
+
+		if (gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_Trade && tdSpi != null) {
 			tdSpi.connect();
-		} else if (gatewaySetting.getGatewayType() == GatewayTypeEnum.MARKET_DATA && mdSpi != null) {
+		} else if (gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_MarketData && mdSpi != null) {
 			mdSpi.connect();
-		} else if (gatewaySetting.getGatewayType() == GatewayTypeEnum.TRADE_AND_MARKET_DATA && tdSpi != null && mdSpi != null) {
+		} else if (gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_TradeAndMarketData && tdSpi != null && mdSpi != null) {
 			tdSpi.connect();
 			mdSpi.connect();
 		} else {
@@ -215,11 +219,11 @@ public class CtpGatewayImpl extends GatewayApiAbstract {
 
 	@Override
 	public boolean isConnected() {
-		if (gatewaySetting.getGatewayType() == GatewayTypeEnum.TRADE_ONLY && tdSpi != null) {
+		if (gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_Trade && tdSpi != null) {
 			return tdSpi.isConnected();
-		} else if (gatewaySetting.getGatewayType() == GatewayTypeEnum.MARKET_DATA && mdSpi != null) {
+		} else if (gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_MarketData && mdSpi != null) {
 			return mdSpi.isConnected();
-		} else if (gatewaySetting.getGatewayType() == GatewayTypeEnum.TRADE_AND_MARKET_DATA && tdSpi != null && mdSpi != null) {
+		} else if (gatewaySetting.getGatewayType() == GatewayTypeEnum.GTE_TradeAndMarketData && tdSpi != null && mdSpi != null) {
 			return tdSpi.isConnected() && mdSpi.isConnected();
 		} else {
 			logger.error(getLogInfo() + "检测到SPI实例为空");

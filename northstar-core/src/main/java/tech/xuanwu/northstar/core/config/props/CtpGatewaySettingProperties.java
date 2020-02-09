@@ -24,9 +24,9 @@ import xyz.redtorch.pb.CoreField.GatewaySettingField.CtpApiSettingField;
 @ConfigurationProperties(prefix="ctp")
 public class CtpGatewaySettingProperties {
 	//网关类型
-	private GatewayTypeEnum gatewayType = GatewayTypeEnum.TRADE_AND_MARKET_DATA;
+	private GatewayTypeEnum gatewayType = GatewayTypeEnum.GTE_TradeAndMarketData;
 	//网关适配器类型
-	private GatewayAdapterTypeEnum adpterType = GatewayAdapterTypeEnum.CTP;
+	private GatewayAdapterTypeEnum adpterType = GatewayAdapterTypeEnum.GAT_CTP;
 	//网关实现类名称
 	private String gatewayImplClassName;
 	//网关ID

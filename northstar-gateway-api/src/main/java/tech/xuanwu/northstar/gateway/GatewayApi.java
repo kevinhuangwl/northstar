@@ -145,4 +145,25 @@ public interface GatewayApi {
 	 */
 	boolean isConnected();
 
+	/**
+	 * 获取登录错误标记
+	 * 
+	 * @return
+	 */
+	boolean getAuthErrorFlag();
+
+	/**
+	 * 设置登录错误标记
+	 * 
+	 * @return
+	 */
+	void setAuthErrorFlag(boolean loginErrorFlag);
+
+	/**
+	 * 获取最后一次开始登陆的时间戳
+	 * 
+	 * @return
+	 */
+	long getLastConnectBeginTimestamp();
+
 }
