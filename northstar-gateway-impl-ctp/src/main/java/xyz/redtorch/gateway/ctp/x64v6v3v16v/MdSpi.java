@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -49,8 +48,8 @@ public class MdSpi extends CThostFtdcMdSpi {
 	private String gatewayId;
 	private String tradingDay;
 
-	private Map<String, Integer> preTickVolumeMap = new HashMap<>();
-	private Map<String, Double> preTickOpenInterestMap = new HashMap<>();
+	private Map<String, Integer> preTickVolumeMap = new ConcurrentHashMap<>();
+	private Map<String, Double> preTickOpenInterestMap = new ConcurrentHashMap<>();
 
 	private Set<String> subscribedSymbolSet = ConcurrentHashMap.newKeySet();
 

@@ -57,7 +57,7 @@ public class TdSpi extends CThostFtdcTraderSpi {
 
 	private String investorName = "";
 
-	private HashMap<String, PositionField.Builder> positionBuilderMap = new HashMap<>();
+	private ConcurrentHashMap<String, PositionField.Builder> positionBuilderMap = new ConcurrentHashMap<>();
 
 	private Map<String, String> orderIdOriginalOrderIdMap = new ConcurrentHashMap<>();
 	private Map<String, String> originalOrderIdOrderIdMap = new ConcurrentHashMap<>();
@@ -1017,7 +1017,7 @@ public class TdSpi extends CThostFtdcTraderSpi {
 				}
 
 				// 清空缓存
-				positionBuilderMap = new HashMap<>();
+				positionBuilderMap = new ConcurrentHashMap<>();
 			}
 
 		} catch (Throwable t) {
