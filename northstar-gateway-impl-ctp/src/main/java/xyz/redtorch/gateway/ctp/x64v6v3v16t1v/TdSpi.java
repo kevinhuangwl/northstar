@@ -359,7 +359,7 @@ public class TdSpi extends CThostFtdcTraderSpi {
 
 		try {
 			CThostFtdcInputOrderField cThostFtdcInputOrderField = new CThostFtdcInputOrderField();
-			orderRef.incrementAndGet();
+			int orderRefInt = orderRef.incrementAndGet();
 			cThostFtdcInputOrderField.setInstrumentID(submitOrderReq.getContract().getSymbol());
 			cThostFtdcInputOrderField.setLimitPrice(submitOrderReq.getPrice());
 			cThostFtdcInputOrderField.setVolumeTotalOriginal(submitOrderReq.getVolume());
@@ -368,7 +368,7 @@ public class TdSpi extends CThostFtdcTraderSpi {
 			cThostFtdcInputOrderField.setDirection(CtpConstant.directionMap.getOrDefault(submitOrderReq.getDirection(), Character.valueOf('\0')));
 			cThostFtdcInputOrderField
 					.setCombOffsetFlag(String.valueOf(CtpConstant.offsetMap.getOrDefault(submitOrderReq.getOffset(), Character.valueOf('\0'))));
-			cThostFtdcInputOrderField.setOrderRef(orderRef.get() + "");
+			cThostFtdcInputOrderField.setOrderRef(orderRefInt + "");
 			cThostFtdcInputOrderField.setInvestorID(userId);
 			cThostFtdcInputOrderField.setUserID(userId);
 			cThostFtdcInputOrderField.setBrokerID(brokerId);
@@ -394,7 +394,7 @@ public class TdSpi extends CThostFtdcTraderSpi {
 			}
 
 			cThostFtdcTraderApi.ReqOrderInsert(cThostFtdcInputOrderField, reqId.incrementAndGet());
-			String orderId = gatewayId + "@" + orderRef.get();
+			String orderId = gatewayId + "@" + orderRefInt;
 
 			if (StringUtils.isNotBlank(submitOrderReq.getOriginOrderId())) {
 				orderIdOriginalOrderIdMap.put(orderId, submitOrderReq.getOriginOrderId());
@@ -402,7 +402,7 @@ public class TdSpi extends CThostFtdcTraderSpi {
 			}
 
 			submitOrderReqMap.put(orderId, submitOrderReq);
-			orderIdAdapterOrderIdMap.put(orderId, orderRef.get() + "");
+			orderIdAdapterOrderIdMap.put(orderId, orderRefInt + "");
 
 			return orderId;
 		} catch (Throwable t) {
