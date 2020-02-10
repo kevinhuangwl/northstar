@@ -37,16 +37,13 @@ public class TestTickDataDao {
 		field.set((TickDataDaoImpl)tickDao, mongo);
 		
 		for(int i=0; i<demoData.length; i++) {
-			ContractField.Builder cb = ContractField.newBuilder();
-			cb.setContractId(CONTRACT_ID);
 			TickField.Builder tb = TickField.newBuilder();
 			LocalDateTime now = LocalDateTime.now();
-			tb.setContract(cb.build());
 			tb.setTradingDay(now.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
 			tb.setActionDay(now.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
 			tb.setActionTime(now.format(DateTimeFormatter.ofPattern("HHmmssSSS")));
 			tb.setActionTimestamp(System.currentTimeMillis()-10000+i);
-			tb.setDataSourceId("rb2005@SHFE@FUTURES@CTP-SimNow724");
+			tb.setUnifiedSymbol(CONTRACT_ID);
 			tb.setOpenPrice(ThreadLocalRandom.current().nextDouble(1000000));
 			tb.setHighPrice(ThreadLocalRandom.current().nextDouble(1000000));
 			tb.setLowPrice(ThreadLocalRandom.current().nextDouble(1000000));
@@ -58,11 +55,11 @@ public class TestTickDataDao {
 			tb.setPreOpenInterest(ThreadLocalRandom.current().nextDouble(1000000));
 			tb.setOpenInterest(ThreadLocalRandom.current().nextDouble(Double.MAX_VALUE));
 			tb.setVolume(ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE));
-			tb.setVolumeChange(ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE));
+			tb.setVolumeDelta(ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE));
 			tb.setTurnover(ThreadLocalRandom.current().nextDouble(Double.MAX_VALUE));
-			tb.setTurnoverChange(ThreadLocalRandom.current().nextDouble(Double.MAX_VALUE));
+			tb.setTurnoverDelta(ThreadLocalRandom.current().nextDouble(Double.MAX_VALUE));
 			tb.setNumTrades(ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE));
-			tb.setNumTradesChange(ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE));
+			tb.setNumTradesDelta(ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE));
 			demoData[i] = tb.build();
 		}
 		
@@ -91,7 +88,6 @@ public class TestTickDataDao {
 			assertEquals(t1.getActionTime(), t2.getActionTime());
 			assertEquals(t1.getActionTimestamp(), t2.getActionTimestamp());
 			assertEquals(t1.getTradingDay(), t2.getTradingDay());
-			assertEquals(t1.getDataSourceId(), t2.getDataSourceId());
 			assertTrue(Math.abs(t1.getHighPrice() - t2.getHighPrice())<E);
 			assertTrue(Math.abs(t1.getOpenPrice() - t2.getOpenPrice())<E);
 			assertTrue(Math.abs(t1.getLowPrice() - t2.getLowPrice())<E);
@@ -102,13 +98,13 @@ public class TestTickDataDao {
 			assertTrue(Math.abs(t1.getPreOpenInterest() - t2.getPreOpenInterest())<E);
 			assertTrue(Math.abs(t1.getPreSettlePrice() - t2.getPreSettlePrice())<E);
 			assertEquals(t1.getNumTrades(), t2.getNumTrades());
-			assertEquals(t1.getNumTradesChange(), t2.getNumTradesChange());
+			assertEquals(t1.getNumTradesDelta(), t2.getNumTradesDelta());
 			assertEquals(t1.getVolume(), t2.getVolume());
-			assertEquals(t1.getVolumeChange(), t2.getVolumeChange());
+			assertEquals(t1.getVolumeDelta(), t2.getVolumeDelta());
 			assertTrue(Math.abs(t1.getOpenInterest()-t2.getOpenInterest())<E);
-			assertTrue(Math.abs(t1.getOpenInterestChange()-t2.getOpenInterestChange())<E);
+			assertTrue(Math.abs(t1.getOpenInterestDelta()-t2.getOpenInterestDelta())<E);
 			assertTrue(Math.abs(t1.getTurnover()-t2.getTurnover())<E);
-			assertTrue(Math.abs(t1.getTurnoverChange()-t2.getTurnoverChange())<E);
+			assertTrue(Math.abs(t1.getTurnoverDelta()-t2.getTurnoverDelta())<E);
 		}
 	} 
 }
