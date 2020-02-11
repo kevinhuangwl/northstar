@@ -510,7 +510,7 @@ public class TdSpi extends CThostFtdcTraderSpi {
 
 			cThostFtdcInputOrderField.setOrderRef(orderRef + "");
 
-			logger.error("{}交易接口发单记录->{\n" //
+			logger.info("{}交易接口发单记录->{\n" //
 					+ "InstrumentID:{},\n" //
 					+ "LimitPrice:{},\n" //
 					+ "VolumeTotalOriginal:{},\n" //
