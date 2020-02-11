@@ -2,6 +2,7 @@ package tech.xuanwu.northstar.strategy.client.strategies;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -121,6 +122,11 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 	protected void SP(String symbol, int volume) {}
 	
 	//TODO 难点：下单之后，如何拿到订单号，如何制定撤单策略，如何反馈成交
+	
+	@PostConstruct
+	protected void register() {
+		msgClient.connect();
+	}
 	
 	@PreDestroy
 	protected void terminate() {

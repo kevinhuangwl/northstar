@@ -34,41 +34,8 @@ public class MessageClient {
 	
 	public MessageClient(String coreServiceEndpoint, TradeStrategy s){
 		try {
-			
-			final Socket client = IO.socket(coreServiceEndpoint);
-			
-			final Listener callback = (data)->{
-				String accountName = s.getAccountName();
-				String strategyName = s.getStrategyName();
-				String[] contractList = s.getSubscribeContractList();
-				StrategyInfo strategyInfo = new StrategyInfo(accountName, strategyName, contractList);
-				
-				try {
-					client.emit(MessageType.REG_STRATEGY, wrapAsJSON(strategyInfo));
-				} catch (JSONException e) {
-					log.error("", e);
-				}
-			};
-			
-			client.once(Socket.EVENT_CONNECTING, callback);
-			
-			client.on(Socket.EVENT_RECONNECTING, callback);
-			
-			client.on(MessageType.MARKET_TICK_DATA, (data)->{
-				byte[] b = (byte[]) data[0];
-				try {
-					TickField tick = TickField.parseFrom(b);
-					onTick(tick);
-				} catch (InvalidProtocolBufferException e) {
-					log.error("Tick数据转换异常",e);
-				}
-			});
-			
-			client.connect();
-			
-			this.client = client;
+			this.client = IO.socket(coreServiceEndpoint);
 			this.strategy = s;
-			
 		} catch (URISyntaxException e) {
 			log.error("通信客户端创建异常", e);
 		}
@@ -78,7 +45,7 @@ public class MessageClient {
 	 * 收到TICK数据
 	 * @param tick
 	 */
-	public void onTick(TickField tick) {
+	private void onTick(TickField tick) {
 		((TemplateStrategy)strategy).onTickEvent(tick);
 	}
 	
@@ -101,6 +68,44 @@ public class MessageClient {
 	
 	private <T> JSONObject wrapAsJSON(T t) throws JSONException {
 		return new JSONObject(new Gson().toJson(t));
+	}
+	
+	/**
+	 * 建立与socket服务端连接
+	 */
+	public void connect() {
+		if(client.connected()) {
+			return;
+		}
+		
+		final Listener callback = (data)->{
+			String accountName = strategy.getAccountName();
+			String strategyName = strategy.getStrategyName();
+			String[] contractList = strategy.getSubscribeContractList();
+			StrategyInfo strategyInfo = new StrategyInfo(accountName, strategyName, contractList);
+			
+			try {
+				client.emit(MessageType.REG_STRATEGY, wrapAsJSON(strategyInfo));
+			} catch (JSONException e) {
+				log.error("", e);
+			}
+		};
+		
+		client.once(Socket.EVENT_CONNECTING, callback);
+		
+		client.on(Socket.EVENT_RECONNECTING, callback);
+		
+		client.on(MessageType.MARKET_TICK_DATA, (data)->{
+			byte[] b = (byte[]) data[0];
+			try {
+				TickField tick = TickField.parseFrom(b);
+				onTick(tick);
+			} catch (InvalidProtocolBufferException e) {
+				log.error("Tick数据转换异常",e);
+			}
+		});
+		
+		client.connect();
 	}
 	
 	/**
