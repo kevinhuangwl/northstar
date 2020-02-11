@@ -2,7 +2,6 @@ package tech.xuanwu.northstar.strategy.client.strategies;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -52,8 +51,15 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 	public void afterPropertiesSet() throws Exception {
 		//每个策略绑定一个消息客户端用于与行情交易平台通信
 		msgClient = new MessageClient(coreServiceEndpoint, this);
+		msgClient.connect();
 		
 		init();
+	}
+	
+	@PreDestroy
+	protected void terminate() {
+		log.info("断开策略-[{}]", name);
+		msgClient.disconnect();
 	}
 
 	protected void init() {
@@ -123,14 +129,6 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 	
 	//TODO 难点：下单之后，如何拿到订单号，如何制定撤单策略，如何反馈成交
 	
-	@PostConstruct
-	protected void register() {
-		msgClient.connect();
-	}
 	
-	@PreDestroy
-	protected void terminate() {
-		log.info("断开策略-[{}]", name);
-		msgClient.disconnect();
-	}
+	
 }

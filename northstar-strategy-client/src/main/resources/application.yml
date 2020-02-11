@@ -12,7 +12,7 @@ strategy-setting:
   demo-strategy:
     accountName: CTP-SimNow
     name: DemoStrategy
-    mdContracts: rb2005
+    mdContracts: rb2005,AP005,cu2005,IF2006,au2006
     tdContracts: rb2005
     
     

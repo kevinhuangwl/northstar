@@ -19,7 +19,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.EventType;
 import tech.xuanwu.northstar.constant.MessageType;
-import tech.xuanwu.northstar.core.util.ContractMap;
+import tech.xuanwu.northstar.core.util.FutureDictionary;
 import tech.xuanwu.northstar.dto.StrategyInfo;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.gateway.GatewayApi;
@@ -37,7 +37,7 @@ public class CommonMsgEventHandler {
 	GatewayApi ctpGatewayApi;
 	
 	@Autowired
-	ContractMap globeContractMap;
+	FutureDictionary globeContractMap;
 	
 	@Autowired
 	RuntimeEngine rtEngine;
@@ -84,7 +84,7 @@ public class CommonMsgEventHandler {
     		roomList.add(contract);
     		
     		//订阅合约
-    		ContractField c = globeContractMap.getContractBySymbol(contract);
+    		ContractField c = globeContractMap.getContractByName(contract);
     		subscribeContract(c);
     		
     		rtEngine.emitEvent(EventType.REGISTER_CONTRACT.toString(), new EventObject(c));

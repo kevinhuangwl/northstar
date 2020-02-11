@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.core.engine.SocketIOMessageEngine;
-import tech.xuanwu.northstar.core.util.ContractMap;
+import tech.xuanwu.northstar.core.util.FutureDictionary;
 import tech.xuanwu.northstar.engine.FastEventEngine;
 import tech.xuanwu.northstar.engine.FastEventEngine.FastEvent;
 import tech.xuanwu.northstar.engine.FastEventEngine.FastEventDynamicHandlerAbstract;
@@ -29,7 +29,7 @@ public class PortfolioEventHandler extends FastEventDynamicHandlerAbstract imple
 	SocketIOMessageEngine msgEngine;
 	
 	@Autowired
-	ContractMap contractMap;
+	FutureDictionary futureDict;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -65,7 +65,7 @@ public class PortfolioEventHandler extends FastEventDynamicHandlerAbstract imple
 			break;
 		case CONTRACT:
 			ContractField c = (ContractField) event.getObj();
-			contractMap.registerContract(c);
+			futureDict.add(c);
 			break;
 		default:
 			log.warn("遇到未知事件类型：{}", event.getFastEventType());
