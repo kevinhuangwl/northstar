@@ -1,6 +1,3 @@
-server:
-  port: 51888
-  
 northstar:
   endpoint: http://localhost:51666
   
@@ -13,7 +10,7 @@ spring:
 
 strategy-setting:
   demo-strategy:
-    accountName: 默认CTP账户
+    accountName: CTP-SimNow
     name: DemoStrategy
     mdContracts: rb2005
     tdContracts: rb2005

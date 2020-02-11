@@ -83,17 +83,23 @@
 				<artifactId>northstar-strategy-client</artifactId>
 				<version>${northstar-version}</version>
 			</dependency>
+			
+			
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter</artifactId>
 				<version>${springboot-version}</version>
 			</dependency>
 			<dependency>
+		        <groupId>org.springframework.boot</groupId>
+		        <artifactId>spring-boot-starter-actuator</artifactId>
+		        <version>${springboot-version}</version>
+		    </dependency>
+			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-test</artifactId>
 				<version>${springboot-version}</version>
 			</dependency>
-			
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-configuration-processor</artifactId>
@@ -104,6 +110,8 @@
 				<artifactId>spring-boot-starter-data-mongodb</artifactId>
 				<version>${springboot-version}</version>
 			</dependency>
+			
+			
 			<dependency>
 				<groupId>commons-codec</groupId>
 				<artifactId>commons-codec</artifactId>

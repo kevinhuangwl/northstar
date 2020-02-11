@@ -2,6 +2,10 @@ package tech.xuanwu.northstar.strategy.client.msg;
 
 import java.net.URISyntaxException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.google.gson.Gson;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import io.socket.client.IO;
@@ -39,7 +43,11 @@ public class MessageClient {
 				String[] contractList = s.getSubscribeContractList();
 				StrategyInfo strategyInfo = new StrategyInfo(accountName, strategyName, contractList);
 				
-				client.emit(MessageType.REG_STRATEGY, strategyInfo);
+				try {
+					client.emit(MessageType.REG_STRATEGY, new JSONObject(new Gson().toJson(strategyInfo)));
+				} catch (JSONException e) {
+					log.error("", e);
+				}
 			};
 			
 			client.once(Socket.EVENT_CONNECTING, callback);
@@ -79,7 +87,7 @@ public class MessageClient {
 	 * @param submitOrderReq
 	 */
 	public void sendOrder(SubmitOrderReqField submitOrderReq) {
-		client.emit(MessageType.PLACE_ORDER, submitOrderReq);
+		client.emit(MessageType.PLACE_ORDER, submitOrderReq.toByteArray());
 	}
 	
 	/**
@@ -87,7 +95,26 @@ public class MessageClient {
 	 * @param cancelOrderReq
 	 */
 	public void cancelOrder(CancelOrderReqField cancelOrderReq) {
-		client.emit(MessageType.WITHDRAW_ORDER, cancelOrderReq);
+		client.emit(MessageType.WITHDRAW_ORDER, cancelOrderReq.toByteArray());
+	}
+	
+	/**
+	 * 断开与socket服务端连接
+	 */
+	public void disconnect() {
+		String accountName = strategy.getAccountName();
+		String strategyName = strategy.getStrategyName();
+		String[] contractList = strategy.getSubscribeContractList();
+		StrategyInfo strategyInfo = new StrategyInfo(accountName, strategyName, contractList);
+		Object[] params = new Object[1];
+		try {
+			params[0] = new JSONObject(new Gson().toJson(strategyInfo));
+			client.emit(MessageType.UNREG_STRATEGY.toString(), params, (data)->{
+				client.disconnect();
+			});
+		} catch (JSONException e) {
+			log.error("", e);
+		}
 	}
 	
 }

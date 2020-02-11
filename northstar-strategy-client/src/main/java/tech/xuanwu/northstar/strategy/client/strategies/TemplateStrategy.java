@@ -2,6 +2,8 @@ package tech.xuanwu.northstar.strategy.client.strategies;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.annotation.PreDestroy;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -9,12 +11,14 @@ import com.alibaba.fastjson.JSON;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.strategy.client.msg.MessageClient;
 import xyz.redtorch.common.util.bar.BarGenerator;
 import xyz.redtorch.common.util.bar.CommonBarCallBack;
 import xyz.redtorch.pb.CoreField.BarField;
 import xyz.redtorch.pb.CoreField.TickField;
 
+@Slf4j
 public abstract class TemplateStrategy implements TradeStrategy, InitializingBean{
 
 	protected boolean running = false;
@@ -117,4 +121,10 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 	protected void SP(String symbol, int volume) {}
 	
 	//TODO 难点：下单之后，如何拿到订单号，如何制定撤单策略，如何反馈成交
+	
+	@PreDestroy
+	protected void terminate() {
+		log.info("断开策略-[{}]", name);
+		msgClient.disconnect();
+	}
 }
