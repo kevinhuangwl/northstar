@@ -44,7 +44,7 @@ public class MessageClient {
 				StrategyInfo strategyInfo = new StrategyInfo(accountName, strategyName, contractList);
 				
 				try {
-					client.emit(MessageType.REG_STRATEGY, new JSONObject(new Gson().toJson(strategyInfo)));
+					client.emit(MessageType.REG_STRATEGY, wrapAsJSON(strategyInfo));
 				} catch (JSONException e) {
 					log.error("", e);
 				}
@@ -98,8 +98,14 @@ public class MessageClient {
 		client.emit(MessageType.WITHDRAW_ORDER, cancelOrderReq.toByteArray());
 	}
 	
+	
+	private <T> JSONObject wrapAsJSON(T t) throws JSONException {
+		return new JSONObject(new Gson().toJson(t));
+	}
+	
 	/**
 	 * 断开与socket服务端连接
+	 * @throws JSONException 
 	 */
 	public void disconnect() {
 		String accountName = strategy.getAccountName();
@@ -107,8 +113,8 @@ public class MessageClient {
 		String[] contractList = strategy.getSubscribeContractList();
 		StrategyInfo strategyInfo = new StrategyInfo(accountName, strategyName, contractList);
 		Object[] params = new Object[1];
-		try {
-			params[0] = new JSONObject(new Gson().toJson(strategyInfo));
+		try {			
+			params[0] = wrapAsJSON(strategyInfo);
 			client.emit(MessageType.UNREG_STRATEGY.toString(), params, (data)->{
 				client.disconnect();
 			});
