@@ -15,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import tech.xuanwu.northstar.core.dao.impl.TickDataDaoImpl;
 import xyz.redtorch.common.mongo.MongoDBClient;
-import xyz.redtorch.pb.CoreField.ContractField;
 import xyz.redtorch.pb.CoreField.TickField;
 
 @SpringBootTest
@@ -80,7 +79,7 @@ public class TestTickDataDao {
 		
 		final double E = 0.00001;
 		
-		assertTrue(result.length==demoData.length);
+		assertEquals(result.length, demoData.length);
 		for(int i=0; i<demoData.length; i++) {
 			TickField t1 = demoData[i];
 			TickField t2 = result[i];
