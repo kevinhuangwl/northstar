@@ -95,38 +95,8 @@ public class TestTickDataDao {
 		for(int i=0; i<demoData.length; i++) {
 			TickField t1 = demoData[i];
 			TickField t2 = result[i];
-			assertEquals(t1.getUnifiedSymbol(), t2.getUnifiedSymbol());
-			assertEquals(t1.getGatewayId(), t2.getGatewayId());
-			assertEquals(t1.getTradingDay(), t2.getTradingDay());
-			assertEquals(t1.getActionDay(), t2.getActionDay());
-			assertEquals(t1.getActionTime(), t2.getActionTime());
-			assertEquals(t1.getActionTimestamp(), t2.getActionTimestamp());
-			assertEquals(t1.getStatus(), t2.getStatus());
-			assertTrue(CommonUtils.isEquals(t1.getLastPrice(), t2.getLastPrice()));
-			assertTrue(CommonUtils.isEquals(t1.getAvgPrice(), t2.getAvgPrice()));
-			assertTrue(CommonUtils.isEquals(t1.getTotalAskVol(), t2.getTotalAskVol()));
-			assertTrue(CommonUtils.isEquals(t1.getTotalBidVol(), t2.getTotalBidVol()));
-			assertTrue(CommonUtils.isEquals(t1.getWeightedAvgAskPrice(), t2.getWeightedAvgAskPrice()));
-			assertTrue(CommonUtils.isEquals(t1.getWeightedAvgBidPrice(), t2.getWeightedAvgBidPrice()));
-			assertTrue(CommonUtils.isEquals(t1.getIopv(), t2.getIopv()));
-			assertTrue(CommonUtils.isEquals(t1.getYieldToMaturity(), t2.getYieldToMaturity()));
-			assertTrue(CommonUtils.isEquals(t1.getVolume(), t2.getVolume()));
-			assertTrue(CommonUtils.isEquals(t1.getVolumeDelta(), t2.getVolumeDelta()));
-			assertTrue(CommonUtils.isEquals(t1.getTurnover(), t2.getTurnover()));
-			assertTrue(CommonUtils.isEquals(t1.getTurnoverDelta(), t2.getTurnoverDelta()));
-			assertTrue(CommonUtils.isEquals(t1.getNumTrades(), t2.getNumTrades()));
-			assertTrue(CommonUtils.isEquals(t1.getNumTradesDelta(), t2.getNumTradesDelta()));
-			assertTrue(CommonUtils.isEquals(t1.getOpenInterest(), t2.getOpenInterest()));
-			assertTrue(CommonUtils.isEquals(t1.getOpenInterestDelta(), t2.getOpenInterestDelta()));
-			assertTrue(CommonUtils.isEquals(t1.getPreClosePrice(), t2.getPreClosePrice()));
-			assertTrue(CommonUtils.isEquals(t1.getPreOpenInterest(), t2.getPreOpenInterest()));
-			assertTrue(CommonUtils.isEquals(t1.getPreSettlePrice(), t2.getPreSettlePrice()));
-			assertTrue(CommonUtils.isEquals(t1.getSettlePrice(), t2.getSettlePrice()));
-			assertTrue(CommonUtils.isEquals(t1.getOpenPrice(), t2.getOpenPrice()));
-			assertTrue(CommonUtils.isEquals(t1.getHighPrice(), t2.getHighPrice()));
-			assertTrue(CommonUtils.isEquals(t1.getLowPrice(), t2.getLowPrice()));
-			assertTrue(CommonUtils.isEquals(t1.getUpperLimit(), t2.getUpperLimit()));
-			assertTrue(CommonUtils.isEquals(t1.getLowerLimit(), t2.getLowerLimit()));
+			assertEquals(t1, t2);
 		}
+		
 	} 
 }

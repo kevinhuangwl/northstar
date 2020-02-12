@@ -82,27 +82,7 @@ public class TestBarDataDao {
 		for(int i=0; i<demoData.length; i++) {
 			BarField b1 = demoData[i];
 			BarField b2 = result[i];
-			assertEquals(b1.getUnifiedSymbol(), b2.getUnifiedSymbol());
-			assertEquals(b1.getGatewayId(), b2.getGatewayId());
-			assertEquals(b1.getTradingDay(), b2.getTradingDay());
-			assertEquals(b1.getActionDay(), b2.getActionDay());
-			assertEquals(b1.getActionTime(), b2.getActionTime());
-			assertEquals(b1.getActionTimestamp(), b2.getActionTimestamp());
-			assertTrue(CommonUtils.isEquals(b1.getOpenPrice(), b2.getOpenPrice()));
-			assertTrue(CommonUtils.isEquals(b1.getHighPrice(), b2.getHighPrice()));
-			assertTrue(CommonUtils.isEquals(b1.getLowPrice(), b2.getLowPrice()));
-			assertTrue(CommonUtils.isEquals(b1.getClosePrice(), b2.getClosePrice()));
-			assertTrue(CommonUtils.isEquals(b1.getVolume(), b2.getVolume()));
-			assertTrue(CommonUtils.isEquals(b1.getVolumeDelta(), b2.getVolumeDelta()));
-			assertTrue(CommonUtils.isEquals(b1.getNumTrades(), b2.getNumTrades()));
-			assertTrue(CommonUtils.isEquals(b1.getNumTradesDelta(), b2.getNumTradesDelta()));
-			assertTrue(CommonUtils.isEquals(b1.getTurnover(), b2.getTurnover()));
-			assertTrue(CommonUtils.isEquals(b1.getTurnoverDelta(), b2.getTurnoverDelta()));
-			assertTrue(CommonUtils.isEquals(b1.getOpenInterest(), b2.getOpenInterest()));
-			assertTrue(CommonUtils.isEquals(b1.getOpenInterestDelta(), b2.getOpenInterestDelta()));
-			assertTrue(CommonUtils.isEquals(b1.getPreClosePrice(), b2.getPreClosePrice()));
-			assertTrue(CommonUtils.isEquals(b1.getPreOpenInterest(), b2.getPreOpenInterest()));
-			assertTrue(CommonUtils.isEquals(b1.getPreSettlePrice(), b2.getPreSettlePrice()));
+			b1.equals(b2);
 		}
 	} 
 
