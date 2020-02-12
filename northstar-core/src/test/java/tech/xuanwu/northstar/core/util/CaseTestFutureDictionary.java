@@ -28,7 +28,7 @@ import xyz.redtorch.pb.CoreField.ContractField;
  *
  */
 @SpringBootTest
-public class TestFutureDictionary {
+public class CaseTestFutureDictionary {
 
 	@Autowired
 	FutureDictionary dict = new FutureDictionary();
@@ -123,37 +123,6 @@ public class TestFutureDictionary {
 		assertNull(dict.getContractByName("rb2006"));
 		assertNull(dict.getContractByName("ag2006"));
 	}
-	
-//	@Test(expected=IllegalArgumentException.class)
-//	public void test_查询单个合约_异常_名称格式错误1() {
-//		//使用不正常的格式
-//		dict.getContractByName("螺纹钢");
-//	}
-//	
-//	@Test(expected=IllegalArgumentException.class)
-//	public void test_查询单个合约_异常_名称格式错误2() {
-//		//使用不正常的格式
-//		dict.getContractByName("螺纹钢2005");
-//	}
-//	
-//	@Test(expected=IllegalArgumentException.class)
-//	public void test_查询单个合约_异常_名称格式错误3() {
-//		//使用不正常的格式
-//		dict.getContractByName("钢2005");
-//	}
-//	
-//	@Test(expected=IllegalArgumentException.class)
-//	public void test_查询单个合约_异常_名称格式错误4() {
-//		//使用不正常的格式
-//		dict.getContractByName("RB");
-//	}
-//	
-//	@Test(expected=IllegalArgumentException.class)
-//	public void test_查询单个合约_异常_名称格式错误5() {
-//		//使用不正常的格式
-//		dict.getContractByName("RB05");
-//	}
-	
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void test_查询单个合约_异常_空参数() {

@@ -33,16 +33,16 @@ import xyz.redtorch.pb.CoreField.TradeField;
 public class RealAccount implements IAccount{
 	
 	@Autowired
-	private AccountDao accDao;
+	AccountDao accDao;
 	
 	/*账户对应的网关接口，一对一关系*/
-	private GatewayApi gatewayApi;
+	GatewayApi gatewayApi;
 	
 	/*基本账户信息副本*/
-	private volatile AccountField account;
+	volatile AccountField account;
 	
 	/*策略信息*/
-	private Map<String, IStrategy> strategyMap = new HashMap<>();
+	Map<String, IStrategy> strategyMap = new HashMap<>();
 	
 	/*账户名称*/
 	@Getter

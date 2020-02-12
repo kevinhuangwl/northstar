@@ -20,7 +20,7 @@ import xyz.redtorch.pb.CoreField.ContractField;
  */
 public class FutureDictionary {
 
-	private ConcurrentHashMap<String, ContractSet> namedContractMap = new ConcurrentHashMap<>(100);
+	ConcurrentHashMap<String, ContractSet> namedContractMap = new ConcurrentHashMap<>(100);
 	
 	/**
 	 * 添加合约
