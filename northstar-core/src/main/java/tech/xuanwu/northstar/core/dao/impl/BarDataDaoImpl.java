@@ -9,6 +9,7 @@ import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.google.gson.Gson;
 import com.mongodb.client.model.Filters;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,8 @@ public class BarDataDaoImpl implements BarDataDao{
 	
 	final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 	final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmmssSSS");
+	
+	Gson gson = new Gson();
 	
 	@Override
 	public boolean saveBarData(BarField bar) {
