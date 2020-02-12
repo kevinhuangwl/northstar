@@ -51,9 +51,6 @@ public class FutureDictionary {
 	 */
 	public ContractField getContractByName(String contractNameWithMonth) {
 		checkNotNullParam(contractNameWithMonth);
-		if(!isValidName(contractNameWithMonth)) {
-			throw new IllegalArgumentException("期望合约名称格式为【合约简称yyMM】");
-		}
 		String capName = getSymbolCapitalizedName(contractNameWithMonth);
 		String strYMM = contractNameWithMonth.substring(contractNameWithMonth.length()-3);
 		if(!namedContractMap.containsKey(capName)) {
@@ -102,20 +99,6 @@ public class FutureDictionary {
 		if(o == null) {
 			throw new IllegalArgumentException("不允许空参数");
 		}
-	}
-	
-	private boolean isValidName(String contractName) {
-		if(contractName ==null || contractName.length()<4 || contractName.length()>6) {
-			return false;
-		}
-		if(contractName.replaceAll("(\\d|\\w)", "").length()>0) {
-			return false;
-		}
-		String expectYYMM = contractName.substring(contractName.length()-3);
-		if(expectYYMM.replaceAll("\\d", "").length()>0) {
-			return false;
-		}
-		return true;
 	}
 	
 	private String getYearAndMonth(String dateStr_yyyyMMdd) {
