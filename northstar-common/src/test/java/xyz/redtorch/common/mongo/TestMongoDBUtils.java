@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.core.dao.mongo;
+package xyz.redtorch.common.mongo;
 
 import static org.junit.Assert.assertEquals;
 
