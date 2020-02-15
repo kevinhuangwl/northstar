@@ -14,9 +14,9 @@ public enum EventType {
 	//注册合约
 	REGISTER_CONTRACT,
 	//下单
-	PLACE_ORDER,
+	SUBMIT_ORDER,
 	//撤单
-	WITHDRAW_ORDER,
+	CANCEL_ORDER,
 	//订单回报
 	FEEDBACK_ORDER,
 	

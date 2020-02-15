@@ -26,8 +26,8 @@ public class OrderingEventHandler implements RuntimeEngine.Listener, Initializin
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		rtEngine.addEventHandler(EventType.PLACE_ORDER.toString(), this);	
-		rtEngine.addEventHandler(EventType.WITHDRAW_ORDER.toString(), this);
+		rtEngine.addEventHandler(EventType.SUBMIT_ORDER.toString(), this);	
+		rtEngine.addEventHandler(EventType.CANCEL_ORDER.toString(), this);
 		rtEngine.addEventHandler(EventType.FEEDBACK_ORDER.toString(), this);
 	}
 
@@ -37,15 +37,15 @@ public class OrderingEventHandler implements RuntimeEngine.Listener, Initializin
 		if(obj instanceof OrderField) {
 			doneOrder((OrderField) obj);
 		}else if(obj instanceof SubmitOrderReqField) {
-			placeOrder((SubmitOrderReqField) obj);
+			submitOrder((SubmitOrderReqField) obj);
 		}else if(obj instanceof CancelOrderReqField) {
-			withdrawOrder((CancelOrderReqField) obj);
+			cancelOrder((CancelOrderReqField) obj);
 		}else {
 			log.warn("传入了非法对象：{}", obj);
 		}
 	}
 	
-	void placeOrder(SubmitOrderReqField submitOrderReq) {
+	void submitOrder(SubmitOrderReqField submitOrderReq) {
 		String accountName = submitOrderReq.getGatewayId();
 		IAccount account = rtEngine.getAccount(accountName);
 		if(account!=null) {
@@ -56,7 +56,7 @@ public class OrderingEventHandler implements RuntimeEngine.Listener, Initializin
 		}
 	}
 	
-	void withdrawOrder(CancelOrderReqField cancelOrderReq) {
+	void cancelOrder(CancelOrderReqField cancelOrderReq) {
 		IAccount account = orderAccountMap.get(cancelOrderReq.getOriginOrderId());
 		account.cancelOrder(cancelOrderReq);
 	}

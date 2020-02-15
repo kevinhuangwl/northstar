@@ -54,7 +54,7 @@ public class MessageClient {
 	 * @param submitOrderReq
 	 */
 	public void sendOrder(SubmitOrderReqField submitOrderReq) {
-		client.emit(MessageType.PLACE_ORDER, submitOrderReq.toByteArray());
+		client.emit(MessageType.SUBMIT_ORDER, submitOrderReq.toByteArray());
 	}
 	
 	/**
@@ -62,7 +62,7 @@ public class MessageClient {
 	 * @param cancelOrderReq
 	 */
 	public void cancelOrder(CancelOrderReqField cancelOrderReq) {
-		client.emit(MessageType.WITHDRAW_ORDER, cancelOrderReq.toByteArray());
+		client.emit(MessageType.CANCEL_ORDER, cancelOrderReq.toByteArray());
 	}
 	
 	

@@ -2,6 +2,7 @@ package tech.xuanwu.northstar.core.config;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,9 +20,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SocketIOServerConfig {
 	
-    private String host = "127.0.0.1";
+	@Value("${socketio.host}")
+    private String host;
 	
-    private int port = 51666;
+	@Value("${socketio.port}")
+    private int port;
 
     private int bossCount = 1;
 

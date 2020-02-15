@@ -101,21 +101,21 @@ public class CommonMsgEventHandler {
     	}
     }
     
-    @OnEvent(MessageType.PLACE_ORDER)
-    private void onPlaceOrder(final SocketIOClient client, byte[] data) {
+    @OnEvent(MessageType.SUBMIT_ORDER)
+    private void onSubmitOrder(final SocketIOClient client, byte[] data) {
     	try {
 			SubmitOrderReqField submitOrderReq = SubmitOrderReqField.parseFrom(data);
-			rtEngine.emitEvent(EventType.PLACE_ORDER.toString(), new EventObject(submitOrderReq));
+			rtEngine.emitEvent(EventType.SUBMIT_ORDER.toString(), new EventObject(submitOrderReq));
 		} catch (InvalidProtocolBufferException e) {
 			log.error("", e);
 		}
     }
     
-    @OnEvent(MessageType.WITHDRAW_ORDER)
+    @OnEvent(MessageType.CANCEL_ORDER)
     private void onCancelOrder(final SocketIOClient client, byte[] data) {
     	try {
 			CancelOrderReqField cancelOrderReq = CancelOrderReqField.parseFrom(data);
-			rtEngine.emitEvent(EventType.WITHDRAW_ORDER.toString(), new EventObject(cancelOrderReq));
+			rtEngine.emitEvent(EventType.CANCEL_ORDER.toString(), new EventObject(cancelOrderReq));
 		} catch (InvalidProtocolBufferException e) {
 			log.error("", e);
 		}

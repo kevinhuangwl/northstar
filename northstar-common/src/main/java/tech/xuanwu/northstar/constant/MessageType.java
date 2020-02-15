@@ -6,9 +6,9 @@ public interface MessageType {
 	//注销策略
 	String UNREG_STRATEGY = "UnregisterStrategy";
 	//下单
-	String PLACE_ORDER = "PlaceOrder";
+	String SUBMIT_ORDER = "SubmitOrder";
 	//撤单
-	String WITHDRAW_ORDER = "WithdrawOrder";
+	String CANCEL_ORDER = "CancelOrder";
 	//TICK行情数据
 	String MARKET_TICK_DATA = "TickData";
 	//Bar数据
