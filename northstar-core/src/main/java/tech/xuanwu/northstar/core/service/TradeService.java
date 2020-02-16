@@ -1,11 +1,17 @@
 package tech.xuanwu.northstar.core.service;
 
+import java.util.List;
+
 import xyz.redtorch.pb.CoreEnum.*;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
+import xyz.redtorch.pb.CoreField.OrderField;
+import xyz.redtorch.pb.CoreField.PositionField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
+import xyz.redtorch.pb.CoreField.TradeField;
 
 /**
  * 交易服务 负责提供简单且统一的入参接口，然后统一封装 
+ * 交易服务接口主要满足手工下单与程序下单提供相关的操作入口
  * 
  * @author kevinhuangwl
  *
@@ -71,9 +77,10 @@ public interface TradeService {
 	 * @return
 	 */
 	void cancelOrder(String accountName, CancelOrderReqField cancelOrderReq);
-
+	
 	/**
 	 * 全部清仓
 	 */
 	void sellOutAllPosition(String accountName);
+
 }

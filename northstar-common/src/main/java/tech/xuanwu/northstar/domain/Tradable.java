@@ -1,5 +1,6 @@
 package tech.xuanwu.northstar.domain;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
@@ -8,7 +9,7 @@ import xyz.redtorch.pb.CoreField.PositionField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 import xyz.redtorch.pb.CoreField.TradeField;
 
-public interface IAccountLike {
+public interface Tradable {
 
 	String getName();
 	
@@ -22,13 +23,13 @@ public interface IAccountLike {
 	
 	void updatePosition(PositionField position);
 	
-	List<PositionField> getPositionList();
-	
 	void updateOrder(OrderField order);
-	
-	List<OrderField> getOrderListOfCurrentTradeDay();
-	
+
 	void updateTransaction(TradeField transaction);
 	
-	List<TradeField> getTransactionListOfCurrentTradeDay();
+	List<PositionField> getPositionInfoList();
+	
+	List<OrderField> getOrderInfoList(LocalDate fromDate, LocalDate toDate);
+	
+	List<TradeField> getTransactionInfoList(LocalDate fromDate, LocalDate toDate);
 }

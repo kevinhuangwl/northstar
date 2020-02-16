@@ -9,9 +9,9 @@ import xyz.redtorch.pb.CoreField.AccountField;
  * @author kevinhuangwl
  *
  */
-public interface IAccount extends IAccountLike{
+public interface IAccount extends Tradable {
 	
-	AccountField getAccount();
+	AccountField getAccountInfo();
 	
 	void updateAccount(AccountField account);
 	

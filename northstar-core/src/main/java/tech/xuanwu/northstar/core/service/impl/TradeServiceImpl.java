@@ -71,7 +71,7 @@ public class TradeServiceImpl implements TradeService{
 
 	@Override
 	public String submitOrder(String accountName, SubmitOrderReqField submitOrderReq) throws Exception{
-		IAccount account = getAccount(accountName);
+		IAccount account = rtEngine.getAccount(accountName);
 		if(StringUtils.isEmpty(submitOrderReq.getOriginOrderId())) {
 			String uuid = UUIDStringPoolUtils.getUUIDString();
 			SubmitOrderReqField.Builder sb = submitOrderReq.toBuilder().setOriginOrderId(uuid);
@@ -90,22 +90,14 @@ public class TradeServiceImpl implements TradeService{
 
 	@Override
 	public void cancelOrder(String accountName, CancelOrderReqField cancelOrderReq) {
-		IAccount account = getAccount(accountName);
+		IAccount account = rtEngine.getAccount(accountName);
 		account.cancelOrder(cancelOrderReq);
 	}
 
 	@Override
 	public void sellOutAllPosition(String accountName) {
-		IAccount account = getAccount(accountName);
-		account.sellOutAllPosition();
-	}
-
-	private IAccount getAccount(String accountName) {
 		IAccount account = rtEngine.getAccount(accountName);
-		if(account == null) {
-			throw new IllegalArgumentException("没有找到账户名为【" + accountName + "】的账户");
-		}
-		return account;
+		account.sellOutAllPosition();
 	}
 	
 	private void checkValuePositive(double val) {

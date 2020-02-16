@@ -1,8 +1,10 @@
 package tech.xuanwu.northstar.engine;
 
 import java.util.EventObject;
+import java.util.List;
 
 import tech.xuanwu.northstar.domain.IAccount;
+import xyz.redtorch.pb.CoreField.AccountField;
 
 /**
  * 运行时引擎
@@ -16,8 +18,9 @@ public interface RuntimeEngine {
 	
 	void unregAccount(String accountName);
 	
-	IAccount getAccount(String accountName);
+	IAccount getAccount(String accountName) throws IllegalArgumentException;
 	
+	List<AccountField> getAccountInfoList();
 	
 	boolean addEventHandler(String event, Listener listener);
 	

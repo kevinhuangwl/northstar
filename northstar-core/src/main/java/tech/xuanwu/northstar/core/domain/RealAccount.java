@@ -1,5 +1,6 @@
 package tech.xuanwu.northstar.core.domain;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.HashMap;
@@ -39,7 +40,7 @@ public class RealAccount implements IAccount{
 	GatewayApi gatewayApi;
 	
 	/*基本账户信息副本*/
-	volatile AccountField account;
+	volatile AccountField accountInfo;
 	
 	/*策略信息*/
 	Map<String, IStrategy> strategyMap = new HashMap<>();
@@ -93,7 +94,7 @@ public class RealAccount implements IAccount{
 	}
 
 	@Override
-	public List<PositionField> getPositionList() {
+	public List<PositionField> getPositionInfoList() {
 		synchronized (positionList) {		
 			List<PositionField> resultList = new ArrayList<>(positionList.size());
 			resultList.addAll(positionList);
@@ -114,15 +115,6 @@ public class RealAccount implements IAccount{
 	}
 
 	@Override
-	public List<OrderField> getOrderListOfCurrentTradeDay() {
-		synchronized (orderList) {
-			List<OrderField> resultList = new ArrayList<>(orderList.size());
-			resultList.addAll(orderList);
-			return resultList;
-		}
-	}
-
-	@Override
 	public void updateTransaction(TradeField transaction) {
 		synchronized (transactionList) {
 			transactionList.add(transaction);
@@ -130,27 +122,18 @@ public class RealAccount implements IAccount{
 	}
 
 	@Override
-	public List<TradeField> getTransactionListOfCurrentTradeDay() {
-		synchronized (transactionList) {
-			List<TradeField> resultList = new ArrayList<>(transactionList.size());
-			resultList.addAll(transactionList);
-			return resultList;
-		}
-	}
-
-	@Override
-	public AccountField getAccount() {
-		return account;
+	public AccountField getAccountInfo() {
+		return accountInfo;
 	}
 
 	@Override
 	public void updateAccount(AccountField account) {
 		//若账户信息有变，则保存记录
-		if(this.account!=null && !this.account.equals(account)) {
+		if(this.accountInfo!=null && !this.accountInfo.equals(account)) {
 			accDao.insert(account);
 		}
 		
-		this.account = account;
+		this.accountInfo = account;
 	}
 
 	@Override
@@ -182,6 +165,18 @@ public class RealAccount implements IAccount{
 	public void sellOutAllPosition() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<OrderField> getOrderInfoList(LocalDate fromDate, LocalDate toDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<TradeField> getTransactionInfoList(LocalDate fromDate, LocalDate toDate) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

@@ -1,14 +1,9 @@
-package tech.xuanwu.northstar.service;
+package tech.xuanwu.northstar.core.service;
 
 import java.util.List;
 
 import tech.xuanwu.northstar.dto.StrategyInfo;
 
-/**
- * 策略服务，用于提供控制策略的操作
- * @author kevinhuangwl
- *
- */
 public interface StrategyService {
 
 	/**
@@ -42,5 +37,5 @@ public interface StrategyService {
 	 * 获取策略信息
 	 * @return
 	 */
-	List<StrategyInfo> getStrategyInfos();
+	List<StrategyInfo> getStrategyInfoList();
 }
