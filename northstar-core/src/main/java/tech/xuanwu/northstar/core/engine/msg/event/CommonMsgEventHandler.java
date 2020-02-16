@@ -17,8 +17,9 @@ import com.corundumstudio.socketio.annotation.OnEvent;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.constant.EventType;
+import tech.xuanwu.northstar.constant.EventEnum;
 import tech.xuanwu.northstar.constant.MessageType;
+import tech.xuanwu.northstar.core.service.TradeService;
 import tech.xuanwu.northstar.core.util.FutureDictionary;
 import tech.xuanwu.northstar.dto.StrategyInfo;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
@@ -34,13 +35,10 @@ public class CommonMsgEventHandler {
 	ConcurrentHashMap<UUID, List<String>> roomMap = new ConcurrentHashMap<>();
 	
 	@Autowired
-	GatewayApi ctpGatewayApi;
-	
-	@Autowired
 	FutureDictionary globeContractMap;
 	
 	@Autowired
-	RuntimeEngine rtEngine;
+	TradeService tradeService;
 	
 	@OnConnect  
     private void onConnect(final SocketIOClient client) {
@@ -77,7 +75,7 @@ public class CommonMsgEventHandler {
     	client.joinRoom(s.getStrategyName());
     	roomList.add(s.getStrategyName());
     	
-    	rtEngine.emitEvent(EventType.REGISTER_STRATEGY.toString(), new EventObject(s));
+//    	rtEngine.emitEvent(EventEnum.REGISTER_STRATEGY.toString(), new EventObject(s));
     	
     	for(String contract : contractList) {
     		client.joinRoom(contract);
@@ -87,7 +85,7 @@ public class CommonMsgEventHandler {
     		ContractField c = globeContractMap.getContractByName(contract);
     		subscribeContract(c);
     		
-    		rtEngine.emitEvent(EventType.REGISTER_CONTRACT.toString(), new EventObject(c));
+//    		rtEngine.emitEvent(EventEnum.REGISTER_CONTRACT.toString(), new EventObject(c));
     	}
     	
     	roomMap.put(client.getSessionId(), roomList);
@@ -95,7 +93,7 @@ public class CommonMsgEventHandler {
     
     private void subscribeContract(ContractField c) {
     	if(c != null) {
-    		ctpGatewayApi.subscribe(c);
+//    		ctpGatewayApi.subscribe(c);
     	}else {
     		log.warn("合约 [{}] 可能是一个非法合约，在交易行情接口中查询不到");
     	}
@@ -105,19 +103,15 @@ public class CommonMsgEventHandler {
     private void onSubmitOrder(final SocketIOClient client, byte[] data) {
     	try {
 			SubmitOrderReqField submitOrderReq = SubmitOrderReqField.parseFrom(data);
-			rtEngine.emitEvent(EventType.SUBMIT_ORDER.toString(), new EventObject(submitOrderReq));
-		} catch (InvalidProtocolBufferException e) {
+			String accountName = submitOrderReq.getAccountCode();
+			tradeService.submitOrder(accountName, submitOrderReq);
+		} catch (Exception e) {
 			log.error("", e);
 		}
     }
     
     @OnEvent(MessageType.CANCEL_ORDER)
-    private void onCancelOrder(final SocketIOClient client, byte[] data) {
-    	try {
-			CancelOrderReqField cancelOrderReq = CancelOrderReqField.parseFrom(data);
-			rtEngine.emitEvent(EventType.CANCEL_ORDER.toString(), new EventObject(cancelOrderReq));
-		} catch (InvalidProtocolBufferException e) {
-			log.error("", e);
-		}
+    private void onCancelOrder(final SocketIOClient client, String accountName, String orderId) {
+    	tradeService.cancelOrder(accountName, orderId);
     }
 }

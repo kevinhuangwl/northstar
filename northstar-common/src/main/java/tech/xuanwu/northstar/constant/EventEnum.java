@@ -5,7 +5,7 @@ package tech.xuanwu.northstar.constant;
  * @author kevinhuangwl
  *
  */
-public enum EventType {
+public enum EventEnum {
 	
 	//更新TICK数据
 	TICK_UPDATE,

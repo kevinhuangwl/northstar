@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.constant.EventType;
+import tech.xuanwu.northstar.constant.EventEnum;
 import tech.xuanwu.northstar.core.dao.AccountDao;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.domain.IStrategy;
@@ -74,15 +74,15 @@ public class RealAccount implements IAccount{
 	}
 
 	@Override
-	public String placeOrder(SubmitOrderReqField submitOrderReq) {
+	public void submitOrder(SubmitOrderReqField submitOrderReq) {
 		log.info("账户-【{}】委托下单，{}", name, submitOrderReq);
-		return gatewayApi.submitOrder(submitOrderReq);
+		gatewayApi.submitOrder(submitOrderReq);
 	}
 
 	@Override
-	public boolean cancelOrder(CancelOrderReqField cancelOrderReq) {
+	public void cancelOrder(CancelOrderReqField cancelOrderReq) {
 		log.info("账户-【{}】委托撤单，{}", name, cancelOrderReq);
-		return gatewayApi.cancelOrder(cancelOrderReq);
+		gatewayApi.cancelOrder(cancelOrderReq);
 	}
 
 	@Override
@@ -176,6 +176,12 @@ public class RealAccount implements IAccount{
 		synchronized (strategyMap) {
 			strategyMap.remove(strategyName);
 		}
+	}
+
+	@Override
+	public void sellOutAllPosition() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

@@ -8,7 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.constant.EventType;
+import tech.xuanwu.northstar.constant.EventEnum;
+import tech.xuanwu.northstar.core.service.TradeService;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
@@ -19,16 +20,18 @@ import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 @Component
 public class OrderingEventHandler implements RuntimeEngine.Listener, InitializingBean{
 
+	
+	
 	@Autowired
-	private RuntimeEngine rtEngine;
+	TradeService tradeService;
 	
 	ConcurrentHashMap<String, IAccount> orderAccountMap = new ConcurrentHashMap<String, IAccount>(100);
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		rtEngine.addEventHandler(EventType.SUBMIT_ORDER.toString(), this);	
-		rtEngine.addEventHandler(EventType.CANCEL_ORDER.toString(), this);
-		rtEngine.addEventHandler(EventType.FEEDBACK_ORDER.toString(), this);
+//		rtEngine.addEventHandler(EventEnum.SUBMIT_ORDER.toString(), this);	
+//		rtEngine.addEventHandler(EventEnum.CANCEL_ORDER.toString(), this);
+//		rtEngine.addEventHandler(EventEnum.FEEDBACK_ORDER.toString(), this);
 	}
 
 	@Override
@@ -46,14 +49,14 @@ public class OrderingEventHandler implements RuntimeEngine.Listener, Initializin
 	}
 	
 	void submitOrder(SubmitOrderReqField submitOrderReq) {
-		String accountName = submitOrderReq.getGatewayId();
-		IAccount account = rtEngine.getAccount(accountName);
-		if(account!=null) {
-			orderAccountMap.put(submitOrderReq.getOriginOrderId(), account);
-			account.placeOrder(submitOrderReq);
-		}else {
-			log.warn("没有找到账户名为【{}】的账户", accountName);
-		}
+//		String accountName = submitOrderReq.getGatewayId();
+//		IAccount account = rtEngine.getAccount(accountName);
+//		if(account!=null) {
+//			orderAccountMap.put(submitOrderReq.getOriginOrderId(), account);
+//			account.placeOrder(submitOrderReq);
+//		}else {
+//			log.warn("没有找到账户名为【{}】的账户", accountName);
+//		}
 	}
 	
 	void cancelOrder(CancelOrderReqField cancelOrderReq) {

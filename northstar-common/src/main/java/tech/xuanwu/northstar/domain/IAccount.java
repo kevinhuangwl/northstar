@@ -20,4 +20,6 @@ public interface IAccount extends IAccountLike{
 	void regStrategy(String strategyName);
 	
 	void unregStrategy(String strategyName);
+	
+	void sellOutAllPosition();
 }

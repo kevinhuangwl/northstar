@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.constant.EventType;
+import tech.xuanwu.northstar.constant.EventEnum;
 import tech.xuanwu.northstar.core.dao.BarDataDao;
 import tech.xuanwu.northstar.core.dao.TickDataDao;
 import tech.xuanwu.northstar.core.domain.ContractMarketData;
@@ -37,7 +37,7 @@ public class MarketDataRtEventHandler implements RuntimeEngine.Listener, Initial
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		rtEngine.addEventHandler(EventType.TICK_UPDATE.toString(), this);
+		rtEngine.addEventHandler(EventEnum.TICK_UPDATE.toString(), this);
 	}
 	
 	@Override

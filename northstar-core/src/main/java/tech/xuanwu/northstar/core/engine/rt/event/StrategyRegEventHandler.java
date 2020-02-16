@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.constant.EventType;
+import tech.xuanwu.northstar.constant.EventEnum;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.dto.StrategyInfo;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
@@ -21,7 +21,7 @@ public class StrategyRegEventHandler implements RuntimeEngine.Listener, Initiali
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		rtEngine.addEventHandler(EventType.REGISTER_STRATEGY.toString(), this);
+		rtEngine.addEventHandler(EventEnum.REGISTER_STRATEGY.toString(), this);
 	}
 
 	@Override
