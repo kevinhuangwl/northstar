@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import tech.xuanwu.northstar.exception.IllegalContractException;
+import tech.xuanwu.northstar.exception.NoSuchContractException;
 import xyz.redtorch.pb.CoreEnum.ProductClassEnum;
 import xyz.redtorch.pb.CoreField.ContractField;
 
@@ -26,12 +26,12 @@ public class FutureDictionary {
 	 * 添加合约
 	 * 
 	 * @param c
-	 * @throws IllegalContractException
+	 * @throws NoSuchContractException
 	 */
-	public void add(ContractField c) throws IllegalContractException {
+	public void add(ContractField c) throws NoSuchContractException {
 		checkNotNullParam(c);
 		if (c.getProductClass() != ProductClassEnum.FUTURES) {
-			throw new IllegalContractException("期望传入期货合约，实际传入" + c.getProductClass());
+			throw new NoSuchContractException("期望传入期货合约，实际传入" + c.getProductClass());
 		}
 		String symbol = c.getSymbol();
 		String capName = getSymbolCapitalizedName(symbol);
@@ -48,13 +48,14 @@ public class FutureDictionary {
 	 * 
 	 * @param symbol
 	 * @return
+	 * @throws NoSuchContractException 
 	 */
-	public ContractField getContractByName(String contractNameWithMonth) {
+	public ContractField getContractByName(String contractNameWithMonth) throws NoSuchContractException {
 		checkNotNullParam(contractNameWithMonth);
 		String capName = getSymbolCapitalizedName(contractNameWithMonth);
 		String strYMM = contractNameWithMonth.substring(contractNameWithMonth.length()-3);
 		if(!namedContractMap.containsKey(capName)) {
-			return null;
+			throw new NoSuchContractException(contractNameWithMonth);
 		}
 		return namedContractMap.get(capName).get(strYMM);
 	}

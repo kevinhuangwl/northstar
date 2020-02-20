@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
+import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import xyz.redtorch.pb.CoreField.AccountField;
 
 public abstract class AbstractTraderRuntimeEngine implements RuntimeEngine{
@@ -24,10 +25,10 @@ public abstract class AbstractTraderRuntimeEngine implements RuntimeEngine{
 	}
 	
 	@Override
-	public IAccount getAccount(String accountName) {
+	public IAccount getAccount(String accountName) throws NoSuchAccountException {
 		IAccount account = accountMap.get(accountName);
 		if(account == null) {
-			throw new IllegalArgumentException("没有找到账户名为【" + accountName + "】的账户");
+			throw new NoSuchAccountException(accountName);
 		}
 		return account;
 	}

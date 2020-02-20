@@ -23,6 +23,8 @@ import tech.xuanwu.northstar.core.service.TradeService;
 import tech.xuanwu.northstar.core.util.FutureDictionary;
 import tech.xuanwu.northstar.dto.StrategyInfo;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
+import tech.xuanwu.northstar.exception.NoSuchAccountException;
+import tech.xuanwu.northstar.exception.NoSuchContractException;
 import tech.xuanwu.northstar.gateway.GatewayApi;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
 import xyz.redtorch.pb.CoreField.ContractField;
@@ -61,7 +63,7 @@ public class CommonMsgEventHandler {
     }
     
     @OnEvent(MessageType.REG_STRATEGY)
-    private void onRegisterStrategy(final SocketIOClient client, StrategyInfo s) {
+    private void onRegisterStrategy(final SocketIOClient client, StrategyInfo s) throws NoSuchContractException {
     	
     	log.info("【策略注册】-[{}],【{}】绑定账户：{}，订阅合约：{}", 
     			client.getSessionId(), 
@@ -111,7 +113,7 @@ public class CommonMsgEventHandler {
     }
     
     @OnEvent(MessageType.CANCEL_ORDER)
-    private void onCancelOrder(final SocketIOClient client, String accountName, String orderId) {
+    private void onCancelOrder(final SocketIOClient client, String accountName, String orderId) throws NoSuchAccountException {
     	tradeService.cancelOrder(accountName, orderId);
     }
 }

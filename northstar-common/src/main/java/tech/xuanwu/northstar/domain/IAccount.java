@@ -22,4 +22,8 @@ public interface IAccount extends Tradable {
 	void unregStrategy(String strategyName);
 	
 	void sellOutAllPosition();
+	
+	void connectGateway();
+	
+	void disconnectGateway();
 }

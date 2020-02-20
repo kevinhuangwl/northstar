@@ -8,7 +8,8 @@ import tech.xuanwu.northstar.core.service.TradeService;
 import tech.xuanwu.northstar.core.util.FutureDictionary;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
-import tech.xuanwu.northstar.exception.IllegalContractException;
+import tech.xuanwu.northstar.exception.NoSuchAccountException;
+import tech.xuanwu.northstar.exception.NoSuchContractException;
 import xyz.redtorch.common.util.UUIDStringPoolUtils;
 import xyz.redtorch.pb.CoreEnum.ContingentConditionEnum;
 import xyz.redtorch.pb.CoreEnum.DirectionEnum;
@@ -34,7 +35,7 @@ public class TradeServiceImpl implements TradeService{
 	public String submitOrder(String accountName, String contractSymbol, double price, double stopPrice, int volume,
 			OrderPriceTypeEnum priceType, DirectionEnum direction, OffsetFlagEnum transactionType,
 			HedgeFlagEnum hedgeType, TimeConditionEnum expireType, VolumeConditionEnum volType,
-			ContingentConditionEnum trigerType) throws Exception {
+			ContingentConditionEnum trigerType) throws NoSuchContractException, NoSuchAccountException {
 		
 		checkValuePositive(price);
 		checkValuePositive(volume);
@@ -42,9 +43,6 @@ public class TradeServiceImpl implements TradeService{
 		
 		SubmitOrderReqField.Builder sb = SubmitOrderReqField.newBuilder();
 		ContractField contract = ftDict.getContractByName(contractSymbol);
-		if(contract == null) {
-			throw new IllegalContractException("没有找到名称为【"+contractSymbol+"】的合约");
-		}
 		sb.setContract(contract);
 		sb.setPrice(price);
 		sb.setStopPrice(stopPrice);
@@ -62,7 +60,7 @@ public class TradeServiceImpl implements TradeService{
 
 	@Override
 	public String submitOrder(String accountName, String contractSymbol, double price, int volume, DirectionEnum direction,
-			OffsetFlagEnum transactionType) throws Exception {
+			OffsetFlagEnum transactionType) throws NoSuchAccountException, NoSuchContractException{
 		checkValuePositive(price);
 		checkValuePositive(volume);
 		return submitOrder(accountName, contractSymbol, price, 0D, volume, OrderPriceTypeEnum.OPT_LimitPrice, direction, transactionType,
@@ -70,7 +68,7 @@ public class TradeServiceImpl implements TradeService{
 	}
 
 	@Override
-	public String submitOrder(String accountName, SubmitOrderReqField submitOrderReq) throws Exception{
+	public String submitOrder(String accountName, SubmitOrderReqField submitOrderReq) throws NoSuchAccountException{
 		IAccount account = rtEngine.getAccount(accountName);
 		if(StringUtils.isEmpty(submitOrderReq.getOriginOrderId())) {
 			String uuid = UUIDStringPoolUtils.getUUIDString();
@@ -82,20 +80,20 @@ public class TradeServiceImpl implements TradeService{
 	}
 
 	@Override
-	public void cancelOrder(String accountName, String originOrderId) {
+	public void cancelOrder(String accountName, String originOrderId) throws NoSuchAccountException {
 		CancelOrderReqField.Builder cb = CancelOrderReqField.newBuilder();
 		cb.setOriginOrderId(originOrderId);
 		cancelOrder(accountName, cb.build());
 	}
 
 	@Override
-	public void cancelOrder(String accountName, CancelOrderReqField cancelOrderReq) {
+	public void cancelOrder(String accountName, CancelOrderReqField cancelOrderReq) throws NoSuchAccountException {
 		IAccount account = rtEngine.getAccount(accountName);
 		account.cancelOrder(cancelOrderReq);
 	}
 
 	@Override
-	public void sellOutAllPosition(String accountName) {
+	public void sellOutAllPosition(String accountName) throws NoSuchAccountException {
 		IAccount account = rtEngine.getAccount(accountName);
 		account.sellOutAllPosition();
 	}

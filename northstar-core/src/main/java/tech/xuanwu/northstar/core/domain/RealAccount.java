@@ -2,7 +2,6 @@ package tech.xuanwu.northstar.core.domain;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.EventObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,11 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.constant.EventEnum;
 import tech.xuanwu.northstar.core.dao.AccountDao;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.domain.IStrategy;
-import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.gateway.GatewayApi;
 import xyz.redtorch.pb.CoreField.AccountField;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
@@ -163,21 +160,38 @@ public class RealAccount implements IAccount{
 
 	@Override
 	public void sellOutAllPosition() {
-		// TODO Auto-generated method stub
-		
+		//FIXME 先做简单实现
+		throw new IllegalStateException("本方法未实现");
 	}
 
 	@Override
 	public List<OrderField> getOrderInfoList(LocalDate fromDate, LocalDate toDate) {
-		// TODO Auto-generated method stub
-		return null;
+		//FIXME 先做简单实现
+		synchronized (orderList) {
+			List<OrderField> resultList = new ArrayList<>(orderList.size());
+			resultList.addAll(orderList);
+			return resultList;
+		}
 	}
 
 	@Override
 	public List<TradeField> getTransactionInfoList(LocalDate fromDate, LocalDate toDate) {
-		// TODO Auto-generated method stub
-		return null;
+		//FIXME 先做简单实现
+		synchronized (transactionList) {
+			List<TradeField> resultList = new ArrayList<>(transactionList.size());
+			resultList.addAll(transactionList);
+			return resultList;
+		}
 	}
-	
+
+	@Override
+	public void connectGateway() {
+		gatewayApi.connect();
+	}
+
+	@Override
+	public void disconnectGateway() {
+		gatewayApi.disconnect();
+	}
 	
 }

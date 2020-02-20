@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import tech.xuanwu.northstar.core.service.AccountService;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
+import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import xyz.redtorch.pb.CoreField.AccountField;
 import xyz.redtorch.pb.CoreField.OrderField;
 import xyz.redtorch.pb.CoreField.PositionField;
@@ -26,33 +27,33 @@ public class AccountServiceImpl implements AccountService{
 	}
 
 	@Override
-	public List<PositionField> getPositionInfoList(String accountName) {
+	public List<PositionField> getPositionInfoList(String accountName) throws NoSuchAccountException {
 		IAccount account = rtEngine.getAccount(accountName);
 		return account.getPositionInfoList();
 	}
 
 	@Override
-	public List<OrderField> getOrderInfoList(String accountName) {
+	public List<OrderField> getOrderInfoList(String accountName) throws NoSuchAccountException {
 		IAccount account = rtEngine.getAccount(accountName);
 		return account.getOrderInfoList(LocalDate.now(), LocalDate.now());
 	}
 
 	@Override
-	public List<TradeField> getTransactionInfoList(String accountName) {
+	public List<TradeField> getTransactionInfoList(String accountName) throws NoSuchAccountException {
 		IAccount account = rtEngine.getAccount(accountName);
 		return account.getTransactionInfoList(LocalDate.now(), LocalDate.now());
 	}
 
 	@Override
-	public void connectGateway(String accountName) {
-		// TODO Auto-generated method stub
-		
+	public void connectGateway(String accountName) throws NoSuchAccountException {
+		IAccount account = rtEngine.getAccount(accountName);
+		account.connectGateway();
 	}
 
 	@Override
-	public void disconnectGateway(String accountName) {
-		// TODO Auto-generated method stub
-		
+	public void disconnectGateway(String accountName) throws NoSuchAccountException {
+		IAccount account = rtEngine.getAccount(accountName);
+		account.disconnectGateway();
 	}
 	
 }

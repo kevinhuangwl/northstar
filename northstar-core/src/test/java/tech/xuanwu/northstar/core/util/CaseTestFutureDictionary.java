@@ -18,7 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.google.gson.Gson;
 
-import tech.xuanwu.northstar.exception.IllegalContractException;
+import tech.xuanwu.northstar.exception.NoSuchContractException;
 import xyz.redtorch.pb.CoreEnum.ProductClassEnum;
 import xyz.redtorch.pb.CoreField.ContractField;
 
@@ -53,7 +53,7 @@ public class CaseTestFutureDictionary {
 	}
 	
 	@Test
-	public void test_添加合约_正常() throws IllegalContractException {
+	public void test_添加合约_正常() throws NoSuchContractException {
 		//验证正常添加
 		for(ContractField c : contractList) {
 			dict.add(c);
@@ -69,8 +69,8 @@ public class CaseTestFutureDictionary {
 		assertEquals(dict.size(), contractList.size());
 	}
 	
-	@Test(expected = IllegalContractException.class)
-	public void test_添加合约_异常_合约类型不正确() throws IllegalContractException {
+	@Test(expected = NoSuchContractException.class)
+	public void test_添加合约_异常_合约类型不正确() throws NoSuchContractException {
 		ContractField falseContract = contractList.get(ThreadLocalRandom.current().nextInt(contractList.size()));
 		falseContract = falseContract.toBuilder().setProductClass(ProductClassEnum.BOND).build();
 		
@@ -80,7 +80,7 @@ public class CaseTestFutureDictionary {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void test_添加合约_异常_空参数() throws IllegalContractException {
+	public void test_添加合约_异常_空参数() throws NoSuchContractException {
 		
 		//验证异常添加
 		dict.add(null);
@@ -88,7 +88,7 @@ public class CaseTestFutureDictionary {
 	}
 	
 	@Test
-	public void test_清空集合() throws IllegalContractException {
+	public void test_清空集合() throws NoSuchContractException {
 		//验证清空
 		for(ContractField c : contractList) {
 			dict.add(c);
@@ -100,7 +100,7 @@ public class CaseTestFutureDictionary {
 	}
 	
 	@Test
-	public void test_查询单个合约_正常用例() throws IllegalContractException {
+	public void test_查询单个合约_正常用例() throws NoSuchContractException {
 		for(ContractField c : contractList) {
 			dict.add(c);
 		}
@@ -125,13 +125,13 @@ public class CaseTestFutureDictionary {
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void test_查询单个合约_异常_空参数() {
+	public void test_查询单个合约_异常_空参数() throws NoSuchContractException {
 		//使用不正常的格式
 		dict.getContractByName(null);
 	}
 	
 	@Test
-	public void test_查询全月份合约_正常用例() throws IllegalContractException {
+	public void test_查询全月份合约_正常用例() throws NoSuchContractException {
 		contractList.clear();
 		String strRB2005 = "{\"_id\":ObjectId(\"5e42c0869e1683734c1a63fd\"),\"contractId_\":\"rb2005@SHFE@FUTURES@CTP-SimNow724\",\"name_\":\"螺纹钢2005\",\"fullName_\":\"螺纹钢2005\",\"thirdPartyId_\":\"rb2005\",\"unifiedSymbol_\":\"rb2005@SHFE@FUTURES\",\"symbol_\":\"rb2005\",\"exchange_\":4,\"productClass_\":2,\"currency_\":2,\"multiplier_\":10.0,\"priceTick_\":1.0,\"longMarginRatio_\":0.1,\"shortMarginRatio_\":0.1,\"maxMarginSideAlgorithm_\":true,\"underlyingSymbol_\":\"\",\"strikePrice_\":0.0,\"optionsType_\":0,\"underlyingMultiplier_\":0.0,\"lastTradeDateOrContractMonth_\":\"20200515\",\"maxMarketOrderVolume_\":30,\"minMarketOrderVolume_\":1,\"maxLimitOrderVolume_\":500,\"minLimitOrderVolume_\":1,\"combinationType_\":0,\"gatewayId_\":\"CTP-SimNow724\"}";
 		String strRB2006 = "{\"_id\":ObjectId(\"5e42c0869e1683734c1a63fd\"),\"contractId_\":\"rb2006@SHFE@FUTURES@CTP-SimNow724\",\"name_\":\"螺纹钢2006\",\"fullName_\":\"螺纹钢2006\",\"thirdPartyId_\":\"rb2006\",\"unifiedSymbol_\":\"rb2006@SHFE@FUTURES\",\"symbol_\":\"rb2006\",\"exchange_\":4,\"productClass_\":2,\"currency_\":2,\"multiplier_\":10.0,\"priceTick_\":1.0,\"longMarginRatio_\":0.1,\"shortMarginRatio_\":0.1,\"maxMarginSideAlgorithm_\":true,\"underlyingSymbol_\":\"\",\"strikePrice_\":0.0,\"optionsType_\":0,\"underlyingMultiplier_\":0.0,\"lastTradeDateOrContractMonth_\":\"20200615\",\"maxMarketOrderVolume_\":30,\"minMarketOrderVolume_\":1,\"maxLimitOrderVolume_\":500,\"minLimitOrderVolume_\":1,\"combinationType_\":0,\"gatewayId_\":\"CTP-SimNow724\"}";

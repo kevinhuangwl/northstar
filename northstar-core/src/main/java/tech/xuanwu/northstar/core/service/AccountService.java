@@ -2,6 +2,7 @@ package tech.xuanwu.northstar.core.service;
 
 import java.util.List;
 
+import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import xyz.redtorch.pb.CoreField.AccountField;
 import xyz.redtorch.pb.CoreField.OrderField;
 import xyz.redtorch.pb.CoreField.PositionField;
@@ -25,31 +26,31 @@ public interface AccountService {
 	 * @param accountName
 	 * @return
 	 */
-	List<PositionField> getPositionInfoList(String accountName);
+	List<PositionField> getPositionInfoList(String accountName) throws NoSuchAccountException;
 	
 	/**
 	 * 获取委托单信息
 	 * @param accountName
 	 * @return
 	 */
-	List<OrderField> getOrderInfoList(String accountName);
+	List<OrderField> getOrderInfoList(String accountName) throws NoSuchAccountException;
 	
 	/**
 	 * 获取成交信息
 	 * @param accountName
 	 * @return
 	 */
-	List<TradeField> getTransactionInfoList(String accountName);
+	List<TradeField> getTransactionInfoList(String accountName) throws NoSuchAccountException;
 	
 	/**
 	 * 连接网关
 	 * @param accountName
 	 */
-	void connectGateway(String accountName);
+	void connectGateway(String accountName) throws NoSuchAccountException;
 	
 	/**
 	 * 断开网关
 	 * @param accountName
 	 */
-	void disconnectGateway(String accountName);
+	void disconnectGateway(String accountName) throws NoSuchAccountException;
 }

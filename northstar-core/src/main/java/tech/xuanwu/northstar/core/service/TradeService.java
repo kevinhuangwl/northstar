@@ -1,13 +1,16 @@
 package tech.xuanwu.northstar.core.service;
 
-import java.util.List;
-
-import xyz.redtorch.pb.CoreEnum.*;
+import tech.xuanwu.northstar.exception.NoSuchAccountException;
+import tech.xuanwu.northstar.exception.NoSuchContractException;
+import xyz.redtorch.pb.CoreEnum.ContingentConditionEnum;
+import xyz.redtorch.pb.CoreEnum.DirectionEnum;
+import xyz.redtorch.pb.CoreEnum.HedgeFlagEnum;
+import xyz.redtorch.pb.CoreEnum.OffsetFlagEnum;
+import xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum;
+import xyz.redtorch.pb.CoreEnum.TimeConditionEnum;
+import xyz.redtorch.pb.CoreEnum.VolumeConditionEnum;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
-import xyz.redtorch.pb.CoreField.OrderField;
-import xyz.redtorch.pb.CoreField.PositionField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
-import xyz.redtorch.pb.CoreField.TradeField;
 
 /**
  * 交易服务 负责提供简单且统一的入参接口，然后统一封装 
@@ -38,7 +41,7 @@ public interface TradeService {
 	String submitOrder(String accountName, String contractSymbol, double price, double stopPrice, int volume,
 			OrderPriceTypeEnum priceType, DirectionEnum direction, OffsetFlagEnum transactionType,
 			HedgeFlagEnum hedgeType, TimeConditionEnum expireType, VolumeConditionEnum volType,
-			ContingentConditionEnum trigerType) throws Exception;
+			ContingentConditionEnum trigerType) throws NoSuchContractException, NoSuchAccountException;
 
 	/**
 	 * 提交委托
@@ -52,7 +55,7 @@ public interface TradeService {
 	 * @return
 	 */
 	String submitOrder(String accountName, String contractSymbol, double price, int volume, DirectionEnum direction,
-			OffsetFlagEnum transactionType) throws Exception;
+			OffsetFlagEnum transactionType) throws NoSuchContractException, NoSuchAccountException;
 
 	/**
 	 * 提交委托
@@ -61,14 +64,14 @@ public interface TradeService {
 	 * @param submitOrderReq
 	 * @return
 	 */
-	String submitOrder(String accountName, SubmitOrderReqField submitOrderReq) throws Exception;
+	String submitOrder(String accountName, SubmitOrderReqField submitOrderReq) throws NoSuchContractException, NoSuchAccountException;
 
 	/**
 	 * 撤销委托
 	 * @param accountName
 	 * @param originOrderId
 	 */
-	void cancelOrder(String accountName, String originOrderId);
+	void cancelOrder(String accountName, String originOrderId) throws NoSuchAccountException;
 	
 	/**
 	 * 撤销委托
@@ -76,11 +79,11 @@ public interface TradeService {
 	 * @param cancelOrderReq
 	 * @return
 	 */
-	void cancelOrder(String accountName, CancelOrderReqField cancelOrderReq);
+	void cancelOrder(String accountName, CancelOrderReqField cancelOrderReq) throws NoSuchAccountException;
 	
 	/**
 	 * 全部清仓
 	 */
-	void sellOutAllPosition(String accountName);
+	void sellOutAllPosition(String accountName) throws NoSuchAccountException;
 
 }

@@ -4,6 +4,7 @@ import java.util.EventObject;
 import java.util.List;
 
 import tech.xuanwu.northstar.domain.IAccount;
+import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import xyz.redtorch.pb.CoreField.AccountField;
 
 /**
@@ -18,7 +19,7 @@ public interface RuntimeEngine {
 	
 	void unregAccount(String accountName);
 	
-	IAccount getAccount(String accountName) throws IllegalArgumentException;
+	IAccount getAccount(String accountName) throws NoSuchAccountException;
 	
 	List<AccountField> getAccountInfoList();
 	

@@ -11,6 +11,7 @@ import tech.xuanwu.northstar.constant.EventEnum;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.dto.StrategyInfo;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
+import tech.xuanwu.northstar.exception.NoSuchAccountException;
 
 @Slf4j
 @Component
@@ -29,12 +30,8 @@ public class StrategyRegEventHandler implements RuntimeEngine.Listener, Initiali
 		try {
 			StrategyInfo s = (StrategyInfo) e.getSource();
 			IAccount account = rtEngine.getAccount(s.getAccountName());
-	    	if(account==null) {
-	    		log.warn("没有名称为{}的注册账户", s.getAccountName());
-	    		return;
-	    	}
 	    	account.regStrategy(s.getStrategyName());	
-		}catch(ClassCastException ex) {
+		}catch(Exception ex) {
 			log.error("", ex);
 		}
 			
