@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.constant.EventEnum;
+import tech.xuanwu.northstar.constant.RuntimeEvent;
 import tech.xuanwu.northstar.engine.FastEventEngine;
 import tech.xuanwu.northstar.engine.FastEventEngine.FastEvent;
 import tech.xuanwu.northstar.engine.FastEventEngine.FastEventDynamicHandlerAbstract;
@@ -43,7 +43,7 @@ public class MarketDataEventHandler extends FastEventDynamicHandlerAbstract impl
 			try {
 				TickField tick = (TickField) fastEvent.getObj();
 				EventObject e = new EventObject(tick);
-				rtEngine.emitEvent(EventEnum.TICK_UPDATE.toString(), e);
+				rtEngine.emitEvent(RuntimeEvent.TICK_UPDATE, e);
 			} catch (Exception e) {
 				log.error("行情事件发生异常", e);
 			}

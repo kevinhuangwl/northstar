@@ -11,6 +11,7 @@
 	<name>northstar-core</name>
 
 	<properties>
+		<springfox-swagger-version>2.9.2</springfox-swagger-version>
 		<skipTests>true</skipTests>
 	</properties>
 
@@ -39,6 +40,17 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
+		</dependency>
+		
+		<dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger2</artifactId>
+		    <version>${springfox-swagger-version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger-ui</artifactId>
+		    <version>${springfox-swagger-version}</version>
 		</dependency>
 	</dependencies>
 

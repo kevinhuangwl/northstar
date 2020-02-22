@@ -3,9 +3,11 @@ package tech.xuanwu.northstar.engine;
 import java.util.EventObject;
 import java.util.List;
 
+import tech.xuanwu.northstar.constant.RuntimeEvent;
 import tech.xuanwu.northstar.domain.IAccount;
+import tech.xuanwu.northstar.entity.AccountInfo;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
-import xyz.redtorch.pb.CoreField.AccountField;
+import tech.xuanwu.northstar.exception.NoSuchEventHandlerException;
 
 /**
  * 运行时引擎
@@ -17,19 +19,19 @@ public interface RuntimeEngine {
 	
 	void regAccount(IAccount account);
 	
-	void unregAccount(String accountName);
+	void unregAccount(String accountGatewayId);
 	
-	IAccount getAccount(String accountName) throws NoSuchAccountException;
+	IAccount getAccount(String accountGatewayId) throws NoSuchAccountException;
 	
-	List<AccountField> getAccountInfoList();
+	List<AccountInfo> getAccountInfoList();
 	
-	boolean addEventHandler(String event, Listener listener);
+	boolean addEventHandler(RuntimeEvent event, Listener listener);
 	
-	void emitEvent(String event, EventObject e) throws IllegalStateException;
+	void emitEvent(RuntimeEvent event, EventObject e) throws NoSuchEventHandlerException;
 	
 	interface Listener{
 		
-		void onEvent(EventObject e);
+		void onEvent(EventObject e) throws Exception;
 	}
 	
 }

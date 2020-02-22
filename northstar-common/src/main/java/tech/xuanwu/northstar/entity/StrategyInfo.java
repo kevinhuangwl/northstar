@@ -1,11 +1,11 @@
-package tech.xuanwu.northstar.dto;
+package tech.xuanwu.northstar.entity;
 
 import lombok.Data;
 
 @Data
 public class StrategyInfo {
 
-	String accountName;
+	String accountGatewayId;
 	
 	String strategyName;
 	
@@ -13,8 +13,8 @@ public class StrategyInfo {
 	
 	public StrategyInfo() {}
 	
-	public StrategyInfo(String accountName, String strategyName, String[] subscribeContracts) {
-		this.accountName = accountName;
+	public StrategyInfo(String accountGatewayId, String strategyName, String[] subscribeContracts) {
+		this.accountGatewayId = accountGatewayId;
 		this.strategyName = strategyName;
 		this.subscribeContracts = subscribeContracts;
 	}

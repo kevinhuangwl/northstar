@@ -24,7 +24,7 @@ public interface TradeService {
 	/**
 	 * 提交委托
 	 * 
-	 * @param accountName     账户名称
+	 * @param accountGatewayId     账户名称
 	 * @param contractSymbol  交易合约
 	 * @param price           下单价
 	 * @param stopPrice       止损价
@@ -38,7 +38,7 @@ public interface TradeService {
 	 * @param trigerType      触发类型
 	 * @return 委托单ID
 	 */
-	String submitOrder(String accountName, String contractSymbol, double price, double stopPrice, int volume,
+	String submitOrder(String accountGatewayId, String contractSymbol, double price, double stopPrice, int volume,
 			OrderPriceTypeEnum priceType, DirectionEnum direction, OffsetFlagEnum transactionType,
 			HedgeFlagEnum hedgeType, TimeConditionEnum expireType, VolumeConditionEnum volType,
 			ContingentConditionEnum trigerType) throws NoSuchContractException, NoSuchAccountException;
@@ -46,7 +46,7 @@ public interface TradeService {
 	/**
 	 * 提交委托
 	 * 
-	 * @param accountName
+	 * @param accountGatewayId
 	 * @param contractSymbol
 	 * @param price
 	 * @param volume
@@ -54,36 +54,36 @@ public interface TradeService {
 	 * @param transactionType
 	 * @return
 	 */
-	String submitOrder(String accountName, String contractSymbol, double price, int volume, DirectionEnum direction,
+	String submitOrder(String accountGatewayId, String contractSymbol, double price, int volume, DirectionEnum direction,
 			OffsetFlagEnum transactionType) throws NoSuchContractException, NoSuchAccountException;
 
 	/**
 	 * 提交委托
 	 * 
-	 * @param accountName
+	 * @param accountGatewayId
 	 * @param submitOrderReq
 	 * @return
 	 */
-	String submitOrder(String accountName, SubmitOrderReqField submitOrderReq) throws NoSuchContractException, NoSuchAccountException;
+	String submitOrder(String accountGatewayId, SubmitOrderReqField submitOrderReq) throws NoSuchContractException, NoSuchAccountException;
 
 	/**
 	 * 撤销委托
-	 * @param accountName
+	 * @param accountGatewayId
 	 * @param originOrderId
 	 */
-	void cancelOrder(String accountName, String originOrderId) throws NoSuchAccountException;
+	void cancelOrder(String accountGatewayId, String originOrderId) throws NoSuchAccountException;
 	
 	/**
 	 * 撤销委托
-	 * @param accountName
+	 * @param accountGatewayId
 	 * @param cancelOrderReq
 	 * @return
 	 */
-	void cancelOrder(String accountName, CancelOrderReqField cancelOrderReq) throws NoSuchAccountException;
+	void cancelOrder(String accountGatewayId, CancelOrderReqField cancelOrderReq) throws NoSuchAccountException;
 	
 	/**
 	 * 全部清仓
 	 */
-	void sellOutAllPosition(String accountName) throws NoSuchAccountException;
+	void sellOutAllPosition(String accountGatewayId) throws NoSuchAccountException;
 
 }

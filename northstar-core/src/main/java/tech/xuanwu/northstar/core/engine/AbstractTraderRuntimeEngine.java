@@ -7,8 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
+import tech.xuanwu.northstar.entity.AccountInfo;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
-import xyz.redtorch.pb.CoreField.AccountField;
 
 public abstract class AbstractTraderRuntimeEngine implements RuntimeEngine{
 	
@@ -34,8 +34,8 @@ public abstract class AbstractTraderRuntimeEngine implements RuntimeEngine{
 	}
 
 	@Override
-	public List<AccountField> getAccountInfoList() {
-		List<AccountField> resultList = new ArrayList<AccountField>();
+	public List<AccountInfo> getAccountInfoList() {
+		List<AccountInfo> resultList = new ArrayList<AccountInfo>();
 		for(Entry<String, IAccount> e : accountMap.entrySet()) {
 			IAccount account = e.getValue();
 			resultList.add(account.getAccountInfo());

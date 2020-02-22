@@ -10,16 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import tech.xuanwu.northstar.constant.ErrorHint;
 import tech.xuanwu.northstar.core.dao.AccountDao;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.domain.IStrategy;
+import tech.xuanwu.northstar.entity.AccountInfo;
+import tech.xuanwu.northstar.entity.OrderInfo;
+import tech.xuanwu.northstar.entity.PositionInfo;
+import tech.xuanwu.northstar.entity.TransactionInfo;
 import tech.xuanwu.northstar.gateway.GatewayApi;
-import xyz.redtorch.pb.CoreField.AccountField;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
-import xyz.redtorch.pb.CoreField.OrderField;
-import xyz.redtorch.pb.CoreField.PositionField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
-import xyz.redtorch.pb.CoreField.TradeField;
 
 /**
  * 账户对象，每个实际账户一个实例
@@ -37,7 +38,7 @@ public class RealAccount implements IAccount{
 	GatewayApi gatewayApi;
 	
 	/*基本账户信息副本*/
-	volatile AccountField accountInfo;
+	volatile AccountInfo accountInfo;
 	
 	/*策略信息*/
 	Map<String, IStrategy> strategyMap = new HashMap<>();
@@ -46,29 +47,22 @@ public class RealAccount implements IAccount{
 	@Getter
 	protected String name;
 	
-	/*账户余额*/
-	@Getter
-	protected double balance;
-	
-	/*保证金占用*/
-	@Getter
-	protected double margin;
-	
 	/*持仓信息*/
-	protected List<PositionField> positionList = new ArrayList<>();
+	protected List<PositionInfo> positionList = new ArrayList<>();
 	
 	/*订单信息*/
-	protected List<OrderField> orderList = new ArrayList<>();
+	protected List<OrderInfo> orderList = new ArrayList<>();
 	
 	protected String lastOrderTradeDay = "";
 	
 	/*成交信息*/
-	protected List<TradeField> transactionList = new ArrayList<>();
+	protected List<TransactionInfo> transactionList = new ArrayList<>();
 	
 	public RealAccount(){}
 	
 	public RealAccount(GatewayApi gatewayApi){
 		this.name = gatewayApi.getGatewayName();
+		this.gatewayApi = gatewayApi;
 	}
 
 	@Override
@@ -84,23 +78,23 @@ public class RealAccount implements IAccount{
 	}
 
 	@Override
-	public void updatePosition(PositionField position) {
+	public void updatePosition(PositionInfo position) {
 		synchronized (positionList) {
 			positionList.add(position);
 		}
 	}
 
 	@Override
-	public List<PositionField> getPositionInfoList() {
+	public List<PositionInfo> getPositionInfoList() {
 		synchronized (positionList) {		
-			List<PositionField> resultList = new ArrayList<>(positionList.size());
+			List<PositionInfo> resultList = new ArrayList<>(positionList.size());
 			resultList.addAll(positionList);
 			return resultList;
 		}
 	}
 
 	@Override
-	public void updateOrder(OrderField order) {
+	public void updateOrder(OrderInfo order) {
 		// FIXME 这处不确定
 		synchronized (orderList) {
 			if(!lastOrderTradeDay.equals(order.getTradingDay())) {
@@ -112,25 +106,29 @@ public class RealAccount implements IAccount{
 	}
 
 	@Override
-	public void updateTransaction(TradeField transaction) {
+	public void updateTransaction(TransactionInfo transaction) {
 		synchronized (transactionList) {
 			transactionList.add(transaction);
 		}
 	}
 
 	@Override
-	public AccountField getAccountInfo() {
+	public AccountInfo getAccountInfo() {
 		return accountInfo;
 	}
 
 	@Override
-	public void updateAccount(AccountField account) {
+	public void updateAccount(AccountInfo account) {
+		if(account == null) {
+			throw new IllegalArgumentException(ErrorHint.NOT_NULL_PARAM);
+		}
+		if(this.accountInfo == null) {
+			this.accountInfo = account;
+		}
 		//若账户信息有变，则保存记录
-		if(this.accountInfo!=null && !this.accountInfo.equals(account)) {
+		if(!this.accountInfo.equals(account)) {
 			accDao.insert(account);
 		}
-		
-		this.accountInfo = account;
 	}
 
 	@Override
@@ -165,20 +163,20 @@ public class RealAccount implements IAccount{
 	}
 
 	@Override
-	public List<OrderField> getOrderInfoList(LocalDate fromDate, LocalDate toDate) {
+	public List<OrderInfo> getOrderInfoList(LocalDate fromDate, LocalDate toDate) {
 		//FIXME 先做简单实现
 		synchronized (orderList) {
-			List<OrderField> resultList = new ArrayList<>(orderList.size());
+			List<OrderInfo> resultList = new ArrayList<>(orderList.size());
 			resultList.addAll(orderList);
 			return resultList;
 		}
 	}
 
 	@Override
-	public List<TradeField> getTransactionInfoList(LocalDate fromDate, LocalDate toDate) {
+	public List<TransactionInfo> getTransactionInfoList(LocalDate fromDate, LocalDate toDate) {
 		//FIXME 先做简单实现
 		synchronized (transactionList) {
-			List<TradeField> resultList = new ArrayList<>(transactionList.size());
+			List<TransactionInfo> resultList = new ArrayList<>(transactionList.size());
 			resultList.addAll(transactionList);
 			return resultList;
 		}
@@ -186,12 +184,28 @@ public class RealAccount implements IAccount{
 
 	@Override
 	public void connectGateway() {
+		if(gatewayApi.isConnected()) {
+			return;
+		}
 		gatewayApi.connect();
 	}
 
 	@Override
 	public void disconnectGateway() {
+		if(!gatewayApi.isConnected()) {
+			return;
+		}
 		gatewayApi.disconnect();
+	}
+
+	@Override
+	public double getBalance() {
+		return accountInfo.getBalance();
+	}
+
+	@Override
+	public double getMargin() {
+		return accountInfo.getMargin();
 	}
 	
 }

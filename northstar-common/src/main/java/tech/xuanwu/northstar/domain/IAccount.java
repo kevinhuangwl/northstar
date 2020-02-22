@@ -2,6 +2,7 @@ package tech.xuanwu.northstar.domain;
 
 import java.util.List;
 
+import tech.xuanwu.northstar.entity.AccountInfo;
 import xyz.redtorch.pb.CoreField.AccountField;
 
 /**
@@ -11,9 +12,9 @@ import xyz.redtorch.pb.CoreField.AccountField;
  */
 public interface IAccount extends Tradable {
 	
-	AccountField getAccountInfo();
+	AccountInfo getAccountInfo();
 	
-	void updateAccount(AccountField account);
+	void updateAccount(AccountInfo account);
 	
 	List<IStrategy> getStrategyList();
 	

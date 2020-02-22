@@ -5,7 +5,7 @@ package tech.xuanwu.northstar.constant;
  * @author kevinhuangwl
  *
  */
-public enum EventEnum {
+public enum RuntimeEvent {
 	
 	//更新TICK数据
 	TICK_UPDATE,
@@ -19,7 +19,12 @@ public enum EventEnum {
 	CANCEL_ORDER,
 	//订单回报
 	FEEDBACK_ORDER,
-	
+	//账户回报
+	FEEDBACK_ACCOUNT,
+	//持仓回报
+	FEEDBACK_POSITION,
+	//成交回报
+	FEEDBACK_TRADE,
 	
 	GATEWAY_CONNECTED,
 	

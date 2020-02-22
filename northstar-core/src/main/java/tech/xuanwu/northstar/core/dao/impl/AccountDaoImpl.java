@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.core.dao.AccountDao;
+import tech.xuanwu.northstar.entity.AccountInfo;
 import xyz.redtorch.common.mongo.MongoDBClient;
 import xyz.redtorch.common.mongo.MongoDBUtils;
-import xyz.redtorch.pb.CoreField.AccountField;
 
 @Slf4j
 @Repository
@@ -24,7 +24,7 @@ public class AccountDaoImpl implements AccountDao{
 	final String TBL_ACCOUNT = "Account";
 
 	@Override
-	public boolean insert(AccountField account) {
+	public boolean insert(AccountInfo account) {
 		try {
 			Document doc = MongoDBUtils.beanToDocument(account);
 			mongodb.insert(DB, TBL_ACCOUNT, doc);
@@ -36,14 +36,14 @@ public class AccountDaoImpl implements AccountDao{
 	}
 
 	@Override
-	public AccountField getLatestRecord(String accountId) {
+	public AccountInfo getLatestRecord(String accountId) {
 		
 //		mongodb.find(DB, COLLECTION, );
 		return null;
 	}
 
 	@Override
-	public AccountField[] getRecordsByPeriod(String accountId, LocalDate startDate, LocalDate endDate) {
+	public AccountInfo[] getRecordsByPeriod(String accountId, LocalDate startDate, LocalDate endDate) {
 		// TODO Auto-generated method stub
 		return null;
 	}

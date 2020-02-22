@@ -3,11 +3,11 @@ package tech.xuanwu.northstar.domain;
 import java.time.LocalDate;
 import java.util.List;
 
+import tech.xuanwu.northstar.entity.OrderInfo;
+import tech.xuanwu.northstar.entity.PositionInfo;
+import tech.xuanwu.northstar.entity.TransactionInfo;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
-import xyz.redtorch.pb.CoreField.OrderField;
-import xyz.redtorch.pb.CoreField.PositionField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
-import xyz.redtorch.pb.CoreField.TradeField;
 
 public interface Tradable {
 
@@ -21,15 +21,15 @@ public interface Tradable {
 	
 	void cancelOrder(CancelOrderReqField cancelOrderReq);
 	
-	void updatePosition(PositionField position);
+	void updatePosition(PositionInfo position);
 	
-	void updateOrder(OrderField order);
+	void updateOrder(OrderInfo order);
 
-	void updateTransaction(TradeField transaction);
+	void updateTransaction(TransactionInfo transaction);
 	
-	List<PositionField> getPositionInfoList();
+	List<PositionInfo> getPositionInfoList();
 	
-	List<OrderField> getOrderInfoList(LocalDate fromDate, LocalDate toDate);
+	List<OrderInfo> getOrderInfoList(LocalDate fromDate, LocalDate toDate);
 	
-	List<TradeField> getTransactionInfoList(LocalDate fromDate, LocalDate toDate);
+	List<TransactionInfo> getTransactionInfoList(LocalDate fromDate, LocalDate toDate);
 }

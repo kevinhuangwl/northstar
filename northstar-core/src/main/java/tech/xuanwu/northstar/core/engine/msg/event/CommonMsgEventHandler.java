@@ -1,7 +1,6 @@
 package tech.xuanwu.northstar.core.engine.msg.event;
 
 import java.util.ArrayList;
-import java.util.EventObject;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,19 +13,14 @@ import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.annotation.OnConnect;
 import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
-import com.google.protobuf.InvalidProtocolBufferException;
 
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.constant.EventEnum;
 import tech.xuanwu.northstar.constant.MessageType;
 import tech.xuanwu.northstar.core.service.TradeService;
 import tech.xuanwu.northstar.core.util.FutureDictionary;
-import tech.xuanwu.northstar.dto.StrategyInfo;
-import tech.xuanwu.northstar.engine.RuntimeEngine;
+import tech.xuanwu.northstar.entity.StrategyInfo;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import tech.xuanwu.northstar.exception.NoSuchContractException;
-import tech.xuanwu.northstar.gateway.GatewayApi;
-import xyz.redtorch.pb.CoreField.CancelOrderReqField;
 import xyz.redtorch.pb.CoreField.ContractField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 
@@ -68,7 +62,7 @@ public class CommonMsgEventHandler {
     	log.info("【策略注册】-[{}],【{}】绑定账户：{}，订阅合约：{}", 
     			client.getSessionId(), 
     			s.getStrategyName(), 
-    			s.getAccountName(), 
+    			s.getAccountGatewayId(), 
     			JSON.toJSONString(s.getSubscribeContracts()));
     	
     	String[] contractList = s.getSubscribeContracts();

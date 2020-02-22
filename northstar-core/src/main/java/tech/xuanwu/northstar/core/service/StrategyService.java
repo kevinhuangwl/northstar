@@ -2,7 +2,7 @@ package tech.xuanwu.northstar.core.service;
 
 import java.util.List;
 
-import tech.xuanwu.northstar.dto.StrategyInfo;
+import tech.xuanwu.northstar.entity.StrategyInfo;
 
 public interface StrategyService {
 

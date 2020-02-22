@@ -2,7 +2,7 @@ package tech.xuanwu.northstar.core.dao;
 
 import java.time.LocalDate;
 
-import xyz.redtorch.pb.CoreField.AccountField;
+import tech.xuanwu.northstar.entity.AccountInfo;
 
 public interface AccountDao {
 
@@ -11,14 +11,14 @@ public interface AccountDao {
 	 * @param account
 	 * @return
 	 */
-	boolean insert(AccountField account);
+	boolean insert(AccountInfo account);
 	
 	/**
 	 * 根据账户ID获取最近一条账户记录
 	 * @param accountId
 	 * @return
 	 */
-	AccountField getLatestRecord(String accountId);
+	AccountInfo getLatestRecord(String accountId);
 	
 	/**
 	 * 根据账户ID获取一定时期内的账户记录
@@ -27,5 +27,5 @@ public interface AccountDao {
 	 * @param endDate
 	 * @return
 	 */
-	AccountField[] getRecordsByPeriod(String accountId, LocalDate startDate, LocalDate endDate);
+	AccountInfo[] getRecordsByPeriod(String accountId, LocalDate startDate, LocalDate endDate);
 }

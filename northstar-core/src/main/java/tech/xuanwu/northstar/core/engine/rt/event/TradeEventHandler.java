@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.constant.EventEnum;
+import tech.xuanwu.northstar.constant.RuntimeEvent;
 import tech.xuanwu.northstar.core.service.TradeService;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
@@ -18,7 +18,7 @@ import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 
 @Slf4j
 @Component
-public class OrderingEventHandler implements RuntimeEngine.Listener, InitializingBean{
+public class TradeEventHandler implements RuntimeEngine.Listener, InitializingBean{
 
 	
 	

@@ -9,8 +9,11 @@ import org.springframework.stereotype.Service;
 import tech.xuanwu.northstar.core.service.AccountService;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
+import tech.xuanwu.northstar.entity.AccountInfo;
+import tech.xuanwu.northstar.entity.OrderInfo;
+import tech.xuanwu.northstar.entity.PositionInfo;
+import tech.xuanwu.northstar.entity.TransactionInfo;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
-import xyz.redtorch.pb.CoreField.AccountField;
 import xyz.redtorch.pb.CoreField.OrderField;
 import xyz.redtorch.pb.CoreField.PositionField;
 import xyz.redtorch.pb.CoreField.TradeField;
@@ -22,24 +25,24 @@ public class AccountServiceImpl implements AccountService{
 	RuntimeEngine rtEngine;
 
 	@Override
-	public List<AccountField> getAccountInfoList() {
+	public List<AccountInfo> getAccountInfoList() {
 		return rtEngine.getAccountInfoList();
 	}
 
 	@Override
-	public List<PositionField> getPositionInfoList(String accountName) throws NoSuchAccountException {
+	public List<PositionInfo> getPositionInfoList(String accountName) throws NoSuchAccountException {
 		IAccount account = rtEngine.getAccount(accountName);
 		return account.getPositionInfoList();
 	}
 
 	@Override
-	public List<OrderField> getOrderInfoList(String accountName) throws NoSuchAccountException {
+	public List<OrderInfo> getOrderInfoList(String accountName) throws NoSuchAccountException {
 		IAccount account = rtEngine.getAccount(accountName);
 		return account.getOrderInfoList(LocalDate.now(), LocalDate.now());
 	}
 
 	@Override
-	public List<TradeField> getTransactionInfoList(String accountName) throws NoSuchAccountException {
+	public List<TransactionInfo> getTransactionInfoList(String accountName) throws NoSuchAccountException {
 		IAccount account = rtEngine.getAccount(accountName);
 		return account.getTransactionInfoList(LocalDate.now(), LocalDate.now());
 	}

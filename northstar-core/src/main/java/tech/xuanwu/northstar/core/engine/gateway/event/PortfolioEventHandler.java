@@ -1,17 +1,25 @@
 package tech.xuanwu.northstar.core.engine.gateway.event;
 
+import java.util.EventObject;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
+import tech.xuanwu.northstar.constant.RuntimeEvent;
 import tech.xuanwu.northstar.core.engine.SocketIOMessageEngine;
 import tech.xuanwu.northstar.core.util.FutureDictionary;
 import tech.xuanwu.northstar.engine.FastEventEngine;
+import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.engine.FastEventEngine.FastEvent;
 import tech.xuanwu.northstar.engine.FastEventEngine.FastEventDynamicHandlerAbstract;
 import tech.xuanwu.northstar.engine.FastEventEngine.FastEventType;
+import xyz.redtorch.pb.CoreField.AccountField;
 import xyz.redtorch.pb.CoreField.ContractField;
+import xyz.redtorch.pb.CoreField.OrderField;
+import xyz.redtorch.pb.CoreField.PositionField;
+import xyz.redtorch.pb.CoreField.TradeField;
 
 /**
  * 投资组合相关事件处理器
@@ -27,6 +35,9 @@ public class PortfolioEventHandler extends FastEventDynamicHandlerAbstract imple
 	
 	@Autowired
 	SocketIOMessageEngine msgEngine;
+	
+	@Autowired
+	RuntimeEngine rtEngine;
 	
 	@Autowired
 	FutureDictionary futureDict;
@@ -52,16 +63,20 @@ public class PortfolioEventHandler extends FastEventDynamicHandlerAbstract imple
 		//发生频率越高的事件排得越前
 		switch(event.getFastEventType()) {
 		case ACCOUNT:
-			
+			AccountField account = (AccountField) event.getObj();
+			rtEngine.emitEvent(RuntimeEvent.FEEDBACK_ACCOUNT, new EventObject(account));
 			break;
 		case POSITION:
-			
+			PositionField position = (PositionField) event.getObj();
+			rtEngine.emitEvent(RuntimeEvent.FEEDBACK_POSITION, new EventObject(position));
 			break;
 		case ORDER:
-			
+			OrderField order = (OrderField) event.getObj();
+			rtEngine.emitEvent(RuntimeEvent.FEEDBACK_ORDER, new EventObject(order));
 			break;
 		case TRADE:
-			
+			TradeField trade = (TradeField) event.getObj();
+			rtEngine.emitEvent(RuntimeEvent.FEEDBACK_TRADE, new EventObject(trade));
 			break;
 		case CONTRACT:
 			ContractField c = (ContractField) event.getObj();
