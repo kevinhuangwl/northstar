@@ -31,28 +31,31 @@ public class TradeController {
 		try {
 			return new ResultBean<>(tradeService.submitOrder(accountGatewayId, contractSymbol, price, volume, direction, transactionType));
 		} catch (Exception e) {
+			log.error("", e);
 			return new ResultBean<String>(ResultBean.ReturnCode.ERROR, e.getMessage());
 		}
 	}
 	
-	@RequestMapping(value="/cancel", method=RequestMethod.DELETE)
+	@RequestMapping(value="/cancel", method=RequestMethod.POST)
 	@ApiOperation("账户撤销委托单")
 	public ResultBean<Void> cancelOrder(String accountGatewayId, String originOrderId){
 		try {
 			tradeService.cancelOrder(accountGatewayId, originOrderId);
 		} catch (NoSuchAccountException e) {
+			log.error("", e);
 			return new ResultBean<>(ResultBean.ReturnCode.ERROR, e.getMessage());
 		}
 		return new ResultBean(Void.TYPE);
 	}
 	
-	@RequestMapping(value="/sellout", method=RequestMethod.POST)
+	@RequestMapping(value="/sellout", method=RequestMethod.DELETE)
 	@ApiOperation("账户一键全平【危险】")
 	public ResultBean<Void> sellOutAllPosition(String accountGatewayId){
 		log.info("【警告】账户一键全平");
 		try {
 			tradeService.sellOutAllPosition(accountGatewayId);
 		} catch (NoSuchAccountException e) {
+			log.error("", e);
 			return new ResultBean<>(ResultBean.ReturnCode.ERROR, e.getMessage());
 		}
 		return new ResultBean(Void.TYPE);

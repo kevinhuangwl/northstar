@@ -13,6 +13,7 @@ import tech.xuanwu.northstar.exception.NoSuchContractException;
 import xyz.redtorch.common.util.UUIDStringPoolUtils;
 import xyz.redtorch.pb.CoreEnum.ContingentConditionEnum;
 import xyz.redtorch.pb.CoreEnum.DirectionEnum;
+import xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum;
 import xyz.redtorch.pb.CoreEnum.HedgeFlagEnum;
 import xyz.redtorch.pb.CoreEnum.OffsetFlagEnum;
 import xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum;
@@ -70,13 +71,29 @@ public class TradeServiceImpl implements TradeService{
 	@Override
 	public String submitOrder(String accountName, SubmitOrderReqField submitOrderReq) throws NoSuchAccountException{
 		IAccount account = rtEngine.getAccount(accountName);
-		if(StringUtils.isEmpty(submitOrderReq.getOriginOrderId())) {
-			String uuid = UUIDStringPoolUtils.getUUIDString();
-			SubmitOrderReqField.Builder sb = submitOrderReq.toBuilder().setOriginOrderId(uuid);
-			submitOrderReq = sb.build();
+		SubmitOrderReqField.Builder sb = submitOrderReq.toBuilder();
+		submitOrderReq = sb.build();
+		String uuid = StringUtils.isEmpty(sb.getOriginOrderId()) ? UUIDStringPoolUtils.getUUIDString() : sb.getOriginOrderId();
+		sb.setOriginOrderId(uuid);
+
+		if(sb.getContingentCondition() == ContingentConditionEnum.CC_Unkonwn) {
+			sb.setContingentCondition(ContingentConditionEnum.CC_Immediately);
 		}
-		account.submitOrder(submitOrderReq);
-		return submitOrderReq.getOriginOrderId();
+		if(sb.getHedgeFlag() == HedgeFlagEnum.HF_Unknown) {
+			sb.setHedgeFlag(HedgeFlagEnum.HF_Speculation);
+		}
+		if(sb.getTimeCondition() == TimeConditionEnum.TC_Unkonwn) {
+			sb.setTimeCondition(TimeConditionEnum.TC_GFD);
+		}
+		if(sb.getVolumeCondition() == VolumeConditionEnum.VC_Unkonwn) {
+			sb.setVolumeCondition(VolumeConditionEnum.VC_AV);
+		}
+		if(sb.getForceCloseReason() == ForceCloseReasonEnum.FCR_Unkonwn) {
+			sb.setForceCloseReason(ForceCloseReasonEnum.FCR_NotForceClose);
+		}
+		
+		account.submitOrder(sb.build());
+		return uuid;
 	}
 
 	@Override

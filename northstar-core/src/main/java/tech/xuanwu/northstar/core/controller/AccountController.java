@@ -41,6 +41,7 @@ public class AccountController {
 		try {
 			return new ResultBean<List<PositionInfo>>(acService.getPositionInfoList(accountGatewayId));
 		} catch (NoSuchAccountException e) {
+			log.error("", e);
 			return new ResultBean<List<PositionInfo>>(ResultBean.ReturnCode.ERROR, e.getMessage());
 		}
 	}
@@ -51,6 +52,7 @@ public class AccountController {
 		try {
 			return new ResultBean<List<OrderInfo>>(acService.getOrderInfoList(accountGatewayId));
 		} catch (NoSuchAccountException e) {
+			log.error("", e);
 			return new ResultBean<List<OrderInfo>>(ResultBean.ReturnCode.ERROR, e.getMessage());
 		}
 	}
@@ -61,6 +63,7 @@ public class AccountController {
 		try {
 			return new ResultBean<List<TransactionInfo>>(acService.getTransactionInfoList(accountGatewayId));
 		} catch (NoSuchAccountException e) {
+			log.error("", e);
 			return new ResultBean<List<TransactionInfo>>(ResultBean.ReturnCode.ERROR, e.getMessage());
 		}
 	}
@@ -72,6 +75,7 @@ public class AccountController {
 		try {
 			acService.connectGateway(accountGatewayId);
 		} catch (NoSuchAccountException e) {
+			log.error("", e);
 			return new ResultBean<Void>(ResultBean.ReturnCode.ERROR, e.getMessage());
 		}
 		return new ResultBean(Void.TYPE);
@@ -84,6 +88,7 @@ public class AccountController {
 		try {
 			acService.disconnectGateway(accountGatewayId);
 		} catch (NoSuchAccountException e) {
+			log.error("", e);
 			return new ResultBean<Void>(ResultBean.ReturnCode.ERROR, e.getMessage());
 		}
 		return new ResultBean(Void.TYPE);
