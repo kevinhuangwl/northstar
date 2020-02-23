@@ -18,6 +18,11 @@ public class OrderInfo implements Serializable{
 	
 	String originOrderId;
 	String orderId;  // 定单ID,通常是<网关ID@适配器定单ID>
+	String adapterOrderId;  // 适配器层定单ID
+	String orderLocalId; // 本地报单编号
+	String brokerOrderSeq; // 经纪公司报单编号
+	String orderSysId; // 报单编号
+	String sequenceNo; // 序号
 	String accountId;  // 账户ID
 	DirectionEnum direction;  // 方向
 	OffsetFlagEnum offsetFlag;  // 开平
@@ -43,6 +48,11 @@ public class OrderInfo implements Serializable{
 	public static OrderInfo convertFrom(OrderField orderField) {
 		OrderInfo info = new OrderInfo();
 		info.accountId = orderField.getAccountId();
+		info.adapterOrderId = orderField.getAdapterOrderId();
+		info.orderLocalId = orderField.getOrderLocalId();
+		info.brokerOrderSeq = orderField.getBrokerOrderSeq();
+		info.orderSysId = orderField.getOrderSysId();
+		info.sequenceNo = orderField.getSequenceNo();
 		info.activeTime = orderField.getActiveTime();
 		info.cancelTime = orderField.getCancelTime();
 		info.contractSymbol = orderField.getContract().getSymbol();

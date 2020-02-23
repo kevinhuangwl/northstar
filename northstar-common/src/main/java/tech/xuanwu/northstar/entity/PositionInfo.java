@@ -2,9 +2,11 @@ package tech.xuanwu.northstar.entity;
 
 import java.io.Serializable;
 
+import lombok.Data;
 import xyz.redtorch.pb.CoreEnum.PositionDirectionEnum;
 import xyz.redtorch.pb.CoreField.PositionField;
 
+@Data
 public class PositionInfo implements Serializable{
 
 	/**
@@ -12,6 +14,7 @@ public class PositionInfo implements Serializable{
 	 */
 	private static final long serialVersionUID = -790933052545700894L;
 	
+	String positionId;
 	String accountId;  // 账户ID
 	PositionDirectionEnum positionDirection;  // 持仓方向
 	int position;  // 持仓量
@@ -37,6 +40,7 @@ public class PositionInfo implements Serializable{
 	
 	public static PositionInfo convertFrom(PositionField pf) {
 		PositionInfo info = new PositionInfo();
+		info.positionId = pf.getPositionId();
 		info.accountId = pf.getAccountId();
 		info.contractSymbol = pf.getContract().getSymbol();
 		info.contractValue = pf.getContractValue();

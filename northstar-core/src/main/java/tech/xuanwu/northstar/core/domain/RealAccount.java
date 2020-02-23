@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import lombok.Getter;
@@ -19,6 +20,7 @@ import tech.xuanwu.northstar.entity.OrderInfo;
 import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.entity.TransactionInfo;
 import tech.xuanwu.northstar.gateway.GatewayApi;
+import xyz.redtorch.pb.CoreEnum.OrderStatusEnum;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 
@@ -35,28 +37,28 @@ public class RealAccount implements IAccount{
 	AccountDao accDao;
 	
 	/*账户对应的网关接口，一对一关系*/
-	GatewayApi gatewayApi;
+	private GatewayApi gatewayApi;
 	
 	/*基本账户信息副本*/
 	volatile AccountInfo accountInfo;
 	
 	/*策略信息*/
-	Map<String, IStrategy> strategyMap = new HashMap<>();
+	protected Map<String, IStrategy> strategyMap = new HashMap<>();
+	
+	/*订单信息*/
+	protected Map<String, OrderInfo> orderMap = new HashMap<>();
+	
+	/*持仓信息*/
+	protected Map<String, PositionInfo> positionMap = new HashMap<>();
+	
+	/*成交信息*/
+	protected Map<String, TransactionInfo> transactionMap = new HashMap<>();
 	
 	/*账户名称*/
 	@Getter
 	protected String name;
 	
-	/*持仓信息*/
-	protected List<PositionInfo> positionList = new ArrayList<>();
-	
-	/*订单信息*/
-	protected List<OrderInfo> orderList = new ArrayList<>();
-	
 	protected String lastOrderTradeDay = "";
-	
-	/*成交信息*/
-	protected List<TransactionInfo> transactionList = new ArrayList<>();
 	
 	public RealAccount(){}
 	
@@ -79,36 +81,56 @@ public class RealAccount implements IAccount{
 
 	@Override
 	public void updatePosition(PositionInfo position) {
-		synchronized (positionList) {
-			positionList.add(position);
+		synchronized (positionMap) {
+			//持仓量等于零的持仓不记录
+			if(position.getPosition() > 0) {				
+				positionMap.put(position.getPositionId(), position);
+			}
 		}
 	}
 
 	@Override
 	public List<PositionInfo> getPositionInfoList() {
-		synchronized (positionList) {		
-			List<PositionInfo> resultList = new ArrayList<>(positionList.size());
-			resultList.addAll(positionList);
+		synchronized (positionMap) {		
+			List<PositionInfo> resultList = new ArrayList<>(positionMap.size());
+			resultList.addAll(positionMap.values());
 			return resultList;
 		}
 	}
 
 	@Override
 	public void updateOrder(OrderInfo order) {
-		// FIXME 这处不确定
-		synchronized (orderList) {
-			if(!lastOrderTradeDay.equals(order.getTradingDay())) {
-				//FIXME 不确定是否要保存
-				orderList.clear();
+		synchronized (orderMap) {
+			String orderId = order.getOrderId();
+			OrderStatusEnum status = order.getOrderStatus();
+			String sequenceNo = order.getSequenceNo();
+			
+			OrderInfo lastOrder = orderMap.get(orderId);
+			if(lastOrder == null) {
+				orderMap.put(orderId, order);
+				return;
 			}
-			orderList.add(order);
+			
+			if(StringUtils.isBlank(lastOrder.getOrderSysId())) {
+				orderMap.put(orderId, order);
+				return;
+			}
+			
+			if(Integer.valueOf(sequenceNo) > Integer.valueOf(lastOrder.getSequenceNo())) {
+				orderMap.put(orderId, order);
+				return;
+			}
+			
+			if(status != OrderStatusEnum.OS_Unknown) {
+				orderMap.put(orderId, order);
+			}
 		}
 	}
 
 	@Override
 	public void updateTransaction(TransactionInfo transaction) {
-		synchronized (transactionList) {
-			transactionList.add(transaction);
+		synchronized (transactionMap) {
+			transactionMap.put(transaction.getTradeId(), transaction);
 		}
 	}
 
@@ -165,9 +187,9 @@ public class RealAccount implements IAccount{
 	@Override
 	public List<OrderInfo> getOrderInfoList(LocalDate fromDate, LocalDate toDate) {
 		//FIXME 先做简单实现
-		synchronized (orderList) {
-			List<OrderInfo> resultList = new ArrayList<>(orderList.size());
-			resultList.addAll(orderList);
+		synchronized (orderMap) {
+			List<OrderInfo> resultList = new ArrayList<>(orderMap.size());
+			resultList.addAll(orderMap.values());
 			return resultList;
 		}
 	}
@@ -175,19 +197,17 @@ public class RealAccount implements IAccount{
 	@Override
 	public List<TransactionInfo> getTransactionInfoList(LocalDate fromDate, LocalDate toDate) {
 		//FIXME 先做简单实现
-		synchronized (transactionList) {
-			List<TransactionInfo> resultList = new ArrayList<>(transactionList.size());
-			resultList.addAll(transactionList);
+		synchronized (transactionMap) {
+			List<TransactionInfo> resultList = new ArrayList<>(transactionMap.size());
+			resultList.addAll(transactionMap.values());
 			return resultList;
 		}
 	}
 
 	@Override
 	public void connectGateway() {
-		if(gatewayApi.isConnected()) {
-			return;
-		}
-		gatewayApi.connect();
+		//FIXME 先做简单实现
+		throw new IllegalStateException("本方法未实现");
 	}
 
 	@Override

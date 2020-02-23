@@ -37,7 +37,7 @@ public class WebServiceLoggerAspect {
 		Signature sign = joinPoint.getSignature();
 		String name = sign.getName();
 		
-		log.info("【日志审计】 监控接口-[ {} ] 被IP：{} 调用", name, req.getRemoteAddr());
+		log.info("【日志审计】 监控接口 [ {} ] 被IP：{} 调用", name, req.getRemoteAddr());
 		
 	}
 }
