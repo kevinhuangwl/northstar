@@ -44,9 +44,8 @@ public interface AccountService {
 	
 	/**
 	 * 连接网关
-	 * @param accountGatewayId
 	 */
-	void connectGateway(String accountGatewayId) throws NoSuchAccountException;
+	void connectGateway() throws Exception ;
 	
 	/**
 	 * 断开网关

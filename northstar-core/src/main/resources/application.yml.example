@@ -1,6 +1,14 @@
-#real 使用真实账户交易
-#simulate 使用模拟账户交易
-env: real
+server:
+  port: 8888
+  
+socketio:
+  host: 127.0.0.1
+  port: 51888
+  
+
+#true 使用真实账户交易
+#false 使用模拟账户交易
+account.useReal: true
 
 #BlockingWaitStrategy 低效 低CPU
 #SleepingWaitStrategy 对生产者影响较小

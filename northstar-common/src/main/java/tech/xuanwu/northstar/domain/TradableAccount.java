@@ -9,14 +9,8 @@ import tech.xuanwu.northstar.entity.TransactionInfo;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 
-public interface Tradable {
+public interface TradableAccount {
 
-	String getName();
-	
-	double getBalance();
-	
-	double getMargin();
-	
 	void submitOrder(SubmitOrderReqField submitOrderReq);
 	
 	void cancelOrder(CancelOrderReqField cancelOrderReq);

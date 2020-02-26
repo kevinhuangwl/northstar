@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
@@ -68,13 +69,13 @@ public class AccountController {
 		}
 	}
 
-	@GetMapping("/connect/{accountGatewayId}")
+	@GetMapping("/connect")
 	@ApiOperation("连接账户网关")
-	public ResultBean<Void> connectGateway(@PathVariable String accountGatewayId) {
-		log.info("账户[{}]连接网关", accountGatewayId);
+	public ResultBean<Void> connectGateway() {
+		log.info("账户CTP连接网关");
 		try {
-			acService.connectGateway(accountGatewayId);
-		} catch (NoSuchAccountException e) {
+			acService.connectGateway();
+		} catch (Exception e) {
 			log.error("", e);
 			return new ResultBean<Void>(ResultBean.ReturnCode.ERROR, e.getMessage());
 		}

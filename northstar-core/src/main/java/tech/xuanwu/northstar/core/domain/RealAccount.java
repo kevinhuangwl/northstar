@@ -7,12 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.ErrorHint;
-import tech.xuanwu.northstar.core.dao.AccountDao;
+import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.domain.IStrategy;
 import tech.xuanwu.northstar.entity.AccountInfo;
@@ -33,14 +32,13 @@ import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 @Slf4j
 public class RealAccount implements IAccount{
 	
-	@Autowired
-	AccountDao accDao;
+	protected AccountRepo accountRepo;
 	
 	/*账户对应的网关接口，一对一关系*/
-	private GatewayApi gatewayApi;
+	protected GatewayApi gatewayApi;
 	
 	/*基本账户信息副本*/
-	volatile AccountInfo accountInfo;
+	protected volatile AccountInfo accountInfo;
 	
 	/*策略信息*/
 	protected Map<String, IStrategy> strategyMap = new HashMap<>();
@@ -62,9 +60,10 @@ public class RealAccount implements IAccount{
 	
 	public RealAccount(){}
 	
-	public RealAccount(GatewayApi gatewayApi){
+	public RealAccount(GatewayApi gatewayApi, AccountRepo accountRepo){
 		this.name = gatewayApi.getGatewayName();
 		this.gatewayApi = gatewayApi;
+		this.accountRepo = accountRepo;
 	}
 
 	@Override
@@ -149,7 +148,11 @@ public class RealAccount implements IAccount{
 		}
 		//若账户信息有变，则保存记录
 		if(!this.accountInfo.equals(account)) {
-			accDao.insert(account);
+			try {
+				accountRepo.upsert(account);
+			} catch (Exception e) {
+				log.error("插入账户信息异常", e);
+			}
 		}
 	}
 
@@ -206,8 +209,10 @@ public class RealAccount implements IAccount{
 
 	@Override
 	public void connectGateway() {
-		//FIXME 先做简单实现
-		throw new IllegalStateException("本方法未实现");
+		if(gatewayApi.isConnected()) {
+			return;
+		}
+		gatewayApi.connect();
 	}
 
 	@Override
@@ -218,14 +223,4 @@ public class RealAccount implements IAccount{
 		gatewayApi.disconnect();
 	}
 
-	@Override
-	public double getBalance() {
-		return accountInfo.getBalance();
-	}
-
-	@Override
-	public double getMargin() {
-		return accountInfo.getMargin();
-	}
-	
 }

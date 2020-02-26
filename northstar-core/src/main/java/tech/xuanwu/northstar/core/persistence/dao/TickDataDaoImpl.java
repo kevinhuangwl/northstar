@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.core.dao.impl;
+package tech.xuanwu.northstar.core.persistence.dao;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import com.mongodb.client.model.Filters;
 
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.core.dao.TickDataDao;
 import xyz.redtorch.common.mongo.MongoDBClient;
 import xyz.redtorch.common.mongo.MongoDBUtils;
 import xyz.redtorch.common.util.CommonUtils;

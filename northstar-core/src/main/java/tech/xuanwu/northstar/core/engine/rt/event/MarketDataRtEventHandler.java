@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.RuntimeEvent;
-import tech.xuanwu.northstar.core.dao.BarDataDao;
-import tech.xuanwu.northstar.core.dao.TickDataDao;
 import tech.xuanwu.northstar.core.domain.ContractMarketData;
+import tech.xuanwu.northstar.core.persistence.dao.BarDataDao;
+import tech.xuanwu.northstar.core.persistence.dao.TickDataDao;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import xyz.redtorch.pb.CoreField.TickField;
 

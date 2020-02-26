@@ -13,7 +13,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import tech.xuanwu.northstar.core.dao.impl.TickDataDaoImpl;
+import tech.xuanwu.northstar.core.persistence.dao.TickDataDao;
+import tech.xuanwu.northstar.core.persistence.dao.TickDataDaoImpl;
 import xyz.redtorch.common.mongo.MongoDBClient;
 import xyz.redtorch.common.util.CommonUtils;
 import xyz.redtorch.pb.CoreField.TickField;

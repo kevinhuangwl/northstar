@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.RuntimeEvent;
-import tech.xuanwu.northstar.core.dao.ContractDao;
+import tech.xuanwu.northstar.core.persistence.repo.ContractRepo;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import xyz.redtorch.pb.CoreField.ContractField;
 
@@ -20,7 +20,7 @@ public class ContractRegEventHandler implements RuntimeEngine.Listener, Initiali
 	private RuntimeEngine rtEngine;
 	
 	@Autowired
-	private ContractDao contractDao;
+	private ContractRepo contractRepo;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -31,8 +31,8 @@ public class ContractRegEventHandler implements RuntimeEngine.Listener, Initiali
 	public void onEvent(EventObject e) {
 		try {			
 			ContractField c = (ContractField) e.getSource();
-			contractDao.upsertSubscribeContract(c);
-		}catch(ClassCastException ex) {
+			contractRepo.upsert(c);
+		}catch(Exception ex) {
 			log.error("", ex);
 		}
 	}

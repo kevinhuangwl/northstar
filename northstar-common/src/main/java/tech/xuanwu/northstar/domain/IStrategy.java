@@ -5,6 +5,6 @@ package tech.xuanwu.northstar.domain;
  * @author kevinhuangwl
  *
  */
-public interface IStrategy extends Tradable{
+public interface IStrategy extends TradableAccount{
 
 }

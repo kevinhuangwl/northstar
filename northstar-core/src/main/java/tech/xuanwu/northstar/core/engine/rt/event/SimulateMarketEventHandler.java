@@ -1,5 +1,6 @@
 package tech.xuanwu.northstar.core.engine.rt.event;
 
+import java.time.LocalDate;
 import java.util.EventObject;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,15 +13,18 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
+import tech.xuanwu.northstar.constant.CommonConstant;
 import tech.xuanwu.northstar.constant.RuntimeEvent;
 import tech.xuanwu.northstar.engine.FastEventEngine;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import xyz.redtorch.pb.CoreEnum.DirectionEnum;
 import xyz.redtorch.pb.CoreEnum.OrderStatusEnum;
+import xyz.redtorch.pb.CoreEnum.TradeTypeEnum;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
 import xyz.redtorch.pb.CoreField.OrderField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 import xyz.redtorch.pb.CoreField.TickField;
+import xyz.redtorch.pb.CoreField.TradeField;
 
 /**
  * 模拟市场事件处理器，用于撮合模拟交易
@@ -29,7 +33,7 @@ import xyz.redtorch.pb.CoreField.TickField;
  */
 @Slf4j
 @Component
-@ConditionalOnProperty(name="account.type", havingValue="simulate")
+//@ConditionalOnProperty(name="account.type", havingValue="simulate")
 public class SimulateMarketEventHandler implements RuntimeEngine.Listener, InitializingBean{
 
 	@Autowired
@@ -74,11 +78,29 @@ public class SimulateMarketEventHandler implements RuntimeEngine.Listener, Initi
 		Iterator<OrderField.Builder> itOrder = orderWaitingQ.iterator();
 		while(itOrder.hasNext()) {
 			OrderField.Builder ob = itOrder.next();
+			
 			if(ob.getDirection() == DirectionEnum.D_Buy && ob.getPrice() >= tick.getAskPrice(0)) {
+				TradeField.Builder tb = TradeField.newBuilder();
+				tb.setAccountId(ob.getAccountId());
+				tb.setContract(ob.getContract());
+				tb.setDirection(ob.getDirection());
+				tb.setGatewayId(ob.getGatewayId());
+				tb.setHedgeFlag(ob.getHedgeFlag());
+				tb.setOffsetFlag(ob.getOffsetFlag());
+				tb.setOrderId(ob.getOrderId());
+				LocalDate now = LocalDate.now();
+				tb.setTradeDate(now.format(CommonConstant.D_FORMAT_INT_FORMATTER));
+				tb.setTradeTime(now.format(CommonConstant.T_FORMAT_WITH_MS_INT_FORMATTER));
+				tb.setTradeTimestamp(System.currentTimeMillis());
+				tb.setTradeType(TradeTypeEnum.TT_Common);
+				
 				//达到多单成交条件
 				if(tick.getAskVolume(0) >= ob.getTotalVolume() - ob.getTradedVolume()) {
 					
 					log.info("模拟多单全部成交，合约：{}", unifiedSymbol);
+					
+					tb.setPrice(tick.getAskPrice(0));
+					tb.setVolume(tick.getAskVolume(0));
 					
 					//全部成交
 					ob.setTradedVolume(ob.getTotalVolume());
@@ -93,16 +115,39 @@ public class SimulateMarketEventHandler implements RuntimeEngine.Listener, Initi
 					
 					log.info("模拟多单部分成交，合约：{}", unifiedSymbol);
 					
+					tb.setPrice(tick.getBidPrice(0));
+					tb.setVolume(tick.getBidVolume(0));
+					
 					//部份成交
 					ob.setTradedVolume(tick.getAskVolume(0) + ob.getTradedVolume());
 					ob.setOrderStatus(OrderStatusEnum.OS_PartTradedQueueing);
+					
 				}
 				
+				feEngine.emitTrade(tb.build());
+				
 			}else if(ob.getDirection() == DirectionEnum.D_Sell && ob.getPrice() <= tick.getBidPrice(0)) {
+				TradeField.Builder tb = TradeField.newBuilder();
+				tb.setAccountId(ob.getAccountId());
+				tb.setContract(ob.getContract());
+				tb.setDirection(ob.getDirection());
+				tb.setGatewayId(ob.getGatewayId());
+				tb.setHedgeFlag(ob.getHedgeFlag());
+				tb.setOffsetFlag(ob.getOffsetFlag());
+				tb.setOrderId(ob.getOrderId());
+				LocalDate now = LocalDate.now();
+				tb.setTradeDate(now.format(CommonConstant.D_FORMAT_INT_FORMATTER));
+				tb.setTradeTime(now.format(CommonConstant.T_FORMAT_WITH_MS_INT_FORMATTER));
+				tb.setTradeTimestamp(System.currentTimeMillis());
+				tb.setTradeType(TradeTypeEnum.TT_Common);
+				
 				//达到空单成交条件
 				if(tick.getBidVolume(0) >= ob.getTotalVolume() - ob.getTradedVolume()) {
 					
 					log.info("模拟空单全部成交，合约：{}", unifiedSymbol);
+					
+					tb.setPrice(tick.getBidPrice(0));
+					tb.setVolume(tick.getBidVolume(0));
 					
 					//全部成交
 					ob.setTradedVolume(ob.getTotalVolume());
@@ -117,10 +162,15 @@ public class SimulateMarketEventHandler implements RuntimeEngine.Listener, Initi
 					
 					log.info("模拟空单部分成交，合约：{}", unifiedSymbol);
 					
+					tb.setPrice(tick.getAskPrice(0));
+					tb.setVolume(tick.getAskVolume(0));
+					
 					//部份成交
 					ob.setTradedVolume(tick.getBidVolume(0) + ob.getTradedVolume());
 					ob.setOrderStatus(OrderStatusEnum.OS_PartTradedQueueing);
 				}
+				
+				feEngine.emitTrade(tb.build());
 			}
 		}
 		

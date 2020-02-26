@@ -10,7 +10,9 @@ import xyz.redtorch.pb.CoreField.AccountField;
  * @author kevinhuangwl
  *
  */
-public interface IAccount extends Tradable {
+public interface IAccount extends TradableAccount {
+	
+	String getName();
 	
 	AccountInfo getAccountInfo();
 	
