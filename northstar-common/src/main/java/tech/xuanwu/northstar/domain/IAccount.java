@@ -3,7 +3,7 @@ package tech.xuanwu.northstar.domain;
 import java.util.List;
 
 import tech.xuanwu.northstar.entity.AccountInfo;
-import xyz.redtorch.pb.CoreField.AccountField;
+import xyz.redtorch.pb.CoreField.ContractField;
 
 /**
  * 账户接口
@@ -29,4 +29,6 @@ public interface IAccount extends TradableAccount {
 	void connectGateway();
 	
 	void disconnectGateway();
+	
+	boolean subscribe(ContractField contract);
 }

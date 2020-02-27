@@ -16,12 +16,11 @@ import com.corundumstudio.socketio.annotation.OnEvent;
 
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.MessageType;
+import tech.xuanwu.northstar.core.service.MarketDataService;
 import tech.xuanwu.northstar.core.service.TradeService;
 import tech.xuanwu.northstar.core.util.FutureDictionary;
 import tech.xuanwu.northstar.entity.StrategyInfo;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
-import tech.xuanwu.northstar.exception.NoSuchContractException;
-import xyz.redtorch.pb.CoreField.ContractField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 
 @Slf4j
@@ -34,7 +33,10 @@ public class CommonMsgEventHandler {
 	FutureDictionary globeContractMap;
 	
 	@Autowired
-	TradeService tradeService;
+	TradeService tdService;
+	
+	@Autowired
+	MarketDataService mdService;
 	
 	@OnConnect  
     private void onConnect(final SocketIOClient client) {
@@ -57,7 +59,7 @@ public class CommonMsgEventHandler {
     }
     
     @OnEvent(MessageType.REG_STRATEGY)
-    private void onRegisterStrategy(final SocketIOClient client, StrategyInfo s) throws NoSuchContractException {
+    private void onRegisterStrategy(final SocketIOClient client, StrategyInfo s) throws Exception {
     	
     	log.info("【策略注册】-[{}],【{}】绑定账户：{}，订阅合约：{}", 
     			client.getSessionId(), 
@@ -77,30 +79,19 @@ public class CommonMsgEventHandler {
     		client.joinRoom(contract);
     		roomList.add(contract);
     		
-    		//订阅合约
-    		ContractField c = globeContractMap.getContractByName(contract);
-    		subscribeContract(c);
-    		
-//    		rtEngine.emitEvent(EventEnum.REGISTER_CONTRACT.toString(), new EventObject(c));
+    		mdService.subscribeContract(s.getAccountGatewayId(), contract);
     	}
     	
     	roomMap.put(client.getSessionId(), roomList);
     }
     
-    private void subscribeContract(ContractField c) {
-    	if(c != null) {
-//    		ctpGatewayApi.subscribe(c);
-    	}else {
-    		log.warn("合约 [{}] 可能是一个非法合约，在交易行情接口中查询不到");
-    	}
-    }
     
     @OnEvent(MessageType.SUBMIT_ORDER)
     private void onSubmitOrder(final SocketIOClient client, byte[] data) {
     	try {
 			SubmitOrderReqField submitOrderReq = SubmitOrderReqField.parseFrom(data);
 			String accountName = submitOrderReq.getAccountCode();
-			tradeService.submitOrder(accountName, submitOrderReq);
+			tdService.submitOrder(accountName, submitOrderReq);
 		} catch (Exception e) {
 			log.error("", e);
 		}
@@ -108,6 +99,6 @@ public class CommonMsgEventHandler {
     
     @OnEvent(MessageType.CANCEL_ORDER)
     private void onCancelOrder(final SocketIOClient client, String accountName, String orderId) throws NoSuchAccountException {
-    	tradeService.cancelOrder(accountName, orderId);
+    	tdService.cancelOrder(accountName, orderId);
     }
 }

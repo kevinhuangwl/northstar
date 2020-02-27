@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang3.StringUtils;
 
 import lombok.Getter;
@@ -21,6 +23,7 @@ import tech.xuanwu.northstar.entity.TransactionInfo;
 import tech.xuanwu.northstar.gateway.GatewayApi;
 import xyz.redtorch.pb.CoreEnum.OrderStatusEnum;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
+import xyz.redtorch.pb.CoreField.ContractField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 
 /**
@@ -32,9 +35,11 @@ import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 @Slf4j
 public class RealAccount implements IAccount{
 	
+	@NotNull
 	protected AccountRepo accountRepo;
 	
 	/*账户对应的网关接口，一对一关系*/
+	@NotNull
 	protected GatewayApi gatewayApi;
 	
 	/*基本账户信息副本*/
@@ -54,6 +59,7 @@ public class RealAccount implements IAccount{
 	
 	/*账户名称*/
 	@Getter
+	@NotNull
 	protected String name;
 	
 	protected String lastOrderTradeDay = "";
@@ -221,6 +227,11 @@ public class RealAccount implements IAccount{
 			return;
 		}
 		gatewayApi.disconnect();
+	}
+
+	@Override
+	public boolean subscribe(ContractField contract) {
+		return this.gatewayApi.subscribe(contract);
 	}
 
 }

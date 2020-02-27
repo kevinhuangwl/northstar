@@ -11,8 +11,6 @@ public enum RuntimeEvent {
 	TICK_UPDATE,
 	//注册策略
 	REGISTER_STRATEGY,
-	//注册合约
-	REGISTER_CONTRACT,
 	//下单
 	SUBMIT_ORDER,
 	//模拟下单
