@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import tech.xuanwu.northstar.constant.CommonConstant;
 import tech.xuanwu.northstar.constant.ErrorHint;
 import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
 import tech.xuanwu.northstar.domain.IAccount;
@@ -87,10 +88,7 @@ public class RealAccount implements IAccount{
 	@Override
 	public void updatePosition(PositionInfo position) {
 		synchronized (positionMap) {
-			//持仓量等于零的持仓不记录
-			if(position.getPosition() > 0) {				
-				positionMap.put(position.getPositionId(), position);
-			}
+			positionMap.put(position.getPositionId(), position);
 		}
 	}
 
@@ -98,7 +96,12 @@ public class RealAccount implements IAccount{
 	public List<PositionInfo> getPositionInfoList() {
 		synchronized (positionMap) {		
 			List<PositionInfo> resultList = new ArrayList<>(positionMap.size());
-			resultList.addAll(positionMap.values());
+			for(PositionInfo p : positionMap.values()) {
+				//过滤持仓量等于零的持仓
+				if(p.getPosition() > 0) {					
+					resultList.add(p);
+				}
+			}
 			return resultList;
 		}
 	}
@@ -149,12 +152,13 @@ public class RealAccount implements IAccount{
 		if(account == null) {
 			throw new IllegalArgumentException(ErrorHint.NOT_NULL_PARAM);
 		}
-		if(this.accountInfo == null) {
-			this.accountInfo = account;
-		}
+		
+		account.setTradingDay(gatewayApi.getTradingDay());
+		
 		//若账户信息有变，则保存记录
-		if(!this.accountInfo.equals(account)) {
+		if(!account.equals(this.accountInfo)) {
 			try {
+				this.accountInfo = account;
 				accountRepo.upsert(account);
 			} catch (Exception e) {
 				log.error("插入账户信息异常", e);
@@ -231,7 +235,21 @@ public class RealAccount implements IAccount{
 
 	@Override
 	public boolean subscribe(ContractField contract) {
+		if(contract == null) {
+			throw new IllegalArgumentException("参数不能为空");
+		}
 		return this.gatewayApi.subscribe(contract);
+	}
+
+	/**
+	 * 每天收盘结算操作
+	 */
+	protected void doDailySettlement() {
+		try {
+			accountRepo.upsert(this.accountInfo);
+		} catch (Exception e) {
+			log.error("", e);
+		}
 	}
 
 }

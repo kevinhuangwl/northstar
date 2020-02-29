@@ -313,7 +313,7 @@ public class MongoDBClient {
 	 * @param sort
 	 * @return
 	 */
-	public List<Document> find(String dbName, String collectionName, Bson filter, BasicDBObject sort) {
+	public List<Document> find(String dbName, String collectionName, Bson filter, Bson sort) {
 		List<Document> resultList = new ArrayList<Document>();
 		if (filter != null) {
 			FindIterable<Document> docs = mongoClient.getDatabase(dbName).getCollection(collectionName).find(filter)

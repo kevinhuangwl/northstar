@@ -1,6 +1,7 @@
 package tech.xuanwu.northstar.core.config.props;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 
@@ -22,7 +23,8 @@ import xyz.redtorch.pb.CoreField.GatewaySettingField.CtpApiSettingField;
 @Getter
 @Setter
 @ConfigurationProperties(prefix="ctp")
-public class CtpGatewaySettingProperties {
+@Component
+public class CtpGatewaySettings {
 	//网关类型
 	private GatewayTypeEnum gatewayType = GatewayTypeEnum.GTE_TradeAndMarketData;
 	//网关适配器类型
@@ -53,6 +55,8 @@ public class CtpGatewaySettingProperties {
 	private String authCode;
 	//期货公司ID
 	private String brokerID;
+	//是否使用真实交易
+	private boolean isRealTrader = true;
 	
 
 	public GatewaySettingField convertToGatewaySettingField() {

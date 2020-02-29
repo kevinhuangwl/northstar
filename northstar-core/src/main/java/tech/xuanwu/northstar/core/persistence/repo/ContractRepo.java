@@ -8,5 +8,7 @@ public interface ContractRepo {
 
 	boolean upsert(ContractInfo contract) throws Exception;
 	
+	boolean delete(ContractInfo contract);
+	
 	List<ContractInfo> getAllSubscribedContracts() throws Exception;
 }

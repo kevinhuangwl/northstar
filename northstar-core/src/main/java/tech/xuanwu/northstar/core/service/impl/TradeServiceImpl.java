@@ -44,6 +44,9 @@ public class TradeServiceImpl implements TradeService{
 		
 		SubmitOrderReqField.Builder sb = SubmitOrderReqField.newBuilder();
 		ContractField contract = ftDict.getContractByName(contractSymbol);
+		if(contract == null) {
+			throw new NoSuchContractException(contractSymbol);
+		}
 		sb.setContract(contract);
 		sb.setPrice(price);
 		sb.setStopPrice(stopPrice);

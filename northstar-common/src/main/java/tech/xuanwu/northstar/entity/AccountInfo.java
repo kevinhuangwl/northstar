@@ -29,6 +29,7 @@ public class AccountInfo implements Serializable{
 	double deposit;  // 入金
 	double withdraw;  // 出金
 	String gatewayId;  // 网关ID
+	String tradingDay;	//交易日
 	
 	public static AccountInfo convertFrom(AccountField accountField) {
 		AccountInfo info = new AccountInfo();

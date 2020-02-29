@@ -1,7 +1,10 @@
 package tech.xuanwu.northstar.core.engine;
 
+import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -9,15 +12,50 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.RuntimeEvent;
+import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
+import tech.xuanwu.northstar.entity.AccountInfo;
+import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import tech.xuanwu.northstar.exception.NoSuchEventHandlerException;
 
 @Slf4j
 @Component
-public class NorthstarRuntimeEngine extends AbstractTraderRuntimeEngine implements RuntimeEngine{
+public class NorthstarRuntimeEngine implements RuntimeEngine{
 	
 	
-	private ConcurrentHashMap<RuntimeEvent, ConcurrentLinkedQueue<Listener>> handlerMap = new ConcurrentHashMap<>();
+	ConcurrentHashMap<RuntimeEvent, ConcurrentLinkedQueue<Listener>> handlerMap = new ConcurrentHashMap<>();
+	
+	ConcurrentHashMap<String, IAccount> accountMap = new ConcurrentHashMap<>();
+
+	@Override
+	public void regAccount(IAccount account) {
+		accountMap.put(account.getName(), account);
+	}
+	
+	@Override
+	public void unregAccount(String accountName) {
+		accountMap.remove(accountName);
+	}
+	
+	@Override
+	public IAccount getAccount(String accountName) throws NoSuchAccountException {
+		IAccount account = accountMap.get(accountName);
+		if(account == null) {
+			throw new NoSuchAccountException(accountName);
+		}
+		return account;
+	}
+
+	@Override
+	public List<AccountInfo> getAccountInfoList() {
+		List<AccountInfo> resultList = new ArrayList<AccountInfo>();
+		for(Entry<String, IAccount> e : accountMap.entrySet()) {
+			IAccount account = e.getValue();
+			resultList.add(account.getAccountInfo());
+		}
+		return resultList;
+	}
+	
 	
 	@Override
 	public boolean addEventHandler(RuntimeEvent event, Listener listener) {

@@ -717,6 +717,7 @@ public class TdSpi extends CThostFtdcTraderSpi {
 				// 修改登录状态为true
 				loginStatus = true;
 				tradingDay = pRspUserLogin.getTradingDay();
+				ctpGatewayImpl.setTradingDay(tradingDay);
 				logger.warn("{}交易接口获取到的交易日为{}", logInfo, tradingDay);
 
 				// 确认结算单

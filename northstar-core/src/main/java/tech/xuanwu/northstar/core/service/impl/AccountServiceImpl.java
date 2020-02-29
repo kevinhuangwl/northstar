@@ -4,13 +4,11 @@ import java.lang.reflect.Constructor;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 
-import tech.xuanwu.northstar.core.config.props.CtpGatewaySettingProperties;
+import lombok.extern.slf4j.Slf4j;
+import tech.xuanwu.northstar.core.config.props.CtpGatewaySettings;
 import tech.xuanwu.northstar.core.domain.RealAccount;
 import tech.xuanwu.northstar.core.domain.SimulateAccount;
 import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
@@ -26,32 +24,21 @@ import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import tech.xuanwu.northstar.gateway.GatewayApi;
 import xyz.redtorch.pb.CoreField.GatewaySettingField;
 
+@Slf4j
 @Service
-@EnableConfigurationProperties(CtpGatewaySettingProperties.class)
-public class AccountServiceImpl implements AccountService, InitializingBean{
+public class AccountServiceImpl implements AccountService {
 	
 	@Autowired
 	RuntimeEngine rtEngine;
 	
 	@Autowired
-	CtpGatewaySettingProperties p;
+	CtpGatewaySettings p;
 	
 	@Autowired
 	FastEventEngine feEngine;
 	
 	@Autowired
 	AccountRepo accountRepo;
-	
-	@Value("${account.useReal}")
-	boolean useRealAccount;
-	
-	
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		//默认启动时自动连线
-		connectGateway();
-	}
-	
 
 	@Override
 	public List<AccountInfo> getAccountInfoList() {
@@ -83,12 +70,14 @@ public class AccountServiceImpl implements AccountService, InitializingBean{
 		GatewayApi gateway = (GatewayApi) c.newInstance(feEngine, p.convertToGatewaySettingField());
 		gateway.connect();
 		
-		IAccount account = useRealAccount ? new RealAccount(gateway, accountRepo) : new SimulateAccount(gateway, rtEngine, accountRepo);
+		log.info("连接网关【{}】，使用【{}】交易", p.getGatewayID(), p.isRealTrader()?"真实账户":"模拟账户");
+		IAccount account = p.isRealTrader() ? new RealAccount(gateway, accountRepo) : new SimulateAccount(gateway, rtEngine, accountRepo);
 		rtEngine.regAccount(account);
 	}
 
 	@Override
 	public void disconnectGateway(String accountName) throws NoSuchAccountException {
+		log.info("断开账户【{}】的网关连接", accountName);
 		IAccount account = rtEngine.getAccount(accountName);
 		account.disconnectGateway();
 		rtEngine.unregAccount(account.getName());

@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.core.dao;
+package tech.xuanwu.northstar.core.persistence.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

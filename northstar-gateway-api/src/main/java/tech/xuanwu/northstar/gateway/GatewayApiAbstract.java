@@ -23,6 +23,8 @@ public abstract class GatewayApiAbstract implements GatewayApi {
 	protected String logInfo;
 	private boolean autoErrorFlag = false;
 	protected long lastConnectBeginTimestamp = 0;
+	
+	protected String gatewayTradingDay;
 
 	protected GatewaySettingField gatewaySetting;
 
@@ -77,6 +79,15 @@ public abstract class GatewayApiAbstract implements GatewayApi {
 	@Override
 	public String getGatewayName() {
 		return gatewayName;
+	}
+	
+	@Override
+	public String getTradingDay() {
+		return gatewayTradingDay;
+	}
+	
+	public void setTradingDay(String tradingDay) {
+		this.gatewayTradingDay = tradingDay;
 	}
 
 	protected String getLogInfo() {

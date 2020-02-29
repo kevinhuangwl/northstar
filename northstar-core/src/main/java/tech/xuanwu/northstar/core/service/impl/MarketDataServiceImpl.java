@@ -11,6 +11,7 @@ import tech.xuanwu.northstar.core.util.FutureDictionary;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.entity.ContractInfo;
+import tech.xuanwu.northstar.exception.NoSuchContractException;
 import xyz.redtorch.pb.CoreField.ContractField;
 
 @Service
@@ -29,6 +30,9 @@ public class MarketDataServiceImpl implements MarketDataService{
 	public boolean subscribeContract(String gatewayId, String contractName) throws Exception {
 		IAccount account = rtEngine.getAccount(gatewayId);
 		ContractField contract = fDict.getContractByName(contractName);
+		if(contract == null) {
+			throw new NoSuchContractException(contractName);
+		}
 		boolean res = account.subscribe(contract);
 		contractRepo.upsert(ContractInfo.convertFrom(contract));
 		return res;

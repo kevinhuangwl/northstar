@@ -46,4 +46,11 @@ public class ContractRepoImpl implements ContractRepo{
 		return resultList;
 	}
 
+	@Override
+	public boolean delete(ContractInfo contract) {
+		log.info("移除订阅合约");
+		Document filter = Document.parse(gson.toJson(contract));
+		return mongodb.delete(DB, TBL_SUBSCRIBE_CONTRACT, filter);
+	}
+
 }

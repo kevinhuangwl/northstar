@@ -34,6 +34,12 @@ public interface GatewayApi {
 	 * @return
 	 */
 	GatewayField getGateway();
+	
+	/**
+	 * 获取当前行情所属交易日
+	 * @return
+	 */
+	String getTradingDay();
 
 	/**
 	 * 获取网关配置

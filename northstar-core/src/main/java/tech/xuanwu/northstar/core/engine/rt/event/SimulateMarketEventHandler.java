@@ -9,17 +9,23 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.CommonConstant;
 import tech.xuanwu.northstar.constant.RuntimeEvent;
+import tech.xuanwu.northstar.core.config.props.CtpGatewaySettings;
+import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
 import tech.xuanwu.northstar.engine.FastEventEngine;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
+import tech.xuanwu.northstar.entity.AccountInfo;
+import xyz.redtorch.pb.CoreEnum.CurrencyEnum;
 import xyz.redtorch.pb.CoreEnum.DirectionEnum;
 import xyz.redtorch.pb.CoreEnum.OrderStatusEnum;
 import xyz.redtorch.pb.CoreEnum.TradeTypeEnum;
+import xyz.redtorch.pb.CoreField.AccountField;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
 import xyz.redtorch.pb.CoreField.OrderField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
@@ -33,7 +39,7 @@ import xyz.redtorch.pb.CoreField.TradeField;
  */
 @Slf4j
 @Component
-//@ConditionalOnProperty(name="account.type", havingValue="simulate")
+@ConditionalOnExpression("${ctp.realTrader}==false")
 public class SimulateMarketEventHandler implements RuntimeEngine.Listener, InitializingBean{
 
 	@Autowired
@@ -42,23 +48,68 @@ public class SimulateMarketEventHandler implements RuntimeEngine.Listener, Initi
 	@Autowired
 	private FastEventEngine feEngine;
 	
+	@Autowired
+	private CtpGatewaySettings ctpProp;
+	
+	private AccountField.Builder accountFieldBuilder = AccountField.newBuilder();
+	
+	private ConcurrentLinkedQueue<TradeField.Builder> transBuilderQ = new ConcurrentLinkedQueue<>();
+	
+	@Autowired
+	private AccountRepo accountRepo;
+	
 	private ConcurrentHashMap<String, ConcurrentLinkedQueue<OrderField.Builder>> contractOrderMap = new ConcurrentHashMap<>();
 	private ConcurrentHashMap<String, String> orderContractMap = new ConcurrentHashMap<>();
 	private ConcurrentHashMap<String, OrderField.Builder> tradedOrderMap = new ConcurrentHashMap<>();
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		log.info("启动模拟市场");
 		rtEngine.addEventHandler(RuntimeEvent.TICK_UPDATE, this);	
 		rtEngine.addEventHandler(RuntimeEvent.SUBMIT_ORDER_SIMULATE, this);
 		rtEngine.addEventHandler(RuntimeEvent.CANCEL_ORDER_SIMULATE, this);
+		
+		AccountInfo accountInfo = accountRepo.getLatestAccountInfoByName(ctpProp.getGatewayID());
+		if(accountInfo == null) {
+			log.info("未有模拟账户记录，初始化模拟账户");
+			String code = "SimulateAccount";
+			double initMoney = 100000;
+			accountFieldBuilder.setCode(code);
+			accountFieldBuilder.setAccountId(code + "@" + ctpProp.getGatewayID());
+			accountFieldBuilder.setAvailable(initMoney);
+			accountFieldBuilder.setBalance(initMoney);
+			accountFieldBuilder.setCurrency(CurrencyEnum.CNY);
+			accountFieldBuilder.setGatewayId(ctpProp.getGatewayID());
+
+		}else {
+			log.info("已有模拟账户记录，读取账户信息");
+			accountFieldBuilder.setAccountId(accountInfo.getAccountId());
+			accountFieldBuilder.setAvailable(accountInfo.getAvailable());
+			accountFieldBuilder.setBalance(accountInfo.getBalance());
+			accountFieldBuilder.setCloseProfit(accountInfo.getCloseProfit());
+			accountFieldBuilder.setCode(accountInfo.getCode());
+			accountFieldBuilder.setCommission(accountInfo.getCommission());
+			accountFieldBuilder.setCurrency(accountInfo.getCurrency());
+			accountFieldBuilder.setDeposit(accountInfo.getDeposit());
+			accountFieldBuilder.setGatewayId(accountInfo.getGatewayId());
+			accountFieldBuilder.setHolder(accountInfo.getHolder());
+			accountFieldBuilder.setMargin(accountInfo.getMargin());
+			accountFieldBuilder.setName(accountInfo.getName());
+			accountFieldBuilder.setPositionProfit(accountInfo.getPositionProfit());
+			accountFieldBuilder.setPreBalance(accountInfo.getPreBalance());
+			accountFieldBuilder.setWithdraw(accountInfo.getWithdraw());
+		}
+		
+		feEngine.emitAccount(accountFieldBuilder.build());
 	}
 
 	@Override
 	public void onEvent(EventObject e) throws Exception {
 		Object obj = e.getSource();
 		if(obj instanceof TickField) {
-			onTick((TickField) obj);
-			
+			TickField tick = (TickField) obj;
+			onTick(tick);
+			doRealTimeCalculation();
 		}else if (obj instanceof SubmitOrderReqField) {
 			onSubmitOrder((SubmitOrderReqField) obj);
 			
@@ -69,6 +120,10 @@ public class SimulateMarketEventHandler implements RuntimeEngine.Listener, Initi
 	}
 	
 	
+	private void doRealTimeCalculation() {
+		
+	}
+
 	private void onTick(TickField tick) {
 		String unifiedSymbol = tick.getUnifiedSymbol();
 		ConcurrentLinkedQueue<OrderField.Builder> orderWaitingQ = contractOrderMap.get(unifiedSymbol);
@@ -173,7 +228,6 @@ public class SimulateMarketEventHandler implements RuntimeEngine.Listener, Initi
 				feEngine.emitTrade(tb.build());
 			}
 		}
-		
 	}
 	
 	private void onSubmitOrder(SubmitOrderReqField submitOrder) {

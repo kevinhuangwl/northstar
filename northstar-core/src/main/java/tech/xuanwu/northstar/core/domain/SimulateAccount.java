@@ -49,23 +49,6 @@ public class SimulateAccount extends RealAccount implements IAccount, Modifiable
 		}
 	}
 
-	@Override
-	public void setCommissionRate(double rate) throws Exception {
-		if(rate < 0){
-			throw new IllegalArgumentException(ErrorHint.NO_NEGATIVE_VALUE);
-		}
-		this.accountInfo.setCommission(rate);
-		onAccountChange();
-	}
-
-	@Override
-	public void setMarginRate(double rate) throws Exception {
-		if(rate < 0){
-			throw new IllegalArgumentException(ErrorHint.NO_NEGATIVE_VALUE);
-		}
-		this.accountInfo.setMargin(rate);
-		onAccountChange();
-	}
 
 	@Override
 	public double depositMoney(double money) throws Exception {

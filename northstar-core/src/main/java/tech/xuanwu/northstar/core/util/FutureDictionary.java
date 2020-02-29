@@ -50,12 +50,12 @@ public class FutureDictionary {
 	 * @return
 	 * @throws NoSuchContractException 
 	 */
-	public ContractField getContractByName(String contractNameWithMonth) throws NoSuchContractException {
+	public ContractField getContractByName(String contractNameWithMonth) {
 		checkNotNullParam(contractNameWithMonth);
 		String capName = getSymbolCapitalizedName(contractNameWithMonth);
 		String strYMM = contractNameWithMonth.substring(contractNameWithMonth.length()-3);
-		if(!namedContractMap.containsKey(capName)) {
-			throw new NoSuchContractException(contractNameWithMonth);
+		if(!namedContractMap.containsKey(capName) || namedContractMap.get(capName).get(strYMM)==null) {
+			return null;
 		}
 		return namedContractMap.get(capName).get(strYMM);
 	}
