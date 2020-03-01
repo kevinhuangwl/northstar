@@ -1,6 +1,8 @@
 package tech.xuanwu.northstar.core.util;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -74,6 +76,18 @@ public class FutureDictionary {
 			return null;
 		}
 		return contractSet.getContracts();
+	}
+	
+	/**
+	 * 获取可用的合约信息
+	 * @return
+	 */
+	public Collection<ContractField> getAvailableContracts(){
+		List<ContractField> resultList = new ArrayList<>(size());
+		for(Entry<String, ContractSet> e : namedContractMap.entrySet()) {
+			resultList.addAll(e.getValue().getContracts());
+		}
+		return resultList;
 	}
 
 	/**

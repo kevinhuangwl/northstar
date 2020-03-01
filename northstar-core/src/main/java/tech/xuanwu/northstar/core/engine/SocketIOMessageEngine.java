@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import com.corundumstudio.socketio.SocketIOServer;
 
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.constant.MessageType;
+import tech.xuanwu.northstar.constant.Message;
 import tech.xuanwu.northstar.engine.MessageEngine;
 import xyz.redtorch.pb.CoreField.AccountField;
 import xyz.redtorch.pb.CoreField.OrderField;
@@ -25,7 +25,7 @@ public class SocketIOMessageEngine implements MessageEngine{
 		//以合约名称作为广播的房间号
 		String symbol = tick.getUnifiedSymbol();
 		
-		server.getRoomOperations(symbol).sendEvent(MessageType.MARKET_TICK_DATA, tick.toByteArray());
+		server.getRoomOperations(symbol).sendEvent(Message.MARKET_TICK_DATA, tick.toByteArray());
 		log.info("收到{}数据\n卖一量：{}\n最新价：{}\n买一量：{}", symbol, tick.getAskVolume(0), tick.getLastPrice(), tick.getBidVolume(0));
 	}
 	

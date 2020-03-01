@@ -1,5 +1,7 @@
 package tech.xuanwu.northstar.core.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,4 +45,15 @@ public class MarketDataServiceImpl implements MarketDataService{
 		return contractRepo.getAllSubscribedContracts();
 	}
 
+	@Override
+	public List<ContractInfo> getAvailableContracts() {
+		Collection<ContractField> contracts = fDict.getAvailableContracts();
+		List<ContractInfo> resultList = new ArrayList<>(contracts.size());
+		for(ContractField contract : contracts) {
+			resultList.add(ContractInfo.convertFrom(contract));
+		}
+		return resultList;
+	}
+
+	
 }

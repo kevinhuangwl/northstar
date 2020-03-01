@@ -35,34 +35,34 @@ public class AccountController {
 		return new ResultBean<List<AccountInfo>>(acService.getAccountInfoList());
 	}
 
-	@GetMapping("/position/{accountGatewayId}")
+	@GetMapping("/position")
 	@ApiOperation("获取账户持仓信息")
-	public ResultBean<List<PositionInfo>> getPositionInfoList(@PathVariable String accountGatewayId) {
+	public ResultBean<List<PositionInfo>> getPositionInfoList(@RequestParam String gatewayId) {
 		
 		try {
-			return new ResultBean<List<PositionInfo>>(acService.getPositionInfoList(accountGatewayId));
+			return new ResultBean<List<PositionInfo>>(acService.getPositionInfoList(gatewayId));
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
 			return new ResultBean<List<PositionInfo>>(ResultBean.ReturnCode.ERROR, e.getMessage());
 		}
 	}
 
-	@GetMapping("/order/{accountGatewayId}")
+	@GetMapping("/order")
 	@ApiOperation("获取账户订单信息")
-	public ResultBean<List<OrderInfo>> getOrderInfoList(@PathVariable String accountGatewayId) {
+	public ResultBean<List<OrderInfo>> getOrderInfoList(@RequestParam String gatewayId) {
 		try {
-			return new ResultBean<List<OrderInfo>>(acService.getOrderInfoList(accountGatewayId));
+			return new ResultBean<List<OrderInfo>>(acService.getOrderInfoList(gatewayId));
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
 			return new ResultBean<List<OrderInfo>>(ResultBean.ReturnCode.ERROR, e.getMessage());
 		}
 	}
 
-	@GetMapping("/trade/{accountGatewayId}")
+	@GetMapping("/trade")
 	@ApiOperation("获取账户成交信息")
-	public ResultBean<List<TransactionInfo>> getTransactionInfoList(@PathVariable String accountGatewayId) {
+	public ResultBean<List<TransactionInfo>> getTransactionInfoList(@RequestParam String gatewayId) {
 		try {
-			return new ResultBean<List<TransactionInfo>>(acService.getTransactionInfoList(accountGatewayId));
+			return new ResultBean<List<TransactionInfo>>(acService.getTransactionInfoList(gatewayId));
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
 			return new ResultBean<List<TransactionInfo>>(ResultBean.ReturnCode.ERROR, e.getMessage());
@@ -82,12 +82,12 @@ public class AccountController {
 		return new ResultBean(Void.TYPE);
 	}
 
-	@GetMapping("/disconnect/{accountGatewayId}")
+	@GetMapping("/disconnect")
 	@ApiOperation("断开账户网关")
-	public ResultBean<Void> disconnectGateway(@PathVariable String accountGatewayId) {
-		log.info("账户[{}]断开网关", accountGatewayId);
+	public ResultBean<Void> disconnectGateway(@RequestParam String gatewayId) {
+		log.info("账户[{}]断开网关", gatewayId);
 		try {
-			acService.disconnectGateway(accountGatewayId);
+			acService.disconnectGateway(gatewayId);
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
 			return new ResultBean<Void>(ResultBean.ReturnCode.ERROR, e.getMessage());

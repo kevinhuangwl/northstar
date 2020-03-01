@@ -1,6 +1,6 @@
 package tech.xuanwu.northstar.constant;
 
-public interface MessageType {
+public interface Message {
 	//注册策略
 	String REG_STRATEGY = "RegisterStrategy";
 	//注销策略

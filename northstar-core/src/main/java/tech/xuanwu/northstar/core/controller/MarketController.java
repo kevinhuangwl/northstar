@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.common.ResultBean;
 import tech.xuanwu.northstar.core.service.MarketDataService;
@@ -22,6 +23,7 @@ public class MarketController {
 	@Autowired
 	MarketDataService mdService;
 	
+	@ApiOperation("订阅网关合约")
 	@RequestMapping(value="/sub", method=RequestMethod.POST)
 	public ResultBean<Boolean> subscribe(String gatewayId, String contractName){
 		try {
@@ -32,7 +34,8 @@ public class MarketController {
 		}
 	}
 	
-	@RequestMapping(value="/subscribedContract", method=RequestMethod.GET)
+	@ApiOperation("获取订阅合约列表")
+	@RequestMapping(value="/contracts", method=RequestMethod.GET)
 	public ResultBean<List<ContractInfo>> getSubscribedContracts(){
 		try {
 			return new ResultBean(mdService.getAllSubscribedContracts());
@@ -40,5 +43,11 @@ public class MarketController {
 			log.error("", e);
 			return new ResultBean(ResultBean.ReturnCode.ERROR, e.getMessage());
 		}
+	}
+	
+	@ApiOperation("获取可用合约列表")
+	@RequestMapping(value="/available", method=RequestMethod.GET)
+	public ResultBean<List<ContractInfo>> getAvailableContracts(){
+		return new ResultBean(mdService.getAvailableContracts());
 	}
 }

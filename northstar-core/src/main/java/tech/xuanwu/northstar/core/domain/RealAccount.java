@@ -10,6 +10,8 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.gson.Gson;
+
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.CommonConstant;

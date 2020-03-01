@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import tech.xuanwu.northstar.constant.NoticeCode;
 import xyz.redtorch.gateway.ctp.x64v6v3v16t1v.api.*;
 import xyz.redtorch.pb.CoreEnum.CommonStatusEnum;
 import xyz.redtorch.pb.CoreEnum.ContingentConditionEnum;
@@ -708,6 +709,13 @@ public class TdSpi extends CThostFtdcTraderSpi {
 					reqUserLoginField.setUserID(this.userId);
 					reqUserLoginField.setPassword(this.password);
 					cThostFtdcTraderApi.ReqUserLogin(reqUserLoginField, reqId.incrementAndGet());
+					
+					NoticeField.Builder noticeBuilder = NoticeField.newBuilder();
+					noticeBuilder
+						.setContent(NoticeCode.GATEWAY_CTP_CONNECTED + "-网关:" + ctpGatewayImpl.getGatewayName() + ",网关ID:" + ctpGatewayImpl.getGatewayId() + "登陆成功");
+					noticeBuilder.setStatus(CommonStatusEnum.COMS_SUCCESS);
+					noticeBuilder.setTimestamp(System.currentTimeMillis());
+					ctpGatewayImpl.emitNotice(noticeBuilder.build());
 				} else {
 
 					logger.error("{}交易接口客户端验证失败 错误ID:{},错误信息:{}", logInfo, pRspInfo.getErrorID(), pRspInfo.getErrorMsg());
@@ -1268,6 +1276,13 @@ public class TdSpi extends CThostFtdcTraderSpi {
 					}
 				}
 				tradeBuilderCacheList.clear();
+				
+				NoticeField.Builder noticeBuilder = NoticeField.newBuilder();
+				noticeBuilder
+					.setContent(NoticeCode.GATEWAY_CTP_READY + "-网关:" + ctpGatewayImpl.getGatewayName() + ",网关ID:" + ctpGatewayImpl.getGatewayId() + "可以交易");
+				noticeBuilder.setStatus(CommonStatusEnum.COMS_SUCCESS);
+				noticeBuilder.setTimestamp(System.currentTimeMillis());
+				ctpGatewayImpl.emitNotice(noticeBuilder.build());
 			}
 		} catch (Throwable t) {
 			logger.error("{}OnRspQryInstrument Exception", logInfo, t);

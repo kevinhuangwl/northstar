@@ -12,7 +12,7 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter.Listener;
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.constant.MessageType;
+import tech.xuanwu.northstar.constant.Message;
 import tech.xuanwu.northstar.entity.StrategyInfo;
 import tech.xuanwu.northstar.strategy.client.strategies.TemplateStrategy;
 import tech.xuanwu.northstar.strategy.client.strategies.TradeStrategy;
@@ -54,7 +54,7 @@ public class MessageClient {
 	 * @param submitOrderReq
 	 */
 	public void sendOrder(SubmitOrderReqField submitOrderReq) {
-		client.emit(MessageType.SUBMIT_ORDER, submitOrderReq.toByteArray());
+		client.emit(Message.SUBMIT_ORDER, submitOrderReq.toByteArray());
 	}
 	
 	/**
@@ -62,7 +62,7 @@ public class MessageClient {
 	 * @param cancelOrderReq
 	 */
 	public void cancelOrder(CancelOrderReqField cancelOrderReq) {
-		client.emit(MessageType.CANCEL_ORDER, cancelOrderReq.toByteArray());
+		client.emit(Message.CANCEL_ORDER, cancelOrderReq.toByteArray());
 	}
 	
 	
@@ -85,7 +85,7 @@ public class MessageClient {
 			StrategyInfo strategyInfo = new StrategyInfo(accountName, strategyName, contractList);
 			
 			try {
-				client.emit(MessageType.REG_STRATEGY, wrapAsJSON(strategyInfo));
+				client.emit(Message.REG_STRATEGY, wrapAsJSON(strategyInfo));
 			} catch (JSONException e) {
 				log.error("", e);
 			}
@@ -95,7 +95,7 @@ public class MessageClient {
 		
 		client.on(Socket.EVENT_RECONNECTING, callback);
 		
-		client.on(MessageType.MARKET_TICK_DATA, (data)->{
+		client.on(Message.MARKET_TICK_DATA, (data)->{
 			byte[] b = (byte[]) data[0];
 			try {
 				TickField tick = TickField.parseFrom(b);
@@ -120,7 +120,7 @@ public class MessageClient {
 		Object[] params = new Object[1];
 		try {			
 			params[0] = wrapAsJSON(strategyInfo);
-			client.emit(MessageType.UNREG_STRATEGY.toString(), params, (data)->{
+			client.emit(Message.UNREG_STRATEGY.toString(), params, (data)->{
 				client.disconnect();
 			});
 		} catch (JSONException e) {

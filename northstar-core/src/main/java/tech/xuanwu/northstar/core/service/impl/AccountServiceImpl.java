@@ -65,6 +65,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public void connectGateway() throws Exception {
+		//FIXME 没有重复限制
 		Class<?> gatewayClass = Class.forName(p.getGatewayImplClassName());
 		Constructor<?> c = gatewayClass.getConstructor(FastEventEngine.class, GatewaySettingField.class);
 		GatewayApi gateway = (GatewayApi) c.newInstance(feEngine, p.convertToGatewaySettingField());

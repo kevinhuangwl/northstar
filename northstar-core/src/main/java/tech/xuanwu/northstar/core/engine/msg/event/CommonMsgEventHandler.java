@@ -15,7 +15,7 @@ import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
 
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.constant.MessageType;
+import tech.xuanwu.northstar.constant.Message;
 import tech.xuanwu.northstar.core.service.MarketDataService;
 import tech.xuanwu.northstar.core.service.TradeService;
 import tech.xuanwu.northstar.core.util.FutureDictionary;
@@ -23,6 +23,11 @@ import tech.xuanwu.northstar.entity.StrategyInfo;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 
+/**
+ * 
+ * @author kevinhuangwl
+ *
+ */
 @Slf4j
 @Component
 public class CommonMsgEventHandler {
@@ -58,7 +63,7 @@ public class CommonMsgEventHandler {
     	log.info("【清理房间】-[{}] 离开房间{}", client.getSessionId(), JSON.toJSONString(roomList));
     }
     
-    @OnEvent(MessageType.REG_STRATEGY)
+    @OnEvent(Message.REG_STRATEGY)
     private void onRegisterStrategy(final SocketIOClient client, StrategyInfo s) throws Exception {
     	
     	log.info("【策略注册】-[{}],【{}】绑定账户：{}，订阅合约：{}", 
@@ -86,7 +91,7 @@ public class CommonMsgEventHandler {
     }
     
     
-    @OnEvent(MessageType.SUBMIT_ORDER)
+    @OnEvent(Message.SUBMIT_ORDER)
     private void onSubmitOrder(final SocketIOClient client, byte[] data) {
     	try {
 			SubmitOrderReqField submitOrderReq = SubmitOrderReqField.parseFrom(data);
@@ -97,7 +102,7 @@ public class CommonMsgEventHandler {
 		}
     }
     
-    @OnEvent(MessageType.CANCEL_ORDER)
+    @OnEvent(Message.CANCEL_ORDER)
     private void onCancelOrder(final SocketIOClient client, String accountName, String orderId) throws NoSuchAccountException {
     	tdService.cancelOrder(accountName, orderId);
     }

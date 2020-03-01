@@ -1,0 +1,351 @@
+{
+	"info": {
+		"_postman_id": "696e9fa6-2c4d-4372-80ee-76c5688f15a1",
+		"name": "Northstar API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "账户相关API",
+			"item": [
+				{
+					"name": "查询账户列表",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/account/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"account",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "连接网关",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/account/connect",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"account",
+								"connect"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "断开网关",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/account/disconnect?gatewayId=CTP-SimNow724",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"account",
+								"disconnect"
+							],
+							"query": [
+								{
+									"key": "gatewayId",
+									"value": "CTP-SimNow724"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "获取订单信息",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/account/order?gatewayId=CTP-SimNow724",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"account",
+								"order"
+							],
+							"query": [
+								{
+									"key": "gatewayId",
+									"value": "CTP-SimNow724"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "获取持仓信息",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/account/position?gatewayId=CTP-SimNow724",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"account",
+								"position"
+							],
+							"query": [
+								{
+									"key": "gatewayId",
+									"value": "CTP-SimNow724"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "获取成交信息",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/account/trade?gatewayId=CTP-SimNow724",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"account",
+								"trade"
+							],
+							"query": [
+								{
+									"key": "gatewayId",
+									"value": "CTP-SimNow724"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "交易相关API",
+			"item": [
+				{
+					"name": "发送委托单",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/trade/order?accountGatewayId=CTP-SimNow724&contractSymbol=rb2012&direction=D_Buy&price=3345&transactionType=OF_Open&volume=30",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"trade",
+								"order"
+							],
+							"query": [
+								{
+									"key": "accountGatewayId",
+									"value": "CTP-SimNow724"
+								},
+								{
+									"key": "contractSymbol",
+									"value": "rb2012"
+								},
+								{
+									"key": "direction",
+									"value": "D_Buy"
+								},
+								{
+									"key": "price",
+									"value": "3345"
+								},
+								{
+									"key": "transactionType",
+									"value": "OF_Open"
+								},
+								{
+									"key": "volume",
+									"value": "30"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "撤销委托单",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/trade/cancel?accountGatewayId=CTP-SimNow724&originOrderId=b3dfbee2-e8a6-4b71-acb3-3878d55ffa95",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"trade",
+								"cancel"
+							],
+							"query": [
+								{
+									"key": "accountGatewayId",
+									"value": "CTP-SimNow724"
+								},
+								{
+									"key": "originOrderId",
+									"value": "b3dfbee2-e8a6-4b71-acb3-3878d55ffa95"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "一键全平",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "行情相关API",
+			"item": [
+				{
+					"name": "获取订阅合约列表",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/market/contracts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"market",
+								"contracts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "订阅网关合约",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/market/sub?contractName=rb2012&gatewayId=CTP-SimNow724",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"market",
+								"sub"
+							],
+							"query": [
+								{
+									"key": "contractName",
+									"value": "rb2012"
+								},
+								{
+									"key": "gatewayId",
+									"value": "CTP-SimNow724"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "获取可用合约列表",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/market/available",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"market",
+								"available"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "60e14226-dabb-4b34-9427-c23f5cdf6ba4",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "9356209e-9bad-4797-af31-ee8801e71caf",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
