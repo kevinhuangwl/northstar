@@ -10,11 +10,8 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.gson.Gson;
-
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.constant.CommonConstant;
 import tech.xuanwu.northstar.constant.ErrorHint;
 import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
 import tech.xuanwu.northstar.domain.IAccount;
@@ -155,13 +152,11 @@ public class RealAccount implements IAccount{
 			throw new IllegalArgumentException(ErrorHint.NOT_NULL_PARAM);
 		}
 		
-		account.setTradingDay(gatewayApi.getTradingDay());
-		
 		//若账户信息有变，则保存记录
 		if(!account.equals(this.accountInfo)) {
 			try {
 				this.accountInfo = account;
-				accountRepo.upsert(account);
+				accountRepo.upsertByDay(account, gatewayApi.getTradingDay());
 			} catch (Exception e) {
 				log.error("插入账户信息异常", e);
 			}
@@ -248,7 +243,7 @@ public class RealAccount implements IAccount{
 	 */
 	protected void doDailySettlement() {
 		try {
-			accountRepo.upsert(this.accountInfo);
+			accountRepo.upsertByDay(this.accountInfo, gatewayApi.getTradingDay());
 		} catch (Exception e) {
 			log.error("", e);
 		}

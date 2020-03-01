@@ -37,7 +37,7 @@ public class TestAccountRepo {
 		AccountInfo a2 = new AccountInfo();
 		a2.setName(accountName);
 		a2.setTradingDay("20200202");
-		accountRepo.upsert(a1);
+		accountRepo.upsertByDay(a1, "20200202");
 		
 		AccountInfo info1 = accountRepo.getLatestAccountInfoByName(accountName);
 		assertThat(info1).isEqualTo(a2);

@@ -30,14 +30,15 @@ public class AccountRepoImpl implements AccountRepo{
 	Gson gson = new Gson();
 	
 	@Override
-	public boolean upsert(AccountInfo account) throws IllegalArgumentException, IllegalAccessException {
+	public boolean upsertByDay(AccountInfo account, String tradingDay) throws IllegalArgumentException, IllegalAccessException {
 		log.info("插入账户信息");
-		String tradingDay = LocalDate.now().format(CommonConstant.D_FORMAT_INT_FORMATTER);
 		if(StringUtils.isEmpty(account.getTradingDay())) {			
 			account.setTradingDay(tradingDay);
 		}
 		Document doc = Document.parse(gson.toJson(account));
-		Document filter = new Document().append("tradingDay", tradingDay);
+		Document filter = new Document()
+				.append("tradingDay", account.getTradingDay())
+				.append("accountId", account.getAccountId());
 		return mongodb.upsert(DB, TBL_ACCOUNT, doc, filter);
 	}
 
