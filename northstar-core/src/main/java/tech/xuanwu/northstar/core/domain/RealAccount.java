@@ -152,6 +152,8 @@ public class RealAccount implements IAccount{
 			throw new IllegalArgumentException(ErrorHint.NOT_NULL_PARAM);
 		}
 		
+		account.setTradingDay(gatewayApi.getTradingDay());
+		
 		//若账户信息有变，则保存记录
 		if(!account.equals(this.accountInfo)) {
 			try {

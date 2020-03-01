@@ -23,9 +23,6 @@ public class CtpReadyEventHandler implements RuntimeEngine.Listener, Initializin
 	private RuntimeEngine rtEngine;
 	
 	@Autowired
-	private MarketDataService mdService;
-	
-	@Autowired
 	private ContractRepo contractRepo;
 	
 	@Autowired
@@ -42,10 +39,10 @@ public class CtpReadyEventHandler implements RuntimeEngine.Listener, Initializin
 		log.info("合约字典的合约总数：{}", fDict.size());
 		log.info("=====开始自动续订合约=====");
 		//自动续订阅合约
-		for(ContractInfo c : mdService.getAllSubscribedContracts()) {
+		for(ContractInfo c : contractRepo.getAllSubscribedContracts()) {
 			ContractField contract = fDict.getContractByName(c.getSymbol());
 			if(contract != null) {
-				mdService.subscribeContract(c.getGatewayId(), c.getSymbol());
+				rtEngine.getAccount(c.getGatewayId()).subscribe(contract);
 				log.info("订阅网关【{}】的合约【{}】", c.getGatewayId(), c.getSymbol());
 			}else {
 				log.warn("合约【{}】已过期", c.getSymbol());

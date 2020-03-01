@@ -32,9 +32,6 @@ public class AccountRepoImpl implements AccountRepo{
 	@Override
 	public boolean upsertByDay(AccountInfo account, String tradingDay) throws IllegalArgumentException, IllegalAccessException {
 		log.info("插入账户信息");
-		if(StringUtils.isEmpty(account.getTradingDay())) {			
-			account.setTradingDay(tradingDay);
-		}
 		Document doc = Document.parse(gson.toJson(account));
 		Document filter = new Document()
 				.append("tradingDay", account.getTradingDay())
