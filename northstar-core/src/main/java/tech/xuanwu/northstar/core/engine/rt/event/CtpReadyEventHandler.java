@@ -39,6 +39,7 @@ public class CtpReadyEventHandler implements RuntimeEngine.Listener, Initializin
 
 	@Override
 	public void onEvent(EventObject e) throws Exception {
+		log.info("合约字典的合约总数：{}", fDict.size());
 		log.info("=====开始自动续订合约=====");
 		//自动续订阅合约
 		for(ContractInfo c : mdService.getAllSubscribedContracts()) {

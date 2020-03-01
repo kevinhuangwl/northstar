@@ -807,7 +807,6 @@ public class TdSpi extends CThostFtdcTraderSpi {
 					reqUserLoginField.setPassword(this.password);
 					cThostFtdcTraderApi.ReqUserLogin(reqUserLoginField, reqId.incrementAndGet());
 					
-					
 					NoticeField.Builder noticeBuilder = NoticeField.newBuilder();
 					noticeBuilder
 						.setContent(NoticeCode.GATEWAY_CTP_CONNECTED + "-网关:" + ctpGatewayImpl.getGatewayName() + ",网关ID:" + ctpGatewayImpl.getGatewayId() + "登陆成功");
@@ -1375,6 +1374,9 @@ public class TdSpi extends CThostFtdcTraderSpi {
 					}
 				}
 				tradeBuilderCacheList.clear();
+				
+				//延迟两秒确保合约字典准备完成
+				Thread.sleep(2000);
 				
 				NoticeField.Builder noticeBuilder = NoticeField.newBuilder();
 				noticeBuilder

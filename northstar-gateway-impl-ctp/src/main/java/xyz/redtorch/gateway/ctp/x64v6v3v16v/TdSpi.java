@@ -1375,6 +1375,9 @@ public class TdSpi extends CThostFtdcTraderSpi {
 				}
 				tradeBuilderCacheList.clear();
 				
+				//延迟两秒确保合约字典准备完成
+				Thread.sleep(2000);
+				
 				NoticeField.Builder noticeBuilder = NoticeField.newBuilder();
 				noticeBuilder
 					.setContent(NoticeCode.GATEWAY_CTP_READY + "-网关:" + ctpGatewayImpl.getGatewayName() + ",网关ID:" + ctpGatewayImpl.getGatewayId() + "可以交易");
