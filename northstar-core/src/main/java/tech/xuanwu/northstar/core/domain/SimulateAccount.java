@@ -1,15 +1,11 @@
 package tech.xuanwu.northstar.core.domain;
 
-import java.util.EventObject;
-
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.ErrorHint;
-import tech.xuanwu.northstar.constant.RuntimeEvent;
 import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
-import tech.xuanwu.northstar.domain.ModifiableAccount;
 import tech.xuanwu.northstar.domain.IAccount;
-import tech.xuanwu.northstar.engine.RuntimeEngine;
-import tech.xuanwu.northstar.exception.NoSuchEventHandlerException;
+import tech.xuanwu.northstar.domain.ModifiableAccount;
+import tech.xuanwu.northstar.engine.MarketEngine;
 import tech.xuanwu.northstar.gateway.GatewayApi;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
@@ -17,13 +13,13 @@ import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 @Slf4j
 public class SimulateAccount extends RealAccount implements IAccount, ModifiableAccount {
 	
-	private RuntimeEngine rtEngine;
+	private MarketEngine mkEngine;
 	
 
-	public SimulateAccount(GatewayApi gatewayApi, RuntimeEngine rtEngine, AccountRepo accountRepo) {
+	public SimulateAccount(GatewayApi gatewayApi, MarketEngine mkEngine, AccountRepo accountRepo) {
 		this.name = gatewayApi.getGatewayName();
 		this.gatewayApi = gatewayApi;
-		this.rtEngine = rtEngine;
+		this.mkEngine = mkEngine;
 		this.accountRepo = accountRepo;
 	}
 
@@ -31,22 +27,14 @@ public class SimulateAccount extends RealAccount implements IAccount, Modifiable
 	public void submitOrder(SubmitOrderReqField submitOrderReq) {
 		log.info("模拟账户下单");
 		
-		try {
-			rtEngine.emitEvent(RuntimeEvent.SUBMIT_ORDER_SIMULATE, new EventObject(submitOrderReq));
-		} catch (NoSuchEventHandlerException e) {
-			log.error("", e);
-		}
+		mkEngine.submitOrder(submitOrderReq);
 	}
 
 	@Override
 	public void cancelOrder(CancelOrderReqField cancelOrderReq) {
 		log.info("模拟账户撤单");
 		
-		try {
-			rtEngine.emitEvent(RuntimeEvent.CANCEL_ORDER_SIMULATE, new EventObject(cancelOrderReq));
-		} catch (NoSuchEventHandlerException e) {
-			log.error("", e);
-		}
+		mkEngine.cancelOrder(cancelOrderReq);
 	}
 
 

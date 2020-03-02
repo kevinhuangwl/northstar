@@ -13,12 +13,8 @@ public enum RuntimeEvent {
 	REGISTER_STRATEGY,
 	//下单
 	SUBMIT_ORDER,
-	//模拟下单
-	SUBMIT_ORDER_SIMULATE,
 	//撤单
 	CANCEL_ORDER,
-	//模拟撤单
-	CANCEL_ORDER_SIMULATE,
 	//订单回报
 	FEEDBACK_ORDER,
 	//账户回报

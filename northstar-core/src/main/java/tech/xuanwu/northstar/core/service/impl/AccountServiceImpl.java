@@ -15,6 +15,7 @@ import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
 import tech.xuanwu.northstar.core.service.AccountService;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.FastEventEngine;
+import tech.xuanwu.northstar.engine.MarketEngine;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.entity.AccountInfo;
 import tech.xuanwu.northstar.entity.OrderInfo;
@@ -30,6 +31,9 @@ public class AccountServiceImpl implements AccountService {
 	
 	@Autowired
 	RuntimeEngine rtEngine;
+	
+	@Autowired
+	MarketEngine mkEngine;
 	
 	@Autowired
 	CtpGatewaySettings p;
@@ -72,7 +76,7 @@ public class AccountServiceImpl implements AccountService {
 		gateway.connect();
 		
 		log.info("连接网关【{}】，使用【{}】交易", p.getGatewayID(), p.isRealTrader()?"真实账户":"模拟账户");
-		IAccount account = p.isRealTrader() ? new RealAccount(gateway, accountRepo) : new SimulateAccount(gateway, rtEngine, accountRepo);
+		IAccount account = p.isRealTrader() ? new RealAccount(gateway, accountRepo) : new SimulateAccount(gateway, mkEngine, accountRepo);
 		rtEngine.regAccount(account);
 	}
 

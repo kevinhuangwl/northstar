@@ -3,6 +3,7 @@ package tech.xuanwu.northstar.core.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import tech.xuanwu.northstar.entity.AccountInfo;
 
 @Slf4j
 @Service
+@ConditionalOnBean(type="MarketEngine")
 public class SimulateAccountManagementServiceImpl implements SimulateAccountManagementService, InitializingBean{
 	
 	List<AccountInfo> simulateAccountList;
