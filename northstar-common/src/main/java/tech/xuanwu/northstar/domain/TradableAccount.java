@@ -6,14 +6,15 @@ import java.util.List;
 import tech.xuanwu.northstar.entity.OrderInfo;
 import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.entity.TransactionInfo;
+import tech.xuanwu.northstar.exception.TradeException;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 
 public interface TradableAccount {
 
-	void submitOrder(SubmitOrderReqField submitOrderReq);
+	void submitOrder(SubmitOrderReqField submitOrderReq) throws TradeException;
 	
-	void cancelOrder(CancelOrderReqField cancelOrderReq);
+	void cancelOrder(CancelOrderReqField cancelOrderReq) throws TradeException;
 	
 	void updatePosition(PositionInfo position);
 	

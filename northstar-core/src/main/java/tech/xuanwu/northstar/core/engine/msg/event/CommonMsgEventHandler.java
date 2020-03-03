@@ -21,6 +21,7 @@ import tech.xuanwu.northstar.core.service.TradeService;
 import tech.xuanwu.northstar.core.util.FutureDictionary;
 import tech.xuanwu.northstar.entity.StrategyInfo;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
+import tech.xuanwu.northstar.exception.TradeException;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 
 /**
@@ -104,6 +105,10 @@ public class CommonMsgEventHandler {
     
     @OnEvent(Message.CANCEL_ORDER)
     private void onCancelOrder(final SocketIOClient client, String accountName, String orderId) throws NoSuchAccountException {
-    	tdService.cancelOrder(accountName, orderId);
+    	try {
+			tdService.cancelOrder(accountName, orderId);
+		} catch (TradeException e) {
+			log.error("", e);
+		}
     }
 }

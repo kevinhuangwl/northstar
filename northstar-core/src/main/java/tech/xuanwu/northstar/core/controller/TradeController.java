@@ -9,8 +9,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.common.ResultBean;
+import tech.xuanwu.northstar.common.ResultCode;
+import tech.xuanwu.northstar.constant.ErrorHint;
 import tech.xuanwu.northstar.core.service.TradeService;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
+import tech.xuanwu.northstar.exception.TradeException;
 import xyz.redtorch.pb.CoreEnum.DirectionEnum;
 import xyz.redtorch.pb.CoreEnum.OffsetFlagEnum;
 
@@ -32,7 +35,7 @@ public class TradeController {
 			return new ResultBean<>(tradeService.submitOrder(accountGatewayId, contractSymbol, price, volume, direction, transactionType));
 		} catch (Exception e) {
 			log.error("", e);
-			return new ResultBean<String>(ResultBean.ReturnCode.ERROR, e.getMessage());
+			return new ResultBean<String>(ResultCode.ERROR, ErrorHint.FAIL_SUBMIT_ORDER);
 		}
 	}
 	
@@ -41,9 +44,9 @@ public class TradeController {
 	public ResultBean<Void> cancelOrder(String accountGatewayId, String originOrderId){
 		try {
 			tradeService.cancelOrder(accountGatewayId, originOrderId);
-		} catch (NoSuchAccountException e) {
+		} catch (NoSuchAccountException | TradeException e) {
 			log.error("", e);
-			return new ResultBean<>(ResultBean.ReturnCode.ERROR, e.getMessage());
+			return new ResultBean<>(ResultCode.ERROR, ErrorHint.FAIL_CANCEL_ORDER);
 		}
 		return new ResultBean(Void.TYPE);
 	}
@@ -56,7 +59,7 @@ public class TradeController {
 			tradeService.sellOutAllPosition(accountGatewayId);
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
-			return new ResultBean<>(ResultBean.ReturnCode.ERROR, e.getMessage());
+			return new ResultBean<>(ResultCode.ERROR, e.getMessage());
 		}
 		return new ResultBean(Void.TYPE);
 	}

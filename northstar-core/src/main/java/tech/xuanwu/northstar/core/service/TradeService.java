@@ -2,6 +2,7 @@ package tech.xuanwu.northstar.core.service;
 
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import tech.xuanwu.northstar.exception.NoSuchContractException;
+import tech.xuanwu.northstar.exception.TradeException;
 import xyz.redtorch.pb.CoreEnum.ContingentConditionEnum;
 import xyz.redtorch.pb.CoreEnum.DirectionEnum;
 import xyz.redtorch.pb.CoreEnum.HedgeFlagEnum;
@@ -41,7 +42,7 @@ public interface TradeService {
 	String submitOrder(String accountGatewayId, String contractSymbol, double price, double stopPrice, int volume,
 			OrderPriceTypeEnum priceType, DirectionEnum direction, OffsetFlagEnum transactionType,
 			HedgeFlagEnum hedgeType, TimeConditionEnum expireType, VolumeConditionEnum volType,
-			ContingentConditionEnum trigerType) throws NoSuchContractException, NoSuchAccountException;
+			ContingentConditionEnum trigerType) throws NoSuchContractException, NoSuchAccountException, TradeException;
 
 	/**
 	 * 提交委托
@@ -55,7 +56,7 @@ public interface TradeService {
 	 * @return
 	 */
 	String submitOrder(String accountGatewayId, String contractSymbol, double price, int volume, DirectionEnum direction,
-			OffsetFlagEnum transactionType) throws NoSuchContractException, NoSuchAccountException;
+			OffsetFlagEnum transactionType) throws NoSuchContractException, NoSuchAccountException, TradeException;
 
 	/**
 	 * 提交委托
@@ -64,14 +65,14 @@ public interface TradeService {
 	 * @param submitOrderReq
 	 * @return
 	 */
-	String submitOrder(String accountGatewayId, SubmitOrderReqField submitOrderReq) throws NoSuchContractException, NoSuchAccountException;
+	String submitOrder(String accountGatewayId, SubmitOrderReqField submitOrderReq) throws NoSuchContractException, NoSuchAccountException, TradeException;
 
 	/**
 	 * 撤销委托
 	 * @param accountGatewayId
 	 * @param originOrderId
 	 */
-	void cancelOrder(String accountGatewayId, String originOrderId) throws NoSuchAccountException;
+	void cancelOrder(String accountGatewayId, String originOrderId) throws NoSuchAccountException, TradeException;
 	
 	/**
 	 * 撤销委托
@@ -79,7 +80,7 @@ public interface TradeService {
 	 * @param cancelOrderReq
 	 * @return
 	 */
-	void cancelOrder(String accountGatewayId, CancelOrderReqField cancelOrderReq) throws NoSuchAccountException;
+	void cancelOrder(String accountGatewayId, CancelOrderReqField cancelOrderReq) throws NoSuchAccountException, TradeException;
 	
 	/**
 	 * 全部清仓

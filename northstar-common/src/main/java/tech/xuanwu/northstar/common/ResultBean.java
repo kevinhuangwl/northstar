@@ -24,13 +24,8 @@ public class ResultBean<T> implements Serializable{
 	//返回对象
 	private T data;
 	
-	public static interface ReturnCode{
-		int SUCCESS = 200;
-		int ERROR = 500;
-	}
-	
 	public ResultBean(T t) {
-		rtnCode = ReturnCode.SUCCESS;
+		rtnCode = ResultCode.SUCCESS;
 		data = t;
 	}
 	

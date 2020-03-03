@@ -15,4 +15,6 @@ public interface MarketEngine {
 	void deposit(double money);
 	
 	void withdraw(double money);
+	
+	void proceedDailySettlement();
 }

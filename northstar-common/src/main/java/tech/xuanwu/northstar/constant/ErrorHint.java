@@ -7,4 +7,8 @@ public interface ErrorHint {
 	String NO_NEGATIVE_VALUE = "入参不能为负数";
 	
 	String INSUFFICIENT_BALANCE = "账户余额不足";
+	
+	String FAIL_SUBMIT_ORDER = "挂单失败";
+	
+	String FAIL_CANCEL_ORDER = "撤单失败";
 }

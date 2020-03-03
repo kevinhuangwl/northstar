@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.validation.constraints.NotNull;
 
@@ -12,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import tech.xuanwu.northstar.common.Conditional;
 import tech.xuanwu.northstar.constant.ErrorHint;
 import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
 import tech.xuanwu.northstar.domain.IAccount;
@@ -20,6 +22,7 @@ import tech.xuanwu.northstar.entity.AccountInfo;
 import tech.xuanwu.northstar.entity.OrderInfo;
 import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.entity.TransactionInfo;
+import tech.xuanwu.northstar.exception.TradeException;
 import tech.xuanwu.northstar.gateway.GatewayApi;
 import xyz.redtorch.pb.CoreEnum.OrderStatusEnum;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
@@ -57,6 +60,10 @@ public class RealAccount implements IAccount{
 	/*成交信息*/
 	protected Map<String, TransactionInfo> transactionMap = new HashMap<>();
 	
+	/**/
+	protected ConcurrentHashMap<String, OrderInfo> cachedOrderMap = new ConcurrentHashMap<>();
+	
+	
 	/*账户名称*/
 	@Getter
 	@NotNull
@@ -73,15 +80,28 @@ public class RealAccount implements IAccount{
 	}
 
 	@Override
-	public void submitOrder(SubmitOrderReqField submitOrderReq) {
+	public void submitOrder(SubmitOrderReqField submitOrderReq) throws TradeException {
 		log.info("账户-【{}】委托下单，{}", name, submitOrderReq);
 		gatewayApi.submitOrder(submitOrderReq);
+		
+		String originOrderId = submitOrderReq.getOriginOrderId();
+		if(isTimeoutWaitingFor(()->{
+			return cachedOrderMap.get(originOrderId)!=null;
+		})) {
+			throw new TradeException();
+		}
 	}
 
 	@Override
-	public void cancelOrder(CancelOrderReqField cancelOrderReq) {
+	public void cancelOrder(CancelOrderReqField cancelOrderReq) throws TradeException {
 		log.info("账户-【{}】委托撤单，{}", name, cancelOrderReq);
 		gatewayApi.cancelOrder(cancelOrderReq);
+		
+		String originOrderId = cancelOrderReq.getOriginOrderId();
+		OrderInfo order = cachedOrderMap.get(originOrderId);
+		if(order == null && order.getOrderStatus() != OrderStatusEnum.OS_AllTraded) {
+			throw new TradeException();
+		}
 	}
 
 	@Override
@@ -107,6 +127,8 @@ public class RealAccount implements IAccount{
 
 	@Override
 	public void updateOrder(OrderInfo order) {
+		cachedOrderMap.put(order.getOriginOrderId(), order);
+		
 		synchronized (orderMap) {
 			String orderId = order.getOrderId();
 			OrderStatusEnum status = order.getOrderStatus();
@@ -243,12 +265,27 @@ public class RealAccount implements IAccount{
 	/**
 	 * 每天收盘结算操作
 	 */
-	protected void doDailySettlement() {
+	protected void proceedDailySettlement() {
 		try {
 			accountRepo.upsertByDay(this.accountInfo, gatewayApi.getTradingDay());
 		} catch (Exception e) {
 			log.error("", e);
 		}
+	}
+	
+	protected boolean isTimeoutWaitingFor(Conditional c) {
+		int retry = 100;
+		while(retry-->0) {
+			if(c.expect()) {
+				return false;
+			}
+			
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+			}
+		}
+		return true;
 	}
 
 }

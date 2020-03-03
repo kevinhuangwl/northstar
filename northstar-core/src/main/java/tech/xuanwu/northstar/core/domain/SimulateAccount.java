@@ -6,7 +6,10 @@ import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.domain.ModifiableAccount;
 import tech.xuanwu.northstar.engine.MarketEngine;
+import tech.xuanwu.northstar.entity.OrderInfo;
+import tech.xuanwu.northstar.exception.TradeException;
 import tech.xuanwu.northstar.gateway.GatewayApi;
+import xyz.redtorch.pb.CoreEnum.OrderStatusEnum;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 
@@ -24,17 +27,30 @@ public class SimulateAccount extends RealAccount implements IAccount, Modifiable
 	}
 
 	@Override
-	public void submitOrder(SubmitOrderReqField submitOrderReq) {
+	public void submitOrder(SubmitOrderReqField submitOrderReq) throws TradeException {
 		log.info("模拟账户下单");
 		
 		mkEngine.submitOrder(submitOrderReq);
+		
+		String originOrderId = submitOrderReq.getOriginOrderId();
+		if(isTimeoutWaitingFor(()->{
+			return cachedOrderMap.get(originOrderId)!=null;
+		})) {
+			throw new TradeException();
+		}
 	}
 
 	@Override
-	public void cancelOrder(CancelOrderReqField cancelOrderReq) {
+	public void cancelOrder(CancelOrderReqField cancelOrderReq) throws TradeException {
 		log.info("模拟账户撤单");
 		
 		mkEngine.cancelOrder(cancelOrderReq);
+		
+		String originOrderId = cancelOrderReq.getOriginOrderId();
+		OrderInfo order = cachedOrderMap.get(originOrderId);
+		if(order == null && order.getOrderStatus() != OrderStatusEnum.OS_AllTraded) {
+			throw new TradeException();
+		}
 	}
 
 

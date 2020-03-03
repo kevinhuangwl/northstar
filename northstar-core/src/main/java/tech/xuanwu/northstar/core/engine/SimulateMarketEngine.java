@@ -26,6 +26,7 @@ import xyz.redtorch.pb.CoreEnum.TradeTypeEnum;
 import xyz.redtorch.pb.CoreField.AccountField;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
 import xyz.redtorch.pb.CoreField.OrderField;
+import xyz.redtorch.pb.CoreField.PositionField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 import xyz.redtorch.pb.CoreField.TickField;
 import xyz.redtorch.pb.CoreField.TradeField;
@@ -49,14 +50,15 @@ public class SimulateMarketEngine implements MarketEngine, InitializingBean{
 	/*账户信息*/
 	private AccountField.Builder accountFieldBuilder = AccountField.newBuilder();
 	
-	private ConcurrentLinkedQueue<TradeField.Builder> transBuilderQ = new ConcurrentLinkedQueue<>();
-	
 	@Autowired
 	private AccountRepo accountRepo;
 	
+	/*合约挂单， <合约代码， 挂单队列>*/
 	private ConcurrentHashMap<String, ConcurrentLinkedQueue<OrderField.Builder>> contractOrderMap = new ConcurrentHashMap<>();
-	private ConcurrentHashMap<String, String> orderContractMap = new ConcurrentHashMap<>();
-	private ConcurrentHashMap<String, OrderField.Builder> tradedOrderMap = new ConcurrentHashMap<>();
+	/*挂单，<挂单ID，挂单>*/
+	private ConcurrentHashMap<String, OrderField.Builder> orderMap = new ConcurrentHashMap<>();
+	/*持仓队列*/
+	private ConcurrentLinkedQueue<PositionField.Builder> positionQ = new ConcurrentLinkedQueue<>();
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -119,7 +121,7 @@ public class SimulateMarketEngine implements MarketEngine, InitializingBean{
 			contractOrderMap.putIfAbsent(unifiedSymbol, new ConcurrentLinkedQueue<OrderField.Builder>());
 		}
 		contractOrderMap.get(unifiedSymbol).add(ob);
-		orderContractMap.put(originOrderId, unifiedSymbol);
+		orderMap.put(originOrderId, ob);
 		
 		log.info("模拟交易接口发单记录->{\n" //
 				+ "InstrumentID:{},\n" //
@@ -150,34 +152,35 @@ public class SimulateMarketEngine implements MarketEngine, InitializingBean{
 				submitOrder.getStopPrice());
 		
 		feEngine.emitOrder(ob.build());
-		
 	}
 
 	@Override
 	public void cancelOrder(CancelOrderReqField cancelOrder) {
 		String originOrderId = cancelOrder.getOriginOrderId();
-		String unifiedSymbol = orderContractMap.remove(originOrderId);
-		
-		log.info("模拟撤单，合约：{}，订单号：{}", unifiedSymbol, originOrderId);
-		
-		if(tradedOrderMap.containsKey(originOrderId)) {
-			log.info("委托已失效，订单号：{}", originOrderId);
-			feEngine.emitOrder(tradedOrderMap.get(originOrderId).build());
+		OrderField.Builder orderBuilder = orderMap.remove(originOrderId);
+		if(orderBuilder == null) {
 			return;
 		}
-		
-		ConcurrentLinkedQueue<OrderField.Builder> orderWaitingQ = contractOrderMap.get(unifiedSymbol);
-		Iterator<OrderField.Builder> itOrder = orderWaitingQ.iterator();
-		while(itOrder.hasNext()) {
-			OrderField.Builder ob = itOrder.next();
-			if(StringUtils.equals(ob.getOriginOrderId(), originOrderId)) {
-				itOrder.remove();
-				ob.setOrderStatus(OrderStatusEnum.OS_Canceled);
-				tradedOrderMap.put(originOrderId, ob);
-				
-				log.info("撤单成功，订单号：{}", originOrderId);
-				feEngine.emitOrder(ob.build());
-				break;
+		if(orderBuilder.getOrderStatus() == OrderStatusEnum.OS_AllTraded) {
+			log.info("挂单已全部成交，合约：{}，订单号：{}", orderBuilder.getContract().getUnifiedSymbol(), originOrderId);
+			return;
+		}
+		if(orderBuilder.getOrderStatus() == OrderStatusEnum.OS_Unknown) {
+			String unifiedSymbol = orderBuilder.getContract().getUnifiedSymbol();
+			log.info("模拟撤单，合约：{}，订单号：{}", unifiedSymbol, originOrderId);
+			
+			ConcurrentLinkedQueue<OrderField.Builder> orderWaitingQ = contractOrderMap.get(unifiedSymbol);
+			Iterator<OrderField.Builder> itOrder = orderWaitingQ.iterator();
+			while(itOrder.hasNext()) {
+				OrderField.Builder ob = itOrder.next();
+				if(StringUtils.equals(ob.getOriginOrderId(), originOrderId)) {
+					itOrder.remove();
+					ob.setOrderStatus(OrderStatusEnum.OS_Canceled);
+					
+					log.info("撤单成功，订单号：{}", originOrderId);
+					feEngine.emitOrder(ob.build());
+					break;
+				}
 			}
 		}
 	}
@@ -191,21 +194,16 @@ public class SimulateMarketEngine implements MarketEngine, InitializingBean{
 		}
 		Iterator<OrderField.Builder> itOrder = orderWaitingQ.iterator();
 		while(itOrder.hasNext()) {
-			OrderField.Builder ob = itOrder.next();
+			OrderField.Builder orderBuilder = itOrder.next();
 			
-			TradeField tradeField = deal(ob, tick);
+			TradeField tradeField = deal(orderBuilder, tick);
 			if(tradeField != null) {				
 				feEngine.emitTrade(tradeField);
+				feEngine.emitOrder(orderBuilder.build());
 				
-				//全部成交
-				if(ob.getTradedVolume() == ob.getTotalVolume()) {
-					itOrder.remove();
-				}
-				
-				feEngine.emitOrder(ob.build());
+				itOrder.remove();
 			}
 		}
-		
 	}
 	
 	private TradeField deal(OrderField.Builder order, TickField tick) {
@@ -234,30 +232,13 @@ public class SimulateMarketEngine implements MarketEngine, InitializingBean{
 		tb.setTradeTime(now.format(CommonConstant.T_FORMAT_WITH_MS_INT_FORMATTER));
 		tb.setTradeTimestamp(System.currentTimeMillis());
 		tb.setTradeType(TradeTypeEnum.TT_Common);
-		//四种成交情况
-		boolean buyAll = buyConditionSatisfied && tick.getAskVolume(0) >= order.getTotalVolume();
-		boolean sellAll = sellConditionSatisfied && tick.getBidVolume(0) >= order.getTotalVolume();
-		
 		tb.setPrice(buyConditionSatisfied ? tick.getAskPrice(0) : tick.getBidPrice(0));
 		tb.setVolume(buyConditionSatisfied ? tick.getAskVolume(0) : tick.getBidVolume(0));
 		
-		order.setTradedVolume(
-				buyAll || sellAll 
-				? order.getTotalVolume() 
-				: buyConditionSatisfied 
-					? tick.getAskVolume(0) + order.getTradedVolume() 
-					: tick.getBidVolume(0) + order.getTradedVolume());
+		order.setTradedVolume(order.getTotalVolume());
+		order.setOrderStatus(OrderStatusEnum.OS_AllTraded);
 		
-		order.setOrderStatus(buyAll || sellAll ? OrderStatusEnum.OS_AllTraded : OrderStatusEnum.OS_PartTradedQueueing);
-		
-		if(buyAll || sellAll) {
-			log.info("模拟{}单全部成交，合约：{}", buyAll?"多":"空", tick.getUnifiedSymbol());
-			
-			orderContractMap.remove(order.getOriginOrderId());
-			tradedOrderMap.put(tick.getUnifiedSymbol(), order);
-		}else {
-			log.info("模拟{}单部分成交，合约：{}", buyAll?"多":"空", tick.getUnifiedSymbol());
-		}
+		log.info("模拟{}单全部成交，合约：{}", buyConditionSatisfied?"多":"空", tick.getUnifiedSymbol());
 		
 		return tb.build();
 	}
@@ -272,6 +253,12 @@ public class SimulateMarketEngine implements MarketEngine, InitializingBean{
 	public void withdraw(double money) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void proceedDailySettlement() {
+		orderMap.clear();
+		contractOrderMap.clear();
 	}
 
 }

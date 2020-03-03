@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.common.ResultBean;
+import tech.xuanwu.northstar.common.ResultCode;
 import tech.xuanwu.northstar.core.service.AccountService;
 import tech.xuanwu.northstar.entity.AccountInfo;
 import tech.xuanwu.northstar.entity.OrderInfo;
@@ -43,7 +43,7 @@ public class AccountController {
 			return new ResultBean<List<PositionInfo>>(acService.getPositionInfoList(gatewayId));
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
-			return new ResultBean<List<PositionInfo>>(ResultBean.ReturnCode.ERROR, e.getMessage());
+			return new ResultBean<List<PositionInfo>>(ResultCode.ERROR, e.getMessage());
 		}
 	}
 
@@ -54,7 +54,7 @@ public class AccountController {
 			return new ResultBean<List<OrderInfo>>(acService.getOrderInfoList(gatewayId));
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
-			return new ResultBean<List<OrderInfo>>(ResultBean.ReturnCode.ERROR, e.getMessage());
+			return new ResultBean<List<OrderInfo>>(ResultCode.ERROR, e.getMessage());
 		}
 	}
 
@@ -65,7 +65,7 @@ public class AccountController {
 			return new ResultBean<List<TransactionInfo>>(acService.getTransactionInfoList(gatewayId));
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
-			return new ResultBean<List<TransactionInfo>>(ResultBean.ReturnCode.ERROR, e.getMessage());
+			return new ResultBean<List<TransactionInfo>>(ResultCode.ERROR, e.getMessage());
 		}
 	}
 
@@ -77,7 +77,7 @@ public class AccountController {
 			acService.connectGateway();
 		} catch (Exception e) {
 			log.error("", e);
-			return new ResultBean<Void>(ResultBean.ReturnCode.ERROR, e.getMessage());
+			return new ResultBean<Void>(ResultCode.ERROR, e.getMessage());
 		}
 		return new ResultBean(Void.TYPE);
 	}
@@ -90,7 +90,7 @@ public class AccountController {
 			acService.disconnectGateway(gatewayId);
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
-			return new ResultBean<Void>(ResultBean.ReturnCode.ERROR, e.getMessage());
+			return new ResultBean<Void>(ResultCode.ERROR, e.getMessage());
 		}
 		return new ResultBean(Void.TYPE);
 	}

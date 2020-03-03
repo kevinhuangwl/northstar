@@ -10,6 +10,7 @@ import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import tech.xuanwu.northstar.exception.NoSuchContractException;
+import tech.xuanwu.northstar.exception.TradeException;
 import xyz.redtorch.common.util.UUIDStringPoolUtils;
 import xyz.redtorch.pb.CoreEnum.ContingentConditionEnum;
 import xyz.redtorch.pb.CoreEnum.DirectionEnum;
@@ -36,7 +37,7 @@ public class TradeServiceImpl implements TradeService{
 	public String submitOrder(String accountName, String contractSymbol, double price, double stopPrice, int volume,
 			OrderPriceTypeEnum priceType, DirectionEnum direction, OffsetFlagEnum transactionType,
 			HedgeFlagEnum hedgeType, TimeConditionEnum expireType, VolumeConditionEnum volType,
-			ContingentConditionEnum trigerType) throws NoSuchContractException, NoSuchAccountException {
+			ContingentConditionEnum trigerType) throws NoSuchContractException, NoSuchAccountException, TradeException {
 		
 		checkValuePositive(price);
 		checkValuePositive(volume);
@@ -64,7 +65,7 @@ public class TradeServiceImpl implements TradeService{
 
 	@Override
 	public String submitOrder(String accountName, String contractSymbol, double price, int volume, DirectionEnum direction,
-			OffsetFlagEnum transactionType) throws NoSuchAccountException, NoSuchContractException{
+			OffsetFlagEnum transactionType) throws NoSuchAccountException, NoSuchContractException, TradeException{
 		checkValuePositive(price);
 		checkValuePositive(volume);
 		return submitOrder(accountName, contractSymbol, price, 0D, volume, OrderPriceTypeEnum.OPT_LimitPrice, direction, transactionType,
@@ -72,7 +73,7 @@ public class TradeServiceImpl implements TradeService{
 	}
 
 	@Override
-	public String submitOrder(String accountName, SubmitOrderReqField submitOrderReq) throws NoSuchAccountException{
+	public String submitOrder(String accountName, SubmitOrderReqField submitOrderReq) throws NoSuchAccountException, TradeException{
 		IAccount account = rtEngine.getAccount(accountName);
 		SubmitOrderReqField.Builder sb = submitOrderReq.toBuilder();
 		submitOrderReq = sb.build();
@@ -100,14 +101,14 @@ public class TradeServiceImpl implements TradeService{
 	}
 
 	@Override
-	public void cancelOrder(String accountName, String originOrderId) throws NoSuchAccountException {
+	public void cancelOrder(String accountName, String originOrderId) throws NoSuchAccountException, TradeException {
 		CancelOrderReqField.Builder cb = CancelOrderReqField.newBuilder();
 		cb.setOriginOrderId(originOrderId);
 		cancelOrder(accountName, cb.build());
 	}
 
 	@Override
-	public void cancelOrder(String accountName, CancelOrderReqField cancelOrderReq) throws NoSuchAccountException {
+	public void cancelOrder(String accountName, CancelOrderReqField cancelOrderReq) throws NoSuchAccountException, TradeException {
 		IAccount account = rtEngine.getAccount(accountName);
 		account.cancelOrder(cancelOrderReq);
 	}

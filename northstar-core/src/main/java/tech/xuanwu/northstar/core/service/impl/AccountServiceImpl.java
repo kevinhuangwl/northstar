@@ -32,7 +32,7 @@ public class AccountServiceImpl implements AccountService {
 	@Autowired
 	RuntimeEngine rtEngine;
 	
-	@Autowired
+	@Autowired(required=false)
 	MarketEngine mkEngine;
 	
 	@Autowired
