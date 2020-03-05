@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.core.engine;
+package tech.xuanwu.northstar;
 
 import java.time.LocalDate;
 import java.util.Iterator;
@@ -6,103 +6,99 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
-import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.CommonConstant;
-import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
 import tech.xuanwu.northstar.engine.FastEventEngine;
-import tech.xuanwu.northstar.engine.MarketEngine;
 import tech.xuanwu.northstar.entity.AccountInfo;
+import tech.xuanwu.northstar.entity.PositionInfo;
+import tech.xuanwu.northstar.gateway.GatewayApi;
 import xyz.redtorch.common.util.UUIDStringPoolUtils;
-import xyz.redtorch.pb.CoreEnum.CurrencyEnum;
 import xyz.redtorch.pb.CoreEnum.DirectionEnum;
+import xyz.redtorch.pb.CoreEnum.HedgeFlagEnum;
 import xyz.redtorch.pb.CoreEnum.OrderStatusEnum;
+import xyz.redtorch.pb.CoreEnum.PositionDirectionEnum;
 import xyz.redtorch.pb.CoreEnum.TradeTypeEnum;
 import xyz.redtorch.pb.CoreField.AccountField;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
+import xyz.redtorch.pb.CoreField.ContractField;
+import xyz.redtorch.pb.CoreField.GatewayField;
+import xyz.redtorch.pb.CoreField.GatewaySettingField;
 import xyz.redtorch.pb.CoreField.OrderField;
-import xyz.redtorch.pb.CoreField.PositionField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 import xyz.redtorch.pb.CoreField.TickField;
 import xyz.redtorch.pb.CoreField.TradeField;
 
 /**
- * 模拟市场引擎，用于撮合模拟交易
+ * 模拟网关接口实现，采用真实行情模拟成交
  * @author kevinhuangwl
  *
  */
 @Slf4j
-@Component
-@ConditionalOnExpression("${ctp.realTrader}==false")
-public class SimulateMarketEngine implements MarketEngine, InitializingBean{
+public class CtpGatewaySimulateImpl implements GatewayApi{
 	
-	@Autowired
+	private GatewayApi realGatewayApi;
+	
 	private FastEventEngine feEngine;
 	
-	@Value("${ctp.gatewayID}")
-	private String gatewayId;
+	private AccountInfo accountInfo;
 	
 	/*账户信息*/
 	private AccountField.Builder accountFieldBuilder = AccountField.newBuilder();
-	
-	@Autowired
-	private AccountRepo accountRepo;
 	
 	/*合约挂单， <合约代码， 挂单队列>*/
 	private ConcurrentHashMap<String, ConcurrentLinkedQueue<OrderField.Builder>> contractOrderMap = new ConcurrentHashMap<>();
 	/*挂单，<挂单ID，挂单>*/
 	private ConcurrentHashMap<String, OrderField.Builder> orderMap = new ConcurrentHashMap<>();
 	/*持仓队列*/
-	private ConcurrentLinkedQueue<PositionField.Builder> positionQ = new ConcurrentLinkedQueue<>();
-	
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		log.info("启动模拟市场引擎");
-		
-		AccountInfo accountInfo = accountRepo.getLatestAccountInfoByName(gatewayId);
-		if(accountInfo == null) {
-			log.info("未有模拟账户记录，初始化模拟账户");
-			String code = "SimulateAccount";
-			double initMoney = 100000;
-			accountFieldBuilder.setCode(code);
-			accountFieldBuilder.setAccountId(code + "@" + gatewayId);
-			accountFieldBuilder.setAvailable(initMoney);
-			accountFieldBuilder.setBalance(initMoney);
-			accountFieldBuilder.setCurrency(CurrencyEnum.CNY);
-			accountFieldBuilder.setGatewayId(gatewayId);
+	private ConcurrentHashMap<String, ConcurrentLinkedQueue<PositionInfo>> positionMap = new ConcurrentHashMap<>();
 
-		}else {
-			log.info("已有模拟账户记录，读取账户信息");
-			accountFieldBuilder.setAccountId(accountInfo.getAccountId());
-			accountFieldBuilder.setAvailable(accountInfo.getAvailable());
-			accountFieldBuilder.setBalance(accountInfo.getBalance());
-			accountFieldBuilder.setCloseProfit(accountInfo.getCloseProfit());
-			accountFieldBuilder.setCode(accountInfo.getCode());
-			accountFieldBuilder.setCommission(accountInfo.getCommission());
-			accountFieldBuilder.setCurrency(accountInfo.getCurrency());
-			accountFieldBuilder.setDeposit(accountInfo.getDeposit());
-			accountFieldBuilder.setGatewayId(accountInfo.getGatewayId());
-			accountFieldBuilder.setHolder(accountInfo.getHolder());
-			accountFieldBuilder.setMargin(accountInfo.getMargin());
-			accountFieldBuilder.setName(accountInfo.getName());
-			accountFieldBuilder.setPositionProfit(accountInfo.getPositionProfit());
-			accountFieldBuilder.setPreBalance(accountInfo.getPreBalance());
-			accountFieldBuilder.setWithdraw(accountInfo.getWithdraw());
-		}
+	public CtpGatewaySimulateImpl(GatewayApi realGatewayApi, FastEventEngine feEngine, AccountInfo accountInfo) {
+		log.info("启动模拟市场网关");
 		
-		feEngine.emitAccount(accountFieldBuilder.build());		
+		this.realGatewayApi = realGatewayApi;
+		this.feEngine = feEngine;
+		this.accountInfo = accountInfo;
+		
+		initAccount();
+	}
+	
+	private void initAccount() {
+		accountFieldBuilder.setAccountId(accountInfo.getAccountId());
+		accountFieldBuilder.setAvailable(accountInfo.getAvailable());
+		accountFieldBuilder.setBalance(accountInfo.getBalance());
+		accountFieldBuilder.setCloseProfit(accountInfo.getCloseProfit());
+		accountFieldBuilder.setCode(accountInfo.getCode());
+		accountFieldBuilder.setCommission(accountInfo.getCommission());
+		accountFieldBuilder.setCurrency(accountInfo.getCurrency());
+		accountFieldBuilder.setDeposit(accountInfo.getDeposit());
+		accountFieldBuilder.setGatewayId(accountInfo.getGatewayId());
+		accountFieldBuilder.setHolder(accountInfo.getHolder());
+		accountFieldBuilder.setMargin(accountInfo.getMargin());
+		accountFieldBuilder.setName(accountInfo.getName());
+		accountFieldBuilder.setPositionProfit(accountInfo.getPositionProfit());
+		accountFieldBuilder.setPreBalance(accountInfo.getPreBalance());
+		accountFieldBuilder.setWithdraw(accountInfo.getWithdraw());
+	}
+
+	@Override
+	public boolean subscribe(ContractField contract) {
+		return realGatewayApi.subscribe(contract);
+	}
+
+	@Override
+	public boolean unsubscribe(ContractField contract) {
+		return realGatewayApi.unsubscribe(contract);
 	}
 	
 	@Override
-	public void submitOrder(SubmitOrderReqField submitOrder) {
+	public String submitOrder(SubmitOrderReqField submitOrder) {
+		String gatewayId = realGatewayApi.getGatewayId();
+		String orderId = gatewayId + "@Simulate_" + UUIDStringPoolUtils.getUUIDString();
 		String unifiedSymbol = submitOrder.getContract().getUnifiedSymbol();
 		String originOrderId = submitOrder.getOriginOrderId();
 		OrderField.Builder ob = OrderField.newBuilder();
+		ob.setOrderId(orderId);
 		ob.setContract(submitOrder.getContract());
 		ob.setPrice(submitOrder.getPrice());
 		ob.setDirection(submitOrder.getDirection());
@@ -152,18 +148,19 @@ public class SimulateMarketEngine implements MarketEngine, InitializingBean{
 				submitOrder.getStopPrice());
 		
 		feEngine.emitOrder(ob.build());
+		return orderId;
 	}
 
 	@Override
-	public void cancelOrder(CancelOrderReqField cancelOrder) {
+	public boolean cancelOrder(CancelOrderReqField cancelOrder) {
 		String originOrderId = cancelOrder.getOriginOrderId();
 		OrderField.Builder orderBuilder = orderMap.remove(originOrderId);
 		if(orderBuilder == null) {
-			return;
+			return false;
 		}
 		if(orderBuilder.getOrderStatus() == OrderStatusEnum.OS_AllTraded) {
 			log.info("挂单已全部成交，合约：{}，订单号：{}", orderBuilder.getContract().getUnifiedSymbol(), originOrderId);
-			return;
+			return false;
 		}
 		if(orderBuilder.getOrderStatus() == OrderStatusEnum.OS_Unknown) {
 			String unifiedSymbol = orderBuilder.getContract().getUnifiedSymbol();
@@ -179,14 +176,15 @@ public class SimulateMarketEngine implements MarketEngine, InitializingBean{
 					
 					log.info("撤单成功，订单号：{}", originOrderId);
 					feEngine.emitOrder(ob.build());
-					break;
+					return true;
 				}
 			}
 		}
+		return false;
 	}
-
+	
 	@Override
-	public void updateTick(TickField tick) {
+	public void emitTick(TickField tick) {
 		String unifiedSymbol = tick.getUnifiedSymbol();
 		ConcurrentLinkedQueue<OrderField.Builder> orderWaitingQ = contractOrderMap.get(unifiedSymbol);
 		if(orderWaitingQ == null || orderWaitingQ.size() == 0) {
@@ -200,6 +198,20 @@ public class SimulateMarketEngine implements MarketEngine, InitializingBean{
 			if(tradeField != null) {				
 				feEngine.emitTrade(tradeField);
 				feEngine.emitOrder(orderBuilder.build());
+				
+				DirectionEnum direction = orderBuilder.getDirection();
+				HedgeFlagEnum hedgeFlag = orderBuilder.getHedgeFlag();
+				String accountId = accountFieldBuilder.getAccountId();
+				String positionId = unifiedSymbol + "@" + direction.getValueDescriptor().getName() + "@" + hedgeFlag.getValueDescriptor().getName() + "@" + accountId;
+				PositionInfo pb = new PositionInfo();
+				pb.setPositionId(positionId);
+				pb.setAccountId(orderBuilder.getAccountId());
+				pb.setPositionDirection(orderBuilder.getDirection()==DirectionEnum.D_Buy?PositionDirectionEnum.PD_Long:PositionDirectionEnum.PD_Short);
+				pb.setPosition(orderBuilder.getTotalVolume());
+				pb.setTdPosition(orderBuilder.getTotalVolume());
+				
+//				pb.setContractValue(value);
+//				pb.setExchangeMargin(value);
 				
 				itOrder.remove();
 			}
@@ -242,23 +254,64 @@ public class SimulateMarketEngine implements MarketEngine, InitializingBean{
 		
 		return tb.build();
 	}
-	
 
 	@Override
-	public void deposit(double money) {
-		
+	public void connect() {
+		realGatewayApi.connect();
 	}
 
 	@Override
-	public void withdraw(double money) {
-		// TODO Auto-generated method stub
-		
+	public void disconnect() {
+		realGatewayApi.disconnect();		
 	}
 
 	@Override
-	public void proceedDailySettlement() {
-		orderMap.clear();
-		contractOrderMap.clear();
+	public boolean isConnected() {
+		return realGatewayApi.isConnected();
 	}
 
+	@Override
+	public String getGatewayId() {
+		return realGatewayApi.getGatewayId();
+	}
+
+	@Override
+	public String getGatewayName() {
+		return realGatewayApi.getGatewayName();
+	}
+
+	@Override
+	public GatewayField getGateway() {
+		return realGatewayApi.getGateway();
+	}
+
+	@Override
+	public String getTradingDay() {
+		return realGatewayApi.getTradingDay();
+	}
+
+	@Override
+	public GatewaySettingField getGatewaySetting() {
+		return realGatewayApi.getGatewaySetting();
+	}
+
+	@Override
+	public boolean getAuthErrorFlag() {
+		return realGatewayApi.getAuthErrorFlag();
+	}
+
+	@Override
+	public void setAuthErrorFlag(boolean loginErrorFlag) {
+		realGatewayApi.setAuthErrorFlag(loginErrorFlag);
+	}
+
+	@Override
+	public long getLastConnectBeginTimestamp() {
+		return realGatewayApi.getLastConnectBeginTimestamp();
+	}
+
+	@Override
+	public FastEventEngine getEventEngine() {
+		return feEngine;
+	}
 }

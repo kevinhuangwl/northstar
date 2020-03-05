@@ -148,11 +148,6 @@ public class CtpGatewayImpl extends GatewayApiAbstract {
 	}
 
 	@Override
-	public void searchContract(ContractField contract) {
-		logger.warn(getLogInfo() + "不包含查询合约功能");
-	}
-
-	@Override
 	public void disconnect() {
 
 		lastConnectBeginTimestamp = 0;

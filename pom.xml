@@ -35,6 +35,7 @@
 		<module>northstar-common</module>
 		<module>northstar-gateway-api</module>
 		<module>northstar-gateway-impl-ctp</module>
+		<module>northstar-gateway-impl-simulate</module>
 		<module>northstar-core</module>
 	</modules>
 	

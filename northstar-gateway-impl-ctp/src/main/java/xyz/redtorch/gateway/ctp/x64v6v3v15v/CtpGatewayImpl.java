@@ -15,6 +15,7 @@ import xyz.redtorch.pb.CoreField.CancelOrderReqField;
 import xyz.redtorch.pb.CoreField.ContractField;
 import xyz.redtorch.pb.CoreField.GatewaySettingField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
+import xyz.redtorch.pb.CoreField.TickField;
 
 public class CtpGatewayImpl extends GatewayApiAbstract {
 
@@ -145,11 +146,6 @@ public class CtpGatewayImpl extends GatewayApiAbstract {
 			logger.warn(getLogInfo() + "不包含撤销定单功能");
 			return false;
 		}
-	}
-
-	@Override
-	public void searchContract(ContractField contract) {
-		logger.warn(getLogInfo() + "不包含查询合约功能");
 	}
 
 	@Override

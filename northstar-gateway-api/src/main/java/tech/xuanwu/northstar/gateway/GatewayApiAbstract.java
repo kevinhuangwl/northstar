@@ -98,40 +98,14 @@ public abstract class GatewayApiAbstract implements GatewayApi {
 	public GatewayField getGateway() {
 		return gateway;
 	}
-
+	
 	@Override
-	public void emitPosition(PositionField position) {
-		fastEventService.emitPosition(position);
-	}
-
-	@Override
-	public void emitAccount(AccountField account) {
-		fastEventService.emitAccount(account);
-	}
-
-	@Override
-	public void emitContract(ContractField contract) {
-		fastEventService.emitContract(contract);
+	public FastEventEngine getEventEngine() {
+		return fastEventService;
 	}
 
 	@Override
 	public void emitTick(TickField tick) {
 		fastEventService.emitTick(tick);
 	}
-
-	@Override
-	public void emitTrade(TradeField trade) {
-		fastEventService.emitTrade(trade);
-	}
-
-	@Override
-	public void emitOrder(OrderField order) {
-		fastEventService.emitOrder(order);
-	}
-
-	@Override
-	public void emitNotice(NoticeField notice) {
-		fastEventService.emitNotice(notice);
-	}
-
 }

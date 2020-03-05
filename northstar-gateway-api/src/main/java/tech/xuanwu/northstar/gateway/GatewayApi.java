@@ -1,16 +1,12 @@
 package tech.xuanwu.northstar.gateway;
 
-import xyz.redtorch.pb.CoreField.AccountField;
+import tech.xuanwu.northstar.engine.FastEventEngine;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
 import xyz.redtorch.pb.CoreField.ContractField;
 import xyz.redtorch.pb.CoreField.GatewayField;
 import xyz.redtorch.pb.CoreField.GatewaySettingField;
-import xyz.redtorch.pb.CoreField.NoticeField;
-import xyz.redtorch.pb.CoreField.OrderField;
-import xyz.redtorch.pb.CoreField.PositionField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 import xyz.redtorch.pb.CoreField.TickField;
-import xyz.redtorch.pb.CoreField.TradeField;
 
 public interface GatewayApi {
 
@@ -77,62 +73,18 @@ public interface GatewayApi {
 	 * @return
 	 */
 	boolean cancelOrder(CancelOrderReqField cancelOrderReq);
-
+	
 	/**
-	 * 搜寻合约
-	 * 
-	 * @param contract
-	 */
-	void searchContract(ContractField contract);
-
-	/**
-	 * 广播Position
-	 * 
-	 * @param position
-	 */
-	void emitPosition(PositionField position);
-
-	/**
-	 * 广播Account
-	 * 
-	 * @param account
-	 */
-	void emitAccount(AccountField account);
-
-	/**
-	 * 广播Contract
-	 * 
-	 * @param contract
-	 */
-	void emitContract(ContractField contract);
-
-	/**
-	 * 广播Tick
-	 * 
+	 * 更新行情
 	 * @param tick
 	 */
 	void emitTick(TickField tick);
 
 	/**
-	 * 广播Trade
-	 * 
-	 * @param trade
+	 * 获取事件引擎
+	 * @return
 	 */
-	void emitTrade(TradeField trade);
-
-	/**
-	 * 广播Order
-	 * 
-	 * @param order
-	 */
-	void emitOrder(OrderField order);
-
-	/**
-	 * 广播公告
-	 * 
-	 * @param notice
-	 */
-	void emitNotice(NoticeField notice);
+	FastEventEngine getEventEngine();
 
 	/**
 	 * 连接
