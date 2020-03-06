@@ -1,5 +1,7 @@
 package tech.xuanwu.northstar.core.config.props;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +28,7 @@ import xyz.redtorch.pb.CoreField.GatewaySettingField.CtpApiSettingField;
 @Component
 public class CtpGatewaySettings {
 	//网关类型
-	private GatewayTypeEnum gatewayType = GatewayTypeEnum.GTE_TradeAndMarketData;
+	private GatewayTypeEnum gatewayType;
 	//网关适配器类型
 	private GatewayAdapterTypeEnum adpterType = GatewayAdapterTypeEnum.GAT_CTP;
 	//网关实现类名称
@@ -56,8 +58,15 @@ public class CtpGatewaySettings {
 	//期货公司ID
 	private String brokerID;
 	//是否使用真实交易
-	private boolean isRealTrader = true;
+	private boolean realTrader;
 	
+	@PostConstruct
+	public void config() {
+		gatewayType = realTrader ? GatewayTypeEnum.GTE_TradeAndMarketData : GatewayTypeEnum.GTE_MarketData;
+		gatewayImplClassName = realTrader ? gatewayImplClassName : "tech.xuanwu.northstar.CtpGatewaySimulateImpl";
+		gatewayID = realTrader ? gatewayID : gatewayID + "@Simulate";
+		gatewayName = realTrader ? gatewayName : gatewayName + "@Simulate";
+	}
 
 	public GatewaySettingField convertToGatewaySettingField() {
 		GatewaySettingField.Builder builder = GatewaySettingField.newBuilder();

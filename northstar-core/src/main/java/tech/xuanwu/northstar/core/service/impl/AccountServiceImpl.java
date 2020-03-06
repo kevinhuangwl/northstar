@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.core.config.props.CtpGatewaySettings;
-import tech.xuanwu.northstar.core.domain.RealAccount;
-import tech.xuanwu.northstar.core.domain.SimulateAccount;
+import tech.xuanwu.northstar.core.domain.Account;
 import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
 import tech.xuanwu.northstar.core.service.AccountService;
 import tech.xuanwu.northstar.domain.IAccount;
@@ -23,6 +22,7 @@ import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.entity.TransactionInfo;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import tech.xuanwu.northstar.gateway.GatewayApi;
+import tech.xuanwu.northstar.gateway.SimulatedGateway;
 import xyz.redtorch.pb.CoreField.GatewaySettingField;
 
 @Slf4j
@@ -75,8 +75,17 @@ public class AccountServiceImpl implements AccountService {
 		GatewayApi gateway = (GatewayApi) c.newInstance(feEngine, p.convertToGatewaySettingField());
 		gateway.connect();
 		
+		//使用模拟账户时要初始化账户
+		if(!p.isRealTrader()) {
+			AccountInfo account = accountRepo.getLatestAccountInfoByName(p.getGatewayName());
+			if(account == null) {
+				throw new NoSuchAccountException(p.getGatewayName());
+			}
+			((SimulatedGateway)gateway).initGatewayAccount(account);
+		}
+		
 		log.info("连接网关【{}】，使用【{}】交易", p.getGatewayID(), p.isRealTrader()?"真实账户":"模拟账户");
-		IAccount account = p.isRealTrader() ? new RealAccount(gateway, accountRepo) : new SimulateAccount(gateway, mkEngine, accountRepo);
+		IAccount account = new Account(gateway, accountRepo);
 		rtEngine.regAccount(account);
 	}
 

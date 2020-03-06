@@ -13,6 +13,7 @@ import tech.xuanwu.northstar.engine.FastEventEngine;
 import tech.xuanwu.northstar.entity.AccountInfo;
 import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.gateway.GatewayApi;
+import tech.xuanwu.northstar.gateway.SimulatedGateway;
 import xyz.redtorch.common.util.UUIDStringPoolUtils;
 import xyz.redtorch.pb.CoreEnum.DirectionEnum;
 import xyz.redtorch.pb.CoreEnum.HedgeFlagEnum;
@@ -35,13 +36,11 @@ import xyz.redtorch.pb.CoreField.TradeField;
  *
  */
 @Slf4j
-public class CtpGatewaySimulateImpl implements GatewayApi{
+public class CtpGatewaySimulateImpl implements GatewayApi, SimulatedGateway{
 	
 	private GatewayApi realGatewayApi;
 	
 	private FastEventEngine feEngine;
-	
-	private AccountInfo accountInfo;
 	
 	/*账户信息*/
 	private AccountField.Builder accountFieldBuilder = AccountField.newBuilder();
@@ -53,17 +52,16 @@ public class CtpGatewaySimulateImpl implements GatewayApi{
 	/*持仓队列*/
 	private ConcurrentHashMap<String, ConcurrentLinkedQueue<PositionInfo>> positionMap = new ConcurrentHashMap<>();
 
-	public CtpGatewaySimulateImpl(GatewayApi realGatewayApi, FastEventEngine feEngine, AccountInfo accountInfo) {
+	public CtpGatewaySimulateImpl(GatewayApi realGatewayApi, FastEventEngine feEngine) {
 		log.info("启动模拟市场网关");
 		
 		this.realGatewayApi = realGatewayApi;
 		this.feEngine = feEngine;
-		this.accountInfo = accountInfo;
 		
-		initAccount();
 	}
 	
-	private void initAccount() {
+	@Override
+	public void initGatewayAccount(AccountInfo accountInfo) {
 		accountFieldBuilder.setAccountId(accountInfo.getAccountId());
 		accountFieldBuilder.setAvailable(accountInfo.getAvailable());
 		accountFieldBuilder.setBalance(accountInfo.getBalance());
@@ -78,7 +76,7 @@ public class CtpGatewaySimulateImpl implements GatewayApi{
 		accountFieldBuilder.setName(accountInfo.getName());
 		accountFieldBuilder.setPositionProfit(accountInfo.getPositionProfit());
 		accountFieldBuilder.setPreBalance(accountInfo.getPreBalance());
-		accountFieldBuilder.setWithdraw(accountInfo.getWithdraw());
+		accountFieldBuilder.setWithdraw(accountInfo.getWithdraw());		
 	}
 
 	@Override
@@ -314,4 +312,11 @@ public class CtpGatewaySimulateImpl implements GatewayApi{
 	public FastEventEngine getEventEngine() {
 		return feEngine;
 	}
+
+	@Override
+	public void proceedDailySettlement() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

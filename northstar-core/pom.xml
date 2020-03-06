@@ -32,6 +32,11 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>tech.xuan-wu</groupId>
+			<artifactId>northstar-gateway-impl-simulate</artifactId>
+		</dependency>
+		
+		<dependency>
 		    <groupId>com.alibaba</groupId>
 		    <artifactId>fastjson</artifactId>
 		</dependency>

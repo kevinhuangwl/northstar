@@ -36,7 +36,7 @@ import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
  *
  */
 @Slf4j
-public class RealAccount implements IAccount{
+public class Account implements IAccount{
 	
 	@NotNull
 	protected AccountRepo accountRepo;
@@ -64,16 +64,14 @@ public class RealAccount implements IAccount{
 	protected ConcurrentHashMap<String, OrderInfo> cachedOrderMap = new ConcurrentHashMap<>();
 	
 	
-	/*账户名称*/
+	/*账户名称==网关名称*/
 	@Getter
 	@NotNull
 	protected String name;
 	
 	protected String lastOrderTradeDay = "";
 	
-	public RealAccount(){}
-	
-	public RealAccount(GatewayApi gatewayApi, AccountRepo accountRepo){
+	public Account(GatewayApi gatewayApi, AccountRepo accountRepo){
 		this.name = gatewayApi.getGatewayName();
 		this.gatewayApi = gatewayApi;
 		this.accountRepo = accountRepo;
@@ -198,11 +196,11 @@ public class RealAccount implements IAccount{
 
 	@Override
 	public void regStrategy(String strategyName) {
-		IStrategy strategy = new Strategy(strategyName);
-		synchronized (strategyMap) {
-			strategyMap.put(strategyName, strategy);
-		}
-		
+//		IStrategy strategy = new Strategy(strategyName);
+//		synchronized (strategyMap) {
+//			strategyMap.put(strategyName, strategy);
+//		}
+//		
 	}
 
 	@Override

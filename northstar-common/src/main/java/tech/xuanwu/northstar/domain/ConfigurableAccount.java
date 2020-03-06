@@ -1,6 +1,6 @@
 package tech.xuanwu.northstar.domain;
 
-public interface ModifiableAccount {
+public interface ConfigurableAccount {
 
 	/**
 	 * 入金
