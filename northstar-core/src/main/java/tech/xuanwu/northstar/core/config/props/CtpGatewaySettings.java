@@ -63,7 +63,6 @@ public class CtpGatewaySettings {
 	@PostConstruct
 	public void config() {
 		gatewayType = realTrader ? GatewayTypeEnum.GTE_TradeAndMarketData : GatewayTypeEnum.GTE_MarketData;
-		gatewayImplClassName = realTrader ? gatewayImplClassName : "tech.xuanwu.northstar.CtpGatewaySimulateImpl";
 		gatewayID = realTrader ? gatewayID : gatewayID + "@Simulate";
 		gatewayName = realTrader ? gatewayName : gatewayName + "@Simulate";
 	}

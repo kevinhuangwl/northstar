@@ -12,7 +12,6 @@ import tech.xuanwu.northstar.entity.AccountInfo;
 
 @Slf4j
 @Service
-@ConditionalOnBean(type="MarketEngine")
 public class SimulateAccountManagementServiceImpl implements SimulateAccountManagementService, InitializingBean{
 	
 	List<AccountInfo> simulateAccountList;

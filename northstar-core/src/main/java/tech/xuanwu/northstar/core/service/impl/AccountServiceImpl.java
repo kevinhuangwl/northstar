@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
+import tech.xuanwu.northstar.CtpGatewaySimulateImpl;
 import tech.xuanwu.northstar.core.config.props.CtpGatewaySettings;
 import tech.xuanwu.northstar.core.domain.Account;
 import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
 import tech.xuanwu.northstar.core.service.AccountService;
+import tech.xuanwu.northstar.core.util.SimulateAccountFactory;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.FastEventEngine;
 import tech.xuanwu.northstar.engine.MarketEngine;
@@ -77,11 +79,14 @@ public class AccountServiceImpl implements AccountService {
 		
 		//使用模拟账户时要初始化账户
 		if(!p.isRealTrader()) {
+			GatewayApi realGateway = gateway;
+			
 			AccountInfo account = accountRepo.getLatestAccountInfoByName(p.getGatewayName());
 			if(account == null) {
-				throw new NoSuchAccountException(p.getGatewayName());
+				account = SimulateAccountFactory.createAccount(p.getGatewayName());
 			}
-			((SimulatedGateway)gateway).initGatewayAccount(account);
+			
+			gateway = new CtpGatewaySimulateImpl(realGateway, feEngine, account);
 		}
 		
 		log.info("连接网关【{}】，使用【{}】交易", p.getGatewayID(), p.isRealTrader()?"真实账户":"模拟账户");

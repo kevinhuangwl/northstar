@@ -52,16 +52,12 @@ public class CtpGatewaySimulateImpl implements GatewayApi, SimulatedGateway{
 	/*持仓队列*/
 	private ConcurrentHashMap<String, ConcurrentLinkedQueue<PositionInfo>> positionMap = new ConcurrentHashMap<>();
 
-	public CtpGatewaySimulateImpl(GatewayApi realGatewayApi, FastEventEngine feEngine) {
+	public CtpGatewaySimulateImpl(GatewayApi realGatewayApi, FastEventEngine feEngine, AccountInfo accountInfo) {
 		log.info("启动模拟市场网关");
 		
 		this.realGatewayApi = realGatewayApi;
 		this.feEngine = feEngine;
 		
-	}
-	
-	@Override
-	public void initGatewayAccount(AccountInfo accountInfo) {
 		accountFieldBuilder.setAccountId(accountInfo.getAccountId());
 		accountFieldBuilder.setAvailable(accountInfo.getAvailable());
 		accountFieldBuilder.setBalance(accountInfo.getBalance());
@@ -78,7 +74,7 @@ public class CtpGatewaySimulateImpl implements GatewayApi, SimulatedGateway{
 		accountFieldBuilder.setPreBalance(accountInfo.getPreBalance());
 		accountFieldBuilder.setWithdraw(accountInfo.getWithdraw());		
 	}
-
+	
 	@Override
 	public boolean subscribe(ContractField contract) {
 		return realGatewayApi.subscribe(contract);
