@@ -43,7 +43,7 @@ public class ContractInfo implements Serializable{
 	int minLimitOrderVolume;  // 限价单最小下单量
 	CombinationTypeEnum combinationType; // 组合类型
 	String gatewayId;  // 网关
-	boolean isSubscribed;
+	boolean isSubscribed; 	//是否已订阅
 	
 	public static ContractInfo convertFrom(ContractField c) {
 		ContractInfo info = new ContractInfo();
