@@ -178,7 +178,7 @@ public class Account implements IAccount{
 		if(!account.equals(this.accountInfo)) {
 			try {
 				this.accountInfo = account;
-				accountRepo.upsertByDay(account, gatewayApi.getTradingDay());
+				accountRepo.upsertByDate(account);
 			} catch (Exception e) {
 				log.error("插入账户信息异常", e);
 			}
@@ -265,7 +265,7 @@ public class Account implements IAccount{
 	 */
 	protected void proceedDailySettlement() {
 		try {
-			accountRepo.upsertByDay(this.accountInfo, gatewayApi.getTradingDay());
+			accountRepo.upsertByDate(this.accountInfo);
 		} catch (Exception e) {
 			log.error("", e);
 		}

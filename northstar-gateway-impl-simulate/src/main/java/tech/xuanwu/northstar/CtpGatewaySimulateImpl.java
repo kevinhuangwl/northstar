@@ -42,6 +42,8 @@ public class CtpGatewaySimulateImpl implements GatewayApi, SimulatedGateway{
 	
 	private FastEventEngine feEngine;
 	
+	private static final String SIM_TAG = "@Simulate";
+	
 	/*账户信息*/
 	private AccountField.Builder accountFieldBuilder = AccountField.newBuilder();
 	
@@ -58,18 +60,18 @@ public class CtpGatewaySimulateImpl implements GatewayApi, SimulatedGateway{
 		this.realGatewayApi = realGatewayApi;
 		this.feEngine = feEngine;
 		
-		accountFieldBuilder.setAccountId(accountInfo.getAccountId());
+		accountFieldBuilder.setAccountId(accountInfo.getAccountId() + SIM_TAG);
+		accountFieldBuilder.setName(accountInfo.getName() + SIM_TAG);
+		accountFieldBuilder.setCode(accountInfo.getCode() + SIM_TAG);
 		accountFieldBuilder.setAvailable(accountInfo.getAvailable());
 		accountFieldBuilder.setBalance(accountInfo.getBalance());
 		accountFieldBuilder.setCloseProfit(accountInfo.getCloseProfit());
-		accountFieldBuilder.setCode(accountInfo.getCode());
 		accountFieldBuilder.setCommission(accountInfo.getCommission());
 		accountFieldBuilder.setCurrency(accountInfo.getCurrency());
 		accountFieldBuilder.setDeposit(accountInfo.getDeposit());
 		accountFieldBuilder.setGatewayId(accountInfo.getGatewayId());
 		accountFieldBuilder.setHolder(accountInfo.getHolder());
 		accountFieldBuilder.setMargin(accountInfo.getMargin());
-		accountFieldBuilder.setName(accountInfo.getName());
 		accountFieldBuilder.setPositionProfit(accountInfo.getPositionProfit());
 		accountFieldBuilder.setPreBalance(accountInfo.getPreBalance());
 		accountFieldBuilder.setWithdraw(accountInfo.getWithdraw());		
@@ -88,7 +90,7 @@ public class CtpGatewaySimulateImpl implements GatewayApi, SimulatedGateway{
 	@Override
 	public String submitOrder(SubmitOrderReqField submitOrder) {
 		String gatewayId = realGatewayApi.getGatewayId();
-		String orderId = gatewayId + "@Simulate_" + UUIDStringPoolUtils.getUUIDString();
+		String orderId = gatewayId + SIM_TAG + "_" + UUIDStringPoolUtils.getUUIDString();
 		String unifiedSymbol = submitOrder.getContract().getUnifiedSymbol();
 		String originOrderId = submitOrder.getOriginOrderId();
 		OrderField.Builder ob = OrderField.newBuilder();
@@ -266,12 +268,12 @@ public class CtpGatewaySimulateImpl implements GatewayApi, SimulatedGateway{
 
 	@Override
 	public String getGatewayId() {
-		return realGatewayApi.getGatewayId();
+		return realGatewayApi.getGatewayId() + SIM_TAG;
 	}
 
 	@Override
 	public String getGatewayName() {
-		return realGatewayApi.getGatewayName();
+		return realGatewayApi.getGatewayName() + SIM_TAG;
 	}
 
 	@Override

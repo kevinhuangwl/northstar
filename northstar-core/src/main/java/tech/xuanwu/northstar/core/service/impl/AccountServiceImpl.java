@@ -24,7 +24,6 @@ import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.entity.TransactionInfo;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import tech.xuanwu.northstar.gateway.GatewayApi;
-import tech.xuanwu.northstar.gateway.SimulatedGateway;
 import xyz.redtorch.pb.CoreField.GatewaySettingField;
 
 @Slf4j

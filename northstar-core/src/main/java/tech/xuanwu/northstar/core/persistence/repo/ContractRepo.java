@@ -11,4 +11,6 @@ public interface ContractRepo {
 	boolean delete(ContractInfo contract);
 	
 	List<ContractInfo> getAllSubscribedContracts() throws Exception;
+	
+	List<ContractInfo> getAllAvailableContracts() throws Exception;
 }

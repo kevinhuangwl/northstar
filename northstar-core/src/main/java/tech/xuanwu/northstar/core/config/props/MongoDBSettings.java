@@ -15,7 +15,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @ConfigurationProperties(prefix="db.mongo")
-@Component
 public class MongoDBSettings {
 
 	private String host;

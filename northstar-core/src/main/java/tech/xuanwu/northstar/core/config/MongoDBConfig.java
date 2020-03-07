@@ -1,5 +1,6 @@
 package tech.xuanwu.northstar.core.config;
 
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,6 +10,7 @@ import xyz.redtorch.common.mongo.MongoDBClient;
 
 @Slf4j
 @Configuration
+@EnableConfigurationProperties(MongoDBSettings.class)
 public class MongoDBConfig {
 	
 

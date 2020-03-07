@@ -63,8 +63,6 @@ public class CtpGatewaySettings {
 	@PostConstruct
 	public void config() {
 		gatewayType = realTrader ? GatewayTypeEnum.GTE_TradeAndMarketData : GatewayTypeEnum.GTE_MarketData;
-		gatewayID = realTrader ? gatewayID : gatewayID + "@Simulate";
-		gatewayName = realTrader ? gatewayName : gatewayName + "@Simulate";
 	}
 
 	public GatewaySettingField convertToGatewaySettingField() {
