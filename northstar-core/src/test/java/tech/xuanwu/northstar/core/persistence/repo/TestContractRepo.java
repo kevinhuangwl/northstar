@@ -42,5 +42,11 @@ public class TestContractRepo {
 		
 		assertThat(contractRepo.getAllAvailableContracts().size()).isEqualTo(2);
 		assertThat(contractRepo.getAllSubscribedContracts().size()).isEqualTo(1);
+		
+		info3.setSubscribed(false);
+		assertThat(contractRepo.insertIfAbsent(info3)).isFalse();
+		assertThat(contractRepo.getAllSubscribedContracts().size()).isEqualTo(1);
+		
+		
 	}
 }

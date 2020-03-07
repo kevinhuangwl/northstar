@@ -9,9 +9,11 @@ import org.springframework.stereotype.Component;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.RuntimeEvent;
 import tech.xuanwu.northstar.core.engine.SocketIOMessageEngine;
+import tech.xuanwu.northstar.core.persistence.repo.ContractRepo;
 import tech.xuanwu.northstar.core.util.FutureDictionary;
 import tech.xuanwu.northstar.engine.FastEventEngine;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
+import tech.xuanwu.northstar.entity.ContractInfo;
 import tech.xuanwu.northstar.engine.FastEventEngine.FastEvent;
 import tech.xuanwu.northstar.engine.FastEventEngine.FastEventDynamicHandlerAbstract;
 import tech.xuanwu.northstar.engine.FastEventEngine.FastEventType;
@@ -40,7 +42,7 @@ public class PortfolioEventHandler extends FastEventDynamicHandlerAbstract imple
 	RuntimeEngine rtEngine;
 	
 	@Autowired
-	FutureDictionary futureDict;
+	ContractRepo contractRepo;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -80,7 +82,7 @@ public class PortfolioEventHandler extends FastEventDynamicHandlerAbstract imple
 			break;
 		case CONTRACT:
 			ContractField c = (ContractField) event.getObj();
-			futureDict.add(c);
+			contractRepo.insertIfAbsent(ContractInfo.convertFrom(c));
 			break;
 		default:
 			log.warn("遇到未知事件类型：{}", event.getFastEventType());

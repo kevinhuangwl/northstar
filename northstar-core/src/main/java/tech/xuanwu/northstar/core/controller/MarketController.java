@@ -49,6 +49,11 @@ public class MarketController {
 	@ApiOperation("获取可用合约列表")
 	@RequestMapping(value="/available", method=RequestMethod.GET)
 	public ResultBean<List<ContractInfo>> getAvailableContracts(){
-		return new ResultBean(mdService.getAvailableContracts());
+		try {
+			return new ResultBean(mdService.getAvailableContracts());
+		} catch (Exception e) {
+			log.error("", e);
+			return new ResultBean(ResultCode.ERROR, e.getMessage());
+		}
 	}
 }

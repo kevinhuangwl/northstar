@@ -18,9 +18,6 @@ public class CtpConnectedEventHandler implements RuntimeEngine.Listener, Initial
 	@Autowired
 	private RuntimeEngine rtEngine;
 	
-	@Autowired
-	private FutureDictionary fDict;
-
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		rtEngine.addEventHandler(RuntimeEvent.GATEWAY_CTP_CONNECTED, this);
@@ -29,8 +26,6 @@ public class CtpConnectedEventHandler implements RuntimeEngine.Listener, Initial
 
 	@Override
 	public void onEvent(EventObject e) throws Exception {
-		fDict.clear();
-		log.info("重置合约字典");
 	}
 
 }

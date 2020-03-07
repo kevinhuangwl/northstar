@@ -4,10 +4,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tech.xuanwu.northstar.core.persistence.repo.ContractRepo;
 import tech.xuanwu.northstar.core.service.TradeService;
 import tech.xuanwu.northstar.core.util.FutureDictionary;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
+import tech.xuanwu.northstar.entity.ContractInfo;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import tech.xuanwu.northstar.exception.NoSuchContractException;
 import tech.xuanwu.northstar.exception.TradeException;
@@ -28,7 +30,7 @@ import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 public class TradeServiceImpl implements TradeService{
 	
 	@Autowired
-	FutureDictionary ftDict;
+	ContractRepo contractRepo;
 	
 	@Autowired
 	RuntimeEngine rtEngine;
@@ -37,18 +39,18 @@ public class TradeServiceImpl implements TradeService{
 	public String submitOrder(String accountName, String contractSymbol, double price, double stopPrice, int volume,
 			OrderPriceTypeEnum priceType, DirectionEnum direction, OffsetFlagEnum transactionType,
 			HedgeFlagEnum hedgeType, TimeConditionEnum expireType, VolumeConditionEnum volType,
-			ContingentConditionEnum trigerType) throws NoSuchContractException, NoSuchAccountException, TradeException {
+			ContingentConditionEnum trigerType) throws Exception {
 		
 		checkValuePositive(price);
 		checkValuePositive(volume);
 		checkValuePositive(stopPrice);
 		
 		SubmitOrderReqField.Builder sb = SubmitOrderReqField.newBuilder();
-		ContractField contract = ftDict.getContractByName(contractSymbol);
+		ContractInfo contract = contractRepo.getContractBySymbol(contractSymbol);
 		if(contract == null) {
 			throw new NoSuchContractException(contractSymbol);
 		}
-		sb.setContract(contract);
+		sb.setContract(contract.convertTo());
 		sb.setPrice(price);
 		sb.setStopPrice(stopPrice);
 		sb.setVolume(volume);
@@ -65,7 +67,7 @@ public class TradeServiceImpl implements TradeService{
 
 	@Override
 	public String submitOrder(String accountName, String contractSymbol, double price, int volume, DirectionEnum direction,
-			OffsetFlagEnum transactionType) throws NoSuchAccountException, NoSuchContractException, TradeException{
+			OffsetFlagEnum transactionType) throws Exception{
 		checkValuePositive(price);
 		checkValuePositive(volume);
 		return submitOrder(accountName, contractSymbol, price, 0D, volume, OrderPriceTypeEnum.OPT_LimitPrice, direction, transactionType,

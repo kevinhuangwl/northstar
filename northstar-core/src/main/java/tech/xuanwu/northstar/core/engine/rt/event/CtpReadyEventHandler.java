@@ -1,6 +1,7 @@
 package tech.xuanwu.northstar.core.engine.rt.event;
 
 import java.util.EventObject;
+import java.util.List;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,6 @@ import org.springframework.stereotype.Component;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.RuntimeEvent;
 import tech.xuanwu.northstar.core.persistence.repo.ContractRepo;
-import tech.xuanwu.northstar.core.service.MarketDataService;
-import tech.xuanwu.northstar.core.util.FutureDictionary;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.entity.ContractInfo;
 import xyz.redtorch.pb.CoreField.ContractField;
@@ -25,22 +24,21 @@ public class CtpReadyEventHandler implements RuntimeEngine.Listener, Initializin
 	@Autowired
 	private ContractRepo contractRepo;
 	
-	@Autowired
-	private FutureDictionary fDict;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		rtEngine.addEventHandler(RuntimeEvent.GATEWAY_CTP_READY, this);
-		
 	}
 
 	@Override
 	public void onEvent(EventObject e) throws Exception {
-		log.info("合约字典的合约总数：{}", fDict.size());
+		
 		log.info("=====开始自动续订合约=====");
 		//自动续订阅合约
-		for(ContractInfo c : contractRepo.getAllSubscribedContracts()) {
-			ContractField contract = fDict.getContractByName(c.getSymbol());
+		List<ContractInfo> contractList = contractRepo.getAllSubscribedContracts();
+		log.info("合约字典的合约总数：{}", contractList.size());
+		for(ContractInfo c : contractList) {
+			ContractField contract = c.convertTo();
 			if(contract != null) {
 				rtEngine.getAccount(c.getGatewayId()).subscribe(contract);
 				log.info("订阅网关【{}】的合约【{}】", c.getGatewayId(), c.getSymbol());

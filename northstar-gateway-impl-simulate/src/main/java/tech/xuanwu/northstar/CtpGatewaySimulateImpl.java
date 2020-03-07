@@ -75,6 +75,8 @@ public class CtpGatewaySimulateImpl implements GatewayApi, SimulatedGateway{
 		accountFieldBuilder.setPositionProfit(accountInfo.getPositionProfit());
 		accountFieldBuilder.setPreBalance(accountInfo.getPreBalance());
 		accountFieldBuilder.setWithdraw(accountInfo.getWithdraw());		
+		
+		feEngine.emitAccount(accountFieldBuilder.build());
 	}
 	
 	@Override

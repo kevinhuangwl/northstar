@@ -74,5 +74,35 @@ public class ContractInfo implements Serializable{
 		info.gatewayId = c.getGatewayId();
 		return info;
 	}
+	
+	public ContractField convertTo() {
+		ContractField.Builder cb = ContractField.newBuilder();
+		cb.setContractId(contractId);
+		cb.setName(name);
+		cb.setFullName(fullName);
+		cb.setThirdPartyId(thirdPartyId);
+		cb.setUnifiedSymbol(unifiedSymbol);
+		cb.setSymbol(symbol);
+		cb.setExchange(exchange);
+		cb.setProductClass(productClass);
+		cb.setCurrency(currency);
+		cb.setCombinationType(combinationType);
+		cb.setLastTradeDateOrContractMonth(lastTradeDateOrContractMonth);
+		cb.setUnderlyingSymbol(underlyingSymbol);
+		cb.setLongMarginRatio(longMarginRatio);
+		cb.setMaxMarginSideAlgorithm(maxMarginSideAlgorithm);
+		cb.setMaxLimitOrderVolume(maxLimitOrderVolume);
+		cb.setMinLimitOrderVolume(minLimitOrderVolume);
+		cb.setMaxMarketOrderVolume(maxMarketOrderVolume);
+		cb.setMinMarketOrderVolume(minMarketOrderVolume);
+		cb.setMultiplier(multiplier);
+		cb.setOptionsType(optionsType);
+		cb.setPriceTick(priceTick);
+		cb.setShortMarginRatio(shortMarginRatio);
+		cb.setStrikePrice(strikePrice);
+		cb.setUnderlyingMultiplier(underlyingMultiplier);
+		cb.setGatewayId(gatewayId);
+		return cb.build();
+	}
 
 }

@@ -1,7 +1,5 @@
 package tech.xuanwu.northstar.core.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +27,13 @@ public class MarketDataServiceImpl implements MarketDataService{
 	ContractRepo contractRepo;
 	
 	@Override
-	public boolean subscribeContract(String gatewayId, String contractName) throws Exception {
+	public boolean subscribeContract(String gatewayId, String symbol) throws Exception {
 		IAccount account = rtEngine.getAccount(gatewayId);
-		ContractField contract = fDict.getContractByName(contractName);
-		if(contract == null) {
-			throw new NoSuchContractException(contractName);
+		ContractInfo c = contractRepo.getContractBySymbol(symbol);
+		if(c == null) {
+			throw new NoSuchContractException(symbol);
 		}
+		ContractField contract = c.convertTo();
 		boolean res = account.subscribe(contract);
 		contractRepo.upsert(ContractInfo.convertFrom(contract));
 		return res;
@@ -46,13 +45,8 @@ public class MarketDataServiceImpl implements MarketDataService{
 	}
 
 	@Override
-	public List<ContractInfo> getAvailableContracts() {
-		Collection<ContractField> contracts = fDict.getAvailableContracts();
-		List<ContractInfo> resultList = new ArrayList<>(contracts.size());
-		for(ContractField contract : contracts) {
-			resultList.add(ContractInfo.convertFrom(contract));
-		}
-		return resultList;
+	public List<ContractInfo> getAvailableContracts() throws Exception {
+		return contractRepo.getAllAvailableContracts();
 	}
 
 	

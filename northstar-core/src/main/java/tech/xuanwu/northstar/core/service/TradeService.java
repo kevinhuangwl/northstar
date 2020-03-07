@@ -42,7 +42,7 @@ public interface TradeService {
 	String submitOrder(String accountGatewayId, String contractSymbol, double price, double stopPrice, int volume,
 			OrderPriceTypeEnum priceType, DirectionEnum direction, OffsetFlagEnum transactionType,
 			HedgeFlagEnum hedgeType, TimeConditionEnum expireType, VolumeConditionEnum volType,
-			ContingentConditionEnum trigerType) throws NoSuchContractException, NoSuchAccountException, TradeException;
+			ContingentConditionEnum trigerType) throws Exception;
 
 	/**
 	 * 提交委托
@@ -56,7 +56,7 @@ public interface TradeService {
 	 * @return
 	 */
 	String submitOrder(String accountGatewayId, String contractSymbol, double price, int volume, DirectionEnum direction,
-			OffsetFlagEnum transactionType) throws NoSuchContractException, NoSuchAccountException, TradeException;
+			OffsetFlagEnum transactionType) throws Exception;
 
 	/**
 	 * 提交委托

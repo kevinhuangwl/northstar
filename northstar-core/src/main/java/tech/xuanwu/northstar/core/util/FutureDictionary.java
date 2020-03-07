@@ -22,139 +22,139 @@ import xyz.redtorch.pb.CoreField.ContractField;
  */
 public class FutureDictionary {
 
-	ConcurrentHashMap<String, ContractSet> namedContractMap = new ConcurrentHashMap<>(100);
+//	ConcurrentHashMap<String, ContractSet> namedContractMap = new ConcurrentHashMap<>(100);
 	
-	/**
-	 * 添加合约
-	 * 
-	 * @param c
-	 * @throws NoSuchContractException
-	 */
-	public void add(ContractField c) throws NoSuchContractException {
-		checkNotNullParam(c);
-		if (c.getProductClass() != ProductClassEnum.FUTURES) {
-			throw new NoSuchContractException("期望传入期货合约，实际传入" + c.getProductClass());
-		}
-		String symbol = c.getSymbol();
-		String capName = getSymbolCapitalizedName(symbol);
-		if (!namedContractMap.containsKey(capName)) {
-			namedContractMap.put(capName, new ContractSet());
-		}
-
-		namedContractMap.get(capName).add(c);
-
-	}
-
-	/**
-	 * 根据合约名称获取合约信息
-	 * 
-	 * @param symbol
-	 * @return
-	 * @throws NoSuchContractException 
-	 */
-	public ContractField getContractByName(String contractNameWithMonth) {
-		checkNotNullParam(contractNameWithMonth);
-		String capName = getSymbolCapitalizedName(contractNameWithMonth);
-		String strYMM = contractNameWithMonth.substring(contractNameWithMonth.length()-3);
-		if(!namedContractMap.containsKey(capName) || namedContractMap.get(capName).get(strYMM)==null) {
-			return null;
-		}
-		return namedContractMap.get(capName).get(strYMM);
-	}
-
-	/**
-	 * 通过合约名称获取全月份合约信息
-	 * 
-	 * @param symbol
-	 * @return
-	 */
-	public Collection<ContractField> getAllMonthContracts(String contractName) {
-		checkNotNullParam(contractName);
-		String capName = contractName.toUpperCase();
-		ContractSet contractSet = namedContractMap.get(capName);
-		if(contractSet==null) {
-			return null;
-		}
-		return contractSet.getContracts();
-	}
-	
-	/**
-	 * 获取可用的合约信息
-	 * @return
-	 */
-	public Collection<ContractField> getAvailableContracts(){
-		List<ContractField> resultList = new ArrayList<>(size());
-		for(Entry<String, ContractSet> e : namedContractMap.entrySet()) {
-			resultList.addAll(e.getValue().getContracts());
-		}
-		return resultList;
-	}
-
-	/**
-	 * 清空字典
-	 */
-	public void clear() {
-		for (Entry<String, ContractSet> e : namedContractMap.entrySet()) {
-			e.getValue().clear();
-		}
-	}
-	
-	/**
-	 * 期货合约总数
-	 */
-	public int size() {
-		int totalSize = 0;
-		for(Entry<String, ContractSet> e : namedContractMap.entrySet()) {
-			totalSize += e.getValue().getContracts().size();
-		}
-		return totalSize;
-	}
-	
-	private void checkNotNullParam(Object o) {
-		if(o == null) {
-			throw new IllegalArgumentException("不允许空参数");
-		}
-	}
-	
-	private String getYearAndMonth(String dateStr_yyyyMMdd) {
-		return dateStr_yyyyMMdd.substring(3, 6);
-	}
-
-	private String getSymbolCapitalizedName(String symbol) {
-		String shortName = symbol.replaceAll("\\d+$", "");
-		return shortName.toUpperCase();
-	}
-
-	/**
-	 * 每个品种是一个对象，内部用"yMM->合约"的方式保存
-	 * @author kevinhuangwl
-	 *
-	 */
-	class ContractSet {
-		final int INIT_SIZE = 15;
-		final int KEY_LEN = 3;
-		ConcurrentHashMap<String, ContractField> monthlyContractMap = new ConcurrentHashMap<>(INIT_SIZE);
-
-		public void add(ContractField c) {
-			String expireDate = c.getLastTradeDateOrContractMonth();
-			String expireYearAndMonth = getYearAndMonth(expireDate);
-			monthlyContractMap.put(expireYearAndMonth, c);
-		}
-
-		public ContractField get(String monthKey) {
-			if(monthKey.length()!=KEY_LEN) {
-				throw new IllegalArgumentException("传入的【"+monthKey+"】为非法参数");
-			}
-			return monthlyContractMap.get(monthKey);
-		}
-
-		public Collection<ContractField> getContracts() {
-			return monthlyContractMap.values();
-		}
-
-		public void clear() {
-			monthlyContractMap.clear();
-		}
-	}
+//	/**
+//	 * 添加合约
+//	 * 
+//	 * @param c
+//	 * @throws NoSuchContractException
+//	 */
+//	public void add(ContractField c) throws NoSuchContractException {
+//		checkNotNullParam(c);
+//		if (c.getProductClass() != ProductClassEnum.FUTURES) {
+//			throw new NoSuchContractException("期望传入期货合约，实际传入" + c.getProductClass());
+//		}
+//		String symbol = c.getSymbol();
+//		String capName = getSymbolCapitalizedName(symbol);
+//		if (!namedContractMap.containsKey(capName)) {
+//			namedContractMap.put(capName, new ContractSet());
+//		}
+//
+//		namedContractMap.get(capName).add(c);
+//
+//	}
+//
+//	/**
+//	 * 根据合约名称获取合约信息
+//	 * 
+//	 * @param symbol
+//	 * @return
+//	 * @throws NoSuchContractException 
+//	 */
+//	public ContractField getContractByName(String contractNameWithMonth) {
+//		checkNotNullParam(contractNameWithMonth);
+//		String capName = getSymbolCapitalizedName(contractNameWithMonth);
+//		String strYMM = contractNameWithMonth.substring(contractNameWithMonth.length()-3);
+//		if(!namedContractMap.containsKey(capName) || namedContractMap.get(capName).get(strYMM)==null) {
+//			return null;
+//		}
+//		return namedContractMap.get(capName).get(strYMM);
+//	}
+//
+//	/**
+//	 * 通过合约名称获取全月份合约信息
+//	 * 
+//	 * @param symbol
+//	 * @return
+//	 */
+//	public Collection<ContractField> getAllMonthContracts(String contractName) {
+//		checkNotNullParam(contractName);
+//		String capName = contractName.toUpperCase();
+//		ContractSet contractSet = namedContractMap.get(capName);
+//		if(contractSet==null) {
+//			return null;
+//		}
+//		return contractSet.getContracts();
+//	}
+//	
+//	/**
+//	 * 获取可用的合约信息
+//	 * @return
+//	 */
+//	public Collection<ContractField> getAvailableContracts(){
+//		List<ContractField> resultList = new ArrayList<>(size());
+//		for(Entry<String, ContractSet> e : namedContractMap.entrySet()) {
+//			resultList.addAll(e.getValue().getContracts());
+//		}
+//		return resultList;
+//	}
+//
+//	/**
+//	 * 清空字典
+//	 */
+//	public void clear() {
+//		for (Entry<String, ContractSet> e : namedContractMap.entrySet()) {
+//			e.getValue().clear();
+//		}
+//	}
+//	
+//	/**
+//	 * 期货合约总数
+//	 */
+//	public int size() {
+//		int totalSize = 0;
+//		for(Entry<String, ContractSet> e : namedContractMap.entrySet()) {
+//			totalSize += e.getValue().getContracts().size();
+//		}
+//		return totalSize;
+//	}
+//	
+//	private void checkNotNullParam(Object o) {
+//		if(o == null) {
+//			throw new IllegalArgumentException("不允许空参数");
+//		}
+//	}
+//	
+//	private String getYearAndMonth(String dateStr_yyyyMMdd) {
+//		return dateStr_yyyyMMdd.substring(3, 6);
+//	}
+//
+//	private String getSymbolCapitalizedName(String symbol) {
+//		String shortName = symbol.replaceAll("\\d+$", "");
+//		return shortName.toUpperCase();
+//	}
+//
+//	/**
+//	 * 每个品种是一个对象，内部用"yMM->合约"的方式保存
+//	 * @author kevinhuangwl
+//	 *
+//	 */
+//	class ContractSet {
+//		final int INIT_SIZE = 15;
+//		final int KEY_LEN = 3;
+//		ConcurrentHashMap<String, ContractField> monthlyContractMap = new ConcurrentHashMap<>(INIT_SIZE);
+//
+//		public void add(ContractField c) {
+//			String expireDate = c.getLastTradeDateOrContractMonth();
+//			String expireYearAndMonth = getYearAndMonth(expireDate);
+//			monthlyContractMap.put(expireYearAndMonth, c);
+//		}
+//
+//		public ContractField get(String monthKey) {
+//			if(monthKey.length()!=KEY_LEN) {
+//				throw new IllegalArgumentException("传入的【"+monthKey+"】为非法参数");
+//			}
+//			return monthlyContractMap.get(monthKey);
+//		}
+//
+//		public Collection<ContractField> getContracts() {
+//			return monthlyContractMap.values();
+//		}
+//
+//		public void clear() {
+//			monthlyContractMap.clear();
+//		}
+//	}
 
 }

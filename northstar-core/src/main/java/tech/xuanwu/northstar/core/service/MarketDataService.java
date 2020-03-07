@@ -11,5 +11,5 @@ public interface MarketDataService {
 	
 	List<ContractInfo> getAllSubscribedContracts() throws Exception;
 	
-	List<ContractInfo> getAvailableContracts();
+	List<ContractInfo> getAvailableContracts() throws Exception;
 }
