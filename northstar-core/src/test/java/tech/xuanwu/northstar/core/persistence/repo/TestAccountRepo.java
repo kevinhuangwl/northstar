@@ -28,13 +28,14 @@ public class TestAccountRepo {
 		
 		AccountInfo a1 = new AccountInfo();
 		a1.setName(accountName);
+		a1.setGatewayId(accountName);
 		a1.setTradingDay("20200131");
 		accountRepo.upsertByDate(a1);
 		
 		a1.setBalance(100);
 		accountRepo.upsertByDate(a1);
 		
-		AccountInfo info1 = accountRepo.getLatestAccountInfoByName(accountName);
+		AccountInfo info1 = accountRepo.getLatestAccountInfoByGatewayId(accountName);
 		assertThat(info1).isEqualTo(a1);
 	} 
 	

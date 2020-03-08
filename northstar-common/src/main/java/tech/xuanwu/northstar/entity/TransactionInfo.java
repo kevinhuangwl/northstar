@@ -34,7 +34,7 @@ public class TransactionInfo implements Serializable{
 	String tradeDate;  // 成交日期
 	String tradeTime;  // 成交时间(HHmmssSSS)
 	long tradeTimestamp;  // 成交时间戳
-    String contractSymbol;  // 合约
+    ContractInfo contract;  // 合约
 	String gatewayId;  // 网关ID
 	
 	public static TransactionInfo convertFrom(TradeField tf) {
@@ -50,7 +50,7 @@ public class TransactionInfo implements Serializable{
 		info.orderSysId = tf.getOrderSysId();
 		info.settlementId = tf.getSettlementId();
 		info.sequenceNo = tf.getSequenceNo();
-		info.contractSymbol = tf.getContract().getSymbol();
+		info.contract = ContractInfo.convertFrom(tf.getContract());
 		info.direction = tf.getDirection();
 		info.gatewayId = tf.getGatewayId();
 		info.offsetFlag = tf.getOffsetFlag();

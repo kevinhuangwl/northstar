@@ -41,7 +41,7 @@ public class OrderInfo implements Serializable{
 	String cancelTime;  // 撤销时间
 	String updateTime;  // 最后修改时间
 	String statusMsg;  // 状态信息
-    String contractSymbol;  // 合约
+    ContractInfo contract;  // 合约
 	String gatewayId;  // 网关ID
 	
 	
@@ -55,7 +55,7 @@ public class OrderInfo implements Serializable{
 		info.sequenceNo = orderField.getSequenceNo();
 		info.activeTime = orderField.getActiveTime();
 		info.cancelTime = orderField.getCancelTime();
-		info.contractSymbol = orderField.getContract().getSymbol();
+		info.contract = ContractInfo.convertFrom(orderField.getContract());
 		info.direction = orderField.getDirection();
 		info.gatewayId = orderField.getGatewayId();
 		info.gtdDate = orderField.getGtdDate();

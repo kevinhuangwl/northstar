@@ -9,7 +9,7 @@ public interface MarketDataService {
 	
 	boolean subscribeContract(String gatewayId, String contractName) throws Exception;
 	
-	List<ContractInfo> getAllSubscribedContracts() throws Exception;
+	List<ContractInfo> getAllSubscribedContracts(String gatewayId) throws Exception;
 	
-	List<ContractInfo> getAvailableContracts() throws Exception;
+	List<ContractInfo> getAvailableContracts(String gatewayId) throws Exception;
 }

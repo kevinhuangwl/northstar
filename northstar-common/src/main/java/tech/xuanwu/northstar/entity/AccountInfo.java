@@ -50,4 +50,24 @@ public class AccountInfo implements Serializable{
 		info.gatewayId = accountField.getGatewayId();
 		return info;
 	}
+	
+	public AccountField convertTo() {
+		AccountField.Builder accountFieldBuilder = AccountField.newBuilder();
+		accountFieldBuilder.setAccountId(accountId);
+		accountFieldBuilder.setName(name);
+		accountFieldBuilder.setCode(code);
+		accountFieldBuilder.setAvailable(available);
+		accountFieldBuilder.setBalance(balance);
+		accountFieldBuilder.setCloseProfit(closeProfit);
+		accountFieldBuilder.setCommission(commission);
+		accountFieldBuilder.setCurrency(currency);
+		accountFieldBuilder.setDeposit(deposit);
+		accountFieldBuilder.setGatewayId(gatewayId);
+		accountFieldBuilder.setHolder(holder);
+		accountFieldBuilder.setMargin(margin);
+		accountFieldBuilder.setPositionProfit(positionProfit);
+		accountFieldBuilder.setPreBalance(preBalance);
+		accountFieldBuilder.setWithdraw(withdraw);		
+		return accountFieldBuilder.build();
+	}
 }

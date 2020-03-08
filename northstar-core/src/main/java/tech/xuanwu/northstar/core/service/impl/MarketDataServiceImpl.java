@@ -29,25 +29,24 @@ public class MarketDataServiceImpl implements MarketDataService{
 	@Override
 	public boolean subscribeContract(String gatewayId, String symbol) throws Exception {
 		IAccount account = rtEngine.getAccount(gatewayId);
-		ContractInfo c = contractRepo.getContractBySymbol(symbol);
+		ContractInfo c = contractRepo.getContractBySymbol(gatewayId, symbol);
 		if(c == null) {
 			throw new NoSuchContractException(symbol);
 		}
 		ContractField contract = c.convertTo();
 		boolean res = account.subscribe(contract);
-		contractRepo.upsert(ContractInfo.convertFrom(contract));
+		contractRepo.insertIfAbsent(ContractInfo.convertFrom(contract));
 		return res;
 	}
 
 	@Override
-	public List<ContractInfo> getAllSubscribedContracts() throws Exception {
-		return contractRepo.getAllSubscribedContracts();
+	public List<ContractInfo> getAllSubscribedContracts(String gatewayId) throws Exception {
+		return contractRepo.getAllSubscribedContracts(gatewayId);
 	}
 
 	@Override
-	public List<ContractInfo> getAvailableContracts() throws Exception {
-		return contractRepo.getAllAvailableContracts();
+	public List<ContractInfo> getAvailableContracts(String gatewayId) throws Exception {
+		return contractRepo.getAllAvailableContracts(gatewayId);
 	}
 
-	
 }

@@ -14,10 +14,10 @@ public interface AccountRepo {
 	boolean upsertByDate(AccountInfo account) throws Exception;
 	
 	/**
-	 * 依据账户名称获取最近交易日账户信息
+	 * 依据网关ID获取最近交易日账户信息
 	 * @param accountName
 	 * @return
 	 * @throws Exception
 	 */
-	AccountInfo getLatestAccountInfoByName(String accountName) throws Exception;
+	AccountInfo getLatestAccountInfoByGatewayId(String gatewayId) throws Exception;
 }

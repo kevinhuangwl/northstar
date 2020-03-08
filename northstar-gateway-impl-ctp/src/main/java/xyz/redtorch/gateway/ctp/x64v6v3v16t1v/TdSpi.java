@@ -17,7 +17,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.Gson;
+
 import tech.xuanwu.northstar.constant.NoticeCode;
+import tech.xuanwu.northstar.entity.NoticeInfo;
 import xyz.redtorch.gateway.ctp.x64v6v3v16t1v.api.*;
 import xyz.redtorch.pb.CoreEnum.CommonStatusEnum;
 import xyz.redtorch.pb.CoreEnum.ContingentConditionEnum;
@@ -710,12 +713,6 @@ public class TdSpi extends CThostFtdcTraderSpi {
 					reqUserLoginField.setPassword(this.password);
 					cThostFtdcTraderApi.ReqUserLogin(reqUserLoginField, reqId.incrementAndGet());
 					
-					NoticeField.Builder noticeBuilder = NoticeField.newBuilder();
-					noticeBuilder
-						.setContent(NoticeCode.GATEWAY_CTP_CONNECTED + "-网关:" + ctpGatewayImpl.getGatewayName() + ",网关ID:" + ctpGatewayImpl.getGatewayId() + "登陆成功");
-					noticeBuilder.setStatus(CommonStatusEnum.COMS_SUCCESS);
-					noticeBuilder.setTimestamp(System.currentTimeMillis());
-					ctpGatewayImpl.getEventEngine().emitNotice(noticeBuilder.build());
 				} else {
 
 					logger.error("{}交易接口客户端验证失败 错误ID:{},错误信息:{}", logInfo, pRspInfo.getErrorID(), pRspInfo.getErrorMsg());
@@ -1280,9 +1277,13 @@ public class TdSpi extends CThostFtdcTraderSpi {
 				//延迟两秒确保合约字典准备完成
 				Thread.sleep(2000);
 				
+				NoticeInfo noticeInfo = new NoticeInfo();
+				noticeInfo.setEvent(NoticeCode.GATEWAY_READY);
+				noticeInfo.setMessage("网关:" + ctpGatewayImpl.getGatewayName() + ",网关ID:" + ctpGatewayImpl.getGatewayId() + "可以交易");
+				noticeInfo.setData(ctpGatewayImpl.getGatewayId());
+				
 				NoticeField.Builder noticeBuilder = NoticeField.newBuilder();
-				noticeBuilder
-					.setContent(NoticeCode.GATEWAY_CTP_READY + "-网关:" + ctpGatewayImpl.getGatewayName() + ",网关ID:" + ctpGatewayImpl.getGatewayId() + "可以交易");
+				noticeBuilder.setContent(new Gson().toJson(noticeInfo));
 				noticeBuilder.setStatus(CommonStatusEnum.COMS_SUCCESS);
 				noticeBuilder.setTimestamp(System.currentTimeMillis());
 				ctpGatewayImpl.getEventEngine().emitNotice(noticeBuilder.build());

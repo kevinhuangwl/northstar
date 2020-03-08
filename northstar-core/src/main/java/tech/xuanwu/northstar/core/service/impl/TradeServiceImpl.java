@@ -5,11 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tech.xuanwu.northstar.core.persistence.repo.ContractRepo;
+import tech.xuanwu.northstar.core.persistence.repo.GatewayRepo;
 import tech.xuanwu.northstar.core.service.TradeService;
 import tech.xuanwu.northstar.core.util.FutureDictionary;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.entity.ContractInfo;
+import tech.xuanwu.northstar.entity.GatewayInfo;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import tech.xuanwu.northstar.exception.NoSuchContractException;
 import tech.xuanwu.northstar.exception.TradeException;
@@ -33,10 +35,13 @@ public class TradeServiceImpl implements TradeService{
 	ContractRepo contractRepo;
 	
 	@Autowired
+	GatewayRepo gatewayRepo;
+	
+	@Autowired
 	RuntimeEngine rtEngine;
 
 	@Override
-	public String submitOrder(String accountName, String contractSymbol, double price, double stopPrice, int volume,
+	public String submitOrder(String gatewayId, String contractSymbol, double price, double stopPrice, int volume,
 			OrderPriceTypeEnum priceType, DirectionEnum direction, OffsetFlagEnum transactionType,
 			HedgeFlagEnum hedgeType, TimeConditionEnum expireType, VolumeConditionEnum volType,
 			ContingentConditionEnum trigerType) throws Exception {
@@ -46,7 +51,7 @@ public class TradeServiceImpl implements TradeService{
 		checkValuePositive(stopPrice);
 		
 		SubmitOrderReqField.Builder sb = SubmitOrderReqField.newBuilder();
-		ContractInfo contract = contractRepo.getContractBySymbol(contractSymbol);
+		ContractInfo contract = contractRepo.getContractBySymbol(gatewayId, contractSymbol);
 		if(contract == null) {
 			throw new NoSuchContractException(contractSymbol);
 		}
@@ -62,21 +67,22 @@ public class TradeServiceImpl implements TradeService{
 		sb.setVolumeCondition(volType);
 		sb.setContingentCondition(trigerType);
 		sb.setMinVolume(1);
-		return submitOrder(accountName, sb.build());
+		return submitOrder(gatewayId, sb.build());
 	}
 
 	@Override
-	public String submitOrder(String accountName, String contractSymbol, double price, int volume, DirectionEnum direction,
+	public String submitOrder(String gatewayId, String contractSymbol, double price, int volume, DirectionEnum direction,
 			OffsetFlagEnum transactionType) throws Exception{
 		checkValuePositive(price);
 		checkValuePositive(volume);
-		return submitOrder(accountName, contractSymbol, price, 0D, volume, OrderPriceTypeEnum.OPT_LimitPrice, direction, transactionType,
+		return submitOrder(gatewayId, contractSymbol, price, 0D, volume, OrderPriceTypeEnum.OPT_LimitPrice, direction, transactionType,
 				HedgeFlagEnum.HF_Speculation, TimeConditionEnum.TC_GFD, VolumeConditionEnum.VC_AV, ContingentConditionEnum.CC_Immediately);
 	}
 
 	@Override
-	public String submitOrder(String accountName, SubmitOrderReqField submitOrderReq) throws NoSuchAccountException, TradeException{
-		IAccount account = rtEngine.getAccount(accountName);
+	public String submitOrder(String gatewayId, SubmitOrderReqField submitOrderReq) throws NoSuchAccountException, TradeException{
+		GatewayInfo gateway = gatewayRepo.findGatewayById(gatewayId);
+		IAccount account = rtEngine.getAccount(gateway.getName());
 		SubmitOrderReqField.Builder sb = submitOrderReq.toBuilder();
 		submitOrderReq = sb.build();
 		String uuid = StringUtils.isEmpty(sb.getOriginOrderId()) ? UUIDStringPoolUtils.getUUIDString() : sb.getOriginOrderId();

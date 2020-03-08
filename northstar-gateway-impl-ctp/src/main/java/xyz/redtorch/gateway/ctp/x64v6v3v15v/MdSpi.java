@@ -283,9 +283,10 @@ public class MdSpi extends CThostFtdcMdSpi {
 			if (pRspInfo.getErrorID() == 0) {
 				logger.info("{}OnRspUserLogin TradingDay:{},SessionID:{},BrokerId:{},UserID:{}", logInfo, pRspUserLogin.getTradingDay(), pRspUserLogin.getSessionID(), pRspUserLogin.getBrokerID(),
 						pRspUserLogin.getUserID());
+				tradingDay = pRspUserLogin.getTradingDay();
+				ctpGatewayImpl.setTradingDay(tradingDay);
 				// 修改登录状态为true
 				this.loginStatus = true;
-				tradingDay = pRspUserLogin.getTradingDay();
 				logger.warn("{}行情接口获取到的交易日为{}", logInfo, tradingDay);
 
 				if (!subscribedSymbolSet.isEmpty()) {

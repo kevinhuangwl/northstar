@@ -2,19 +2,25 @@ package tech.xuanwu.northstar;
 
 import java.time.LocalDate;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.gson.Gson;
+
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.CommonConstant;
+import tech.xuanwu.northstar.constant.NoticeCode;
 import tech.xuanwu.northstar.engine.FastEventEngine;
 import tech.xuanwu.northstar.entity.AccountInfo;
+import tech.xuanwu.northstar.entity.NoticeInfo;
 import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.gateway.GatewayApi;
 import tech.xuanwu.northstar.gateway.SimulatedGateway;
 import xyz.redtorch.common.util.UUIDStringPoolUtils;
+import xyz.redtorch.pb.CoreEnum.CommonStatusEnum;
 import xyz.redtorch.pb.CoreEnum.DirectionEnum;
 import xyz.redtorch.pb.CoreEnum.HedgeFlagEnum;
 import xyz.redtorch.pb.CoreEnum.OrderStatusEnum;
@@ -25,6 +31,7 @@ import xyz.redtorch.pb.CoreField.CancelOrderReqField;
 import xyz.redtorch.pb.CoreField.ContractField;
 import xyz.redtorch.pb.CoreField.GatewayField;
 import xyz.redtorch.pb.CoreField.GatewaySettingField;
+import xyz.redtorch.pb.CoreField.NoticeField;
 import xyz.redtorch.pb.CoreField.OrderField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 import xyz.redtorch.pb.CoreField.TickField;
@@ -36,7 +43,7 @@ import xyz.redtorch.pb.CoreField.TradeField;
  *
  */
 @Slf4j
-public class CtpGatewaySimulateImpl implements GatewayApi, SimulatedGateway{
+public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 	
 	private GatewayApi realGatewayApi;
 	
@@ -45,38 +52,27 @@ public class CtpGatewaySimulateImpl implements GatewayApi, SimulatedGateway{
 	private static final String SIM_TAG = "@Simulate";
 	
 	/*账户信息*/
-	private AccountField.Builder accountFieldBuilder = AccountField.newBuilder();
+	private AccountInfo accountInfo;
 	
 	/*合约挂单， <合约代码， 挂单队列>*/
 	private ConcurrentHashMap<String, ConcurrentLinkedQueue<OrderField.Builder>> contractOrderMap = new ConcurrentHashMap<>();
 	/*挂单，<挂单ID，挂单>*/
 	private ConcurrentHashMap<String, OrderField.Builder> orderMap = new ConcurrentHashMap<>();
 	/*持仓队列*/
-	private ConcurrentHashMap<String, ConcurrentLinkedQueue<PositionInfo>> positionMap = new ConcurrentHashMap<>();
+	private ConcurrentHashMap<String, PositionInfo> positionMap = new ConcurrentHashMap<>();
 
-	public CtpGatewaySimulateImpl(GatewayApi realGatewayApi, FastEventEngine feEngine, AccountInfo accountInfo) {
+	public SimulatedGatewayImpl(GatewayApi realGatewayApi, FastEventEngine feEngine, AccountInfo accountInfo, List<PositionInfo> positionList) {
 		log.info("启动模拟市场网关");
 		
 		this.realGatewayApi = realGatewayApi;
 		this.feEngine = feEngine;
+		this.accountInfo = accountInfo;
 		
-		accountFieldBuilder.setAccountId(accountInfo.getAccountId() + SIM_TAG);
-		accountFieldBuilder.setName(accountInfo.getName() + SIM_TAG);
-		accountFieldBuilder.setCode(accountInfo.getCode() + SIM_TAG);
-		accountFieldBuilder.setAvailable(accountInfo.getAvailable());
-		accountFieldBuilder.setBalance(accountInfo.getBalance());
-		accountFieldBuilder.setCloseProfit(accountInfo.getCloseProfit());
-		accountFieldBuilder.setCommission(accountInfo.getCommission());
-		accountFieldBuilder.setCurrency(accountInfo.getCurrency());
-		accountFieldBuilder.setDeposit(accountInfo.getDeposit());
-		accountFieldBuilder.setGatewayId(accountInfo.getGatewayId());
-		accountFieldBuilder.setHolder(accountInfo.getHolder());
-		accountFieldBuilder.setMargin(accountInfo.getMargin());
-		accountFieldBuilder.setPositionProfit(accountInfo.getPositionProfit());
-		accountFieldBuilder.setPreBalance(accountInfo.getPreBalance());
-		accountFieldBuilder.setWithdraw(accountInfo.getWithdraw());		
 		
-		feEngine.emitAccount(accountFieldBuilder.build());
+		for(PositionInfo p : positionList) {
+			positionMap.put(p.getContract().getUnifiedSymbol(), p);
+			feEngine.emitPosition(p.convertTo());
+		}
 	}
 	
 	@Override
@@ -197,9 +193,10 @@ public class CtpGatewaySimulateImpl implements GatewayApi, SimulatedGateway{
 				feEngine.emitTrade(tradeField);
 				feEngine.emitOrder(orderBuilder.build());
 				
+				//成交后构建合约持仓
 				DirectionEnum direction = orderBuilder.getDirection();
 				HedgeFlagEnum hedgeFlag = orderBuilder.getHedgeFlag();
-				String accountId = accountFieldBuilder.getAccountId();
+				String accountId = accountInfo.getAccountId();
 				String positionId = unifiedSymbol + "@" + direction.getValueDescriptor().getName() + "@" + hedgeFlag.getValueDescriptor().getName() + "@" + accountId;
 				PositionInfo pb = new PositionInfo();
 				pb.setPositionId(positionId);
@@ -256,6 +253,24 @@ public class CtpGatewaySimulateImpl implements GatewayApi, SimulatedGateway{
 	@Override
 	public void connect() {
 		realGatewayApi.connect();
+		
+		while(!realGatewayApi.isConnected());
+		
+		feEngine.emitAccount(accountInfo.convertTo());
+		for(PositionInfo p : positionMap.values()) {
+			feEngine.emitPosition(p.convertTo());
+		}
+		
+		NoticeInfo noticeInfo = new NoticeInfo();
+		noticeInfo.setEvent(NoticeCode.GATEWAY_READY);
+		noticeInfo.setMessage("网关:" + getGatewayName() + ",网关ID:" + getGatewayId() + "可以交易");
+		noticeInfo.setData(getGatewayId());
+		
+		NoticeField.Builder noticeBuilder = NoticeField.newBuilder();
+		noticeBuilder.setContent(new Gson().toJson(noticeInfo));
+		noticeBuilder.setStatus(CommonStatusEnum.COMS_SUCCESS);
+		noticeBuilder.setTimestamp(System.currentTimeMillis());
+		feEngine.emitNotice(noticeBuilder.build());
 	}
 
 	@Override

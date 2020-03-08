@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.CtpGatewaySimulateImpl;
+import tech.xuanwu.northstar.SimulatedGatewayImpl;
 import tech.xuanwu.northstar.core.config.props.CtpGatewaySettings;
 import tech.xuanwu.northstar.core.domain.Account;
 import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
+import tech.xuanwu.northstar.core.persistence.repo.GatewayRepo;
+import tech.xuanwu.northstar.core.persistence.repo.PositionRepo;
 import tech.xuanwu.northstar.core.service.AccountService;
 import tech.xuanwu.northstar.core.util.SimulateAccountFactory;
 import tech.xuanwu.northstar.domain.IAccount;
@@ -19,11 +21,13 @@ import tech.xuanwu.northstar.engine.FastEventEngine;
 import tech.xuanwu.northstar.engine.MarketEngine;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.entity.AccountInfo;
+import tech.xuanwu.northstar.entity.GatewayInfo;
 import tech.xuanwu.northstar.entity.OrderInfo;
 import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.entity.TransactionInfo;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import tech.xuanwu.northstar.gateway.GatewayApi;
+import xyz.redtorch.pb.CoreEnum.ConnectStatusEnum;
 import xyz.redtorch.pb.CoreField.GatewaySettingField;
 
 @Slf4j
@@ -44,6 +48,12 @@ public class AccountServiceImpl implements AccountService {
 	
 	@Autowired
 	AccountRepo accountRepo;
+	
+	@Autowired
+	PositionRepo positionRepo;
+	
+	@Autowired
+	GatewayRepo gatewayRepo;
 
 	@Override
 	public List<AccountInfo> getAccountInfoList() {
@@ -74,23 +84,33 @@ public class AccountServiceImpl implements AccountService {
 		Class<?> gatewayClass = Class.forName(p.getGatewayImplClassName());
 		Constructor<?> c = gatewayClass.getConstructor(FastEventEngine.class, GatewaySettingField.class);
 		GatewayApi gateway = (GatewayApi) c.newInstance(feEngine, p.convertToGatewaySettingField());
-		gateway.connect();
 		
 		//使用模拟账户时要初始化账户
 		if(!p.isRealTrader()) {
 			GatewayApi realGateway = gateway;
 			
-			AccountInfo account = accountRepo.getLatestAccountInfoByName(p.getGatewayName());
+			AccountInfo freshAccount = SimulateAccountFactory.createAccount(p.getGatewayID());
+			AccountInfo account = accountRepo.getLatestAccountInfoByGatewayId(freshAccount.getGatewayId());
 			if(account == null) {
-				account = SimulateAccountFactory.createAccount(p.getGatewayName());
+				account = freshAccount;
 			}
-			
-			gateway = new CtpGatewaySimulateImpl(realGateway, feEngine, account);
+			List<PositionInfo> posList = positionRepo.getPositionListByGateway(gateway.getGatewayId());
+			gateway = new SimulatedGatewayImpl(realGateway, feEngine, account, posList);
 		}
 		
-		log.info("连接网关【{}】，使用【{}】交易", p.getGatewayID(), p.isRealTrader()?"真实账户":"模拟账户");
+		GatewayInfo gatewayInfo = new GatewayInfo();
+		gatewayInfo.setGatewayId(gateway.getGatewayId());
+		gatewayInfo.setName(gateway.getGatewayName());
+		gatewayInfo.setGatewayAdapterType(gateway.getGatewaySetting().getGatewayAdapterType());
+		gatewayInfo.setGatewayType(gateway.getGateway().getGatewayType());
+		gatewayInfo.setStatus(ConnectStatusEnum.CS_Connecting);
+		gatewayRepo.upsertById(gatewayInfo);
+		
+		log.info("连接网关【{}】，使用【{}】交易", p.getGatewayName(), p.isRealTrader()?"真实账户":"模拟账户");
 		IAccount account = new Account(gateway, accountRepo);
 		rtEngine.regAccount(account);
+		
+		gateway.connect();
 	}
 
 	@Override

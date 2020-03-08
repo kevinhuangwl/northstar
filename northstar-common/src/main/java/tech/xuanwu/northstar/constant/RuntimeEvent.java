@@ -23,9 +23,9 @@ public enum RuntimeEvent {
 	FEEDBACK_POSITION,
 	//成交回报
 	FEEDBACK_TRADE,
-	//CTP连接成功
-	GATEWAY_CTP_CONNECTED,
-	//CTP准备完成
-	GATEWAY_CTP_READY,
+	//网关连接成功
+	GATEWAY_CONNECTED,
+	//网关准备完成
+	GATEWAY_READY,
 	
 }

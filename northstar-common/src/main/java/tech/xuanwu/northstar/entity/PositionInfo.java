@@ -35,14 +35,14 @@ public class PositionInfo implements Serializable{
 	double useMargin;  // 占用的保证金
 	double exchangeMargin;  // 交易所的保证金
 	double contractValue;  // 最新合约价值
-    String contractSymbol;  // 合约
+    ContractInfo contract;  // 合约
 	String gatewayId;  // 网关ID
 	
 	public static PositionInfo convertFrom(PositionField pf) {
 		PositionInfo info = new PositionInfo();
 		info.positionId = pf.getPositionId();
 		info.accountId = pf.getAccountId();
-		info.contractSymbol = pf.getContract().getSymbol();
+		info.contract = ContractInfo.convertFrom(pf.getContract());
 		info.contractValue = pf.getContractValue();
 		info.exchangeMargin = pf.getExchangeMargin();
 		info.frozen = pf.getFrozen();
@@ -64,5 +64,33 @@ public class PositionInfo implements Serializable{
 		info.ydFrozen = pf.getYdFrozen();
 		info.ydPosition = pf.getYdPosition();
 		return info;
+	}
+	
+	public PositionField convertTo() {
+		PositionField.Builder pb = PositionField.newBuilder();
+		pb.setAccountId(accountId);
+		pb.setContract(contract.convertTo());
+		pb.setContractValue(contractValue);
+		pb.setExchangeMargin(exchangeMargin);
+		pb.setFrozen(frozen);
+		pb.setGatewayId(gatewayId);
+		pb.setLastPrice(lastPrice);
+		pb.setOpenPositionProfit(openPositionProfit);
+		pb.setOpenPositionProfitRatio(openPositionProfitRatio);
+		pb.setOpenPrice(openPrice);
+		pb.setOpenPriceDiff(openPriceDiff);
+		pb.setPosition(position);
+		pb.setPositionDirection(positionDirection);
+		pb.setPositionId(positionId);
+		pb.setPositionProfit(positionProfit);
+		pb.setPositionProfitRatio(positionProfitRatio);
+		pb.setPrice(price);
+		pb.setPriceDiff(priceDiff);
+		pb.setTdFrozen(tdFrozen);
+		pb.setTdPosition(tdPosition);
+		pb.setYdFrozen(ydFrozen);
+		pb.setYdPosition(ydPosition);
+		pb.setUseMargin(useMargin);
+		return pb.build();
 	}
 }
