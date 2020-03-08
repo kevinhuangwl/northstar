@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import tech.xuanwu.northstar.core.persistence.repo.ContractRepo;
 import tech.xuanwu.northstar.core.service.MarketDataService;
-import tech.xuanwu.northstar.core.util.FutureDictionary;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.entity.ContractInfo;
@@ -17,8 +16,6 @@ import xyz.redtorch.pb.CoreField.ContractField;
 @Service
 public class MarketDataServiceImpl implements MarketDataService{
 	
-	@Autowired
-	FutureDictionary fDict;
 
 	@Autowired
 	RuntimeEngine rtEngine;

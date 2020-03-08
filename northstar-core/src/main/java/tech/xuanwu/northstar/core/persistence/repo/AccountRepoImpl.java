@@ -41,7 +41,6 @@ public class AccountRepoImpl implements AccountRepo{
 		log.info("查询账户-[{}] 最近交易日的账户信息", gatewayId);
 		Document filter = new Document()
 				.append("gatewayId", gatewayId);
-		Sorts.descending("tradingDay");
 		List<Document> resultList = mongodb.find(DB, TBL_ACCOUNT, filter, Sorts.descending("tradingDay"));
 		if(resultList.size()==0) {
 			return null;

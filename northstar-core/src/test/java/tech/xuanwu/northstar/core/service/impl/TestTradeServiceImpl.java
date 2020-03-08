@@ -15,7 +15,6 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
 
 import tech.xuanwu.northstar.core.service.TradeService;
-import tech.xuanwu.northstar.core.util.FutureDictionary;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import xyz.redtorch.common.util.UUIDStringPoolUtils;
@@ -33,9 +32,6 @@ import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 @TestExecutionListeners(listeners = MockitoTestExecutionListener.class)
 public class TestTradeServiceImpl extends AbstractTestNGSpringContextTests  {
 	
-	//通过使用MockBean来对bean进行mock
-	@MockBean
-	FutureDictionary ftDict;
 	
 	@MockBean
 	RuntimeEngine rtEngine;

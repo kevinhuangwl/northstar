@@ -18,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.Message;
 import tech.xuanwu.northstar.core.service.MarketDataService;
 import tech.xuanwu.northstar.core.service.TradeService;
-import tech.xuanwu.northstar.core.util.FutureDictionary;
 import tech.xuanwu.northstar.entity.StrategyInfo;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import tech.xuanwu.northstar.exception.TradeException;
@@ -34,9 +33,6 @@ import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 public class CommonMsgEventHandler {
 
 	ConcurrentHashMap<UUID, List<String>> roomMap = new ConcurrentHashMap<>();
-	
-	@Autowired
-	FutureDictionary globeContractMap;
 	
 	@Autowired
 	TradeService tdService;
