@@ -6,6 +6,7 @@ import java.util.HashSet;
 import xyz.redtorch.pb.CoreEnum.OrderStatusEnum;
 
 public interface CommonConstant {
+	static final String SIM_TAG = "@Simulated";
 	static final String DT_FORMAT_WITH_MS = "yyyy-MM-dd HH:mm:ss.SSS";
 	static final String DT_FORMAT_WITH_MS_INT = "yyyyMMddHHmmssSSS";
 	static final String DT_FORMAT = "yyyy-MM-dd HH:mm:ss";

@@ -32,7 +32,8 @@ public class MarketDataServiceImpl implements MarketDataService{
 		}
 		ContractField contract = c.convertTo();
 		boolean res = account.subscribe(contract);
-		contractRepo.insertIfAbsent(ContractInfo.convertFrom(contract));
+		c.setSubscribed(true);
+		contractRepo.updateById(c);
 		return res;
 	}
 

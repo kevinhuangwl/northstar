@@ -35,9 +35,9 @@ public class PositionRepoImpl implements PositionRepo{
 	}
 
 	@Override
-	public List<PositionInfo> getPositionListByGateway(String gatewayId) {
+	public List<PositionInfo> getPositionListByGateway(String gatewayName) {
 		log.info("根据网关查询相关持仓列表");
-		List<Document> results = mongodb.find(DB, TBL_POSITION, Filters.eq("gatewayId", gatewayId));
+		List<Document> results = mongodb.find(DB, TBL_POSITION, Filters.eq("gatewayName", gatewayName));
 		List<PositionInfo> resultList = new ArrayList<>(results.size());
 		for(Document d : results) {
 			resultList.add(gson.fromJson(d.toJson(), PositionInfo.class));

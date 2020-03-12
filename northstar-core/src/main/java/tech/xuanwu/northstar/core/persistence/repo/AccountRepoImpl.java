@@ -37,10 +37,10 @@ public class AccountRepoImpl implements AccountRepo{
 	}
 
 	@Override
-	public AccountInfo getLatestAccountInfoByGatewayId(String gatewayId) {
-		log.info("查询账户-[{}] 最近交易日的账户信息", gatewayId);
+	public AccountInfo getLatestAccountInfoByName(String name) {
+		log.info("查询账户-[{}] 最近交易日的账户信息", name);
 		Document filter = new Document()
-				.append("gatewayId", gatewayId);
+				.append("name", name);
 		List<Document> resultList = mongodb.find(DB, TBL_ACCOUNT, filter, Sorts.descending("tradingDay"));
 		if(resultList.size()==0) {
 			return null;

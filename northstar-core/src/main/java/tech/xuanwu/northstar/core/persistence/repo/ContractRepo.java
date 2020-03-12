@@ -7,6 +7,14 @@ import tech.xuanwu.northstar.entity.ContractInfo;
 public interface ContractRepo {
 	
 	/**
+	 * 更新
+	 * @param contract
+	 * @return
+	 * @throws Exception
+	 */
+	boolean updateById(ContractInfo contract) throws Exception;
+	
+	/**
 	 * 以contractId作为唯一标识判断，不存在时插入
 	 * @param contract
 	 * @return

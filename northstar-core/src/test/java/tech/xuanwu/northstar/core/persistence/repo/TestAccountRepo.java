@@ -35,7 +35,7 @@ public class TestAccountRepo {
 		a1.setBalance(100);
 		accountRepo.upsertByDate(a1);
 		
-		AccountInfo info1 = accountRepo.getLatestAccountInfoByGatewayId(accountName);
+		AccountInfo info1 = accountRepo.getLatestAccountInfoByName(accountName);
 		assertThat(info1).isEqualTo(a1);
 	} 
 	

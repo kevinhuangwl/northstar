@@ -90,11 +90,11 @@ public class AccountServiceImpl implements AccountService {
 			GatewayApi realGateway = gateway;
 			
 			AccountInfo freshAccount = SimulateAccountFactory.createAccount(p.getGatewayID());
-			AccountInfo account = accountRepo.getLatestAccountInfoByGatewayId(freshAccount.getGatewayId());
+			AccountInfo account = accountRepo.getLatestAccountInfoByName(freshAccount.getName());
 			if(account == null) {
 				account = freshAccount;
 			}
-			List<PositionInfo> posList = positionRepo.getPositionListByGateway(gateway.getGatewayId());
+			List<PositionInfo> posList = positionRepo.getPositionListByGateway(gateway.getGatewayName());
 			gateway = new SimulatedGatewayImpl(realGateway, feEngine, account, posList);
 		}
 		

@@ -82,11 +82,19 @@ public class ContractRepoImpl implements ContractRepo{
 
 	@Override
 	public ContractInfo getContractBySymbol(String gatewayId, String symbol) throws Exception {
-		List<Document> result = mongodb.find(DB, TBL_CONTRACT, and(eq("gatewayId", gatewayId), eq("symbol",symbol)));
+		//由于使用模拟交易的网关ID会加上特殊标识，因此统一去除特殊标识
+		String realGatewayId = gatewayId.replace(CommonConstant.SIM_TAG, "");
+		List<Document> result = mongodb.find(DB, TBL_CONTRACT, and(eq("gatewayId", realGatewayId), eq("symbol",symbol)));
 		if(result.size()==0) {
 			return null;
 		}
 		return gson.fromJson(result.get(0).toJson(), ContractInfo.class);
+	}
+
+	@Override
+	public boolean updateById(ContractInfo contract) throws Exception {
+		Document doc = Document.parse(gson.toJson(contract));
+		return mongodb.updateOne(DB, TBL_CONTRACT, new Document("contractId", contract.getContractId()), doc);
 	}
 
 }

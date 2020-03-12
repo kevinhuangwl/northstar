@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
+import tech.xuanwu.northstar.constant.CommonConstant;
 import tech.xuanwu.northstar.constant.RuntimeEvent;
 import tech.xuanwu.northstar.core.persistence.repo.ContractRepo;
 import tech.xuanwu.northstar.core.persistence.repo.GatewayRepo;
@@ -45,12 +46,14 @@ public class GatewayReadyEventHandler implements RuntimeEngine.Listener, Initial
 		
 		log.info("=====开始自动续订合约=====");
 		//自动续订阅合约
-		List<ContractInfo> contractList = contractRepo.getAllSubscribedContracts(gatewayId);
+		boolean isSimulated = gatewayId.contains(CommonConstant.SIM_TAG);
+		String realGatewayId = isSimulated ? gatewayId.replace(CommonConstant.SIM_TAG, "") : gatewayId;
+		List<ContractInfo> contractList = contractRepo.getAllSubscribedContracts(realGatewayId);
 		log.info("合约字典的合约总数：{}", contractList.size());
 		for(ContractInfo c : contractList) {
 			ContractField contract = c.convertTo();
 			if(contract != null) {
-				rtEngine.getAccount(c.getGatewayId()).subscribe(contract);
+				rtEngine.getAccount(gatewayInfo.getName()).subscribe(contract);
 				log.info("订阅网关【{}】的合约【{}】", c.getGatewayId(), c.getSymbol());
 			}else {
 				log.warn("合约【{}】已过期", c.getSymbol());
