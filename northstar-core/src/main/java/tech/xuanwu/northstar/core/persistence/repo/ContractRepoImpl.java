@@ -82,9 +82,7 @@ public class ContractRepoImpl implements ContractRepo{
 
 	@Override
 	public ContractInfo getContractBySymbol(String gatewayId, String symbol) throws Exception {
-		//由于使用模拟交易的网关ID会加上特殊标识，因此统一去除特殊标识
-		String realGatewayId = gatewayId.replace(CommonConstant.SIM_TAG, "");
-		List<Document> result = mongodb.find(DB, TBL_CONTRACT, and(eq("gatewayId", realGatewayId), eq("symbol",symbol)));
+		List<Document> result = mongodb.find(DB, TBL_CONTRACT, and(eq("gatewayId", gatewayId), eq("symbol",symbol)));
 		if(result.size()==0) {
 			return null;
 		}

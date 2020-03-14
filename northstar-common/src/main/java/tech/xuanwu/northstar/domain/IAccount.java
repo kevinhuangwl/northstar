@@ -12,6 +12,8 @@ import xyz.redtorch.pb.CoreField.ContractField;
  */
 public interface IAccount extends TradableAccount {
 	
+	String getGatewayId();
+	
 	String getName();
 	
 	/**

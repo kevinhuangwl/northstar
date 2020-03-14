@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
+import tech.xuanwu.northstar.constant.CommonConstant;
 import tech.xuanwu.northstar.constant.RuntimeEvent;
 import tech.xuanwu.northstar.core.engine.SocketIOMessageEngine;
 import tech.xuanwu.northstar.core.persistence.repo.ContractRepo;
@@ -81,7 +82,12 @@ public class PortfolioEventHandler extends FastEventDynamicHandlerAbstract imple
 			break;
 		case CONTRACT:
 			ContractField c = (ContractField) event.getObj();
-			contractRepo.insertIfAbsent(ContractInfo.convertFrom(c));
+			ContractInfo contract = ContractInfo.convertFrom(c);
+			contractRepo.insertIfAbsent(contract);
+			//所有合约都会保存一个模拟网关的合约副本用于模拟交易
+			contract.setGatewayId(contract.getGatewayId() + CommonConstant.SIM_TAG);
+			contract.setContractId(contract.getContractId() + CommonConstant.SIM_TAG);
+			contractRepo.insertIfAbsent(contract);
 			break;
 		default:
 			log.warn("遇到未知事件类型：{}", event.getFastEventType());

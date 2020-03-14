@@ -65,6 +65,7 @@ public class TradeServiceImpl implements TradeService{
 		sb.setVolumeCondition(volType);
 		sb.setContingentCondition(trigerType);
 		sb.setMinVolume(1);
+		sb.setGatewayId(gatewayId);
 		return submitOrder(gatewayId, sb.build());
 	}
 

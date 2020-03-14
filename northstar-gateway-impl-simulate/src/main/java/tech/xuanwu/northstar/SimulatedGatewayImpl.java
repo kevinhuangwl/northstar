@@ -1,6 +1,7 @@
 package tech.xuanwu.northstar;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -131,12 +132,17 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 		ob.setOriginOrderId(originOrderId);
 		ob.setGatewayId(submitOrder.getGatewayId());
 		ob.setVolumeCondition(submitOrder.getVolumeCondition());
+		ob.setTradingDay(realGatewayApi.getTradingDay());
+		ob.setOrderDate(LocalDate.now().format(CommonConstant.D_FORMAT_INT_FORMATTER));
+		ob.setOrderTime(LocalTime.now().format(CommonConstant.T_FORMAT_FORMATTER));
+		ob.setAccountId(gatewayId);
 		ob.setTotalVolume(submitOrder.getVolume());
 		ob.setOffsetFlag(submitOrder.getOffsetFlag());
 		ob.setOrderPriceType(submitOrder.getOrderPriceType());
 		ob.setGtdDate(submitOrder.getGtdDate());
 		ob.setMinVolume(submitOrder.getMinVolume());
 		ob.setStopPrice(submitOrder.getStopPrice());
+		ob.setSequenceNo("1");
 		ob.setOrderStatus(illegalOrder ? OrderStatusEnum.OS_Rejected : OrderStatusEnum.OS_Unknown);
 		ob.setStatusMsg(noEnoughMoney ? "资金不足" : noEnoughVolume ? "仓位不足" : "报单已提交");
 		
@@ -191,6 +197,10 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 			
 			for(Entry<String, OrderField.Builder> e : orderMap.entrySet()) {
 				OrderField.Builder ob = e.getValue();
+				if(ob.getOrderStatus()==OrderStatusEnum.OS_AllTraded || ob.getOrderStatus()==OrderStatusEnum.OS_Rejected
+						|| ob.getOrderStatus()==OrderStatusEnum.OS_Canceled) {
+					continue;
+				}
 				ContractField contract = ob.getContract();
 				double marginRatio = ob.getDirection() == DirectionEnum.D_Buy ? contract.getLongMarginRatio() : contract.getShortMarginRatio();
 				double frozenMoney = ob.getOrderStatus() == OrderStatusEnum.OS_Unknown 
@@ -242,6 +252,10 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 				if(StringUtils.equals(ob.getOriginOrderId(), originOrderId)) {
 					itOrder.remove();
 					ob.setOrderStatus(OrderStatusEnum.OS_Canceled);
+					ob.setSequenceNo(String.valueOf(Integer.valueOf(ob.getSequenceNo()) + 1));
+					ob.setOrderDate(LocalDate.now().format(CommonConstant.D_FORMAT_INT_FORMATTER));
+					ob.setOrderTime(LocalTime.now().format(CommonConstant.T_FORMAT_FORMATTER));
+					ob.setStatusMsg("全部撤单");
 					
 					log.info("撤单成功，订单号：{}", originOrderId);
 					feEngine.emitOrder(ob.build());

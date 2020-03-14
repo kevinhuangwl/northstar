@@ -67,12 +67,17 @@ public class Account implements IAccount{
 	/*账户名称==网关名称*/
 	@Getter
 	@NotNull
-	protected String name;
+	private String name;
+	
+	@Getter
+	@NotNull
+	private String gatewayId;
 	
 	protected String lastOrderTradeDay = "";
 	
 	public Account(GatewayApi gatewayApi, AccountRepo accountRepo){
 		this.name = gatewayApi.getGatewayName();
+		this.gatewayId = gatewayApi.getGatewayId();
 		this.gatewayApi = gatewayApi;
 		this.accountRepo = accountRepo;
 	}

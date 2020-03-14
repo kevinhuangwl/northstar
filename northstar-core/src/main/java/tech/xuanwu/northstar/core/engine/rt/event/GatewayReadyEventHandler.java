@@ -46,9 +46,7 @@ public class GatewayReadyEventHandler implements RuntimeEngine.Listener, Initial
 		
 		log.info("=====开始自动续订合约=====");
 		//自动续订阅合约
-		boolean isSimulated = gatewayId.contains(CommonConstant.SIM_TAG);
-		String realGatewayId = isSimulated ? gatewayId.replace(CommonConstant.SIM_TAG, "") : gatewayId;
-		List<ContractInfo> contractList = contractRepo.getAllSubscribedContracts(realGatewayId);
+		List<ContractInfo> contractList = contractRepo.getAllSubscribedContracts(gatewayId);
 		log.info("合约字典的合约总数：{}", contractList.size());
 		for(ContractInfo c : contractList) {
 			ContractField contract = c.convertTo();

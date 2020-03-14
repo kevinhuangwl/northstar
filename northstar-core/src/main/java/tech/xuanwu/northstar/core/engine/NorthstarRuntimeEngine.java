@@ -30,11 +30,13 @@ public class NorthstarRuntimeEngine implements RuntimeEngine{
 	@Override
 	public void regAccount(IAccount account) {
 		accountMap.put(account.getName(), account);
+		accountMap.put(account.getGatewayId(), account);
 	}
 	
 	@Override
 	public void unregAccount(String accountName) {
-		accountMap.remove(accountName);
+		IAccount account = accountMap.remove(accountName);
+		accountMap.remove(account.getGatewayId());
 	}
 	
 	@Override
