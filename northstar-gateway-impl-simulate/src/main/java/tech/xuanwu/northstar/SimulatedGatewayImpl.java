@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.CommonConstant;
+import tech.xuanwu.northstar.constant.ErrorHint;
 import tech.xuanwu.northstar.constant.NoticeCode;
 import tech.xuanwu.northstar.domain.GwPosition;
 import tech.xuanwu.northstar.engine.FastEventEngine;
@@ -67,7 +68,7 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 	private ConcurrentHashMap<String, TradeField> tradeMap = new ConcurrentHashMap<>();
 	/*持仓记录*/
 	private ConcurrentHashMap<String, GwPosition> positionMap = new ConcurrentHashMap<>();
-
+	
 	public SimulatedGatewayImpl(GatewayApi realGatewayApi, FastEventEngine feEngine, AccountInfo accountInfo, List<PositionInfo> positionList) {
 		log.info("启动模拟市场网关");
 		
@@ -92,35 +93,15 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 	
 	@Override
 	public String submitOrder(SubmitOrderReqField submitOrder) {
-		//锁定资金
-		ContractField contract = submitOrder.getContract();
-		double marginRatio = submitOrder.getDirection() == DirectionEnum.D_Buy ? contract.getLongMarginRatio() : contract.getShortMarginRatio();
-		double frozenMoney = submitOrder.getPrice() * submitOrder.getVolume() * contract.getMultiplier() * marginRatio;
-		double transactionFee = submitOrder.getVolume() * contract.getPriceTick() * contract.getMultiplier() * DEFAULT_FEE_TICK;
-		
-		boolean noEnoughMoney = accountInfo.getAvailable() < frozenMoney + transactionFee;
-		boolean noEnoughVolume = false;
-		for(GwPosition p : positionMap.values()) {
-			PositionField pf = p.getPositionField();
-			if(!StringUtils.equals(contract.getContractId(), pf.getContract().getContractId())) {
-				//合约不一致
-				continue;
-			}
-			if(submitOrder.getOffsetFlag()==OffsetFlagEnum.OF_Open || submitOrder.getOffsetFlag()==OffsetFlagEnum.OF_Unkonwn) {
-				//不是平仓委托
-				continue;
-			}
-			
-			//方向要匹配
-			if(pf.getPositionDirection()==PositionDirectionEnum.PD_Long && submitOrder.getDirection()==DirectionEnum.D_Sell 
-					|| pf.getPositionDirection()==PositionDirectionEnum.PD_Short && submitOrder.getDirection()==DirectionEnum.D_Buy ) {
-				noEnoughVolume = pf.getPosition() < submitOrder.getVolume();
-				break;
-			}
+		if(submitOrder.getOffsetFlag() == OffsetFlagEnum.OF_Unkonwn) {
+			log.warn("委托单开平仓状态异常：{}", ErrorHint.UNKNOWN_ENUM_TYPE);
+			return "";
 		}
-		boolean illegalOrder = noEnoughMoney || noEnoughVolume;
 		
-		String gatewayId = realGatewayApi.getGatewayId();
+		boolean isOpeningOrder = submitOrder.getOffsetFlag() == OffsetFlagEnum.OF_Open;
+		boolean validOrder = isOpeningOrder ? validOpeningOrder(submitOrder) : validClosingOrder(submitOrder);
+		
+		String gatewayId = getGatewayId();
 		String orderId = gatewayId + CommonConstant.SIM_TAG + "_" + UUIDStringPoolUtils.getUUIDString();
 		String unifiedSymbol = submitOrder.getContract().getUnifiedSymbol();
 		String originOrderId = submitOrder.getOriginOrderId();
@@ -132,7 +113,7 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 		ob.setOriginOrderId(originOrderId);
 		ob.setGatewayId(submitOrder.getGatewayId());
 		ob.setVolumeCondition(submitOrder.getVolumeCondition());
-		ob.setTradingDay(realGatewayApi.getTradingDay());
+		ob.setTradingDay(getTradingDay());
 		ob.setOrderDate(LocalDate.now().format(CommonConstant.D_FORMAT_INT_FORMATTER));
 		ob.setOrderTime(LocalTime.now().format(CommonConstant.T_FORMAT_FORMATTER));
 		ob.setAccountId(gatewayId);
@@ -143,8 +124,8 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 		ob.setMinVolume(submitOrder.getMinVolume());
 		ob.setStopPrice(submitOrder.getStopPrice());
 		ob.setSequenceNo("1");
-		ob.setOrderStatus(illegalOrder ? OrderStatusEnum.OS_Rejected : OrderStatusEnum.OS_Unknown);
-		ob.setStatusMsg(noEnoughMoney ? "资金不足" : noEnoughVolume ? "仓位不足" : "报单已提交");
+		ob.setOrderStatus(validOrder ? OrderStatusEnum.OS_Unknown : OrderStatusEnum.OS_Rejected);
+		ob.setStatusMsg(validOrder ? "报单已提交" : isOpeningOrder ? "资金不足" : "仓位不足");
 		
 		if(!contractOrderMap.containsKey(unifiedSymbol)) {
 			contractOrderMap.putIfAbsent(unifiedSymbol, new ConcurrentLinkedQueue<OrderField.Builder>());
@@ -152,7 +133,7 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 		contractOrderMap.get(unifiedSymbol).add(ob);
 		orderMap.put(originOrderId, ob);
 		
-		if(ob.getOrderStatus() == OrderStatusEnum.OS_Unknown) {			
+		if(ob.getOrderStatus() == OrderStatusEnum.OS_Unknown) {		
 			log.info("模拟交易接口发单记录->{\n" //
 					+ "InstrumentID:{},\n" //
 					+ "LimitPrice:{},\n" //
@@ -186,6 +167,63 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 		
 		updateAccount();
 		return orderId;
+	}
+	
+	//校验合法开仓
+	private boolean validOpeningOrder(SubmitOrderReqField submitOrder) {
+		ContractField contract = submitOrder.getContract();
+		double marginRatio = submitOrder.getDirection() == DirectionEnum.D_Buy ? contract.getLongMarginRatio() : contract.getShortMarginRatio();
+		double frozenMoney = submitOrder.getPrice() * submitOrder.getVolume() * contract.getMultiplier() * marginRatio;
+		double transactionFee =  submitOrder.getVolume() * contract.getPriceTick() * contract.getMultiplier() * DEFAULT_FEE_TICK;
+		
+		boolean noEnoughMoney = accountInfo.getAvailable() < frozenMoney + transactionFee;
+		
+		if(noEnoughMoney) {
+			return false;
+		}
+		//下单成功时，扣除账户保证金
+		frozenMoney(frozenMoney);
+		return true;
+	}
+	
+	//校验合法平仓
+	private boolean validClosingOrder(SubmitOrderReqField submitOrder) {
+		ContractField contract = submitOrder.getContract();
+		for(GwPosition p : positionMap.values()) {
+			PositionField pf = p.getPositionField();
+			if(!StringUtils.equals(contract.getContractId(), pf.getContract().getContractId())) {
+				//合约不一致
+				continue;
+			}
+			
+			//方向要匹配
+			if(pf.getPositionDirection()==PositionDirectionEnum.PD_Long && submitOrder.getDirection()==DirectionEnum.D_Sell 
+					|| pf.getPositionDirection()==PositionDirectionEnum.PD_Short && submitOrder.getDirection()==DirectionEnum.D_Buy ) {
+				return pf.getPosition() < submitOrder.getVolume();
+			}
+		}
+		
+		return false;
+	}
+	
+	//冻结资金
+	private void frozenMoney(double frozenMoney) {
+		synchronized (accountInfo) {
+			log.info("冻结资金：{}", frozenMoney);
+			accountInfo.setAvailable(accountInfo.getAvailable() - frozenMoney);
+			accountInfo.setMargin(accountInfo.getMargin() + frozenMoney);
+		}
+	}
+	//解冻资金
+	private void unfrozenMoney(OrderField.Builder orderBuilder) {
+		ContractField c = orderBuilder.getContract();
+		synchronized (accountInfo) {
+			double marginRatio = orderBuilder.getDirection() == DirectionEnum.D_Buy ? c.getLongMarginRatio() : c.getShortMarginRatio();
+			double frozenMoney = orderBuilder.getPrice() * orderBuilder.getTotalVolume() * c.getMultiplier() * marginRatio;
+			log.info("解冻资金：{}", frozenMoney);
+			accountInfo.setAvailable(accountInfo.getAvailable() + frozenMoney);
+			accountInfo.setMargin(accountInfo.getMargin() - frozenMoney);
+		}
 	}
 	
 	private void updateAccount() {
@@ -222,8 +260,7 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 			
 			accountInfo.setCommission(commission);
 			accountInfo.setPositionProfit(holdingProfit);
-			accountInfo.setBalance(accountInfo.getPreBalance() + holdingProfit - commission + accountInfo.getDeposit() - accountInfo.getWithdraw());
-			accountInfo.setAvailable(accountInfo.getBalance() - totalFrozen - totalMargin);
+			accountInfo.setBalance(accountInfo.getAvailable() + totalFrozen + totalMargin);
 			
 		}
 		
@@ -242,7 +279,8 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 			return false;
 		}
 		if(orderBuilder.getOrderStatus() == OrderStatusEnum.OS_Unknown) {
-			String unifiedSymbol = orderBuilder.getContract().getUnifiedSymbol();
+			ContractField c = orderBuilder.getContract();
+			String unifiedSymbol = c.getUnifiedSymbol();
 			log.info("模拟撤单，合约：{}，订单号：{}", unifiedSymbol, originOrderId);
 			
 			ConcurrentLinkedQueue<OrderField.Builder> orderWaitingQ = contractOrderMap.get(unifiedSymbol);
@@ -257,13 +295,17 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 					ob.setOrderTime(LocalTime.now().format(CommonConstant.T_FORMAT_FORMATTER));
 					ob.setStatusMsg("全部撤单");
 					
+					//撤单成功时，解锁冻结资金
+					unfrozenMoney(orderBuilder);
+					updateAccount();
+					
 					log.info("撤单成功，订单号：{}", originOrderId);
 					feEngine.emitOrder(ob.build());
 					return true;
 				}
 			}
 		}
-		updateAccount();
+		
 		return false;
 	}
 	
@@ -301,6 +343,7 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 					pi.setAccountId(orderBuilder.getAccountId());
 					pi.setPositionDirection(isLongPosition ? PositionDirectionEnum.PD_Long : PositionDirectionEnum.PD_Short);
 					pi.setContract(ContractInfo.convertFrom(tradeField.getContract()));
+					pi.setGatewayId(getGatewayId());
 					gp = new GwPosition(pi);
 				}
 				
@@ -332,7 +375,7 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 	
 	private TradeField deal(OrderField.Builder order, TickField tick) {
 		//判断是否为同一品种
-		if(StringUtils.equals(order.getContract().getUnifiedSymbol(), tick.getUnifiedSymbol())) {
+		if(!StringUtils.equals(order.getContract().getUnifiedSymbol(), tick.getUnifiedSymbol())) {
 			return null;
 		}
 		//判断是否达到成交条件
@@ -351,9 +394,8 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 		tb.setHedgeFlag(order.getHedgeFlag());
 		tb.setOffsetFlag(order.getOffsetFlag());
 		tb.setOrderId(order.getOrderId());
-		LocalDate now = LocalDate.now();
-		tb.setTradeDate(now.format(CommonConstant.D_FORMAT_INT_FORMATTER));
-		tb.setTradeTime(now.format(CommonConstant.T_FORMAT_WITH_MS_INT_FORMATTER));
+		tb.setTradeDate(LocalDate.now().format(CommonConstant.D_FORMAT_INT_FORMATTER));
+		tb.setTradeTime(LocalTime.now().format(CommonConstant.T_FORMAT_FORMATTER));
 		tb.setTradeTimestamp(System.currentTimeMillis());
 		tb.setTradeType(TradeTypeEnum.TT_Common);
 		tb.setPrice(buyConditionSatisfied ? tick.getAskPrice(0) : tick.getBidPrice(0));
@@ -361,6 +403,12 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 		
 		order.setTradedVolume(order.getTotalVolume());
 		order.setOrderStatus(OrderStatusEnum.OS_AllTraded);
+		order.setStatusMsg("报单全部已成交");
+		
+		//当成交是开仓成交时，释放冻结资金
+		if(order.getOffsetFlag()==OffsetFlagEnum.OF_Open) {
+			unfrozenMoney(order);
+		}
 		
 		log.info("模拟{}单全部成交，合约：{}", buyConditionSatisfied?"多":"空", tick.getUnifiedSymbol());
 		

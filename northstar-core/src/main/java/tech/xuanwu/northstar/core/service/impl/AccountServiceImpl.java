@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.SimulatedGatewayImpl;
 import tech.xuanwu.northstar.core.config.props.CtpGatewaySettings;
 import tech.xuanwu.northstar.core.domain.Account;
+import tech.xuanwu.northstar.core.engine.gateway.event.TickEventLoopBackHandler;
 import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
 import tech.xuanwu.northstar.core.persistence.repo.GatewayRepo;
 import tech.xuanwu.northstar.core.persistence.repo.PositionRepo;
@@ -18,7 +19,6 @@ import tech.xuanwu.northstar.core.service.AccountService;
 import tech.xuanwu.northstar.core.util.SimulateAccountFactory;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.FastEventEngine;
-import tech.xuanwu.northstar.engine.MarketEngine;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.entity.AccountInfo;
 import tech.xuanwu.northstar.entity.GatewayInfo;
@@ -38,7 +38,7 @@ public class AccountServiceImpl implements AccountService {
 	RuntimeEngine rtEngine;
 	
 	@Autowired(required=false)
-	MarketEngine mkEngine;
+	TickEventLoopBackHandler tickEventLoopBackHandler;
 	
 	@Autowired
 	CtpGatewaySettings p;
@@ -96,6 +96,8 @@ public class AccountServiceImpl implements AccountService {
 			}
 			List<PositionInfo> posList = positionRepo.getPositionListByGateway(gateway.getGatewayName());
 			gateway = new SimulatedGatewayImpl(realGateway, feEngine, account, posList);
+			
+			tickEventLoopBackHandler.setSimulatedGateway(gateway);
 		}
 		
 		GatewayInfo gatewayInfo = new GatewayInfo();

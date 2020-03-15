@@ -35,7 +35,8 @@ public class TradeController {
 			return new ResultBean<>(tradeService.submitOrder(accountGatewayId, contractSymbol, price, volume, direction, transactionType));
 		} catch (Exception e) {
 			log.error("", e);
-			return new ResultBean<String>(ResultCode.ERROR, ErrorHint.FAIL_SUBMIT_ORDER);
+			String errMsg = String.format("%s。原因：%s", ErrorHint.FAIL_SUBMIT_ORDER, e.getMessage());
+			return new ResultBean<String>(ResultCode.ERROR,  errMsg);
 		}
 	}
 	
@@ -46,7 +47,8 @@ public class TradeController {
 			tradeService.cancelOrder(accountGatewayId, originOrderId);
 		} catch (NoSuchAccountException | TradeException e) {
 			log.error("", e);
-			return new ResultBean<>(ResultCode.ERROR, ErrorHint.FAIL_CANCEL_ORDER);
+			String errMsg = String.format("%s。原因：%s", ErrorHint.FAIL_CANCEL_ORDER, e.getMessage());
+			return new ResultBean<>(ResultCode.ERROR,  errMsg);
 		}
 		return new ResultBean(Void.TYPE);
 	}

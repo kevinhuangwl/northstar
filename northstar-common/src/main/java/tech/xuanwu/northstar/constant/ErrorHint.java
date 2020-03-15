@@ -11,4 +11,6 @@ public interface ErrorHint {
 	String FAIL_SUBMIT_ORDER = "挂单失败";
 	
 	String FAIL_CANCEL_ORDER = "撤单失败";
+	
+	String UNKNOWN_ENUM_TYPE = "未知枚举类型";
 }
