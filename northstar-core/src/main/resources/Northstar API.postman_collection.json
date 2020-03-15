@@ -80,7 +80,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8888/account/order?gatewayId=CTP-SimNow724",
+							"raw": "http://localhost:8888/account/order?gatewayId=CTP-SimNow724@Simulated",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -93,7 +93,7 @@
 							"query": [
 								{
 									"key": "gatewayId",
-									"value": "CTP-SimNow724"
+									"value": "CTP-SimNow724@Simulated"
 								}
 							]
 						}
@@ -106,7 +106,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8888/account/position?gatewayId=CTP-SimNow724",
+							"raw": "http://localhost:8888/account/position?gatewayId=CTP-SimNow724@Simulated",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -119,7 +119,7 @@
 							"query": [
 								{
 									"key": "gatewayId",
-									"value": "CTP-SimNow724"
+									"value": "CTP-SimNow724@Simulated"
 								}
 							]
 						}
@@ -132,7 +132,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8888/account/trade?gatewayId=CTP-SimNow724",
+							"raw": "http://localhost:8888/account/trade?gatewayId=CTP-SimNow724@Simulated",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -145,7 +145,7 @@
 							"query": [
 								{
 									"key": "gatewayId",
-									"value": "CTP-SimNow724"
+									"value": "CTP-SimNow724@Simulated"
 								}
 							]
 						}
@@ -164,7 +164,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8888/trade/order?accountGatewayId=CTP-SimNow724&contractSymbol=rb2012&direction=D_Buy&price=3345&transactionType=OF_Open&volume=30",
+							"raw": "http://localhost:8888/trade/order?accountGatewayId=CTP-SimNow724@Simulated&contractSymbol=rb2005&direction=D_Buy&price=3550&transactionType=OF_Open&volume=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -177,11 +177,11 @@
 							"query": [
 								{
 									"key": "accountGatewayId",
-									"value": "CTP-SimNow724"
+									"value": "CTP-SimNow724@Simulated"
 								},
 								{
 									"key": "contractSymbol",
-									"value": "rb2012"
+									"value": "rb2005"
 								},
 								{
 									"key": "direction",
@@ -189,7 +189,7 @@
 								},
 								{
 									"key": "price",
-									"value": "3345"
+									"value": "3550"
 								},
 								{
 									"key": "transactionType",
@@ -197,7 +197,7 @@
 								},
 								{
 									"key": "volume",
-									"value": "30"
+									"value": "1"
 								}
 							]
 						}
@@ -210,7 +210,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8888/trade/cancel?accountGatewayId=CTP-SimNow724&originOrderId=b3dfbee2-e8a6-4b71-acb3-3878d55ffa95",
+							"raw": "http://localhost:8888/trade/cancel?accountGatewayId=CTP-SimNow724@Simulated&originOrderId=00f513b5-3c3d-4293-8365-bab9e590763a",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -223,11 +223,11 @@
 							"query": [
 								{
 									"key": "accountGatewayId",
-									"value": "CTP-SimNow724"
+									"value": "CTP-SimNow724@Simulated"
 								},
 								{
 									"key": "originOrderId",
-									"value": "b3dfbee2-e8a6-4b71-acb3-3878d55ffa95"
+									"value": "00f513b5-3c3d-4293-8365-bab9e590763a"
 								}
 							]
 						}
@@ -257,7 +257,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8888/market/contracts",
+							"raw": "http://localhost:8888/market/contracts?gatewayId=CTP-SimNow724@Simulated",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -266,6 +266,12 @@
 							"path": [
 								"market",
 								"contracts"
+							],
+							"query": [
+								{
+									"key": "gatewayId",
+									"value": "CTP-SimNow724@Simulated"
+								}
 							]
 						}
 					},
@@ -277,7 +283,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8888/market/sub?contractName=rb2012&gatewayId=CTP-SimNow724",
+							"raw": "http://localhost:8888/market/sub?contractName=rb2005&gatewayId=CTP-SimNow724@Simulated",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -290,11 +296,11 @@
 							"query": [
 								{
 									"key": "contractName",
-									"value": "rb2012"
+									"value": "rb2005"
 								},
 								{
 									"key": "gatewayId",
-									"value": "CTP-SimNow724"
+									"value": "CTP-SimNow724@Simulated"
 								}
 							]
 						}
