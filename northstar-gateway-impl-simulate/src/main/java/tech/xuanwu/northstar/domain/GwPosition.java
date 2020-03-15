@@ -54,8 +54,8 @@ public class GwPosition {
 			p.setTdPosition(tdPosition + nPosition);
 			p.setPrice((cost + nCost) / (p.getPosition() * contract.getMultiplier()));
 			p.setOpenPrice((openCost + nCost) / (p.getPosition() * contract.getMultiplier()));
-			
-			p.setExchangeMargin(p.getExchangeMargin() + p.getPosition() * p.getPrice() * contract.getMultiplier() * marginRatio);
+			p.setContractValue(tradeField.getPrice() * p.getPosition() * contract.getMultiplier());
+			p.setExchangeMargin(p.getContractValue() * marginRatio);
 			p.setUseMargin(p.getExchangeMargin());
 		}
 		
@@ -80,11 +80,7 @@ public class GwPosition {
 
 			p.setPosition(oPosition - nPosition);
 			p.setTdPosition(tdPosition - nPosition);
-			
-			p.setExchangeMargin(p.getExchangeMargin() + p.getPosition() * p.getPrice() * contract.getMultiplier() * marginRatio);
-			p.setUseMargin(p.getExchangeMargin());
 		}
-		
 		
 		return this;
 	}
@@ -109,9 +105,7 @@ public class GwPosition {
 			p.setOpenPositionProfit(p.getPosition() * p.getOpenPriceDiff() * contract.getMultiplier());
 			p.setOpenPositionProfitRatio(p.getOpenPositionProfit() / p.getUseMargin());
 			
-			p.setContractValue(p.getContractValue() + tick.getLastPrice() * p.getPosition() * contract.getMultiplier());
-			p.setExchangeMargin(p.getExchangeMargin() + p.getPosition() * p.getPrice() * contract.getMultiplier() * marginRatio);
-			p.setUseMargin(p.getExchangeMargin());
+			p.setContractValue(tick.getLastPrice() * p.getPosition() * contract.getMultiplier());
 		}
 	}
 	

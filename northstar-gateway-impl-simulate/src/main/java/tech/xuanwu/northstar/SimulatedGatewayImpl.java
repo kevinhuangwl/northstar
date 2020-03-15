@@ -225,43 +225,49 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 			accountInfo.setMargin(accountInfo.getMargin() - frozenMoney);
 		}
 	}
+	//开仓成交
+	private void openingDeal(TradeField tradeField) {
+		ContractField c = tradeField.getContract();
+		synchronized (accountInfo) {
+			double marginRatio = tradeField.getDirection() == DirectionEnum.D_Buy ? c.getLongMarginRatio() : c.getShortMarginRatio();
+			double commission = c.getPriceTick() * tradeField.getContract().getMultiplier() * DEFAULT_FEE_TICK * tradeField.getVolume();
+			double margin = tradeField.getPrice() * tradeField.getVolume() * c.getMultiplier() * marginRatio;
+			accountInfo.setAvailable(accountInfo.getAvailable() - margin - commission);
+			accountInfo.setMargin(accountInfo.getMargin() + margin);
+			accountInfo.setCommission(accountInfo.getCommission() + commission);
+			log.info("合约【{}】开仓委托成交。扣减保证金：{}，扣减手续费：{}", c.getContractId(), margin, commission);
+		}
+	}
+	//平仓成交
+	private void closingDeal(PositionField positionField, TradeField tradeField) {
+		ContractField c = tradeField.getContract();
+		synchronized (accountInfo) {
+			//平仓的方向与持仓相反，所以使用的保证金比例也是相反的
+			double marginRatio = tradeField.getDirection() == DirectionEnum.D_Buy ? c.getShortMarginRatio() : c.getLongMarginRatio();
+			double commission = c.getPriceTick() * c.getMultiplier() * DEFAULT_FEE_TICK * tradeField.getVolume();
+			double margin = tradeField.getPrice() * tradeField.getVolume() * c.getMultiplier() * marginRatio;
+			double priceDiff = positionField.getPositionDirection() == PositionDirectionEnum.PD_Long 
+					? (tradeField.getPrice() - positionField.getPrice()) : (positionField.getPrice() - tradeField.getPrice());
+			double closeProfit = priceDiff * c.getMultiplier() * tradeField.getVolume();
+			accountInfo.setCloseProfit(accountInfo.getCloseProfit() + closeProfit);
+			accountInfo.setAvailable(accountInfo.getAvailable() + margin + closeProfit - commission);
+			accountInfo.setMargin(accountInfo.getMargin() - margin);
+			accountInfo.setCommission(accountInfo.getCommission() + commission);
+			log.info("合约【{}】平仓委托成交。释放保证金：{}，扣减手续费：{}，平仓盈亏：{}", c.getContractId(), margin, commission, closeProfit);
+		}
+	}
 	
 	private void updateAccount() {
 		synchronized (accountInfo) {
 			double holdingProfit = 0;
-			double commission = 0;
-			double totalFrozen = 0;
-			double totalMargin = 0;
-			
-			for(Entry<String, OrderField.Builder> e : orderMap.entrySet()) {
-				OrderField.Builder ob = e.getValue();
-				if(ob.getOrderStatus()==OrderStatusEnum.OS_AllTraded || ob.getOrderStatus()==OrderStatusEnum.OS_Rejected
-						|| ob.getOrderStatus()==OrderStatusEnum.OS_Canceled) {
-					continue;
-				}
-				ContractField contract = ob.getContract();
-				double marginRatio = ob.getDirection() == DirectionEnum.D_Buy ? contract.getLongMarginRatio() : contract.getShortMarginRatio();
-				double frozenMoney = ob.getOrderStatus() == OrderStatusEnum.OS_Unknown 
-						? ob.getTotalVolume() * ob.getPrice() * contract.getMultiplier() * marginRatio
-						: 0;
-				totalFrozen += frozenMoney;
-			}
 			
 			for(Entry<String, GwPosition> e : positionMap.entrySet()) {
 				PositionInfo p = e.getValue().getPositionInfo();
-				totalMargin += p.getUseMargin();
 				holdingProfit += p.getPositionProfit();
 			}
 			
-			for(Entry<String, TradeField> e : tradeMap.entrySet()) {
-				TradeField t = e.getValue();
-				commission += t.getContract().getPriceTick() * t.getContract().getMultiplier() * DEFAULT_FEE_TICK * t.getVolume();
-			}
-			
-			accountInfo.setCommission(commission);
 			accountInfo.setPositionProfit(holdingProfit);
-			accountInfo.setBalance(accountInfo.getAvailable() + totalFrozen + totalMargin);
-			
+			accountInfo.setBalance(accountInfo.getAvailable() + accountInfo.getMargin() + accountInfo.getPositionProfit());
 		}
 		
 		feEngine.emitAccount(accountInfo.convertTo());
@@ -312,6 +318,8 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 	@Override
 	public void emitTick(TickField tick) {
 		String unifiedSymbol = tick.getUnifiedSymbol();
+		updatePosition(tick);
+		updateAccount();
 		ConcurrentLinkedQueue<OrderField.Builder> orderWaitingQ = contractOrderMap.get(unifiedSymbol);
 		if(orderWaitingQ == null || orderWaitingQ.size() == 0) {
 			return;
@@ -349,18 +357,19 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 				
 				if(isOpen) {
 					gp.addPosition(tradeField);
+					openingDeal(tradeField);
 				}else {
 					gp.reducePosition(tradeField);
+					closingDeal(gp.getPositionField(), tradeField);
 				}
 				
 				positionMap.put(positionId, gp);
 				itOrder.remove();
 				
-				updateAccount();
+				feEngine.emitPosition(gp.getPositionField());
+				
 			}
 		}
-		
-		updatePosition(tick);
 	}
 	
 	private void updatePosition(TickField tick) {
@@ -370,6 +379,7 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 			}
 			
 			p.updateByTick(tick);
+			feEngine.emitPosition(p.getPositionField());
 		}
 	}
 	
@@ -399,7 +409,7 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 		tb.setTradeTimestamp(System.currentTimeMillis());
 		tb.setTradeType(TradeTypeEnum.TT_Common);
 		tb.setPrice(buyConditionSatisfied ? tick.getAskPrice(0) : tick.getBidPrice(0));
-		tb.setVolume(buyConditionSatisfied ? tick.getAskVolume(0) : tick.getBidVolume(0));
+		tb.setVolume(order.getTotalVolume());
 		
 		order.setTradedVolume(order.getTotalVolume());
 		order.setOrderStatus(OrderStatusEnum.OS_AllTraded);
