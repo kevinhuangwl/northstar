@@ -1536,8 +1536,8 @@ public class TdSpi extends CThostFtdcTraderSpi {
 			TradeTypeEnum tradeType = CtpConstant.tradeTypeMapReverse.getOrDefault(pTrade.getTradeType(), TradeTypeEnum.TT_Unkonwn);
 			PriceSourceEnum priceSource = CtpConstant.priceSourceMapReverse.getOrDefault(pTrade.getPriceSource(), PriceSourceEnum.PSRC_Unkonwn);
 
-			String orderLocalId = pTrade.getOrderLocalID();
-			String orderSysId = pTrade.getOrderSysID();
+			String orderLocalId = StringUtils.trim(pTrade.getOrderLocalID());
+			String orderSysId = StringUtils.trim(pTrade.getOrderSysID());
 			String sequenceNo = pTrade.getSequenceNo() + "";
 			String brokerOrderSeq = pTrade.getBrokerOrderSeq() + "";
 			String settlementID = pTrade.getSettlementID() + "";
