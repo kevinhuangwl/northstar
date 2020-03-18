@@ -5,7 +5,6 @@ import org.apache.commons.codec.binary.StringUtils;
 import tech.xuanwu.northstar.entity.ContractInfo;
 import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.exception.ContractMismatchException;
-import tech.xuanwu.northstar.exception.TradeException;
 import xyz.redtorch.pb.CoreEnum.OffsetFlagEnum;
 import xyz.redtorch.pb.CoreEnum.PositionDirectionEnum;
 import xyz.redtorch.pb.CoreField.PositionField;

@@ -6,7 +6,7 @@ public class TradeException extends Exception{
 
 	public TradeException(){}
 	
-	public TradeException(String message) {
-		super(message);
+	public TradeException(String accountName, String message) {
+		super("账户【" + accountName + "】交易异常。原因：" + message);
 	}
 }

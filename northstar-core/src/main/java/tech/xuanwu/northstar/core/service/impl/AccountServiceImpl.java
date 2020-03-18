@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
+import tech.xuanwu.northstar.GwAccount;
 import tech.xuanwu.northstar.SimulatedGatewayImpl;
+import tech.xuanwu.northstar.constant.CommonConstant;
 import tech.xuanwu.northstar.core.config.props.CtpGatewaySettings;
 import tech.xuanwu.northstar.core.domain.Account;
 import tech.xuanwu.northstar.core.engine.gateway.event.TickEventLoopBackHandler;
@@ -16,7 +18,6 @@ import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
 import tech.xuanwu.northstar.core.persistence.repo.GatewayRepo;
 import tech.xuanwu.northstar.core.persistence.repo.PositionRepo;
 import tech.xuanwu.northstar.core.service.AccountService;
-import tech.xuanwu.northstar.core.util.SimulateAccountFactory;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.FastEventEngine;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
@@ -88,14 +89,11 @@ public class AccountServiceImpl implements AccountService {
 		//使用模拟账户时要初始化账户
 		if(!p.isRealTrader()) {
 			GatewayApi realGateway = gateway;
-			
-			AccountInfo freshAccount = SimulateAccountFactory.createAccount(p.getGatewayID());
-			AccountInfo account = accountRepo.getLatestAccountInfoByName(freshAccount.getName());
-			if(account == null) {
-				account = freshAccount;
-			}
-			List<PositionInfo> posList = positionRepo.getPositionListByGateway(gateway.getGatewayName());
-			gateway = new SimulatedGatewayImpl(realGateway, feEngine, account, posList);
+			String gatewayName = realGateway.getGatewayName() + CommonConstant.SIM_TAG;
+			AccountInfo accountInfo = accountRepo.getLatestAccountInfoByName(gatewayName);
+			List<PositionInfo> positionInfoList = positionRepo.getPositionListByGateway(gatewayName);
+			GwAccount gwAccount = accountInfo==null ? new GwAccount(gatewayName, gatewayName) : new GwAccount(accountInfo, positionInfoList);
+			gateway = new SimulatedGatewayImpl(realGateway, feEngine, gwAccount);
 			
 			tickEventLoopBackHandler.setSimulatedGateway(gateway);
 		}
