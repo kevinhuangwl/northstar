@@ -7,6 +7,7 @@ import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.exception.ContractMismatchException;
 import xyz.redtorch.pb.CoreEnum.OffsetFlagEnum;
 import xyz.redtorch.pb.CoreEnum.PositionDirectionEnum;
+import xyz.redtorch.pb.CoreField.OrderField;
 import xyz.redtorch.pb.CoreField.PositionField;
 import xyz.redtorch.pb.CoreField.TickField;
 import xyz.redtorch.pb.CoreField.TradeField;
@@ -57,7 +58,7 @@ class GwPosition {
 			p.setPosition(oPosition + nPosition);
 			p.setPrice((cost + nCost) / (p.getPosition() * contract.getMultiplier()));
 			p.setOpenPrice((openCost + nCost) / (p.getPosition() * contract.getMultiplier()));
-			p.setContractValue(tradeField.getPrice() * p.getPosition() * contract.getMultiplier());
+			p.setContractValue(p.getOpenPrice() * p.getPosition() * contract.getMultiplier());
 			p.setExchangeMargin(p.getContractValue() * marginRatio);
 			p.setUseMargin(p.getExchangeMargin());
 		}
@@ -90,8 +91,46 @@ class GwPosition {
 				p.setTdPosition(p.getTdPosition() - Math.min(p.getTdPosition(), nPosition));
 				p.setYdPosition(p.getPosition() - p.getTdPosition());
 			}
+			p.setExchangeMargin(p.getOpenPrice() * p.getPosition() * contract.getMultiplier() * marginRatio);
+			p.setUseMargin(p.getExchangeMargin());
 		}
 		
+		return p.convertTo();
+	}
+	
+	/**
+	 * 冻结仓位
+	 * @param order
+	 * @return
+	 */
+	public PositionField frozenPosition(OrderField order) {
+		synchronized (p) {
+			if(order.getOffsetFlag() == OffsetFlagEnum.OF_CloseToday) {
+				p.setTdFrozen(p.getTdFrozen() + order.getTotalVolume());
+			}else if(order.getOffsetFlag() == OffsetFlagEnum.OF_CloseYesterday) {
+				p.setYdFrozen(p.getYdFrozen() + order.getTotalVolume());
+			}else {
+				p.setFrozen(p.getFrozen() + order.getTotalVolume());
+			}
+		}
+		return p.convertTo();
+	}
+	
+	/**
+	 * 解冻仓位
+	 * @param order
+	 * @return
+	 */
+	public PositionField unfrozenPosition(OrderField order) {
+		synchronized (p) {
+			if(order.getOffsetFlag() == OffsetFlagEnum.OF_CloseToday) {
+				p.setTdFrozen(p.getTdFrozen() - order.getTotalVolume());
+			}else if(order.getOffsetFlag() == OffsetFlagEnum.OF_CloseYesterday) {
+				p.setYdFrozen(p.getYdFrozen() - order.getTotalVolume());
+			}else {
+				p.setFrozen(p.getFrozen() - order.getTotalVolume());
+			}
+		}
 		return p.convertTo();
 	}
 	
@@ -123,9 +162,13 @@ class GwPosition {
 	/**
 	 * 日结算
 	 */
-	public PositionField proceedDailySettlement() {
+	public PositionField proceedDailySettlement(double settlePrice) {
 		synchronized (p) {
 			p.setYdPosition(p.getYdPosition() + p.getTdPosition());
+			p.setTdPosition(0);
+			p.setContractValue(settlePrice * p.getPosition() * contract.getMultiplier());
+			p.setExchangeMargin(p.getContractValue() * marginRatio);
+			p.setUseMargin(p.getExchangeMargin());
 		}
 		return p.convertTo();
 	}
@@ -139,4 +182,11 @@ class GwPosition {
 		return p.convertTo();
 	}
 	
+	/**
+	 * 获取保证金占用
+	 * @return
+	 */
+	public double getUseMargin() {
+		return p.getUseMargin();
+	}
 }

@@ -144,7 +144,11 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 	
 	@Override
 	public void emitTick(TickField tick) {
-		account.updateByTick(tick);
+		feEngine.emitAccount(account.updateByTick(tick));
+		
+		for(PositionField p : account.getPositions()) {
+			feEngine.emitPosition(p);
+		}
 
 		for(Entry<String, GwOrder> e : orderMap.entrySet()) {
 			GwOrder order = e.getValue();
@@ -162,7 +166,11 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 				
 				feEngine.emitTrade(tradeField);
 				feEngine.emitOrder(tradedOrder);
-				feEngine.emitAccount(account.tradeWith(tradeField));
+				try {
+					feEngine.emitAccount(account.tradeWith(tradeField));
+				} catch (TradeException ex) {
+					log.error("", ex);
+				}
 				
 				tradeMap.put(tradeField.getTradeId(), tradeField);
 				orderMap.remove(e.getKey());

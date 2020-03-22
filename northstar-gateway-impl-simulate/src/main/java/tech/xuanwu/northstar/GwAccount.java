@@ -1,12 +1,15 @@
 package tech.xuanwu.northstar;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang3.StringUtils;
 
 import lombok.extern.slf4j.Slf4j;
+import tech.xuanwu.northstar.constant.CommonConstant;
 import tech.xuanwu.northstar.constant.ErrorHint;
 import tech.xuanwu.northstar.entity.AccountInfo;
 import tech.xuanwu.northstar.entity.ContractInfo;
@@ -40,15 +43,19 @@ public class GwAccount {
 	
 	private volatile AccountInfo accountInfo;
 	
-	private ConcurrentHashMap<String, GwPosition> positionMap = new ConcurrentHashMap<>();
+	private ConcurrentHashMap<String, GwPosition> longPositionMap = new ConcurrentHashMap<>();
+	private ConcurrentHashMap<String, GwPosition> shortPositionMap = new ConcurrentHashMap<>();
 	
 	private ConcurrentHashMap<String, OrderField> orderMap = new ConcurrentHashMap<>();
+	
+	private ConcurrentHashMap<String, TickField> tickMap = new ConcurrentHashMap<>();
 	
 	public GwAccount(String gatewayId, String gatewayName) {
 		log.info("创建模拟账户{}", gatewayName);
 		accountInfo = new AccountInfo();
 		accountInfo.setAccountId(gatewayId);
 		accountInfo.setGatewayId(gatewayId);
+		accountInfo.setCode(CommonConstant.SIM_TAG);
 		accountInfo.setName(gatewayName);
 		accountInfo.setCurrency(CurrencyEnum.CNY);
 		accountInfo.setHolder("user");
@@ -60,7 +67,11 @@ public class GwAccount {
 		//避免外部对象逃逸，因此重新构造对象副本
 		this.accountInfo = AccountInfo.convertFrom(accountInfo.convertTo());
 		for(PositionInfo p : positionInfoList) {
-			positionMap.put(p.getPositionId(), new GwPosition(p));
+			if(p.getPositionDirection() == PositionDirectionEnum.PD_Long || p.getPositionDirection() == PositionDirectionEnum.PD_Net && p.getPosition()>0) {
+				longPositionMap.put(p.getContract().getUnifiedSymbol(), new GwPosition(p));				
+			}else if(p.getPositionDirection() == PositionDirectionEnum.PD_Short || p.getPositionDirection() == PositionDirectionEnum.PD_Net && p.getPosition()<0) {
+				shortPositionMap.put(p.getContract().getUnifiedSymbol(), new GwPosition(p));
+			}
 		}
 	}
 	
@@ -78,7 +89,10 @@ public class GwAccount {
 	 */
 	public List<PositionField> getPositions() {
 		List<PositionField> result = new ArrayList<>();
-		for(GwPosition p : positionMap.values()) {
+		for(GwPosition p : longPositionMap.values()) {
+			result.add(p.getPosition());
+		}
+		for(GwPosition p : shortPositionMap.values()) {
 			result.add(p.getPosition());
 		}
 		return result;
@@ -89,7 +103,25 @@ public class GwAccount {
 	 * @param tick
 	 */
 	public AccountField updateByTick(TickField tick) {
-		
+		String unifiedSymbol = tick.getUnifiedSymbol();
+		GwPosition lp = longPositionMap.get(unifiedSymbol);
+		double deltaProfit = 0;
+		if(lp != null) {
+			PositionField p0 = lp.getPosition();
+			PositionField p = lp.updateByTick(tick);
+			deltaProfit += p.getPositionProfit() - p0.getPositionProfit();
+		}
+		GwPosition sp = shortPositionMap.get(unifiedSymbol);
+		if(sp != null) {
+			PositionField p0 = sp.updateByTick(tick);
+			PositionField p = sp.updateByTick(tick);
+			deltaProfit += p.getPositionProfit() - p0.getPositionProfit();
+		}
+		tickMap.put(tick.getUnifiedSymbol(), tick);
+		synchronized (accountInfo) {			
+			accountInfo.setPositionProfit(accountInfo.getPositionProfit() + deltaProfit);
+			refresh();
+		}
 		
 		return accountInfo.convertTo();
 	}
@@ -112,7 +144,7 @@ public class GwAccount {
 	public AccountField submitOrder(OrderField order) throws TradeException{
 		boolean isOpening = order.getOffsetFlag() == OffsetFlagEnum.OF_Open;
 		boolean validOrder = isOpening ? validOpeningOrder(order) : validClosingOrder(order);
-		if(validOrder) {
+		if(!validOrder) {
 			throw new TradeException();
 		}
 		
@@ -125,6 +157,11 @@ public class GwAccount {
 				accountInfo.setMargin(accountInfo.getMargin() + frozenMoney);
 				refresh();
 			}
+		}else {
+			//冻结仓位
+			String unifiedSymbol = order.getContract().getUnifiedSymbol();
+			GwPosition p = order.getDirection() == DirectionEnum.D_Buy ? shortPositionMap.get(unifiedSymbol) : longPositionMap.get(unifiedSymbol);
+			p.frozenPosition(order);
 		}
 		orderMap.put(order.getOrderId(), order);
 		return accountInfo.convertTo();
@@ -136,12 +173,21 @@ public class GwAccount {
 	 * @return
 	 */
 	public AccountField releaseOrder(OrderField order) {
+		boolean isOpening = order.getOffsetFlag() == OffsetFlagEnum.OF_Open;
 		orderMap.remove(order.getOrderId());
 		ContractField c = order.getContract();
 		synchronized (accountInfo) {
 			double marginRatio = order.getDirection() == DirectionEnum.D_Buy ? c.getLongMarginRatio() : c.getShortMarginRatio();
 			double frozenMoney = order.getPrice() * order.getTotalVolume() * c.getMultiplier() * marginRatio;
-			accountInfo.setMargin(accountInfo.getMargin() - frozenMoney);
+			if(isOpening) {				
+				//解冻资金
+				accountInfo.setMargin(accountInfo.getMargin() - frozenMoney);
+			}else {
+				//解冻仓位
+				String unifiedSymbol = order.getContract().getUnifiedSymbol();
+				GwPosition p = order.getDirection() == DirectionEnum.D_Buy ? shortPositionMap.get(unifiedSymbol) : longPositionMap.get(unifiedSymbol);
+				p.unfrozenPosition(order);
+			}
 			refresh();
 		}
 		return accountInfo.convertTo();
@@ -160,28 +206,19 @@ public class GwAccount {
 	//校验合法平仓
 	private boolean validClosingOrder(OrderField order) {
 		ContractField contract = order.getContract();
-		for(GwPosition p : positionMap.values()) {
-			PositionField pf = p.getPosition();
-			if(!StringUtils.equals(contract.getContractId(), pf.getContract().getContractId())) {
-				//合约不一致
-				continue;
-			}
-			
-			//方向要匹配
-			if(pf.getPositionDirection()==PositionDirectionEnum.PD_Long && order.getDirection()==DirectionEnum.D_Sell 
-					|| pf.getPositionDirection()==PositionDirectionEnum.PD_Short && order.getDirection()==DirectionEnum.D_Buy ) {
-				
-				if(order.getOffsetFlag() == OffsetFlagEnum.OF_Open) {
-					return false;
-				}else if(order.getOffsetFlag() == OffsetFlagEnum.OF_CloseToday) {
-					return pf.getTdPosition() >= order.getTotalVolume();
-				}else if(order.getOffsetFlag() == OffsetFlagEnum.OF_CloseYesterday) {
-					return pf.getYdPosition() >= order.getTotalVolume();
-				}
-				return pf.getPosition() >= order.getTotalVolume();
-			}
+		String unifiedSymbol = contract.getUnifiedSymbol();
+		GwPosition p = order.getDirection() == DirectionEnum.D_Buy ? shortPositionMap.get(unifiedSymbol) : longPositionMap.get(unifiedSymbol);
+		if(p == null) {
+			return false;
 		}
-		return false;
+		PositionField pf = p.getPosition();
+		if(order.getOffsetFlag() == OffsetFlagEnum.OF_CloseToday) {
+			return pf.getTdPosition() - pf.getTdFrozen() >= order.getTotalVolume();
+		}else if(order.getOffsetFlag() == OffsetFlagEnum.OF_CloseYesterday) {
+			return pf.getYdPosition() - pf.getYdFrozen() >= order.getTotalVolume();
+		}
+		return pf.getPosition() - pf.getFrozen() >= order.getTotalVolume();
+		
 	}
 	
 	/**
@@ -189,20 +226,24 @@ public class GwAccount {
 	 * @param order
 	 * @return
 	 */
-	public AccountField tradeWith(TradeField trade) {
+	public AccountField tradeWith(TradeField trade) throws TradeException {
 		//成交后构建合约持仓
 		String unifiedSymbol = trade.getContract().getUnifiedSymbol();
-		DirectionEnum direction = trade.getDirection();
-		HedgeFlagEnum hedgeFlag = trade.getHedgeFlag();
-		String accountId = accountInfo.getAccountId();
-		String positionId = unifiedSymbol + "@" + direction.getValueDescriptor().getName() + "@" + hedgeFlag.getValueDescriptor().getName() + "@" + accountId;
 		
-		boolean isLongPosition = trade.getDirection()==DirectionEnum.D_Buy;
 		boolean isOpen = trade.getOffsetFlag() == OffsetFlagEnum.OF_Open;
-		GwPosition gp;
-		if(positionMap.containsKey(positionId)) {
-			gp = positionMap.get(positionId);
-		}else {
+		boolean isClose = trade.getOffsetFlag() != OffsetFlagEnum.OF_Unkonwn && !isOpen;
+		boolean affectLongPosition = trade.getDirection()==DirectionEnum.D_Buy && isOpen || trade.getDirection()==DirectionEnum.D_Sell && isClose;
+		boolean affectShortPosition = trade.getDirection()==DirectionEnum.D_Sell && isOpen || trade.getDirection()==DirectionEnum.D_Buy && isClose;
+		
+		
+		if(affectLongPosition && affectShortPosition || !affectLongPosition && !affectShortPosition) {
+			throw new TradeException(accountInfo.getName(), "状态异常");
+		}
+		
+		GwPosition gp = affectLongPosition ? longPositionMap.get(unifiedSymbol) : shortPositionMap.get(unifiedSymbol);
+		if(gp == null && isOpen) {
+			boolean isLongPosition = trade.getDirection()==DirectionEnum.D_Buy;
+			String positionId = unifiedSymbol + "@" + trade.getDirection().getValueDescriptor().getName() + "@" + accountInfo.getAccountId();
 			PositionInfo pi = new PositionInfo();
 			pi.setPositionId(positionId);
 			pi.setAccountId(trade.getAccountId());
@@ -210,49 +251,54 @@ public class GwAccount {
 			pi.setContract(ContractInfo.convertFrom(trade.getContract()));
 			pi.setGatewayId(accountInfo.getGatewayId());
 			gp = new GwPosition(pi);
+			
+			if(isLongPosition) {				
+				longPositionMap.put(unifiedSymbol, gp);
+			}else {
+				shortPositionMap.put(unifiedSymbol, gp);
+			}
 		}
+		
+		ContractField c = trade.getContract();
+		double commission = c.getPriceTick() * trade.getContract().getMultiplier() * DEFAULT_FEE_TICK * trade.getVolume();
 		
 		if(isOpen) {
 			gp.addPosition(trade);
-			openingDeal(trade);
+			openingDeal(commission, gp.getUseMargin());
+			log.info("合约【{}】开仓委托成交。扣减保证金：{}，扣减手续费：{}", c.getContractId(), gp.getUseMargin(), commission);
 		}else {
+			
+			PositionField positionField = gp.getPosition();
+			double marginBefore = gp.getUseMargin();
+			//平仓的方向与持仓相反，所以使用的保证金比例也是相反的
+			double dir = positionField.getPositionDirection() == PositionDirectionEnum.PD_Long ? 1 : -1;
+			double closeProfit = dir * (trade.getPrice() - positionField.getPrice()) * c.getMultiplier() * trade.getVolume();
+			
 			gp.reducePosition(trade);
-			closingDeal(gp.getPosition(), trade);
+			
+			double marginDelta = gp.getUseMargin() - marginBefore;
+			closingDeal(commission, marginDelta, closeProfit);
+			log.info("合约【{}】平仓委托成交。释放保证金：{}，扣减手续费：{}，平仓盈亏：{}", c.getContractId(), Math.abs(marginDelta), commission, closeProfit);
 		}
 		
-		positionMap.put(positionId, gp);
 		return accountInfo.convertTo();
 	}
 	
 	//开仓成交
-	private void openingDeal(TradeField tradeField) {
-		ContractField c = tradeField.getContract();
+	private void openingDeal(double commission, double useMargin) {
 		synchronized (accountInfo) {
-			double marginRatio = tradeField.getDirection() == DirectionEnum.D_Buy ? c.getLongMarginRatio() : c.getShortMarginRatio();
-			double commission = c.getPriceTick() * tradeField.getContract().getMultiplier() * DEFAULT_FEE_TICK * tradeField.getVolume();
-			double margin = tradeField.getPrice() * tradeField.getVolume() * c.getMultiplier() * marginRatio;
-			accountInfo.setAvailable(accountInfo.getAvailable() - margin - commission);
-			accountInfo.setMargin(accountInfo.getMargin() + margin);
+			accountInfo.setMargin(accountInfo.getMargin() + useMargin);
 			accountInfo.setCommission(accountInfo.getCommission() + commission);
-			log.info("合约【{}】开仓委托成交。扣减保证金：{}，扣减手续费：{}", c.getContractId(), margin, commission);
+			refresh();
 		}
 	}
 	//平仓成交
-	private void closingDeal(PositionField positionField, TradeField tradeField) {
-		ContractField c = tradeField.getContract();
+	private void closingDeal(double commission, double marginDelta, double closeProfit) {
 		synchronized (accountInfo) {
-			//平仓的方向与持仓相反，所以使用的保证金比例也是相反的
-			double marginRatio = tradeField.getDirection() == DirectionEnum.D_Buy ? c.getShortMarginRatio() : c.getLongMarginRatio();
-			double commission = c.getPriceTick() * c.getMultiplier() * DEFAULT_FEE_TICK * tradeField.getVolume();
-			double margin = tradeField.getPrice() * tradeField.getVolume() * c.getMultiplier() * marginRatio;
-			double priceDiff = positionField.getPositionDirection() == PositionDirectionEnum.PD_Long 
-					? (tradeField.getPrice() - positionField.getPrice()) : (positionField.getPrice() - tradeField.getPrice());
-			double closeProfit = priceDiff * c.getMultiplier() * tradeField.getVolume();
 			accountInfo.setCloseProfit(accountInfo.getCloseProfit() + closeProfit);
-			accountInfo.setAvailable(accountInfo.getAvailable() + margin + closeProfit - commission);
-			accountInfo.setMargin(accountInfo.getMargin() - margin);
+			accountInfo.setMargin(accountInfo.getMargin() + marginDelta);
 			accountInfo.setCommission(accountInfo.getCommission() + commission);
-			log.info("合约【{}】平仓委托成交。释放保证金：{}，扣减手续费：{}，平仓盈亏：{}", c.getContractId(), margin, commission, closeProfit);
+			refresh();
 		}
 	}
 	
@@ -296,6 +342,40 @@ public class GwAccount {
 	 * 进行日结算
 	 */
 	public AccountField proceedDailySettlement() {
+		//撤销全部挂单
+		for(Entry<String, OrderField> e : orderMap.entrySet()) {
+			OrderField order = e.getValue();
+			releaseOrder(order);
+		}
+		
+		double settleMargin = 0;
+		List<GwPosition> totalPosition = new ArrayList<>(longPositionMap.size() + shortPositionMap.size());
+		totalPosition.addAll(longPositionMap.values());
+		totalPosition.addAll(shortPositionMap.values());
+		for(GwPosition p : totalPosition) {
+			String unifiedSymbol = p.getPosition().getContract().getUnifiedSymbol();
+			TickField tick = tickMap.get(unifiedSymbol);
+			PositionField positionField = p.proceedDailySettlement(tick.getSettlePrice());
+			settleMargin += positionField.getUseMargin();
+		}
+		
+		synchronized (accountInfo) {
+			//重新计算保证金
+			accountInfo.setMargin(settleMargin);
+			
+			//刷新可用资金
+			accountInfo.setAvailable(accountInfo.getBalance() - accountInfo.getMargin());
+			
+			//转化权益
+			accountInfo.setPreBalance(accountInfo.getBalance() - accountInfo.getPositionProfit());
+			accountInfo.setTradingDay(LocalDate.parse(accountInfo.getTradingDay()).plusDays(1).format(CommonConstant.D_FORMAT_INT_FORMATTER));
+			
+			//当天计算项复位
+			accountInfo.setDeposit(0);
+			accountInfo.setWithdraw(0);
+			accountInfo.setCommission(0);
+			accountInfo.setCloseProfit(0);
+		}
 		
 		return accountInfo.convertTo();
 	}

@@ -63,4 +63,30 @@ public class TransactionInfo implements Serializable{
 		return info;
 		
 	}
+	
+	public TradeField convertTo() {
+		TradeField.Builder tb = TradeField.newBuilder();
+		tb.setAccountId(accountId);
+		tb.setAdapterOrderId(adapterOrderId);
+		tb.setAdapterTradeId(adapterTradeId);
+		tb.setOriginOrderId(originOrderId);
+		tb.setOrderId(orderId);
+		tb.setOrderLocalId(orderLocalId);
+		tb.setBrokerOrderSeq(brokerOrderSeq);
+		tb.setOrderSysId(orderSysId);
+		tb.setSettlementId(settlementId);
+		tb.setSequenceNo(sequenceNo);
+		tb.setDirection(direction);
+		tb.setOffsetFlag(offsetFlag);
+		tb.setPrice(price);
+		tb.setVolume(volume);
+		tb.setTradingDay(tradingDay);
+		tb.setTradeDate(tradeDate);
+		tb.setTradeTime(tradeTime);
+		tb.setTradeTimestamp(tradeTimestamp);
+		tb.setContract(contract.convertTo());
+		tb.setGatewayId(gatewayId);
+		tb.setTradeId(tradeId);
+		return tb.build();
+	}
 }
