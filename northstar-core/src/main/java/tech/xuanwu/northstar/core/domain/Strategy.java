@@ -1,6 +1,7 @@
 package tech.xuanwu.northstar.core.domain;
 
 import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
+import tech.xuanwu.northstar.core.persistence.repo.PositionRepo;
 import tech.xuanwu.northstar.domain.IStrategy;
 import tech.xuanwu.northstar.gateway.GatewayApi;
 
@@ -11,9 +12,10 @@ import tech.xuanwu.northstar.gateway.GatewayApi;
  */
 public final class Strategy extends Account implements IStrategy{
 
-	public Strategy(GatewayApi gatewayApi, AccountRepo accountRepo) {
-		super(gatewayApi, accountRepo);
+	public Strategy(GatewayApi gatewayApi, AccountRepo accountRepo, PositionRepo positionRepo) {
+		super(gatewayApi, accountRepo, positionRepo);
 		// TODO Auto-generated constructor stub
 	}
+
 
 }

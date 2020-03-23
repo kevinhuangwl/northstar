@@ -1,5 +1,6 @@
 package tech.xuanwu.northstar;
 
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -12,7 +13,9 @@ import tech.xuanwu.northstar.constant.CommonConstant;
 import tech.xuanwu.northstar.constant.ErrorHint;
 import tech.xuanwu.northstar.constant.NoticeCode;
 import tech.xuanwu.northstar.engine.FastEventEngine;
+import tech.xuanwu.northstar.entity.AccountInfo;
 import tech.xuanwu.northstar.entity.NoticeInfo;
+import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.exception.TradeException;
 import tech.xuanwu.northstar.gateway.GatewayApi;
 import tech.xuanwu.northstar.gateway.SimulatedGateway;
@@ -50,12 +53,13 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 	/*成交记录*/
 	private ConcurrentHashMap<String, TradeField> tradeMap = new ConcurrentHashMap<>();
 	
-	public SimulatedGatewayImpl(GatewayApi realGatewayApi, FastEventEngine feEngine, GwAccount account) {
+	public SimulatedGatewayImpl(GatewayApi realGatewayApi, FastEventEngine feEngine, AccountInfo accountInfo, List<PositionInfo> positionInfoList) {
 		log.info("启动模拟市场网关");
-		
+		String simGatewayName = realGatewayApi.getGatewayName() + CommonConstant.SIM_TAG;
+		this.account = accountInfo==null ? new GwAccount(simGatewayName, simGatewayName) : new GwAccount(accountInfo, positionInfoList);
 		this.realGatewayApi = realGatewayApi;
 		this.feEngine = feEngine;
-		this.account = account;
+		
 	}
 	
 	@Override

@@ -8,5 +8,7 @@ public interface PositionRepo {
 
 	boolean upsertById(PositionInfo p);
 	
+	boolean removeById(PositionInfo p);
+	
 	List<PositionInfo> getPositionListByGateway(String gatewayName);
 }

@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.commons.lang3.StringUtils;
-
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.CommonConstant;
 import tech.xuanwu.northstar.constant.ErrorHint;
@@ -18,7 +16,6 @@ import tech.xuanwu.northstar.exception.AccountException;
 import tech.xuanwu.northstar.exception.TradeException;
 import xyz.redtorch.pb.CoreEnum.CurrencyEnum;
 import xyz.redtorch.pb.CoreEnum.DirectionEnum;
-import xyz.redtorch.pb.CoreEnum.HedgeFlagEnum;
 import xyz.redtorch.pb.CoreEnum.OffsetFlagEnum;
 import xyz.redtorch.pb.CoreEnum.PositionDirectionEnum;
 import xyz.redtorch.pb.CoreField.AccountField;
@@ -34,7 +31,7 @@ import xyz.redtorch.pb.CoreField.TradeField;
  *
  */
 @Slf4j
-public class GwAccount {
+class GwAccount {
 	
 	//账户默认初始金额10万
 	private final int DEFAULT_INIT_BALANCE = 100000;

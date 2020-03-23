@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.common.Conditional;
 import tech.xuanwu.northstar.constant.ErrorHint;
 import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
+import tech.xuanwu.northstar.core.persistence.repo.PositionRepo;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.domain.IStrategy;
 import tech.xuanwu.northstar.entity.AccountInfo;
@@ -37,9 +38,15 @@ import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
  */
 @Slf4j
 public class Account implements IAccount{
+	//避免频繁更新数据库
+	private static final int DB_UPDATE_INTERVAL = 30000;
+	private long lastUpdateTime = 0;
 	
 	@NotNull
 	protected AccountRepo accountRepo;
+	
+	@NotNull
+	protected PositionRepo positionRepo;
 	
 	/*账户对应的网关接口，一对一关系*/
 	@NotNull
@@ -75,11 +82,12 @@ public class Account implements IAccount{
 	
 	protected String lastOrderTradeDay = "";
 	
-	public Account(GatewayApi gatewayApi, AccountRepo accountRepo){
+	public Account(GatewayApi gatewayApi, AccountRepo accountRepo, PositionRepo positionRepo){
 		this.name = gatewayApi.getGatewayName();
 		this.gatewayId = gatewayApi.getGatewayId();
 		this.gatewayApi = gatewayApi;
 		this.accountRepo = accountRepo;
+		this.positionRepo = positionRepo;
 	}
 
 	@Override
@@ -110,10 +118,21 @@ public class Account implements IAccount{
 	@Override
 	public void updatePosition(PositionInfo position) {
 		synchronized (positionMap) {
+			if(position.getPosition() == 0) {
+				positionMap.remove(position.getPositionId());
+				positionRepo.removeById(position);
+				return;
+			}
+			PositionInfo lastPosition = positionMap.get(position.getPositionId());
 			positionMap.put(position.getPositionId(), position);
+			if(lastPosition != null && lastPosition.getPosition() == position.getPosition()) {				
+				//当持仓不变时，不更新数据库
+				return;
+			}
+			positionRepo.upsertById(position);
 		}
 	}
-
+	
 	@Override
 	public List<PositionInfo> getPositionInfoList() {
 		synchronized (positionMap) {		
@@ -183,7 +202,10 @@ public class Account implements IAccount{
 		if(!account.equals(this.accountInfo)) {
 			try {
 				this.accountInfo = account;
-				accountRepo.upsertByDate(account);
+				if(System.currentTimeMillis() - lastUpdateTime > DB_UPDATE_INTERVAL) {					
+					accountRepo.upsertByDate(account);
+					lastUpdateTime = System.currentTimeMillis();
+				}
 			} catch (Exception e) {
 				log.error("插入账户信息异常", e);
 			}

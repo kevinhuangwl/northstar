@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.GwAccount;
 import tech.xuanwu.northstar.SimulatedGatewayImpl;
 import tech.xuanwu.northstar.constant.CommonConstant;
 import tech.xuanwu.northstar.core.config.props.CtpGatewaySettings;
@@ -89,11 +88,11 @@ public class AccountServiceImpl implements AccountService {
 		//使用模拟账户时要初始化账户
 		if(!p.isRealTrader()) {
 			GatewayApi realGateway = gateway;
+			String gatewayId = realGateway.getGatewayId() + CommonConstant.SIM_TAG;
 			String gatewayName = realGateway.getGatewayName() + CommonConstant.SIM_TAG;
 			AccountInfo accountInfo = accountRepo.getLatestAccountInfoByName(gatewayName);
-			List<PositionInfo> positionInfoList = positionRepo.getPositionListByGateway(gatewayName);
-			GwAccount gwAccount = accountInfo==null ? new GwAccount(gatewayName, gatewayName) : new GwAccount(accountInfo, positionInfoList);
-			gateway = new SimulatedGatewayImpl(realGateway, feEngine, gwAccount);
+			List<PositionInfo> positionInfoList = positionRepo.getPositionListByGateway(gatewayId);
+			gateway = new SimulatedGatewayImpl(realGateway, feEngine, accountInfo, positionInfoList);
 			
 			tickEventLoopBackHandler.setSimulatedGateway(gateway);
 		}
@@ -107,7 +106,7 @@ public class AccountServiceImpl implements AccountService {
 		gatewayRepo.upsertById(gatewayInfo);
 		
 		log.info("连接网关【{}】，使用【{}】交易", p.getGatewayName(), p.isRealTrader()?"真实账户":"模拟账户");
-		IAccount account = new Account(gateway, accountRepo);
+		IAccount account = new Account(gateway, accountRepo, positionRepo);
 		rtEngine.regAccount(account);
 		
 		gateway.connect();

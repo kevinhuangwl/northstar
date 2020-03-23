@@ -35,14 +35,20 @@ public class PositionRepoImpl implements PositionRepo{
 	}
 
 	@Override
-	public List<PositionInfo> getPositionListByGateway(String gatewayName) {
-		log.info("根据网关查询相关持仓列表");
-		List<Document> results = mongodb.find(DB, TBL_POSITION, Filters.eq("gatewayName", gatewayName));
+	public List<PositionInfo> getPositionListByGateway(String gatewayId) {
+		log.info("根据网关[{}]查询相关持仓列表", gatewayId);
+		List<Document> results = mongodb.find(DB, TBL_POSITION, Filters.eq("gatewayId", gatewayId));
 		List<PositionInfo> resultList = new ArrayList<>(results.size());
 		for(Document d : results) {
 			resultList.add(gson.fromJson(d.toJson(), PositionInfo.class));
 		}
 		return resultList;
+	}
+
+	@Override
+	public boolean removeById(PositionInfo p) {
+		log.info("移除持仓信息");
+		return mongodb.delete(DB, TBL_POSITION, new Document().append("positionId", p.getPositionId()));
 	}
 
 }
