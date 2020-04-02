@@ -26,6 +26,10 @@ public class MarketDataServiceImpl implements MarketDataService{
 	@Override
 	public boolean subscribeContract(String gatewayId, String symbol) throws Exception {
 		IAccount account = rtEngine.getAccount(gatewayId);
+		
+		if(isIndexContract(symbol)) {
+			
+		}
 		ContractInfo c = contractRepo.getContractBySymbol(gatewayId, symbol);
 		if(c == null) {
 			throw new NoSuchContractException(symbol);
@@ -35,6 +39,12 @@ public class MarketDataServiceImpl implements MarketDataService{
 		c.setSubscribed(true);
 		contractRepo.updateById(c);
 		return res;
+	}
+	
+	//判断是否为指数合约
+	private boolean isIndexContract(String symbol) {
+		String suffix = symbol.substring(symbol.length()-3);
+		return Integer.valueOf(suffix) == 0;
 	}
 
 	@Override

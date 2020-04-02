@@ -9,6 +9,7 @@ import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.fasterxml.jackson.databind.deser.DataFormatReaders.Match;
 import com.google.gson.Gson;
 import static com.mongodb.client.model.Filters.*;
 
@@ -93,6 +94,22 @@ public class ContractRepoImpl implements ContractRepo{
 	public boolean updateById(ContractInfo contract) throws Exception {
 		Document doc = Document.parse(gson.toJson(contract));
 		return mongodb.updateOne(DB, TBL_CONTRACT, new Document("contractId", contract.getContractId()), doc);
+	}
+
+	@Override
+	public List<ContractInfo> getSeriesContractsByExample(String gatewayId, String symbol) throws Exception {
+		String contractName = symbol.replaceAll("\\d+$", "");
+		List<Document> seriesContracts = mongodb.find(DB, TBL_CONTRACT, 
+				and(eq("gatewayId", gatewayId),
+					regex("symbol", String.format("/%s/i", contractName)),
+					gte("lastTradeDateOrContractMonth", LocalDate.now().format(CommonConstant.D_FORMAT_INT_FORMATTER))));
+		log.info("查询【{}】品种的全月份合约，共{}个", contractName, seriesContracts.size());
+		List<ContractInfo> resultList = new ArrayList<ContractInfo>(seriesContracts.size());
+		for(Document doc : seriesContracts) {
+			ContractInfo info = gson.fromJson(doc.toJson(), ContractInfo.class);
+			resultList.add(info);
+		}
+		return resultList;
 	}
 
 }

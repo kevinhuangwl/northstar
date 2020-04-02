@@ -38,6 +38,13 @@ public interface ContractRepo {
 	ContractInfo getContractBySymbol(String gatewayId, String symbol) throws Exception;
 	
 	/**
+	 * 获取整个品种的系列有效合约
+	 * @return
+	 * @throws Exception
+	 */
+	List<ContractInfo> getSeriesContractsByExample(String gateway, String symbol) throws Exception;
+	
+	/**
 	 * 获取所有订阅合约
 	 * @return
 	 * @throws Exception

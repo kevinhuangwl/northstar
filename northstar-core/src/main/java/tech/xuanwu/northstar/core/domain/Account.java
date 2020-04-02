@@ -38,7 +38,7 @@ import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
  */
 @Slf4j
 public class Account implements IAccount{
-	//避免频繁更新数据库
+	//数据库更新间隔，避免频繁更新数据库
 	private static final int DB_UPDATE_INTERVAL = 30000;
 	private long lastUpdateTime = 0;
 	

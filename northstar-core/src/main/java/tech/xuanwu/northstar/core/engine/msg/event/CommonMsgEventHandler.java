@@ -75,8 +75,6 @@ public class CommonMsgEventHandler {
     	client.joinRoom(s.getStrategyName());
     	roomList.add(s.getStrategyName());
     	
-//    	rtEngine.emitEvent(EventEnum.REGISTER_STRATEGY.toString(), new EventObject(s));
-    	
     	for(String contract : contractList) {
     		client.joinRoom(contract);
     		roomList.add(contract);
