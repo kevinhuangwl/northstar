@@ -1,5 +1,7 @@
 package tech.xuanwu.northstar.core.domain;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -8,16 +10,23 @@ import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 
-import static tech.xuanwu.northstar.constant.CommonConstant.$$;
+import static tech.xuanwu.northstar.constant.CommonConstant.at;
 import tech.xuanwu.northstar.entity.ContractInfo;
 import xyz.redtorch.pb.CoreField.ContractField;
 import xyz.redtorch.pb.CoreField.TickField;
 
+/**
+ * 指数合约领域模型，负责计算指数行情
+ * @author kevinhuangwl
+ *
+ */
 public class IndexContract {
 
 	private final ContractInfo self = new ContractInfo();
 
 	private TickField.Builder tickBuilder = TickField.newBuilder();
+	
+	private double priceTick;
 
 	/* 记录合约对应的数组下标 */
 	private Map<String, Integer> symbolIndexMap;
@@ -29,8 +38,6 @@ public class IndexContract {
 	private TickEventHandler tickHandler;
 
 	private double[] prices;
-	private double[] upperLimits;
-	private double[] lowerLimits;
 	private long[] volumeDeltas;
 	private long[] volumes;
 	private double[] openInterestDeltas;
@@ -41,15 +48,17 @@ public class IndexContract {
 		this.tickHandler = tickHandler;
 		ContractInfo proto = seriesContracts.get(0);
 		BeanUtils.copyProperties(proto, self);
+		this.priceTick = proto.getPriceTick();
+		
 		String chnName = proto.getName().replaceAll("\\d+", "");
 		String indexSymbolSuffix = indexSymbol.replaceAll("\\w+", "");
 		String symbol = indexSymbol; // 代码
 		String name = chnName + indexSymbolSuffix; // 简称
 		String fullName = name; // 全称
 		String thirdPartyId = symbol; // 第三方ID
-		String unifiedSymbol = symbol + $$ + proto.getExchange() + $$ + proto.getProductClass(); // 统一ID，通常是
+		String unifiedSymbol = symbol + at + proto.getExchange() + at + proto.getProductClass(); // 统一ID，通常是
 																									// <合约代码@交易所代码@产品类型>
-		String contractId = unifiedSymbol + $$ + proto.getGatewayId(); // ID，通常是 <合约代码@交易所代码@产品类型@网关ID>
+		String contractId = unifiedSymbol + at + proto.getGatewayId(); // ID，通常是 <合约代码@交易所代码@产品类型@网关ID>
 		self.setContractId(contractId);
 		self.setUnifiedSymbol(unifiedSymbol);
 		self.setThirdPartyId(thirdPartyId);
@@ -65,8 +74,6 @@ public class IndexContract {
 		volumes = new long[contractSize];
 		openInterestDeltas = new double[contractSize];
 		openInterests = new double[contractSize];
-		upperLimits = new double[contractSize];
-		lowerLimits = new double[contractSize];
 
 		for (int i = 0; i < seriesContracts.size(); i++) {
 			symbolIndexMap.put(seriesContracts.get(i).getUnifiedSymbol(), i);
@@ -74,6 +81,10 @@ public class IndexContract {
 
 		tickBuilder.setUnifiedSymbol(unifiedSymbol);
 		tickBuilder.setGatewayId(proto.getGatewayId());
+		tickBuilder.addAllAskPrice(Arrays.asList(0D,0D,0D,0D,0D));
+		tickBuilder.addAllBidPrice(Arrays.asList(0D,0D,0D,0D,0D));
+		tickBuilder.addAllAskVolume(Arrays.asList(0,0,0,0,0));
+		tickBuilder.addAllBidVolume(Arrays.asList(0,0,0,0,0));
 	}
 
 	public ContractField getContract() {
@@ -101,10 +112,6 @@ public class IndexContract {
 	private TickField calculate() {
 		// 加权均价
 		double weightedPrice = 0;
-		// 加权涨停价
-		double weightedUpperLimit = 0;
-		// 加权跌停价
-		double weightedLowerLimit = 0;
 		// 合计成交量变化
 		long totalVolumeDeltaInTick = 0;
 		// 合计成交量
@@ -114,12 +121,13 @@ public class IndexContract {
 
 		for (int i = 0; i < contractSize; i++) {
 			weightedPrice += prices[i] * openInterests[i] / totalOpenInterest;
-			weightedLowerLimit += lowerLimits[i] * openInterests[i] / totalOpenInterest;
-			weightedUpperLimit += upperLimits[i] * openInterests[i] / totalOpenInterest;
 			totalVolumeDeltaInTick += volumeDeltas[i];
 			totalVolume += volumes[i];
 			totalOpenInterestDeltaInTick += openInterestDeltas[i];
 		}
+		
+		weightedPrice = roundWithPriceTick(weightedPrice);
+		
 		tickBuilder.setLastPrice(weightedPrice);
 		if (tickBuilder.getHighPrice()==0 || tickBuilder.getHighPrice() < weightedPrice) {
 			tickBuilder.setHighPrice(weightedPrice);
@@ -130,17 +138,21 @@ public class IndexContract {
 		if(tickBuilder.getOpenPrice()==0) {
 			tickBuilder.setOpenPrice(weightedPrice);
 		}
-		if(tickBuilder.getUpperLimit()==0) {
-			tickBuilder.setUpperLimit(weightedUpperLimit);
-		}
-		if(tickBuilder.getLowerLimit()==0) {
-			tickBuilder.setLowerLimit(weightedLowerLimit);
-		}
 		tickBuilder.setVolume(totalVolume);
 		tickBuilder.setVolumeDelta(totalVolumeDeltaInTick);
 		tickBuilder.setOpenInterestDelta(totalOpenInterestDeltaInTick);
 		tickBuilder.setOpenInterest(totalOpenInterest);
 		return tickBuilder.build();
+	}
+
+	//四舍五入处理
+	private double roundWithPriceTick(double weightedPrice) {
+		int enlargePrice = (int) (weightedPrice * 1000);
+		int enlargePriceTick = (int) (priceTick * 1000);
+		int numOfTicks = enlargePrice / enlargePriceTick;
+		int tickCarry = (enlargePrice % enlargePriceTick) < (enlargePriceTick / 2) ? 0 : 1;
+		  
+		return  enlargePriceTick * (numOfTicks + tickCarry) * 1.0 / 1000;
 	}
 
 	public interface TickEventHandler {

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import tech.xuanwu.northstar.core.persistence.repo.ContractRepo;
 import tech.xuanwu.northstar.core.service.MarketDataService;
 import tech.xuanwu.northstar.domain.IAccount;
+import tech.xuanwu.northstar.engine.IndexEngine;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.entity.ContractInfo;
 import tech.xuanwu.northstar.exception.NoSuchContractException;
@@ -23,13 +24,20 @@ public class MarketDataServiceImpl implements MarketDataService{
 	@Autowired
 	ContractRepo contractRepo;
 	
+	@Autowired
+	IndexEngine idxEngine;
+	
 	@Override
 	public boolean subscribeContract(String gatewayId, String symbol) throws Exception {
 		IAccount account = rtEngine.getAccount(gatewayId);
 		
+		//订阅的是指数合约
 		if(isIndexContract(symbol)) {
-			
+			idxEngine.addIndexContract(gatewayId, symbol);
+			return true;
 		}
+		
+		//订阅的是普通合约
 		ContractInfo c = contractRepo.getContractBySymbol(gatewayId, symbol);
 		if(c == null) {
 			throw new NoSuchContractException(symbol);

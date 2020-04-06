@@ -12,6 +12,7 @@ import tech.xuanwu.northstar.engine.FastEventEngine;
 import tech.xuanwu.northstar.engine.FastEventEngine.FastEvent;
 import tech.xuanwu.northstar.engine.FastEventEngine.FastEventDynamicHandlerAbstract;
 import tech.xuanwu.northstar.engine.FastEventEngine.FastEventType;
+import tech.xuanwu.northstar.engine.IndexEngine;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import xyz.redtorch.pb.CoreField.TickField;
 
@@ -30,6 +31,9 @@ public class MarketDataEventHandler extends FastEventDynamicHandlerAbstract impl
 	@Autowired
 	RuntimeEngine rtEngine;
 	
+	@Autowired
+	IndexEngine idxEngine;
+	
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		fes.addHandler(this);
@@ -42,6 +46,9 @@ public class MarketDataEventHandler extends FastEventDynamicHandlerAbstract impl
 		if (FastEventType.TICK.equals(fastEvent.getFastEventType())) {
 			try {
 				TickField tick = (TickField) fastEvent.getObj();
+				
+				idxEngine.updateTick(tick);
+				
 				EventObject e = new EventObject(tick);
 				rtEngine.emitEvent(RuntimeEvent.TICK_UPDATE, e);
 			} catch (Exception e) {

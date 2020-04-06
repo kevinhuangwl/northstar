@@ -11,7 +11,7 @@ import tech.xuanwu.northstar.exception.NoSuchEventHandlerException;
 
 /**
  * 运行时引擎
- * 负责提供领域对象的运行时环境
+ * 负责管理账户、策略等交易领域模型对象
  * @author kevinhuangwl
  *
  */

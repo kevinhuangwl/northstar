@@ -1,5 +1,10 @@
 package tech.xuanwu.northstar.core.persistence.repo;
 
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.gte;
+import static com.mongodb.client.model.Filters.regex;
+
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,9 +14,7 @@ import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.fasterxml.jackson.databind.deser.DataFormatReaders.Match;
 import com.google.gson.Gson;
-import static com.mongodb.client.model.Filters.*;
 
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.CommonConstant;
@@ -28,6 +31,8 @@ public class ContractRepoImpl implements ContractRepo{
 	final String DB = "DB_ADMIN";
 	
 	final String TBL_CONTRACT = "Contracts";
+	
+	final String TBL_INDEX_CONTRACT = "IndexContracts";
 	
 	Gson gson = new Gson();
 
@@ -47,9 +52,9 @@ public class ContractRepoImpl implements ContractRepo{
 	}
 
 	@Override
-	public boolean delete(String unifiedSymbol) {
-		log.info("移除合约");
-		return mongodb.delete(DB, TBL_CONTRACT, new Document().append("unifiedSymbol", unifiedSymbol));
+	public boolean delete(String gatewayId, String symbol) {
+		log.info("移除合约[{}_{}]", gatewayId, symbol);
+		return mongodb.delete(DB, TBL_CONTRACT, new Document().append("symbol", symbol).append("gatewayId", gatewayId));
 	}
 
 	@Override
@@ -101,7 +106,7 @@ public class ContractRepoImpl implements ContractRepo{
 		String contractName = symbol.replaceAll("\\d+$", "");
 		List<Document> seriesContracts = mongodb.find(DB, TBL_CONTRACT, 
 				and(eq("gatewayId", gatewayId),
-					regex("symbol", String.format("/%s/i", contractName)),
+					regex("symbol", contractName, "i"),
 					gte("lastTradeDateOrContractMonth", LocalDate.now().format(CommonConstant.D_FORMAT_INT_FORMATTER))));
 		log.info("查询【{}】品种的全月份合约，共{}个", contractName, seriesContracts.size());
 		List<ContractInfo> resultList = new ArrayList<ContractInfo>(seriesContracts.size());

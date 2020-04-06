@@ -27,7 +27,7 @@ public interface ContractRepo {
 	 * @param contract
 	 * @return
 	 */
-	boolean delete(String unifiedSymbol);
+	boolean delete(String gatewayId, String symbol);
 	
 	/**
 	 * 依据合约名称查询合约信息
@@ -57,4 +57,5 @@ public interface ContractRepo {
 	 * @throws Exception
 	 */
 	List<ContractInfo> getAllAvailableContracts(String gatewayId) throws Exception;
+	
 }

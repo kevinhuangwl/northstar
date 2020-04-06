@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.RuntimeEvent;
 import tech.xuanwu.northstar.core.persistence.repo.ContractRepo;
 import tech.xuanwu.northstar.core.persistence.repo.GatewayRepo;
+import tech.xuanwu.northstar.engine.IndexEngine;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.entity.ContractInfo;
 import tech.xuanwu.northstar.entity.GatewayInfo;
@@ -23,6 +24,9 @@ public class GatewayReadyEventHandler implements RuntimeEngine.Listener, Initial
 
 	@Autowired
 	private RuntimeEngine rtEngine;
+	
+	@Autowired
+	private IndexEngine idxEngine;
 	
 	@Autowired
 	private ContractRepo contractRepo;
@@ -53,9 +57,13 @@ public class GatewayReadyEventHandler implements RuntimeEngine.Listener, Initial
 				log.info("订阅网关【{}】的合约【{}】", c.getGatewayId(), c.getSymbol());
 			}else {
 				log.warn("合约【{}】已过期", c.getSymbol());
-				contractRepo.delete(c.getUnifiedSymbol());				
+				contractRepo.delete(c.getGatewayId(),c.getSymbol());				
 			}
 		}		
+		
+		//自动续订指数合约
+		idxEngine.onGatewayReady(gatewayId);
+		
 		log.info("=====自动续订合约完成=====");
 	}
 
