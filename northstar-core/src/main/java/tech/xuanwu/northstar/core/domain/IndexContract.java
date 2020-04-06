@@ -1,7 +1,8 @@
 package tech.xuanwu.northstar.core.domain;
 
+import static tech.xuanwu.northstar.constant.CommonConstant.at;
+
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -10,7 +11,6 @@ import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 
-import static tech.xuanwu.northstar.constant.CommonConstant.at;
 import tech.xuanwu.northstar.entity.ContractInfo;
 import xyz.redtorch.pb.CoreField.ContractField;
 import xyz.redtorch.pb.CoreField.TickField;
