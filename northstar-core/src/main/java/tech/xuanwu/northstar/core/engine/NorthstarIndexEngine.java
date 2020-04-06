@@ -47,7 +47,7 @@ public class NorthstarIndexEngine implements IndexEngine{
 	}
 	
 	private ContractField generateIndexContractAndPrepare(String gatewayId, String symbol) throws Exception {
-		log.info("网关[{}]增加订阅指数合约[{}]", gatewayId, symbol);
+		log.info("网关【{}】增加订阅指数合约【{}】", gatewayId, symbol);
 		List<ContractInfo> contractList = contractRepo.getSeriesContractsByExample(gatewayId, symbol);
 		IndexContract idxContract = new IndexContract(symbol, contractList, (indexTick)->{
 			feEngine.emitTick(indexTick);
@@ -67,7 +67,7 @@ public class NorthstarIndexEngine implements IndexEngine{
 
 	@Override
 	public boolean removeIndexContract(String gatewayId, String symbol) throws Exception {
-		log.info("网关[{}]移除订阅指数合约[{}]", gatewayId, symbol);
+		log.info("网关【{}】移除订阅指数合约【{}】", gatewayId, symbol);
 		List<ContractInfo> contractList = contractRepo.getSeriesContractsByExample(gatewayId, symbol);
 		idxContractMap.remove(String.format("%s@%s", symbol, gatewayId));
 		for(ContractInfo c : contractList) {
@@ -91,7 +91,7 @@ public class NorthstarIndexEngine implements IndexEngine{
 		if(idxContractList.size()==0) {
 			return;
 		}
-		log.info("续订网关[{}]的指数合约", gatewayId);
+		log.info("续订网关【{}】的指数合约", gatewayId);
 		for(ContractInfo idxContract : idxContractList) {
 			generateIndexContractAndPrepare(idxContract.getGatewayId(), idxContract.getSymbol());
 		}

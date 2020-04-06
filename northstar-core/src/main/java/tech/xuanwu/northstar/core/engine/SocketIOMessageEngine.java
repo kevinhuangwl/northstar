@@ -26,7 +26,6 @@ public class SocketIOMessageEngine implements MessageEngine{
 		String symbol = tick.getUnifiedSymbol();
 		
 		server.getRoomOperations(symbol).sendEvent(Message.MARKET_TICK_DATA, tick.toByteArray());
-		log.info("收到{}数据\n卖一量：{}\n最新价：{}\n买一量：{}", symbol, tick.getAskVolume(0), tick.getLastPrice(), tick.getBidVolume(0));
 	}
 	
 	@Override
