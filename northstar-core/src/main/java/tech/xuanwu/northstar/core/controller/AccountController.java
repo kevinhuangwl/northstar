@@ -12,7 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.common.ResultBean;
-import tech.xuanwu.northstar.common.ResultCode;
+import tech.xuanwu.northstar.common.ReturnCode;
 import tech.xuanwu.northstar.core.service.AccountService;
 import tech.xuanwu.northstar.entity.AccountInfo;
 import tech.xuanwu.northstar.entity.OrderInfo;
@@ -43,7 +43,7 @@ public class AccountController {
 			return new ResultBean<List<PositionInfo>>(acService.getPositionInfoList(gatewayId));
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
-			return new ResultBean<List<PositionInfo>>(ResultCode.ERROR, e.getMessage());
+			return new ResultBean<List<PositionInfo>>(ReturnCode.ERROR, e.getMessage());
 		}
 	}
 
@@ -54,7 +54,7 @@ public class AccountController {
 			return new ResultBean<List<OrderInfo>>(acService.getOrderInfoList(gatewayId));
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
-			return new ResultBean<List<OrderInfo>>(ResultCode.ERROR, e.getMessage());
+			return new ResultBean<List<OrderInfo>>(ReturnCode.ERROR, e.getMessage());
 		}
 	}
 
@@ -65,7 +65,7 @@ public class AccountController {
 			return new ResultBean<List<TransactionInfo>>(acService.getTransactionInfoList(gatewayId));
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
-			return new ResultBean<List<TransactionInfo>>(ResultCode.ERROR, e.getMessage());
+			return new ResultBean<List<TransactionInfo>>(ReturnCode.ERROR, e.getMessage());
 		}
 	}
 
@@ -77,7 +77,7 @@ public class AccountController {
 			acService.connectGateway();
 		} catch (Exception e) {
 			log.error("", e);
-			return new ResultBean<Void>(ResultCode.ERROR, e.getMessage());
+			return new ResultBean<Void>(ReturnCode.ERROR, e.getMessage());
 		}
 		return new ResultBean(Void.TYPE);
 	}
@@ -90,7 +90,7 @@ public class AccountController {
 			acService.disconnectGateway(gatewayId);
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
-			return new ResultBean<Void>(ResultCode.ERROR, e.getMessage());
+			return new ResultBean<Void>(ReturnCode.ERROR, e.getMessage());
 		}
 		return new ResultBean(Void.TYPE);
 	}

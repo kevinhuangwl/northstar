@@ -25,7 +25,7 @@ public class ResultBean<T> implements Serializable{
 	private T data;
 	
 	public ResultBean(T t) {
-		rtnCode = ResultCode.SUCCESS;
+		rtnCode = ReturnCode.SUCCESS;
 		data = t;
 	}
 	

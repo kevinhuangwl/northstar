@@ -21,7 +21,7 @@ import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 import xyz.redtorch.pb.CoreField.TickField;
 
 /**
- * 通信客户端
+ * 通信客户端，每个策略自己维护一个实例
  * @author kevinhuangwl
  *
  */

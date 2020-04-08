@@ -11,7 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.common.ResultBean;
-import tech.xuanwu.northstar.common.ResultCode;
+import tech.xuanwu.northstar.common.ReturnCode;
 import tech.xuanwu.northstar.core.service.MarketDataService;
 import tech.xuanwu.northstar.entity.ContractInfo;
 
@@ -31,7 +31,7 @@ public class MarketController {
 			return new ResultBean(mdService.subscribeContract(gatewayId, contractName));
 		} catch (Exception e) {
 			log.error("", e);
-			return new ResultBean(ResultCode.ERROR, e.getMessage());
+			return new ResultBean(ReturnCode.ERROR, e.getMessage());
 		}
 	}
 	
@@ -42,7 +42,7 @@ public class MarketController {
 			return new ResultBean(mdService.getAllSubscribedContracts(gatewayId));
 		} catch (Exception e) {
 			log.error("", e);
-			return new ResultBean(ResultCode.ERROR, e.getMessage());
+			return new ResultBean(ReturnCode.ERROR, e.getMessage());
 		}
 	}
 	
@@ -53,7 +53,7 @@ public class MarketController {
 			return new ResultBean(mdService.getAvailableContracts(gatewayId));
 		} catch (Exception e) {
 			log.error("", e);
-			return new ResultBean(ResultCode.ERROR, e.getMessage());
+			return new ResultBean(ReturnCode.ERROR, e.getMessage());
 		}
 	}
 }
