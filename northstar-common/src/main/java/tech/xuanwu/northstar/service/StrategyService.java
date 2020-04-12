@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.core.service;
+package tech.xuanwu.northstar.service;
 
 import java.util.List;
 
