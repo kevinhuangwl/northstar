@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tech.xuanwu.northstar.core.persistence.repo.ContractRepo;
-import tech.xuanwu.northstar.core.service.MarketDataService;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.IndexEngine;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.entity.ContractInfo;
 import tech.xuanwu.northstar.exception.NoSuchContractException;
+import tech.xuanwu.northstar.service.MarketDataService;
 import xyz.redtorch.pb.CoreField.ContractField;
 
 @Service

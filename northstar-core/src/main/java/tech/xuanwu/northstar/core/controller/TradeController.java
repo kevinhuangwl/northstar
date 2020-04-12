@@ -11,9 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.common.ResultBean;
 import tech.xuanwu.northstar.common.ReturnCode;
 import tech.xuanwu.northstar.constant.ErrorHint;
-import tech.xuanwu.northstar.core.service.TradeService;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import tech.xuanwu.northstar.exception.TradeException;
+import tech.xuanwu.northstar.service.TradeService;
 import xyz.redtorch.pb.CoreEnum.DirectionEnum;
 import xyz.redtorch.pb.CoreEnum.OffsetFlagEnum;
 

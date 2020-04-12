@@ -5,7 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.core.service.AccountService;
+import tech.xuanwu.northstar.service.AccountService;
 
 @Slf4j
 @Component

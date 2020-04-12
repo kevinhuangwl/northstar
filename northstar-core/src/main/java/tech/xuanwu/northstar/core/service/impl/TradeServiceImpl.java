@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import tech.xuanwu.northstar.core.persistence.repo.ContractRepo;
 import tech.xuanwu.northstar.core.persistence.repo.GatewayRepo;
-import tech.xuanwu.northstar.core.service.TradeService;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.entity.ContractInfo;
@@ -14,6 +13,7 @@ import tech.xuanwu.northstar.entity.GatewayInfo;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import tech.xuanwu.northstar.exception.NoSuchContractException;
 import tech.xuanwu.northstar.exception.TradeException;
+import tech.xuanwu.northstar.service.TradeService;
 import xyz.redtorch.common.util.UUIDStringPoolUtils;
 import xyz.redtorch.pb.CoreEnum.ContingentConditionEnum;
 import xyz.redtorch.pb.CoreEnum.DirectionEnum;

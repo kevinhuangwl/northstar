@@ -16,7 +16,6 @@ import tech.xuanwu.northstar.core.engine.gateway.event.TickEventLoopBackHandler;
 import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
 import tech.xuanwu.northstar.core.persistence.repo.GatewayRepo;
 import tech.xuanwu.northstar.core.persistence.repo.PositionRepo;
-import tech.xuanwu.northstar.core.service.AccountService;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.FastEventEngine;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
@@ -27,6 +26,7 @@ import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.entity.TransactionInfo;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import tech.xuanwu.northstar.gateway.GatewayApi;
+import tech.xuanwu.northstar.service.AccountService;
 import xyz.redtorch.pb.CoreEnum.ConnectStatusEnum;
 import xyz.redtorch.pb.CoreField.GatewaySettingField;
 

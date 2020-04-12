@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
@@ -16,12 +15,7 @@ import com.corundumstudio.socketio.annotation.OnEvent;
 
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.Message;
-import tech.xuanwu.northstar.core.service.MarketDataService;
-import tech.xuanwu.northstar.core.service.TradeService;
 import tech.xuanwu.northstar.entity.StrategyInfo;
-import tech.xuanwu.northstar.exception.NoSuchAccountException;
-import tech.xuanwu.northstar.exception.TradeException;
-import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 
 /**
  * 
@@ -32,13 +26,7 @@ import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 @Component
 public class CommonMsgEventHandler {
 
-	ConcurrentHashMap<UUID, List<String>> roomMap = new ConcurrentHashMap<>();
-	
-	@Autowired
-	TradeService tdService;
-	
-	@Autowired
-	MarketDataService mdService;
+	private ConcurrentHashMap<UUID, List<String>> roomMap = new ConcurrentHashMap<>();
 	
 	@OnConnect  
     private void onConnect(final SocketIOClient client) {
@@ -79,30 +67,9 @@ public class CommonMsgEventHandler {
     		client.joinRoom(contract);
     		roomList.add(contract);
     		
-    		mdService.subscribeContract(s.getAccountGatewayId(), contract);
     	}
     	
     	roomMap.put(client.getSessionId(), roomList);
     }
     
-    
-    @OnEvent(Message.SUBMIT_ORDER)
-    private void onSubmitOrder(final SocketIOClient client, byte[] data) {
-    	try {
-			SubmitOrderReqField submitOrderReq = SubmitOrderReqField.parseFrom(data);
-			String accountName = submitOrderReq.getAccountCode();
-			tdService.submitOrder(accountName, submitOrderReq);
-		} catch (Exception e) {
-			log.error("", e);
-		}
-    }
-    
-    @OnEvent(Message.CANCEL_ORDER)
-    private void onCancelOrder(final SocketIOClient client, String accountName, String orderId) throws NoSuchAccountException {
-    	try {
-			tdService.cancelOrder(accountName, orderId);
-		} catch (TradeException e) {
-			log.error("", e);
-		}
-    }
 }
