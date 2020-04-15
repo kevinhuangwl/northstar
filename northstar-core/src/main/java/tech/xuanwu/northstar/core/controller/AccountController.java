@@ -75,11 +75,11 @@ public class AccountController {
 		log.info("账户CTP连接网关");
 		try {
 			acService.connectGateway();
+			return new ResultBean<>(null);
 		} catch (Exception e) {
 			log.error("", e);
 			return new ResultBean<Void>(ReturnCode.ERROR, e.getMessage());
 		}
-		return new ResultBean(Void.TYPE);
 	}
 
 	@GetMapping("/disconnect")
@@ -88,11 +88,11 @@ public class AccountController {
 		log.info("账户[{}]断开网关", gatewayId);
 		try {
 			acService.disconnectGateway(gatewayId);
+			return new ResultBean<>(null);
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
 			return new ResultBean<Void>(ReturnCode.ERROR, e.getMessage());
 		}
-		return new ResultBean(Void.TYPE);
 	}
 
 }

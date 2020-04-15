@@ -45,12 +45,12 @@ public class TradeController {
 	public ResultBean<Void> cancelOrder(String accountGatewayId, String originOrderId){
 		try {
 			tradeService.cancelOrder(accountGatewayId, originOrderId);
+			return new ResultBean<>(null);
 		} catch (NoSuchAccountException | TradeException e) {
 			log.error("", e);
 			String errMsg = String.format("%s。原因：%s", ErrorHint.FAIL_CANCEL_ORDER, e.getMessage());
 			return new ResultBean<>(ReturnCode.ERROR,  errMsg);
 		}
-		return new ResultBean(Void.TYPE);
 	}
 	
 	@RequestMapping(value="/sellout", method=RequestMethod.DELETE)
@@ -59,10 +59,10 @@ public class TradeController {
 		log.info("【警告】账户一键全平");
 		try {
 			tradeService.sellOutAllPosition(accountGatewayId);
+			return new ResultBean<>(null);
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
 			return new ResultBean<>(ReturnCode.ERROR, e.getMessage());
 		}
-		return new ResultBean(Void.TYPE);
 	}
 }

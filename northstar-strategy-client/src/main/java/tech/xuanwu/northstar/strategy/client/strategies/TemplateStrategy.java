@@ -39,8 +39,8 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 	@Setter @Getter
 	protected String[] tdContracts;
 	
-	@Value("${northstar.endpoint}")
-	protected String coreServiceEndpoint;
+	@Value("${northstar.message.endpoint}")
+	protected String messageEndpoint;
 	
 	protected MessageClient msgClient;
 	
@@ -50,7 +50,7 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		//每个策略绑定一个消息客户端用于与行情交易平台通信
-		msgClient = new MessageClient(coreServiceEndpoint, this);
+		msgClient = new MessageClient(messageEndpoint, this);
 		msgClient.connect();
 		
 		init();

@@ -28,10 +28,10 @@ public class MarketController {
 	@RequestMapping(value="/sub", method=RequestMethod.POST)
 	public ResultBean<Boolean> subscribe(String gatewayId, String contractName){
 		try {
-			return new ResultBean(mdService.subscribeContract(gatewayId, contractName));
+			return new ResultBean<>(mdService.subscribeContract(gatewayId, contractName));
 		} catch (Exception e) {
 			log.error("", e);
-			return new ResultBean(ReturnCode.ERROR, e.getMessage());
+			return new ResultBean<>(ReturnCode.ERROR, e.getMessage());
 		}
 	}
 	
@@ -39,10 +39,10 @@ public class MarketController {
 	@RequestMapping(value="/contracts", method=RequestMethod.GET)
 	public ResultBean<List<ContractInfo>> getSubscribedContracts(String gatewayId){
 		try {
-			return new ResultBean(mdService.getAllSubscribedContracts(gatewayId));
+			return new ResultBean<>(mdService.getAllSubscribedContracts(gatewayId));
 		} catch (Exception e) {
 			log.error("", e);
-			return new ResultBean(ReturnCode.ERROR, e.getMessage());
+			return new ResultBean<>(ReturnCode.ERROR, e.getMessage());
 		}
 	}
 	
@@ -50,10 +50,10 @@ public class MarketController {
 	@RequestMapping(value="/available", method=RequestMethod.GET)
 	public ResultBean<List<ContractInfo>> getAvailableContracts(String gatewayId){
 		try {
-			return new ResultBean(mdService.getAvailableContracts(gatewayId));
+			return new ResultBean<>(mdService.getAvailableContracts(gatewayId));
 		} catch (Exception e) {
 			log.error("", e);
-			return new ResultBean(ReturnCode.ERROR, e.getMessage());
+			return new ResultBean<>(ReturnCode.ERROR, e.getMessage());
 		}
 	}
 }

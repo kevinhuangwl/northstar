@@ -28,6 +28,7 @@
 		<netty-socketio-version>1.7.8</netty-socketio-version>
 		<socketio-client-version>1.0.0</socketio-client-version>
 		<mockito-version>3.0.0</mockito-version>
+		<hessian-version>4.0.38</hessian-version>
 		<testng-version>7.0.0</testng-version>
 	</properties>
 
@@ -204,18 +205,13 @@
 			    <artifactId>fastjson</artifactId>
 			    <version>${fastjson-version}</version>
 			</dependency>
-			
+			<dependency>
+			    <groupId>com.caucho</groupId>
+			    <artifactId>hessian</artifactId>
+			    <version>${hessian-version}</version>
+			</dependency>
 		</dependencies>
 		
 	</dependencyManagement>
-
-<!-- 	<build> -->
-<!-- 		<plugins> -->
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.springframework.boot</groupId> -->
-<!-- 				<artifactId>spring-boot-maven-plugin</artifactId> -->
-<!-- 			</plugin> -->
-<!-- 		</plugins> -->
-<!-- 	</build> -->
 
 </project>

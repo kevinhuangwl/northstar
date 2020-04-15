@@ -13,4 +13,6 @@ public interface ErrorHint {
 	String FAIL_CANCEL_ORDER = "撤单失败";
 	
 	String UNKNOWN_ENUM_TYPE = "未知枚举类型";
+	
+	String FAIL_TO_SEND_MAIL = "邮件发送失败。";
 }

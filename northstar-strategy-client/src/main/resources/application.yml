@@ -1,5 +1,6 @@
 northstar:
-  endpoint: http://localhost:51666
+  message.endpoint: http://localhost:51888
+  server.endpoint: http://localhost:8888
   
 spring:
     data:

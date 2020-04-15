@@ -47,6 +47,10 @@
 		</dependency>
 
 		<dependency>
+		    <groupId>com.caucho</groupId>
+		    <artifactId>hessian</artifactId>
+		</dependency>
+		<dependency>
 		    <groupId>com.corundumstudio.socketio</groupId>
 		    <artifactId>netty-socketio</artifactId>
 		    <exclusions>
