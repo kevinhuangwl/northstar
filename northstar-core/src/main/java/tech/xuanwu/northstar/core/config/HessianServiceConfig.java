@@ -6,7 +6,13 @@ import org.springframework.remoting.caucho.HessianServiceExporter;
 
 import tech.xuanwu.northstar.service.AccountService;
 import tech.xuanwu.northstar.service.MailSenderService;
+import tech.xuanwu.northstar.service.TradeService;
 
+/**
+ * hessian服务注册
+ * @author kevinhuangwl
+ *
+ */
 @Configuration
 public class HessianServiceConfig {
 
@@ -19,6 +25,11 @@ public class HessianServiceConfig {
     public HessianServiceExporter accountService(AccountService accountService) {
         return commonRegistry(accountService, AccountService.class);
     }
+	
+	@Bean(name = "/TradeService")
+	public HessianServiceExporter accountService(TradeService tradeService) {
+        return commonRegistry(tradeService, TradeService.class);
+    } 
 	
 	private HessianServiceExporter commonRegistry(Object obj, Class<?> interfaceClass) {
 		HessianServiceExporter exporter = new HessianServiceExporter();
