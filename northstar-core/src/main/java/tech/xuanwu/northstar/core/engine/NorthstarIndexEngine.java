@@ -1,7 +1,6 @@
 package tech.xuanwu.northstar.core.engine;
 
 import java.util.List;
-import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,6 +3,7 @@ package tech.xuanwu.northstar.core.engine.rt.event;
 import java.util.EventObject;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,7 @@ import xyz.redtorch.pb.CoreField.TickField;
  */
 @Slf4j
 @Component
-public class MarketDataRtEventHandler implements RuntimeEngine.Listener, InitializingBean{
+public class MarketDataRtEventHandler implements RuntimeEngine.Listener, InitializingBean, DisposableBean{
 	
 	@Autowired
 	private RuntimeEngine rtEngine;
@@ -33,6 +34,8 @@ public class MarketDataRtEventHandler implements RuntimeEngine.Listener, Initial
 	@Autowired
 	private TickDataDao tickDao;
 	
+	private boolean isHalt = false;
+	
 	private ConcurrentHashMap<String, ContractMarketData> cmdMap = new ConcurrentHashMap<String, ContractMarketData>(100);
 
 	@Override
@@ -42,6 +45,9 @@ public class MarketDataRtEventHandler implements RuntimeEngine.Listener, Initial
 	
 	@Override
 	public void onEvent(EventObject event) {
+		if(isHalt) {
+			return;
+		}
 		try {
 			TickField tick = (TickField) event.getSource();
 			String contractId = tick.getUnifiedSymbol();
@@ -57,6 +63,11 @@ public class MarketDataRtEventHandler implements RuntimeEngine.Listener, Initial
 			log.error("", e);
 		}
 		
+	}
+
+	@Override
+	public void destroy() throws Exception {
+		isHalt = true;
 	}
 
 	

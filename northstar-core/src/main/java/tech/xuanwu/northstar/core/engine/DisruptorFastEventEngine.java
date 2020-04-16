@@ -7,6 +7,7 @@ import java.util.concurrent.Executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ import xyz.redtorch.pb.CoreField.TickField;
 import xyz.redtorch.pb.CoreField.TradeField;
 
 @Service
-public class DisruptorFastEventEngine implements FastEventEngine, InitializingBean {
+public class DisruptorFastEventEngine implements FastEventEngine, InitializingBean, DisposableBean {
 
 	private static Logger log = LoggerFactory.getLogger(DisruptorFastEventEngine.class);
 
@@ -235,6 +236,12 @@ public class DisruptorFastEventEngine implements FastEventEngine, InitializingBe
 			ringBuffer.publish(sequence);
 		}
 
+	}
+
+	@Override
+	public void destroy() throws Exception {
+		disruptor.halt();
+		
 	}
 
 }
