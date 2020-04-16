@@ -16,7 +16,7 @@ public class MailSenderServiceImpl implements MailSenderService {
     private JavaMailSender mailSender;
 	
 	@Value("${spring.mail.subscribed}")
-	private String subscribedMails;
+	private String[] subscribedMails;
 	
 	@Value("${spring.mail.username}")
 	private String fromMail;

@@ -27,7 +27,7 @@ public class HessianServiceConfig {
     }
 	
 	@Bean(name = "/TradeService")
-	public HessianServiceExporter accountService(TradeService tradeService) {
+	public HessianServiceExporter tradeService(TradeService tradeService) {
         return commonRegistry(tradeService, TradeService.class);
     } 
 	
