@@ -1,17 +1,21 @@
 package tech.xuanwu.northstar.strategy.client.strategies;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
+import tech.xuanwu.northstar.strategy.client.config.BaseStrategyConfig;
 import xyz.redtorch.pb.CoreField.BarField;
 import xyz.redtorch.pb.CoreField.TickField;
 
 @Slf4j
 @Component
-@ConfigurationProperties(prefix="strategy-setting.demo-strategy")
+@EnableConfigurationProperties(BaseStrategyConfig.class)
 public class DemoStrategy extends TemplateStrategy {
 	
+	public DemoStrategy(BaseStrategyConfig config) {
+		strategyConfig = config;
+	}
 
 	@Override
 	protected void onTick(TickField tick) {
@@ -32,7 +36,7 @@ public class DemoStrategy extends TemplateStrategy {
 				bar.getClosePrice(),
 				bar.getOpenInterest(),
 				bar.getVolume());
-
 	}
+
 	
 }

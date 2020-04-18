@@ -16,8 +16,6 @@ import tech.xuanwu.northstar.constant.Message;
 import tech.xuanwu.northstar.entity.StrategyInfo;
 import tech.xuanwu.northstar.strategy.client.strategies.TemplateStrategy;
 import tech.xuanwu.northstar.strategy.client.strategies.TradeStrategy;
-import xyz.redtorch.pb.CoreField.CancelOrderReqField;
-import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 import xyz.redtorch.pb.CoreField.TickField;
 
 /**
@@ -47,22 +45,6 @@ public class MessageClient {
 	 */
 	private void onTick(TickField tick) {
 		((TemplateStrategy)strategy).onTickEvent(tick);
-	}
-	
-	/**
-	 * 发送委托单
-	 * @param submitOrderReq
-	 */
-	public void sendOrder(SubmitOrderReqField submitOrderReq) {
-		client.emit(Message.SUBMIT_ORDER, submitOrderReq.toByteArray());
-	}
-	
-	/**
-	 * 撤销委托单
-	 * @param cancelOrderReq
-	 */
-	public void cancelOrder(CancelOrderReqField cancelOrderReq) {
-		client.emit(Message.CANCEL_ORDER, cancelOrderReq.toByteArray());
 	}
 	
 	
@@ -95,7 +77,7 @@ public class MessageClient {
 		
 		client.on(Socket.EVENT_RECONNECTING, callback);
 		
-		client.on(Message.MARKET_TICK_DATA, (data)->{
+		client.on(Message.MARKET_DATA, (data)->{
 			byte[] b = (byte[]) data[0];
 			try {
 				TickField tick = TickField.parseFrom(b);
@@ -120,9 +102,7 @@ public class MessageClient {
 		Object[] params = new Object[1];
 		try {			
 			params[0] = wrapAsJSON(strategyInfo);
-			client.emit(Message.UNREG_STRATEGY.toString(), params, (data)->{
-				client.disconnect();
-			});
+			client.disconnect();
 		} catch (JSONException e) {
 			log.error("", e);
 		}
