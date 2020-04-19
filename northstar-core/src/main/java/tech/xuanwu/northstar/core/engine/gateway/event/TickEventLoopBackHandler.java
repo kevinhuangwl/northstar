@@ -2,7 +2,6 @@ package tech.xuanwu.northstar.core.engine.gateway.event;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Component;
 
 import lombok.Setter;
@@ -17,7 +16,6 @@ import xyz.redtorch.pb.CoreField.TickField;
 
 @Slf4j
 @Component
-@ConditionalOnExpression("!${ctp.realTrader}")
 public class TickEventLoopBackHandler extends FastEventDynamicHandlerAbstract implements InitializingBean{
 
 	@Autowired

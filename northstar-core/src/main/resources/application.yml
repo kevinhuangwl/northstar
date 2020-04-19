@@ -1,0 +1,35 @@
+server:
+  port: 8888
+  
+socketio:
+  host: 127.0.0.1
+  port: 51888
+  
+#BlockingWaitStrategy 低效 低CPU
+#SleepingWaitStrategy 对生产者影响较小
+#YieldingWaitStrategy 高性能 ,适当CPU占用，建议开启BIOS超线程
+#BusySpinWaitStrategy 高性能,高CPU占用,需要CPU实际物理核心数量高于FastEventDynamicHandler数量。建议最低使用多核物理机,关闭BIOS超线程!
+event.engine.strategy: BlockingWaitStrategy
+
+spring:
+  mail:
+    host: smtp.126.com
+    username: kevinbauer@126.com
+    password: QHYFVZJDJPCNVNKS
+    default-encoding: UTF-8
+    subscribed: 12959229@qq.com,kevinbauer@163.com
+  
+
+simulate-account-setting:
+  commissionTick: 2
+  marginRateExtra: 2
+
+db:
+  mongo:
+    host: 127.0.0.1
+    port: 27017
+    username: 
+    password:
+    auth:
+    
+

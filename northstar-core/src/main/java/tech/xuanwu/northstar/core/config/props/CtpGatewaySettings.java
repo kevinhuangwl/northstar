@@ -3,13 +3,14 @@ package tech.xuanwu.northstar.core.config.props;
 import javax.annotation.PostConstruct;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.PropertySource;
 
 import com.alibaba.fastjson.JSON;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import tech.xuanwu.northstar.core.config.factory.YamlPropertySourceFactory;
 import xyz.redtorch.pb.CoreEnum.GatewayAdapterTypeEnum;
 import xyz.redtorch.pb.CoreEnum.GatewayTypeEnum;
 import xyz.redtorch.pb.CoreField.GatewaySettingField;
@@ -25,7 +26,6 @@ import xyz.redtorch.pb.CoreField.GatewaySettingField.CtpApiSettingField;
 @Getter
 @Setter
 @ConfigurationProperties(prefix="ctp")
-@Component
 public class CtpGatewaySettings {
 	//网关类型
 	private GatewayTypeEnum gatewayType;

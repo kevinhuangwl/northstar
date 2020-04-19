@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
@@ -37,7 +36,7 @@ public class AccountController {
 
 	@GetMapping("/position")
 	@ApiOperation("获取账户持仓信息")
-	public ResultBean<List<PositionInfo>> getPositionInfoList(@RequestParam String gatewayId) {
+	public ResultBean<List<PositionInfo>> getPositionInfoList(String gatewayId) {
 		
 		try {
 			return new ResultBean<List<PositionInfo>>(acService.getPositionInfoList(gatewayId));
@@ -49,7 +48,7 @@ public class AccountController {
 
 	@GetMapping("/order")
 	@ApiOperation("获取账户订单信息")
-	public ResultBean<List<OrderInfo>> getOrderInfoList(@RequestParam String gatewayId) {
+	public ResultBean<List<OrderInfo>> getOrderInfoList(String gatewayId) {
 		try {
 			return new ResultBean<List<OrderInfo>>(acService.getOrderInfoList(gatewayId));
 		} catch (NoSuchAccountException e) {
@@ -60,7 +59,7 @@ public class AccountController {
 
 	@GetMapping("/trade")
 	@ApiOperation("获取账户成交信息")
-	public ResultBean<List<TransactionInfo>> getTransactionInfoList(@RequestParam String gatewayId) {
+	public ResultBean<List<TransactionInfo>> getTransactionInfoList(String gatewayId) {
 		try {
 			return new ResultBean<List<TransactionInfo>>(acService.getTransactionInfoList(gatewayId));
 		} catch (NoSuchAccountException e) {
@@ -71,10 +70,10 @@ public class AccountController {
 
 	@GetMapping("/connect")
 	@ApiOperation("连接账户网关")
-	public ResultBean<Void> connectGateway() {
+	public ResultBean<Void> connectGateway(String gatewayId) {
 		log.info("账户CTP连接网关");
 		try {
-			acService.connectGateway();
+			acService.connectGateway(gatewayId);
 			return new ResultBean<>(null);
 		} catch (Exception e) {
 			log.error("", e);
@@ -84,7 +83,7 @@ public class AccountController {
 
 	@GetMapping("/disconnect")
 	@ApiOperation("断开账户网关")
-	public ResultBean<Void> disconnectGateway(@RequestParam String gatewayId) {
+	public ResultBean<Void> disconnectGateway(String gatewayId) {
 		log.info("账户[{}]断开网关", gatewayId);
 		try {
 			acService.disconnectGateway(gatewayId);

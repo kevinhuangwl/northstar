@@ -28,6 +28,7 @@ import tech.xuanwu.northstar.gateway.GatewayApi;
 import xyz.redtorch.pb.CoreEnum.OrderStatusEnum;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
 import xyz.redtorch.pb.CoreField.ContractField;
+import xyz.redtorch.pb.CoreField.GatewayField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 
 /**
@@ -54,9 +55,6 @@ public class Account implements IAccount{
 	
 	/*基本账户信息副本*/
 	protected volatile AccountInfo accountInfo;
-	
-	/*策略信息*/
-	protected Map<String, IStrategy> strategyMap = new HashMap<>();
 	
 	/*订单信息*/
 	protected Map<String, OrderInfo> orderMap = new HashMap<>();
@@ -213,31 +211,6 @@ public class Account implements IAccount{
 	}
 
 	@Override
-	public List<IStrategy> getStrategyList() {
-		synchronized (strategyMap) {
-			List<IStrategy> resultList = new ArrayList<>(strategyMap.size());
-			resultList.addAll(strategyMap.values());
-			return resultList;
-		}
-	}
-
-	@Override
-	public void regStrategy(String strategyName) {
-//		IStrategy strategy = new Strategy(strategyName);
-//		synchronized (strategyMap) {
-//			strategyMap.put(strategyName, strategy);
-//		}
-//		
-	}
-
-	@Override
-	public void unregStrategy(String strategyName) {
-		synchronized (strategyMap) {
-			strategyMap.remove(strategyName);
-		}
-	}
-
-	@Override
 	public void sellOutAllPosition() {
 		//FIXME 先做简单实现
 		throw new IllegalStateException("本方法未实现");
@@ -311,6 +284,11 @@ public class Account implements IAccount{
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public GatewayField getGateway() {
+		return gatewayApi.getGateway();
 	}
 
 }

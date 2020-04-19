@@ -45,7 +45,7 @@ public interface AccountService {
 	/**
 	 * 连接网关
 	 */
-	void connectGateway() throws Exception ;
+	void connectGateway(String accountGatewayId) throws Exception ;
 	
 	/**
 	 * 断开网关

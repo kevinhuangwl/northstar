@@ -4,6 +4,7 @@ import java.util.List;
 
 import tech.xuanwu.northstar.entity.AccountInfo;
 import xyz.redtorch.pb.CoreField.ContractField;
+import xyz.redtorch.pb.CoreField.GatewayField;
 
 /**
  * 账户接口
@@ -16,6 +17,8 @@ public interface IAccount extends TradableAccount {
 	
 	String getName();
 	
+	GatewayField getGateway();
+	
 	/**
 	 * 获取账户信息
 	 * @return
@@ -27,24 +30,6 @@ public interface IAccount extends TradableAccount {
 	 * @param account
 	 */
 	void updateAccount(AccountInfo account);
-	
-	/**
-	 * 获取注册策略列表
-	 * @return
-	 */
-	List<IStrategy> getStrategyList();
-	
-	/**
-	 * 注册策略
-	 * @param strategyName
-	 */
-	void regStrategy(String strategyName);
-	
-	/**
-	 * 注销策略
-	 * @param strategyName
-	 */
-	void unregStrategy(String strategyName);
 	
 	/**
 	 * 一键全平
