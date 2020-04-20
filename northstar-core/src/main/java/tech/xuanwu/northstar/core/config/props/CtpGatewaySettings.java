@@ -3,14 +3,14 @@ package tech.xuanwu.northstar.core.config.props;
 import javax.annotation.PostConstruct;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.base.Optional;
+import com.google.protobuf.Option;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.core.config.factory.YamlPropertySourceFactory;
 import xyz.redtorch.pb.CoreEnum.GatewayAdapterTypeEnum;
 import xyz.redtorch.pb.CoreEnum.GatewayTypeEnum;
 import xyz.redtorch.pb.CoreField.GatewaySettingField;
@@ -28,15 +28,15 @@ import xyz.redtorch.pb.CoreField.GatewaySettingField.CtpApiSettingField;
 @ConfigurationProperties(prefix="ctp")
 public class CtpGatewaySettings {
 	//网关类型
-	private GatewayTypeEnum gatewayType;
+	private GatewayTypeEnum gatewayType = GatewayTypeEnum.GTE_Trade;
 	//网关适配器类型
 	private GatewayAdapterTypeEnum adpterType = GatewayAdapterTypeEnum.GAT_CTP;
 	//网关实现类名称
 	private String gatewayImplClassName;
 	//网关ID
 	private String gatewayID;
-	//网关名称
-	private String gatewayName;
+	//账户名称
+	private String accountName;
 	//行情主机IP
 	private String mdHost;
 	//行情主机端口
@@ -57,32 +57,25 @@ public class CtpGatewaySettings {
 	private String authCode;
 	//期货公司ID
 	private String brokerID;
-	//是否使用真实交易
-	private boolean realTrader;
 	
-	@PostConstruct
-	public void config() {
-		gatewayType = realTrader ? GatewayTypeEnum.GTE_TradeAndMarketData : GatewayTypeEnum.GTE_MarketData;
-	}
-
 	public GatewaySettingField convertToGatewaySettingField() {
 		GatewaySettingField.Builder builder = GatewaySettingField.newBuilder();
 		CtpApiSettingField.Builder ctpApiBuilder = CtpApiSettingField.newBuilder();
 		
-		ctpApiBuilder.setAppId(appID);
-		ctpApiBuilder.setAuthCode(authCode);
-		ctpApiBuilder.setBrokerId(brokerID);
+		ctpApiBuilder.setAppId(Optional.fromNullable(appID).or(""));
+		ctpApiBuilder.setAuthCode(Optional.fromNullable(authCode).or(""));
+		ctpApiBuilder.setBrokerId(Optional.fromNullable(brokerID).or(""));
 		ctpApiBuilder.setMdHost(mdHost);
 		ctpApiBuilder.setMdPort(mdPort);
 		ctpApiBuilder.setTdHost(tdHost);
 		ctpApiBuilder.setTdPort(tdPort);
 		ctpApiBuilder.setUserId(userID);
 		ctpApiBuilder.setPassword(password);
-		ctpApiBuilder.setUserProductInfo(userProductInfo);
+		ctpApiBuilder.setUserProductInfo(Optional.fromNullable(userProductInfo).or(""));
 		
 		builder.setGatewayAdapterType(adpterType);
 		builder.setGatewayId(gatewayID);
-		builder.setGatewayName(gatewayName);
+		builder.setGatewayName(Optional.fromNullable(accountName).or(""));
 		builder.setGatewayType(gatewayType);
 		builder.setCtpApiSetting(ctpApiBuilder);
 		

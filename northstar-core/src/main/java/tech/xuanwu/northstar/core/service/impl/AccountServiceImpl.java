@@ -1,6 +1,7 @@
 package tech.xuanwu.northstar.core.service.impl;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,16 @@ public class AccountServiceImpl implements AccountService {
 	
 	@Override
 	public List<AccountInfo> getAccountInfoList() {
-		return rtEngine.getAccountInfoList();
+		List<String> accountNameList = rtEngine.getAccountNameList();
+		List<AccountInfo> resultList = new ArrayList<>(accountNameList.size());
+		for(String name : accountNameList) {
+			try {
+				resultList.add(rtEngine.getAccount(name).getAccountInfo());
+			} catch (NoSuchAccountException e) {
+				log.error("", e);
+			}
+		}
+		return resultList;
 	}
 
 	@Override
@@ -55,25 +65,25 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public void connectGateway(String accountName) throws Exception {
+	public void connect(String accountName) throws Exception {
 		log.info("建立账户【{}】的网关连接", accountName);
 		IAccount account = rtEngine.getAccount(accountName);
 		account.connectGateway();
 		
-		GatewayField gatewayField = account.getGateway();
-		GatewayInfo gatewayInfo = GatewayInfo.convertFrom(gatewayField);
-		gatewayInfo.setStatus(ConnectStatusEnum.CS_Connecting);
-		gatewayRepo.upsertById(gatewayInfo);
-		
-		
 	}
 
 	@Override
-	public void disconnectGateway(String accountName) throws NoSuchAccountException {
+	public void disconnect(String accountName) throws NoSuchAccountException {
 		log.info("断开账户【{}】的网关连接", accountName);
 		IAccount account = rtEngine.getAccount(accountName);
 		account.disconnectGateway();
 		rtEngine.unregAccount(account.getName());
 	}
-	
+
+	@Override
+	public ConnectStatusEnum connectStatus(String accountName) throws NoSuchAccountException {
+		IAccount account = rtEngine.getAccount(accountName);
+		return account.connectStatus();
+	}
+
 }

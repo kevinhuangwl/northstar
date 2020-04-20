@@ -3,24 +3,24 @@ package tech.xuanwu.northstar.core.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import tech.xuanwu.northstar.constant.CommonConstant;
 import tech.xuanwu.northstar.core.persistence.repo.ContractRepo;
-import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.IndexEngine;
-import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.entity.ContractInfo;
 import tech.xuanwu.northstar.exception.NoSuchContractException;
+import tech.xuanwu.northstar.gateway.GatewayApi;
 import tech.xuanwu.northstar.service.MarketDataService;
 import xyz.redtorch.pb.CoreField.ContractField;
 
 @Service
 public class MarketDataServiceImpl implements MarketDataService{
 	
-
 	@Autowired
-	RuntimeEngine rtEngine;
-	
+	ApplicationContext ctx;
+
 	@Autowired
 	ContractRepo contractRepo;
 	
@@ -29,8 +29,6 @@ public class MarketDataServiceImpl implements MarketDataService{
 	
 	@Override
 	public boolean subscribeContract(String gatewayId, String symbol) throws Exception {
-		IAccount account = rtEngine.getAccount(gatewayId);
-		
 		//订阅的是指数合约
 		if(isIndexContract(symbol)) {
 			idxEngine.addIndexContract(gatewayId, symbol);
@@ -43,7 +41,8 @@ public class MarketDataServiceImpl implements MarketDataService{
 			throw new NoSuchContractException(symbol);
 		}
 		ContractField contract = c.convertTo();
-		boolean res = account.subscribe(contract);
+		GatewayApi mktGateway = (GatewayApi) ctx.getBean(CommonConstant.CTP_MKT_GATEWAY);
+		boolean res = mktGateway.subscribe(contract);
 		c.setSubscribed(true);
 		contractRepo.updateById(c);
 		return res;
@@ -55,10 +54,11 @@ public class MarketDataServiceImpl implements MarketDataService{
 		return Integer.valueOf(suffix) == 0;
 	}
 
-	@Override
-	public List<ContractInfo> getAllSubscribedContracts(String gatewayId) throws Exception {
-		return contractRepo.getAllSubscribedContracts(gatewayId);
-	}
+//	@Override
+//	public List<ContractInfo> getAllSubscribedContracts(String gatewayId) throws Exception {
+//		//FIXME 考虑
+//		return contractRepo.getAllSubscribedContracts(gatewayId);
+//	}
 
 	@Override
 	public List<ContractInfo> getAvailableContracts(String gatewayId) throws Exception {

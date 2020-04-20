@@ -1,9 +1,7 @@
 package tech.xuanwu.northstar.domain;
 
-import java.util.List;
-
 import tech.xuanwu.northstar.entity.AccountInfo;
-import xyz.redtorch.pb.CoreField.ContractField;
+import xyz.redtorch.pb.CoreEnum.ConnectStatusEnum;
 import xyz.redtorch.pb.CoreField.GatewayField;
 
 /**
@@ -47,10 +45,11 @@ public interface IAccount extends TradableAccount {
 	void disconnectGateway();
 	
 	/**
-	 * 订阅合约
-	 * @param contract
+	 * 连线状态
 	 * @return
 	 */
-	boolean subscribe(ContractField contract);
+	ConnectStatusEnum connectStatus();
 	
+	
+	void onConnected();
 }

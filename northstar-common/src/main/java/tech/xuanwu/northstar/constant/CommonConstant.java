@@ -6,6 +6,7 @@ import java.util.HashSet;
 import xyz.redtorch.pb.CoreEnum.OrderStatusEnum;
 
 public interface CommonConstant {
+	static final String CTP_MKT_GATEWAY = "ctpMktGateway";
 	static final String at = "@";
 	static final String SIM_TAG = "@Simulated";
 	static final String DT_FORMAT_WITH_MS = "yyyy-MM-dd HH:mm:ss.SSS";

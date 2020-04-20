@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
+import tech.xuanwu.northstar.constant.CommonConstant;
 import tech.xuanwu.northstar.core.domain.IndexContract;
 import tech.xuanwu.northstar.core.persistence.repo.ContractRepo;
 import tech.xuanwu.northstar.core.persistence.repo.IndexContractRepo;
@@ -15,6 +17,7 @@ import tech.xuanwu.northstar.engine.FastEventEngine;
 import tech.xuanwu.northstar.engine.IndexEngine;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.entity.ContractInfo;
+import tech.xuanwu.northstar.gateway.GatewayApi;
 import xyz.redtorch.pb.CoreField.ContractField;
 import xyz.redtorch.pb.CoreField.TickField;
 
@@ -35,7 +38,7 @@ public class NorthstarIndexEngine implements IndexEngine{
 	private FastEventEngine feEngine;
 	
 	@Autowired
-	private RuntimeEngine rtEngine;
+	private ApplicationContext ctx;
 
 	@Override
 	public boolean addIndexContract(String gatewayId, String symbol) throws Exception {
@@ -56,9 +59,9 @@ public class NorthstarIndexEngine implements IndexEngine{
 		idxContractMap.put(String.format("%s@%s", symbol, gatewayId), idxContract);
 
 		//向网关订阅
-		IAccount account = rtEngine.getAccount(gatewayId);
+		GatewayApi mktGateway = (GatewayApi) ctx.getBean(CommonConstant.CTP_MKT_GATEWAY);
 		for(ContractInfo c : contractList) {
-			account.subscribe(c.convertTo());
+			mktGateway.subscribe(c.convertTo());
 			contractToIndexContractMap.put(c.getUnifiedSymbol(), idxContract);
 		}
 		return contract;

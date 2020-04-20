@@ -18,16 +18,15 @@ import tech.xuanwu.northstar.constant.ErrorHint;
 import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
 import tech.xuanwu.northstar.core.persistence.repo.PositionRepo;
 import tech.xuanwu.northstar.domain.IAccount;
-import tech.xuanwu.northstar.domain.IStrategy;
 import tech.xuanwu.northstar.entity.AccountInfo;
 import tech.xuanwu.northstar.entity.OrderInfo;
 import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.entity.TransactionInfo;
 import tech.xuanwu.northstar.exception.TradeException;
 import tech.xuanwu.northstar.gateway.GatewayApi;
+import xyz.redtorch.pb.CoreEnum.ConnectStatusEnum;
 import xyz.redtorch.pb.CoreEnum.OrderStatusEnum;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
-import xyz.redtorch.pb.CoreField.ContractField;
 import xyz.redtorch.pb.CoreField.GatewayField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 
@@ -67,6 +66,8 @@ public class Account implements IAccount{
 	
 	/**/
 	protected ConcurrentHashMap<String, OrderInfo> cachedOrderMap = new ConcurrentHashMap<>();
+	
+	private ConnectStatusEnum status = ConnectStatusEnum.CS_Disconnected;
 	
 	
 	/*账户名称==网关名称*/
@@ -242,6 +243,7 @@ public class Account implements IAccount{
 			return;
 		}
 		gatewayApi.connect();
+		status = ConnectStatusEnum.CS_Connecting;
 	}
 
 	@Override
@@ -250,14 +252,7 @@ public class Account implements IAccount{
 			return;
 		}
 		gatewayApi.disconnect();
-	}
-
-	@Override
-	public boolean subscribe(ContractField contract) {
-		if(contract == null) {
-			throw new IllegalArgumentException("参数不能为空");
-		}
-		return this.gatewayApi.subscribe(contract);
+		status = ConnectStatusEnum.CS_Disconnected;
 	}
 
 	/**
@@ -289,6 +284,16 @@ public class Account implements IAccount{
 	@Override
 	public GatewayField getGateway() {
 		return gatewayApi.getGateway();
+	}
+
+	@Override
+	public ConnectStatusEnum connectStatus() {
+		return status;
+	}
+
+	@Override
+	public void onConnected() {
+		status = ConnectStatusEnum.CS_Connected;
 	}
 
 }

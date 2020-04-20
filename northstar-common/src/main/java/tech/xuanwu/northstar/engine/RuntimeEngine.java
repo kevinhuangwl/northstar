@@ -5,7 +5,6 @@ import java.util.List;
 
 import tech.xuanwu.northstar.constant.RuntimeEvent;
 import tech.xuanwu.northstar.domain.IAccount;
-import tech.xuanwu.northstar.entity.AccountInfo;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import tech.xuanwu.northstar.exception.NoSuchEventHandlerException;
 
@@ -19,11 +18,11 @@ public interface RuntimeEngine {
 	
 	void regAccount(IAccount account);
 	
-	void unregAccount(String accountGatewayId);
+	void unregAccount(String accountName);
 	
-	IAccount getAccount(String accountGatewayId) throws NoSuchAccountException;
+	IAccount getAccount(String accountName) throws NoSuchAccountException;
 	
-	List<AccountInfo> getAccountInfoList();
+	List<String> getAccountNameList();
 	
 	boolean addEventHandler(RuntimeEvent event, Listener listener);
 	

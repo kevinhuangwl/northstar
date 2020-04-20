@@ -18,6 +18,7 @@ import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.entity.TransactionInfo;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import tech.xuanwu.northstar.service.AccountService;
+import xyz.redtorch.pb.CoreEnum.ConnectStatusEnum;
 
 @Slf4j
 @RestController
@@ -70,10 +71,10 @@ public class AccountController {
 
 	@GetMapping("/connect")
 	@ApiOperation("连接账户网关")
-	public ResultBean<Void> connectGateway(String gatewayId) {
-		log.info("账户CTP连接网关");
+	public ResultBean<Void> connectGateway(String accountName) {
+		log.info("账户[{}]连接网关", accountName);
 		try {
-			acService.connectGateway(gatewayId);
+			acService.connect(accountName);
 			return new ResultBean<>(null);
 		} catch (Exception e) {
 			log.error("", e);
@@ -83,10 +84,10 @@ public class AccountController {
 
 	@GetMapping("/disconnect")
 	@ApiOperation("断开账户网关")
-	public ResultBean<Void> disconnectGateway(String gatewayId) {
-		log.info("账户[{}]断开网关", gatewayId);
+	public ResultBean<Void> disconnectGateway(String accountName) {
+		log.info("账户[{}]断开网关", accountName);
 		try {
-			acService.disconnectGateway(gatewayId);
+			acService.disconnect(accountName);
 			return new ResultBean<>(null);
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
@@ -94,4 +95,15 @@ public class AccountController {
 		}
 	}
 
+	@GetMapping("/connectionStatus")
+	@ApiOperation("获取账户连线状态")
+	public ResultBean<ConnectStatusEnum> getConnectionStatus(String accountName) {
+		log.info("获取账户[{}]网关连线状态", accountName);
+		try {
+			return new ResultBean<>(acService.connectStatus(accountName));
+		} catch (NoSuchAccountException e) {
+			log.error("", e);
+			return new ResultBean<>(ReturnCode.ERROR, e.getMessage());
+		}
+	}
 }
