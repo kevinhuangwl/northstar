@@ -46,7 +46,7 @@ message ContractField {
 
 // 账户
 message AccountField {
-	string accountId = 1;  // ID，通常是 <账户代码@币种@网关>
+	string accountId = 1;  // ID，通常是 <账户代码@网关>
 	string code = 2;  // 代码
 	string name = 3;  // 名称
 	string holder = 4;  // 持有人

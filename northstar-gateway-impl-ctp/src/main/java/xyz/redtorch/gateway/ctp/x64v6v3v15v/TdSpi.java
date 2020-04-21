@@ -846,7 +846,7 @@ public class TdSpi extends CThostFtdcTraderSpi {
 				// 无法获取账户信息,使用userId作为账户ID
 				String accountCode = userId;
 				// 无法获取币种信息使用特定值CNY
-				String accountId = accountCode + "@CNY@" + gatewayId;
+				String accountId = accountCode + "@" + gatewayId;
 
 				int frontId = this.frontId;
 				int sessionId = this.sessionId;
@@ -1057,7 +1057,7 @@ public class TdSpi extends CThostFtdcTraderSpi {
 			// 无法获取账户信息,使用userId作为账户ID
 			String accountCode = userId;
 			// 无法获取币种信息使用特定值
-			String accountId = accountCode + "@CNY@" + gatewayId;
+			String accountId = accountCode + "@" + gatewayId;
 
 			PositionDirectionEnum direction = CtpConstant.posiDirectionMapReverse.getOrDefault(pInvestorPosition.getPosiDirection(), PositionDirectionEnum.PD_Unknown);
 			HedgeFlagEnum hedgeFlag = CtpConstant.hedgeFlagMapReverse.get(String.valueOf(pInvestorPosition.getHedgeFlag()));
@@ -1495,7 +1495,7 @@ public class TdSpi extends CThostFtdcTraderSpi {
 			// 无法获取账户信息,使用userId作为账户ID
 			String accountCode = userId;
 			// 无法获取币种信息使用特定值CNY
-			String accountId = accountCode + "@CNY@" + gatewayId;
+			String accountId = accountCode + "@" + gatewayId;
 
 			int frontId = pOrder.getFrontID();
 			int sessionId = pOrder.getSessionID();
@@ -1644,7 +1644,7 @@ public class TdSpi extends CThostFtdcTraderSpi {
 			// 无法获取账户信息,使用userId作为账户ID
 			String accountCode = userId;
 			// 无法获取币种信息使用特定值CNY
-			String accountId = accountCode + "@CNY@" + gatewayId;
+			String accountId = accountCode + "@" + gatewayId;
 
 			TradeField.Builder tradeBuilder = TradeField.newBuilder();
 
