@@ -24,41 +24,41 @@ public interface AccountService {
 	
 	/**
 	 * 获取持仓信息
-	 * @param accountGatewayId
+	 * @param accountId
 	 * @return
 	 */
-	List<PositionInfo> getPositionInfoList(String accountName) throws NoSuchAccountException;
+	List<PositionInfo> getPositionInfoList(String accountId) throws NoSuchAccountException;
 	
 	/**
 	 * 获取委托单信息
-	 * @param accountGatewayId
+	 * @param accountId
 	 * @return
 	 */
-	List<OrderInfo> getOrderInfoList(String accountName) throws NoSuchAccountException;
+	List<OrderInfo> getOrderInfoList(String accountId) throws NoSuchAccountException;
 	
 	/**
 	 * 获取成交信息
-	 * @param accountGatewayId
+	 * @param accountId
 	 * @return
 	 */
-	List<TransactionInfo> getTransactionInfoList(String accountName) throws NoSuchAccountException;
+	List<TransactionInfo> getTransactionInfoList(String accountId) throws NoSuchAccountException;
 	
 	/**
 	 * 连接网关
 	 */
-	void connect(String accountName) throws Exception ;
+	void connect(String accountId) throws Exception ;
 	
 	/**
 	 * 断开网关
-	 * @param accountGatewayId
+	 * @param accountId
 	 */
-	void disconnect(String accountName) throws NoSuchAccountException;
+	void disconnect(String accountId) throws NoSuchAccountException;
 	
 	/**
 	 * 连线状态
-	 * @param accountName
+	 * @param accountId
 	 * @return
 	 * @throws NoSuchAccountException
 	 */
-	ConnectStatusEnum connectStatus(String accountName) throws NoSuchAccountException;
+	ConnectStatusEnum connectStatus(String accountId) throws NoSuchAccountException;
 }

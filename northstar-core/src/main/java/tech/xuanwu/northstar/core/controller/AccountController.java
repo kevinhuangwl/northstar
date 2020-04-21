@@ -3,6 +3,7 @@ package tech.xuanwu.northstar.core.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.common.ResultBean;
 import tech.xuanwu.northstar.common.ReturnCode;
+import tech.xuanwu.northstar.constant.ErrorHint;
 import tech.xuanwu.northstar.entity.AccountInfo;
 import tech.xuanwu.northstar.entity.OrderInfo;
 import tech.xuanwu.northstar.entity.PositionInfo;
@@ -37,10 +39,10 @@ public class AccountController {
 
 	@GetMapping("/position")
 	@ApiOperation("获取账户持仓信息")
-	public ResultBean<List<PositionInfo>> getPositionInfoList(String gatewayId) {
-		
+	public ResultBean<List<PositionInfo>> getPositionInfoList(String accountId) {
 		try {
-			return new ResultBean<List<PositionInfo>>(acService.getPositionInfoList(gatewayId));
+			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
+			return new ResultBean<List<PositionInfo>>(acService.getPositionInfoList(accountId));
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
 			return new ResultBean<List<PositionInfo>>(ReturnCode.ERROR, e.getMessage());
@@ -49,9 +51,10 @@ public class AccountController {
 
 	@GetMapping("/order")
 	@ApiOperation("获取账户订单信息")
-	public ResultBean<List<OrderInfo>> getOrderInfoList(String gatewayId) {
+	public ResultBean<List<OrderInfo>> getOrderInfoList(String accountId) {
 		try {
-			return new ResultBean<List<OrderInfo>>(acService.getOrderInfoList(gatewayId));
+			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
+			return new ResultBean<List<OrderInfo>>(acService.getOrderInfoList(accountId));
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
 			return new ResultBean<List<OrderInfo>>(ReturnCode.ERROR, e.getMessage());
@@ -60,9 +63,10 @@ public class AccountController {
 
 	@GetMapping("/trade")
 	@ApiOperation("获取账户成交信息")
-	public ResultBean<List<TransactionInfo>> getTransactionInfoList(String gatewayId) {
+	public ResultBean<List<TransactionInfo>> getTransactionInfoList(String accountId) {
 		try {
-			return new ResultBean<List<TransactionInfo>>(acService.getTransactionInfoList(gatewayId));
+			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
+			return new ResultBean<List<TransactionInfo>>(acService.getTransactionInfoList(accountId));
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
 			return new ResultBean<List<TransactionInfo>>(ReturnCode.ERROR, e.getMessage());
@@ -71,10 +75,11 @@ public class AccountController {
 
 	@GetMapping("/connect")
 	@ApiOperation("连接账户网关")
-	public ResultBean<Void> connectGateway(String accountName) {
-		log.info("账户[{}]连接网关", accountName);
+	public ResultBean<Void> connectGateway(String accountId) {
 		try {
-			acService.connect(accountName);
+			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
+			log.info("账户[{}]连接网关", accountId);
+			acService.connect(accountId);
 			return new ResultBean<>(null);
 		} catch (Exception e) {
 			log.error("", e);
@@ -84,10 +89,11 @@ public class AccountController {
 
 	@GetMapping("/disconnect")
 	@ApiOperation("断开账户网关")
-	public ResultBean<Void> disconnectGateway(String accountName) {
-		log.info("账户[{}]断开网关", accountName);
+	public ResultBean<Void> disconnectGateway(String accountId) {
 		try {
-			acService.disconnect(accountName);
+			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
+			log.info("账户[{}]断开网关", accountId);
+			acService.disconnect(accountId);
 			return new ResultBean<>(null);
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
@@ -97,10 +103,11 @@ public class AccountController {
 
 	@GetMapping("/connectionStatus")
 	@ApiOperation("获取账户连线状态")
-	public ResultBean<ConnectStatusEnum> getConnectionStatus(String accountName) {
-		log.info("获取账户[{}]网关连线状态", accountName);
+	public ResultBean<ConnectStatusEnum> getConnectionStatus(String accountId) {
 		try {
-			return new ResultBean<>(acService.connectStatus(accountName));
+			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
+			log.info("获取账户[{}]网关连线状态", accountId);
+			return new ResultBean<>(acService.connectStatus(accountId));
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
 			return new ResultBean<>(ReturnCode.ERROR, e.getMessage());

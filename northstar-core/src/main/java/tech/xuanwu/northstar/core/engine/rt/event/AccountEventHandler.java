@@ -39,23 +39,23 @@ public class AccountEventHandler implements RuntimeEngine.Listener, Initializing
 		
 		if(obj instanceof AccountField) {
 			AccountField account = (AccountField) obj;
-			String gatewayId = account.getGatewayId();
-			rtEngine.getAccount(gatewayId).updateAccount(AccountInfo.convertFrom(account));
+			String accountName = account.getAccountId();
+			rtEngine.getAccount(accountName).updateAccount(AccountInfo.convertFrom(account));
 			
 		}else if (obj instanceof PositionField) {
 			PositionField position = (PositionField) obj;
-			String gatewayId = position.getGatewayId();
-			rtEngine.getAccount(gatewayId).updatePosition(PositionInfo.convertFrom(position));
+			String accountName = position.getAccountId();
+			rtEngine.getAccount(accountName).updatePosition(PositionInfo.convertFrom(position));
 			
 		}else if (obj instanceof OrderField) {
 			OrderField order = (OrderField) obj;
-			String gatewayId = order.getGatewayId();
-			rtEngine.getAccount(gatewayId).updateOrder(OrderInfo.convertFrom(order));
+			String accountName = order.getAccountId();
+			rtEngine.getAccount(accountName).updateOrder(OrderInfo.convertFrom(order));
 			
 		}else if (obj instanceof TradeField) {
 			TradeField trade = (TradeField) obj;
-			String gatewayId = trade.getGatewayId();
-			rtEngine.getAccount(gatewayId).updateTransaction(TransactionInfo.convertFrom(trade));
+			String accountName = trade.getAccountId();
+			rtEngine.getAccount(accountName).updateTransaction(TransactionInfo.convertFrom(trade));
 			
 		}
 	}

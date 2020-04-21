@@ -27,19 +27,14 @@ public class NorthstarRuntimeEngine implements RuntimeEngine{
 
 	@Override
 	public void regAccount(IAccount account) {
-		accountMap.put(account.getName(), account);
+		accountMap.put(account.getAccountId(), account);
 	}
 	
 	@Override
-	public void unregAccount(String accountName) {
-		accountMap.remove(accountName);
-	}
-	
-	@Override
-	public IAccount getAccount(String accountName) throws NoSuchAccountException {
-		IAccount account = accountMap.get(accountName);
+	public IAccount getAccount(String accountId) throws NoSuchAccountException {
+		IAccount account = accountMap.get(accountId);
 		if(account == null) {
-			throw new NoSuchAccountException(accountName);
+			throw new NoSuchAccountException(accountId);
 		}
 		return account;
 	}
@@ -73,7 +68,7 @@ public class NorthstarRuntimeEngine implements RuntimeEngine{
 	}
 
 	@Override
-	public List<String> getAccountNameList() {
+	public List<String> getAccountIdList() {
 		List<String> resultList = new ArrayList<String>(accountMap.size());
 		resultList.addAll(accountMap.keySet());
 		return resultList;

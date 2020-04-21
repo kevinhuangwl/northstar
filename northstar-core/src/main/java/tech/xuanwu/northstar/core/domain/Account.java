@@ -70,10 +70,8 @@ public class Account implements IAccount{
 	private ConnectStatusEnum status = ConnectStatusEnum.CS_Disconnected;
 	
 	
-	/*账户名称==网关名称*/
-	@Getter
-	@NotNull
-	private String name;
+	/*账户ID*/
+	private String accountId;
 	
 	@Getter
 	@NotNull
@@ -82,7 +80,7 @@ public class Account implements IAccount{
 	protected String lastOrderTradeDay = "";
 	
 	public Account(GatewayApi gatewayApi, AccountRepo accountRepo, PositionRepo positionRepo){
-		this.name = gatewayApi.getGatewayName();
+		this.accountId = gatewayApi.getGatewaySetting().getCtpApiSetting().getUserId() + "@" + gatewayApi.getGatewayId();
 		this.gatewayId = gatewayApi.getGatewayId();
 		this.gatewayApi = gatewayApi;
 		this.accountRepo = accountRepo;
@@ -91,7 +89,7 @@ public class Account implements IAccount{
 
 	@Override
 	public void submitOrder(SubmitOrderReqField submitOrderReq) throws TradeException {
-		log.info("账户-【{}】委托下单，{}", name, submitOrderReq);
+		log.info("账户-【{}】委托下单，{}", accountId, submitOrderReq);
 		gatewayApi.submitOrder(submitOrderReq);
 		
 		String originOrderId = submitOrderReq.getOriginOrderId();
@@ -104,7 +102,7 @@ public class Account implements IAccount{
 
 	@Override
 	public void cancelOrder(CancelOrderReqField cancelOrderReq) throws TradeException {
-		log.info("账户-【{}】委托撤单，{}", name, cancelOrderReq);
+		log.info("账户-【{}】委托撤单，{}", accountId, cancelOrderReq);
 		gatewayApi.cancelOrder(cancelOrderReq);
 		
 		String originOrderId = cancelOrderReq.getOriginOrderId();
@@ -294,6 +292,11 @@ public class Account implements IAccount{
 	@Override
 	public void onConnected() {
 		status = ConnectStatusEnum.CS_Connected;
+	}
+
+	@Override
+	public String getAccountId() {
+		return accountId;
 	}
 
 }

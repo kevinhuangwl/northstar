@@ -15,4 +15,6 @@ public interface ErrorHint {
 	String UNKNOWN_ENUM_TYPE = "未知枚举类型";
 	
 	String FAIL_TO_SEND_MAIL = "邮件发送失败。";
+	
+	String EMPTY_PARAM = "参数不能为空";
 }

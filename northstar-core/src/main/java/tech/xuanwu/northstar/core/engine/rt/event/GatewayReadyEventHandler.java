@@ -49,9 +49,9 @@ public class GatewayReadyEventHandler implements RuntimeEngine.Listener, Initial
 	public void onEvent(EventObject e) throws Exception {
 		String gatewayId = (String) e.getSource();
 		
-		GatewayInfo gatewayInfo = gatewayRepo.findGatewayById(gatewayId);
-		gatewayInfo.setStatus(ConnectStatusEnum.CS_Connected);
-		gatewayRepo.upsertById(gatewayInfo);
+//		GatewayInfo gatewayInfo = gatewayRepo.findGatewayById(gatewayId);
+//		gatewayInfo.setStatus(ConnectStatusEnum.CS_Connected);
+//		gatewayRepo.upsertById(gatewayInfo);
 		
 		log.info("=====开始自动续订合约=====");
 		//自动续订阅合约

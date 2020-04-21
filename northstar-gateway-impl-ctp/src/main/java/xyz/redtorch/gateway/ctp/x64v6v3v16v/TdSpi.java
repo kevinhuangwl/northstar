@@ -1221,7 +1221,7 @@ public class TdSpi extends CThostFtdcTraderSpi {
 				currency = "CNY";
 			}
 
-			String accountId = accountCode + "@" + currency + "@" + gatewayId;
+			String accountId = accountCode + "@" + gatewayId;
 
 			AccountField.Builder accountBuilder = AccountField.newBuilder();
 			accountBuilder.setCode(accountCode);

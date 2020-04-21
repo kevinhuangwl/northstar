@@ -18,11 +18,9 @@ public interface RuntimeEngine {
 	
 	void regAccount(IAccount account);
 	
-	void unregAccount(String accountName);
+	IAccount getAccount(String accountId) throws NoSuchAccountException;
 	
-	IAccount getAccount(String accountName) throws NoSuchAccountException;
-	
-	List<String> getAccountNameList();
+	List<String> getAccountIdList();
 	
 	boolean addEventHandler(RuntimeEvent event, Listener listener);
 	

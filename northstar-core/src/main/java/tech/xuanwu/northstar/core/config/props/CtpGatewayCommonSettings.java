@@ -1,12 +1,9 @@
 package tech.xuanwu.northstar.core.config.props;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Optional;
-import com.google.protobuf.Option;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,8 +22,8 @@ import xyz.redtorch.pb.CoreField.GatewaySettingField.CtpApiSettingField;
 @Slf4j
 @Getter
 @Setter
-@ConfigurationProperties(prefix="ctp")
-public class CtpGatewaySettings {
+@ConfigurationProperties(prefix="account")
+public class CtpGatewayCommonSettings {
 	//网关类型
 	private GatewayTypeEnum gatewayType = GatewayTypeEnum.GTE_Trade;
 	//网关适配器类型
@@ -35,8 +32,6 @@ public class CtpGatewaySettings {
 	private String gatewayImplClassName;
 	//网关ID
 	private String gatewayID;
-	//账户名称
-	private String accountName;
 	//行情主机IP
 	private String mdHost;
 	//行情主机端口
@@ -75,7 +70,6 @@ public class CtpGatewaySettings {
 		
 		builder.setGatewayAdapterType(adpterType);
 		builder.setGatewayId(gatewayID);
-		builder.setGatewayName(Optional.fromNullable(accountName).or(""));
 		builder.setGatewayType(gatewayType);
 		builder.setCtpApiSetting(ctpApiBuilder);
 		

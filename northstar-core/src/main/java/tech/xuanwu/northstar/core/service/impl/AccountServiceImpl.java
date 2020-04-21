@@ -12,15 +12,12 @@ import tech.xuanwu.northstar.core.persistence.repo.GatewayRepo;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.entity.AccountInfo;
-import tech.xuanwu.northstar.entity.GatewayInfo;
 import tech.xuanwu.northstar.entity.OrderInfo;
 import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.entity.TransactionInfo;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
-import tech.xuanwu.northstar.gateway.GatewayApi;
 import tech.xuanwu.northstar.service.AccountService;
 import xyz.redtorch.pb.CoreEnum.ConnectStatusEnum;
-import xyz.redtorch.pb.CoreField.GatewayField;
 
 @Slf4j
 @Service
@@ -34,9 +31,9 @@ public class AccountServiceImpl implements AccountService {
 	
 	@Override
 	public List<AccountInfo> getAccountInfoList() {
-		List<String> accountNameList = rtEngine.getAccountNameList();
-		List<AccountInfo> resultList = new ArrayList<>(accountNameList.size());
-		for(String name : accountNameList) {
+		List<String> accountIdList = rtEngine.getAccountIdList();
+		List<AccountInfo> resultList = new ArrayList<>(accountIdList.size());
+		for(String name : accountIdList) {
 			try {
 				resultList.add(rtEngine.getAccount(name).getAccountInfo());
 			} catch (NoSuchAccountException e) {
@@ -47,42 +44,41 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public List<PositionInfo> getPositionInfoList(String accountName) throws NoSuchAccountException {
-		IAccount account = rtEngine.getAccount(accountName);
+	public List<PositionInfo> getPositionInfoList(String accountId) throws NoSuchAccountException {
+		IAccount account = rtEngine.getAccount(accountId);
 		return account.getPositionInfoList();
 	}
 
 	@Override
-	public List<OrderInfo> getOrderInfoList(String accountName) throws NoSuchAccountException {
-		IAccount account = rtEngine.getAccount(accountName);
+	public List<OrderInfo> getOrderInfoList(String accountId) throws NoSuchAccountException {
+		IAccount account = rtEngine.getAccount(accountId);
 		return account.getOrderInfoList(LocalDate.now(), LocalDate.now());
 	}
 
 	@Override
-	public List<TransactionInfo> getTransactionInfoList(String accountName) throws NoSuchAccountException {
-		IAccount account = rtEngine.getAccount(accountName);
+	public List<TransactionInfo> getTransactionInfoList(String accountId) throws NoSuchAccountException {
+		IAccount account = rtEngine.getAccount(accountId);
 		return account.getTransactionInfoList(LocalDate.now(), LocalDate.now());
 	}
 
 	@Override
-	public void connect(String accountName) throws Exception {
-		log.info("建立账户【{}】的网关连接", accountName);
-		IAccount account = rtEngine.getAccount(accountName);
+	public void connect(String accountId) throws Exception {
+		log.info("建立账户【{}】的网关连接", accountId);
+		IAccount account = rtEngine.getAccount(accountId);
 		account.connectGateway();
 		
 	}
 
 	@Override
-	public void disconnect(String accountName) throws NoSuchAccountException {
-		log.info("断开账户【{}】的网关连接", accountName);
-		IAccount account = rtEngine.getAccount(accountName);
+	public void disconnect(String accountId) throws NoSuchAccountException {
+		log.info("断开账户【{}】的网关连接", accountId);
+		IAccount account = rtEngine.getAccount(accountId);
 		account.disconnectGateway();
-		rtEngine.unregAccount(account.getName());
 	}
 
 	@Override
-	public ConnectStatusEnum connectStatus(String accountName) throws NoSuchAccountException {
-		IAccount account = rtEngine.getAccount(accountName);
+	public ConnectStatusEnum connectStatus(String accountId) throws NoSuchAccountException {
+		IAccount account = rtEngine.getAccount(accountId);
 		return account.connectStatus();
 	}
 

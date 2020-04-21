@@ -1,6 +1,7 @@
 package tech.xuanwu.northstar.core.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,8 @@ public class MailSenderController {
 	@ApiOperation("发送邮件消息")
 	public ResultBean<Void> sendMessage(String title, String content){
 		try {
+			Assert.hasText(title, ErrorHint.EMPTY_PARAM);
+			Assert.hasText(content, ErrorHint.EMPTY_PARAM);
 			service.sendMessage(title, content);
 			return new ResultBean<Void>(null);
 		} catch (Exception e) {

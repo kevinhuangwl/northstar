@@ -28,11 +28,11 @@ public class TradeController {
 
 	@RequestMapping(value="/order", method=RequestMethod.POST)
 	@ApiOperation("账户发送委托单")
-	public ResultBean<String> submitOrder(String accountGatewayId, String contractSymbol, double price, int volume, DirectionEnum direction,
+	public ResultBean<String> submitOrder(String accountId, String contractSymbol, double price, int volume, DirectionEnum direction,
 			OffsetFlagEnum transactionType){
 		
 		try {
-			return new ResultBean<>(tradeService.submitOrder(accountGatewayId, contractSymbol, price, volume, direction, transactionType));
+			return new ResultBean<>(tradeService.submitOrder(accountId, contractSymbol, price, volume, direction, transactionType));
 		} catch (Exception e) {
 			log.error("", e);
 			String errMsg = String.format("%s。原因：%s", ErrorHint.FAIL_SUBMIT_ORDER, e.getMessage());
@@ -42,9 +42,9 @@ public class TradeController {
 	
 	@RequestMapping(value="/cancel", method=RequestMethod.POST)
 	@ApiOperation("账户撤销委托单")
-	public ResultBean<Void> cancelOrder(String accountGatewayId, String originOrderId){
+	public ResultBean<Void> cancelOrder(String accountId, String originOrderId){
 		try {
-			tradeService.cancelOrder(accountGatewayId, originOrderId);
+			tradeService.cancelOrder(accountId, originOrderId);
 			return new ResultBean<>(null);
 		} catch (NoSuchAccountException | TradeException e) {
 			log.error("", e);
@@ -55,10 +55,10 @@ public class TradeController {
 	
 	@RequestMapping(value="/sellout", method=RequestMethod.DELETE)
 	@ApiOperation("账户一键全平【危险】")
-	public ResultBean<Void> sellOutAllPosition(String accountGatewayId){
+	public ResultBean<Void> sellOutAllPosition(String accountId){
 		log.info("【警告】账户一键全平");
 		try {
-			tradeService.sellOutAllPosition(accountGatewayId);
+			tradeService.sellOutAllPosition(accountId);
 			return new ResultBean<>(null);
 		} catch (NoSuchAccountException e) {
 			log.error("", e);

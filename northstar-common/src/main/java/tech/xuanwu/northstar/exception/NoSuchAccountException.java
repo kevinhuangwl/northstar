@@ -6,7 +6,7 @@ public class NoSuchAccountException extends Exception{
 	public NoSuchAccountException(){}
 	
 	public NoSuchAccountException(String accountName) {
-		super("不存在名称为【" + accountName + "】的账户");
+		super("不存在ID为【" + accountName + "】的账户");
 	}
 	
 }

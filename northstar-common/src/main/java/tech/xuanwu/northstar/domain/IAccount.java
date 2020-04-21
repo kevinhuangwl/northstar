@@ -13,7 +13,7 @@ public interface IAccount extends TradableAccount {
 	
 	String getGatewayId();
 	
-	String getName();
+	String getAccountId();
 	
 	GatewayField getGateway();
 	
