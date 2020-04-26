@@ -4,11 +4,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.alibaba.fastjson.JSON;
 
 import lombok.extern.slf4j.Slf4j;
+import tech.xuanwu.northstar.service.AccountService;
+import tech.xuanwu.northstar.service.TradeService;
 import tech.xuanwu.northstar.strategy.client.config.BaseStrategyConfig;
 import tech.xuanwu.northstar.strategy.client.msg.MessageClient;
 import xyz.redtorch.common.util.bar.BarGenerator;
@@ -32,6 +35,11 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 	
 	private ConcurrentHashMap<String, BarGenerator> barGeneratorMap = new ConcurrentHashMap<String, BarGenerator>();
 	
+	@Autowired
+	private AccountService accountService;
+	
+	@Autowired
+	private TradeService tradeService;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -45,12 +53,20 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 		System.out.println(String.format("订阅合约名称：%s", JSON.toJSONString(strategyConfig.getMdContracts())));
 		System.out.println(String.format("交易合约名称：%s", JSON.toJSONString(strategyConfig.getTdContracts())));
 		System.out.println("#################################");
+		
+		//连接账户
+		accountService.connect(strategyConfig.getAccountName());
 	}
 	
 	@Override
 	public void destroy() throws Exception {
 		log.info("断开策略-[{}]", strategyConfig.getStrategyName());
 		msgClient.disconnect();
+	}
+	
+	@Override
+	public String getGatewayId() {
+		return strategyConfig.getGatewayId();
 	}
 	
 	@Override

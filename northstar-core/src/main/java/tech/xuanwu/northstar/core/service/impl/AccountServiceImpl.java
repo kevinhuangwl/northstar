@@ -66,7 +66,6 @@ public class AccountServiceImpl implements AccountService {
 		log.info("建立账户【{}】的网关连接", accountId);
 		IAccount account = rtEngine.getAccount(accountId);
 		account.connectGateway();
-		
 	}
 
 	@Override

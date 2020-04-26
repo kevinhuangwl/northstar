@@ -61,10 +61,11 @@ public class MessageClient {
 		}
 		
 		final Listener callback = (data)->{
+			String gatewayId = strategy.getGatewayId();
 			String accountName = strategy.getAccountName();
 			String strategyName = strategy.getStrategyName();
 			String[] contractList = strategy.getSubscribeContractList();
-			StrategyInfo strategyInfo = new StrategyInfo(accountName, strategyName, contractList);
+			StrategyInfo strategyInfo = new StrategyInfo(gatewayId, accountName, strategyName, contractList);
 			
 			try {
 				client.emit(Message.REG_STRATEGY, wrapAsJSON(strategyInfo));
@@ -95,17 +96,7 @@ public class MessageClient {
 	 * @throws JSONException 
 	 */
 	public void disconnect() {
-		String accountName = strategy.getAccountName();
-		String strategyName = strategy.getStrategyName();
-		String[] contractList = strategy.getSubscribeContractList();
-		StrategyInfo strategyInfo = new StrategyInfo(accountName, strategyName, contractList);
-		Object[] params = new Object[1];
-		try {			
-			params[0] = wrapAsJSON(strategyInfo);
-			client.disconnect();
-		} catch (JSONException e) {
-			log.error("", e);
-		}
+		client.disconnect();
 	}
 	
 }

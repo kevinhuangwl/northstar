@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.Message;
 import tech.xuanwu.northstar.engine.MessageEngine;
 import tech.xuanwu.northstar.entity.StrategyInfo;
+import tech.xuanwu.northstar.service.AccountService;
 import tech.xuanwu.northstar.service.MarketDataService;
 import xyz.redtorch.pb.CoreField.TickField;
 
@@ -48,6 +49,9 @@ public class SocketIOMessageEngine implements MessageEngine{
 	@Autowired
 	MarketDataService mdService;
 	
+	@Autowired
+	AccountService accountService;
+	
 	@OnConnect  
     private void onConnect(final SocketIOClient client) {
     	log.info("【策略连接】-[{}],已连接", client.getSessionId());
@@ -61,18 +65,18 @@ public class SocketIOMessageEngine implements MessageEngine{
     @OnEvent(Message.REG_STRATEGY)
     private void onRegisterStrategy(final SocketIOClient client, StrategyInfo s) throws Exception {
     	
-    	log.info("【策略注册】-[{}],【{}】绑定账户：{}，订阅合约：{}", 
+    	log.info("【策略注册】-[{}],策略：{}，绑定账户：{}，订阅合约：{}", 
     			client.getSessionId(), 
     			s.getStrategyName(), 
-    			s.getAccountGatewayId(), 
+    			s.getAccountName(), 
     			JSON.toJSONString(s.getSubscribeContracts()));
     	
     	String[] symbolList = s.getSubscribeContracts();
     	
+    	//订阅合约
     	for(String symbol : symbolList) {
     		client.joinRoom(symbol);
-    		mdService.subscribeContract(s.getAccountGatewayId(), symbol);
+    		mdService.subscribeContract(s.getGatewayId(), symbol);
     	}
     }
-
 }

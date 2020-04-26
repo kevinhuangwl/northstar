@@ -90,14 +90,10 @@ public class Account implements IAccount{
 	@Override
 	public void submitOrder(SubmitOrderReqField submitOrderReq) throws TradeException {
 		log.info("账户-【{}】委托下单，{}", accountId, submitOrderReq);
-		gatewayApi.submitOrder(submitOrderReq);
-		
-		String originOrderId = submitOrderReq.getOriginOrderId();
-		if(isTimeoutWaitingFor(()->{
-			return cachedOrderMap.get(originOrderId)!=null;
-		})) {
-			throw new TradeException();
+		if(!gatewayApi.isConnected()) {
+			throw new TradeException(accountId, ErrorHint.ACCOUNT_DISCONNECT);
 		}
+		gatewayApi.submitOrder(submitOrderReq);
 	}
 
 	@Override
@@ -108,7 +104,7 @@ public class Account implements IAccount{
 		String originOrderId = cancelOrderReq.getOriginOrderId();
 		OrderInfo order = cachedOrderMap.get(originOrderId);
 		if(order == null && order.getOrderStatus() != OrderStatusEnum.OS_AllTraded) {
-			throw new TradeException();
+			throw new TradeException(accountId, ErrorHint.FAIL_CANCEL_ORDER);
 		}
 	}
 
@@ -238,6 +234,7 @@ public class Account implements IAccount{
 	@Override
 	public void connectGateway() {
 		if(gatewayApi.isConnected()) {
+			log.info("账户已连线");
 			return;
 		}
 		gatewayApi.connect();
@@ -247,6 +244,7 @@ public class Account implements IAccount{
 	@Override
 	public void disconnectGateway() {
 		if(!gatewayApi.isConnected()) {
+			log.info("账户已断开");
 			return;
 		}
 		gatewayApi.disconnect();

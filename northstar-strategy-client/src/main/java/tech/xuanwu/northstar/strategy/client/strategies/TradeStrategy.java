@@ -7,6 +7,8 @@ package tech.xuanwu.northstar.strategy.client.strategies;
  */
 public interface TradeStrategy {
 	
+	String getGatewayId();
+	
 	/**
 	 * 获取策略所对应的账户名称
 	 * @return

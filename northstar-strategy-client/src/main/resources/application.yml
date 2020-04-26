@@ -11,11 +11,13 @@ spring:
 
 strategy-setting:
   demo-strategy:
-    accountName: CTP-SimNow724
+    gatewayId: simnow724
+    accountName: 094020@simnow724
     strategyName: DemoStrategy
-    mdContracts: cu2005,cu2006
-    tdContracts: rb2005
+    mdContracts: rb2010,rb2101
+    tdContracts: rb2010
   shadow-strategy:
+    gatewayId: simnow724
     accountName: CTP-SimNow
     strategyName: ShadowStrategy
     mdContracts: rb2005,AP005,cu2005,IF2006,au2006

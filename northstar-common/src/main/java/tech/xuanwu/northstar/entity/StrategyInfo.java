@@ -5,7 +5,9 @@ import lombok.Data;
 @Data
 public class StrategyInfo {
 
-	String accountGatewayId;
+	String gatewayId;
+	
+	String accountName;
 	
 	String strategyName;
 	
@@ -13,8 +15,9 @@ public class StrategyInfo {
 	
 	public StrategyInfo() {}
 	
-	public StrategyInfo(String accountGatewayId, String strategyName, String[] subscribeContracts) {
-		this.accountGatewayId = accountGatewayId;
+	public StrategyInfo(String gatewayId, String accountName, String strategyName, String[] subscribeContracts) {
+		this.gatewayId = gatewayId;
+		this.accountName = accountName;
 		this.strategyName = strategyName;
 		this.subscribeContracts = subscribeContracts;
 	}

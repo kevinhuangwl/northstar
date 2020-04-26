@@ -17,4 +17,6 @@ public interface ErrorHint {
 	String FAIL_TO_SEND_MAIL = "邮件发送失败。";
 	
 	String EMPTY_PARAM = "参数不能为空";
+	
+	String ACCOUNT_DISCONNECT = "账户未连线。";
 }

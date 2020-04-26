@@ -9,7 +9,6 @@ import tech.xuanwu.northstar.core.persistence.repo.GatewayRepo;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.entity.ContractInfo;
-import tech.xuanwu.northstar.entity.GatewayInfo;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import tech.xuanwu.northstar.exception.NoSuchContractException;
 import tech.xuanwu.northstar.exception.TradeException;
@@ -39,7 +38,7 @@ public class TradeServiceImpl implements TradeService{
 	RuntimeEngine rtEngine;
 
 	@Override
-	public String submitOrder(String gatewayId, String contractSymbol, double price, double stopPrice, int volume,
+	public String submitOrder(String accountId, String contractSymbol, double price, double stopPrice, int volume,
 			OrderPriceTypeEnum priceType, DirectionEnum direction, OffsetFlagEnum transactionType,
 			HedgeFlagEnum hedgeType, TimeConditionEnum expireType, VolumeConditionEnum volType,
 			ContingentConditionEnum trigerType) throws Exception {
@@ -47,6 +46,9 @@ public class TradeServiceImpl implements TradeService{
 		checkValuePositive(price);
 		checkValuePositive(volume);
 		checkValuePositive(stopPrice);
+		
+		String[] ids = accountId.split("@");
+		String gatewayId = ids[1];
 		
 		SubmitOrderReqField.Builder sb = SubmitOrderReqField.newBuilder();
 		ContractInfo contract = contractRepo.getContractBySymbol(gatewayId, contractSymbol);
@@ -66,22 +68,21 @@ public class TradeServiceImpl implements TradeService{
 		sb.setContingentCondition(trigerType);
 		sb.setMinVolume(1);
 		sb.setGatewayId(gatewayId);
-		return submitOrder(gatewayId, sb.build());
+		return submitOrder(accountId, sb.build());
 	}
 
 	@Override
-	public String submitOrder(String gatewayId, String contractSymbol, double price, int volume, DirectionEnum direction,
+	public String submitOrder(String accountId, String contractSymbol, double price, int volume, DirectionEnum direction,
 			OffsetFlagEnum transactionType) throws Exception{
 		checkValuePositive(price);
 		checkValuePositive(volume);
-		return submitOrder(gatewayId, contractSymbol, price, 0D, volume, OrderPriceTypeEnum.OPT_LimitPrice, direction, transactionType,
+		return submitOrder(accountId, contractSymbol, price, 0D, volume, OrderPriceTypeEnum.OPT_LimitPrice, direction, transactionType,
 				HedgeFlagEnum.HF_Speculation, TimeConditionEnum.TC_GFD, VolumeConditionEnum.VC_AV, ContingentConditionEnum.CC_Immediately);
 	}
 
 	@Override
-	public String submitOrder(String gatewayId, SubmitOrderReqField submitOrderReq) throws NoSuchAccountException, TradeException{
-		GatewayInfo gateway = gatewayRepo.findGatewayById(gatewayId);
-		IAccount account = rtEngine.getAccount(gateway.getName());
+	public String submitOrder(String accountId, SubmitOrderReqField submitOrderReq) throws NoSuchAccountException, TradeException{
+		IAccount account = rtEngine.getAccount(accountId);
 		SubmitOrderReqField.Builder sb = submitOrderReq.toBuilder();
 		submitOrderReq = sb.build();
 		String uuid = StringUtils.isEmpty(sb.getOriginOrderId()) ? UUIDStringPoolUtils.getUUIDString() : sb.getOriginOrderId();
@@ -108,21 +109,21 @@ public class TradeServiceImpl implements TradeService{
 	}
 
 	@Override
-	public void cancelOrder(String accountName, String originOrderId) throws NoSuchAccountException, TradeException {
+	public void cancelOrder(String accountId, String originOrderId) throws NoSuchAccountException, TradeException {
 		CancelOrderReqField.Builder cb = CancelOrderReqField.newBuilder();
 		cb.setOriginOrderId(originOrderId);
-		cancelOrder(accountName, cb.build());
+		cancelOrder(accountId, cb.build());
 	}
 
 	@Override
-	public void cancelOrder(String accountName, CancelOrderReqField cancelOrderReq) throws NoSuchAccountException, TradeException {
-		IAccount account = rtEngine.getAccount(accountName);
+	public void cancelOrder(String accountId, CancelOrderReqField cancelOrderReq) throws NoSuchAccountException, TradeException {
+		IAccount account = rtEngine.getAccount(accountId);
 		account.cancelOrder(cancelOrderReq);
 	}
 
 	@Override
-	public void sellOutAllPosition(String accountName) throws NoSuchAccountException {
-		IAccount account = rtEngine.getAccount(accountName);
+	public void sellOutAllPosition(String accountId) throws NoSuchAccountException {
+		IAccount account = rtEngine.getAccount(accountId);
 		account.sellOutAllPosition();
 	}
 	

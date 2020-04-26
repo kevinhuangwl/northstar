@@ -54,12 +54,6 @@ public class MarketDataServiceImpl implements MarketDataService{
 		return Integer.valueOf(suffix) == 0;
 	}
 
-//	@Override
-//	public List<ContractInfo> getAllSubscribedContracts(String gatewayId) throws Exception {
-//		//FIXME 考虑
-//		return contractRepo.getAllSubscribedContracts(gatewayId);
-//	}
-
 	@Override
 	public List<ContractInfo> getAvailableContracts(String gatewayId) throws Exception {
 		return contractRepo.getAllAvailableContracts(gatewayId);

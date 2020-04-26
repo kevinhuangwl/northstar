@@ -32,6 +32,8 @@ public class CtpGatewayCommonSettings {
 	private String gatewayImplClassName;
 	//网关ID
 	private String gatewayID;
+	//网关名称
+	private String gatewayName;
 	//行情主机IP
 	private String mdHost;
 	//行情主机端口
@@ -70,6 +72,7 @@ public class CtpGatewayCommonSettings {
 		
 		builder.setGatewayAdapterType(adpterType);
 		builder.setGatewayId(gatewayID);
+		builder.setGatewayName(Optional.fromNullable(gatewayName).or(""));
 		builder.setGatewayType(gatewayType);
 		builder.setCtpApiSetting(ctpApiBuilder);
 		

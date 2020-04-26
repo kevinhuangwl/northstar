@@ -5,6 +5,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix="strategy-setting.demo-strategy")
 public class BaseStrategyConfig {
 
+	/*行情网关ID*/
+	protected String gatewayId;
+	
 	/*账户名称*/
 	protected String accountName;
 	
@@ -16,6 +19,14 @@ public class BaseStrategyConfig {
 	
 	/*下单目标合约*/
 	protected String[] tdContracts;
+	
+	public void setGatewayId(String gatewayId) {
+		this.gatewayId = gatewayId;
+	}
+	
+	public String getGatewayId() {
+		return gatewayId;
+	}
 
 	public String getAccountName() {
 		return accountName;

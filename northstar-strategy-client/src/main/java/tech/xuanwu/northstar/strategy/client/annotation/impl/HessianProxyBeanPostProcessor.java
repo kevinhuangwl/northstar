@@ -9,9 +9,12 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
 import com.caucho.hessian.client.HessianProxyFactory;
+import com.google.gson.Gson;
 
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.strategy.client.annotation.NorthstarService;
+import tech.xuanwu.northstar.strategy.client.config.HessianServiceConfig;
+import tech.xuanwu.northstar.strategy.client.strategies.DemoStrategy;
 
 @Slf4j
 @Component
@@ -31,6 +34,9 @@ public class HessianProxyBeanPostProcessor implements BeanPostProcessor{
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		Field[] fields = bean.getClass().getDeclaredFields();
+		if(bean instanceof HessianServiceConfig) {
+			log.info("{}", beanName);
+		}
 		for(Field f : fields) {
 			if(f.isAnnotationPresent(NorthstarService.class)) {
 				boolean accFlag = f.canAccess(bean);
