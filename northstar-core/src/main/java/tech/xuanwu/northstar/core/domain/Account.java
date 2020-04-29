@@ -87,6 +87,7 @@ public class Account implements IAccount{
 		this.positionRepo = positionRepo;
 	}
 
+	
 	@Override
 	public void submitOrder(SubmitOrderReqField submitOrderReq) throws TradeException {
 		log.info("账户-【{}】委托下单，{}", accountId, submitOrderReq);
@@ -111,15 +112,14 @@ public class Account implements IAccount{
 	@Override
 	public void updatePosition(PositionInfo position) {
 		synchronized (positionMap) {
+			PositionInfo lastPosition = positionMap.put(position.getPositionId(), position);
+			if(lastPosition != null && lastPosition.getPosition() == position.getPosition()) {				
+				//当持仓不变时，不更新数据库
+				return;
+			}
 			if(position.getPosition() == 0) {
 				positionMap.remove(position.getPositionId());
 				positionRepo.removeById(position);
-				return;
-			}
-			PositionInfo lastPosition = positionMap.get(position.getPositionId());
-			positionMap.put(position.getPositionId(), position);
-			if(lastPosition != null && lastPosition.getPosition() == position.getPosition()) {				
-				//当持仓不变时，不更新数据库
 				return;
 			}
 			positionRepo.upsertById(position);
@@ -212,8 +212,7 @@ public class Account implements IAccount{
 	}
 
 	@Override
-	public List<OrderInfo> getOrderInfoList(LocalDate fromDate, LocalDate toDate) {
-		//FIXME 先做简单实现
+	public List<OrderInfo> getOrderInfoList() {
 		synchronized (orderMap) {
 			List<OrderInfo> resultList = new ArrayList<>(orderMap.size());
 			resultList.addAll(orderMap.values());
@@ -222,8 +221,7 @@ public class Account implements IAccount{
 	}
 
 	@Override
-	public List<TransactionInfo> getTransactionInfoList(LocalDate fromDate, LocalDate toDate) {
-		//FIXME 先做简单实现
+	public List<TransactionInfo> getTransactionInfoList() {
 		synchronized (transactionMap) {
 			List<TransactionInfo> resultList = new ArrayList<>(transactionMap.size());
 			resultList.addAll(transactionMap.values());
@@ -275,11 +273,6 @@ public class Account implements IAccount{
 			}
 		}
 		return true;
-	}
-
-	@Override
-	public GatewayField getGateway() {
-		return gatewayApi.getGateway();
 	}
 
 	@Override

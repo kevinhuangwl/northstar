@@ -9,7 +9,7 @@ public class BaseStrategyConfig {
 	protected String gatewayId;
 	
 	/*账户名称*/
-	protected String accountName;
+	protected String accountId;
 	
 	/*策略名称*/
 	protected String strategyName;
@@ -28,12 +28,12 @@ public class BaseStrategyConfig {
 		return gatewayId;
 	}
 
-	public String getAccountName() {
-		return accountName;
+	public String getAccountId() {
+		return accountId;
 	}
 
-	public void setAccountName(String accountName) {
-		this.accountName = accountName;
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
 	}
 
 	public String getStrategyName() {

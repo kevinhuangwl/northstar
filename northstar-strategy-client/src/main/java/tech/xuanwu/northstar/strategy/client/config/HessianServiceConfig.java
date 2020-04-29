@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import tech.xuanwu.northstar.service.AccountService;
+import tech.xuanwu.northstar.service.MailSenderService;
 import tech.xuanwu.northstar.service.TradeService;
 import tech.xuanwu.northstar.strategy.client.annotation.NorthstarService;
 
@@ -16,6 +17,9 @@ public class HessianServiceConfig {
 	@NorthstarService
 	TradeService tradeService;
 	
+	@NorthstarService
+	MailSenderService mailService;
+	
 	@Bean
 	public AccountService getAccountService() {
 		return accountService;
@@ -24,5 +28,10 @@ public class HessianServiceConfig {
 	@Bean
 	public TradeService getTradeService() {
 		return tradeService;
+	}
+	
+	@Bean
+	public MailSenderService getMailSenderService() {
+		return mailService;
 	}
 }

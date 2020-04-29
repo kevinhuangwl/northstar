@@ -13,7 +13,7 @@ public interface TradeStrategy {
 	 * 获取策略所对应的账户名称
 	 * @return
 	 */
-	String getAccountName();
+	String getAccountId();
 
 	/**
 	 * 获取策略名称

@@ -1,6 +1,5 @@
 package tech.xuanwu.northstar.core.service.impl;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,13 +51,13 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public List<OrderInfo> getOrderInfoList(String accountId) throws NoSuchAccountException {
 		IAccount account = rtEngine.getAccount(accountId);
-		return account.getOrderInfoList(LocalDate.now(), LocalDate.now());
+		return account.getOrderInfoList();
 	}
 
 	@Override
 	public List<TransactionInfo> getTransactionInfoList(String accountId) throws NoSuchAccountException {
 		IAccount account = rtEngine.getAccount(accountId);
-		return account.getTransactionInfoList(LocalDate.now(), LocalDate.now());
+		return account.getTransactionInfoList();
 	}
 
 	@Override

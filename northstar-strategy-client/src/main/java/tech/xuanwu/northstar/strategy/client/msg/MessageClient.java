@@ -62,10 +62,10 @@ public class MessageClient {
 		
 		final Listener callback = (data)->{
 			String gatewayId = strategy.getGatewayId();
-			String accountName = strategy.getAccountName();
+			String accountId = strategy.getAccountId();
 			String strategyName = strategy.getStrategyName();
 			String[] contractList = strategy.getSubscribeContractList();
-			StrategyInfo strategyInfo = new StrategyInfo(gatewayId, accountName, strategyName, contractList);
+			StrategyInfo strategyInfo = new StrategyInfo(gatewayId, accountId, strategyName, contractList);
 			
 			try {
 				client.emit(Message.REG_STRATEGY, wrapAsJSON(strategyInfo));

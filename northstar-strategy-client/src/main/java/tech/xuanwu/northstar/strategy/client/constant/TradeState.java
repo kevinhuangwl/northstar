@@ -9,8 +9,6 @@ public enum TradeState {
 
 	//空仓
 	EMPTY_POSITION,
-	//锁仓
-	LOCKING_POSITION,
 	//开仓中
 	OPENNING_POSITION,
 	//持多仓
