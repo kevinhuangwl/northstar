@@ -1,5 +1,6 @@
 HELP.md
 target/
+log/
 test-output/
 .mvn/**
 !**/src/main/**

@@ -11,6 +11,12 @@ socketio:
 #BusySpinWaitStrategy 高性能,高CPU占用,需要CPU实际物理核心数量高于FastEventDynamicHandler数量。建议最低使用多核物理机,关闭BIOS超线程!
 event.engine.strategy: BlockingWaitStrategy
 
+
+logging:
+  level: 
+    root: info
+  path: log/NorthstarCore/
+  
 spring:
   mail:
     host: smtp.126.com

@@ -8,7 +8,12 @@ spring:
             host: 127.0.0.1
             port: 27017
             database: DB_BAR_DATA
-
+logging:
+  level: 
+    root: info
+  path: log/NorthstarStrategyClient/
+  
+  
 strategy-setting:
   demo-strategy:
     gatewayId: simnow724
