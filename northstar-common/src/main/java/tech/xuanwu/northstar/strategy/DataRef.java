@@ -2,14 +2,25 @@ package tech.xuanwu.northstar.strategy;
 
 import java.util.List;
 
+/**
+ * 行情数据引用接口
+ * @author kevinhuangwl
+ *
+ * @param <T>
+ */
 public interface DataRef<T> {
+	
+	/**
+	 * 加载数据
+	 * @param numOfRef
+	 */
+	void load(int numOfRef);
 
 	/**
 	 * 更新数据
 	 * @param tick
 	 */
 	void updateData(T data);
-	
 	
 	/**
 	 * 获取数据
