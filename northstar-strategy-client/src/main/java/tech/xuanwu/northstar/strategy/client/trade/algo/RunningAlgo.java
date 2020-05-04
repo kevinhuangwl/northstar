@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.strategy.client.algo;
+package tech.xuanwu.northstar.strategy.client.trade.algo;
 
 /**
  * 滚动算法

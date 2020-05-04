@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.strategy.client.indicators;
+package tech.xuanwu.northstar.strategy.client.trade.indicator;
 
 public abstract class BaseIndicator implements Indicator{
 	

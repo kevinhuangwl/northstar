@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.strategy.client.logic;
+package tech.xuanwu.northstar.strategy.client.trade.logic;
 
 /**
  * 交易逻辑接口

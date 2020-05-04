@@ -14,7 +14,7 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.strategy.client.annotation.NorthstarService;
 import tech.xuanwu.northstar.strategy.client.config.common.HessianServiceConfig;
-import tech.xuanwu.northstar.strategy.client.strategies.DemoStrategy;
+import tech.xuanwu.northstar.strategy.client.trade.strategy.DemoStrategy;
 
 @Slf4j
 @Component

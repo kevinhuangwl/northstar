@@ -12,7 +12,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import tech.xuanwu.northstar.strategy.client.dataref.DataRef;
-import tech.xuanwu.northstar.strategy.client.indicators.MovingAverageIndicator;
+import tech.xuanwu.northstar.strategy.client.trade.indicator.MovingAverageIndicator;
 import xyz.redtorch.pb.CoreField.BarField;
 
 public class MovingAverageIndicatorTest {

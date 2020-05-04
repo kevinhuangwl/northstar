@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.math.Stats;
 
-import tech.xuanwu.northstar.strategy.client.algo.RunningMeanAlgo;
+import tech.xuanwu.northstar.strategy.client.trade.algo.RunningMeanAlgo;
 
 public class RunningMeanAlgoTest {
 	

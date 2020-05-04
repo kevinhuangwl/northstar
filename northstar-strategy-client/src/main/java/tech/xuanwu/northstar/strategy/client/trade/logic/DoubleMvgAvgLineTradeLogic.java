@@ -1,14 +1,14 @@
-package tech.xuanwu.northstar.strategy.client.logic;
+package tech.xuanwu.northstar.strategy.client.trade.logic;
 
 import tech.xuanwu.northstar.strategy.client.dataref.DataRef;
-import tech.xuanwu.northstar.strategy.client.indicators.MovingAverageIndicator;
+import tech.xuanwu.northstar.strategy.client.trade.indicator.MovingAverageIndicator;
 import xyz.redtorch.pb.CoreField.BarField;
 
 /**
  * 双均线交易策略
  * 
- * 多头信号：快线上穿慢线
- * 空头信号：快线下穿慢线
+ * 多头信号：快线高于慢线
+ * 空头信号：快线低于慢线
  * @author kevinhuangwl
  *
  */
@@ -30,6 +30,12 @@ public class DoubleMvgAvgLineTradeLogic implements TradeLogic{
 
 	@Override
 	public Signal getCurrentSignal() {
-		return null;
+		if(fastLine.getValue() > slowLine.getValue()) {
+			return Signal.LONG;
+		}
+		if(fastLine.getValue() < slowLine.getValue()) {
+			return Signal.SHORT;
+		}
+		return Signal.NONE;
 	}
 }

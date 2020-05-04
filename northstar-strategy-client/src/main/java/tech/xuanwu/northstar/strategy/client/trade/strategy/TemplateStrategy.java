@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.strategy.client.strategies;
+package tech.xuanwu.northstar.strategy.client.trade.strategy;
 
 import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
