@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.strategy.client.dataref;
+package tech.xuanwu.northstar.strategy.client.trade.dataref;
 
 import java.util.List;
 

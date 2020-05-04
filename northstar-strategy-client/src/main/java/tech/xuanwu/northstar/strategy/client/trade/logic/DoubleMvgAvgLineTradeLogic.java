@@ -1,6 +1,6 @@
 package tech.xuanwu.northstar.strategy.client.trade.logic;
 
-import tech.xuanwu.northstar.strategy.client.dataref.DataRef;
+import tech.xuanwu.northstar.strategy.client.trade.dataref.DataRef;
 import tech.xuanwu.northstar.strategy.client.trade.indicator.MovingAverageIndicator;
 import xyz.redtorch.pb.CoreField.BarField;
 

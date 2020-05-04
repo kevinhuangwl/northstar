@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.util.Assert;
 
-import tech.xuanwu.northstar.strategy.client.dataref.DataRef;
 import tech.xuanwu.northstar.strategy.client.trade.algo.RunningMeanAlgo;
+import tech.xuanwu.northstar.strategy.client.trade.dataref.DataRef;
 import xyz.redtorch.pb.CoreField.BarField;
 
 /**
