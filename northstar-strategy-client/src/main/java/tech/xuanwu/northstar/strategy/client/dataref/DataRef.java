@@ -3,36 +3,21 @@ package tech.xuanwu.northstar.strategy.client.dataref;
 import java.util.List;
 
 import tech.xuanwu.northstar.strategy.client.indicators.Indicator;
-import xyz.redtorch.pb.CoreField.BarField;
-import xyz.redtorch.pb.CoreField.TickField;
 
-public interface DataRef {
+public interface DataRef<T> {
 
 	/**
-	 * 更新tick
+	 * 更新数据
 	 * @param tick
 	 */
-	void updateTick(TickField tick);
+	void updateData(T data);
+	
 	
 	/**
-	 * 更新bar
-	 * @param bar
-	 */
-	void updateBar(BarField bar);
-	
-	/**
-	 * 获取tick数据
-	 * @param numOfRef	回溯tick数量
+	 * 获取数据
 	 * @return
 	 */
-	List<TickField> getTickRef();
-	
-	/**
-	 * 获取bar数据
-	 * @param numOfRef	回溯bar数量
-	 * @return
-	 */
-	List<BarField> getBarRef();
+	List<T> getDataRef();
 	
 	/**
 	 * 向数据源加入指标，监听数据变化

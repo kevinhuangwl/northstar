@@ -2,6 +2,7 @@ package tech.xuanwu.northstar.strategy.client.logic;
 
 import tech.xuanwu.northstar.strategy.client.dataref.DataRef;
 import tech.xuanwu.northstar.strategy.client.indicators.MovingAverageIndicator;
+import xyz.redtorch.pb.CoreField.BarField;
 
 /**
  * 双均线交易策略
@@ -16,14 +17,19 @@ public class DoubleMvgAvgLineTradeLogic implements TradeLogic{
 	private MovingAverageIndicator fastLine;
 	private MovingAverageIndicator slowLine;
 	
-	public DoubleMvgAvgLineTradeLogic(DataRef dataRef, DataRef.PriceType priceType, int fastLineRef, int slowLineRef) {
+	public DoubleMvgAvgLineTradeLogic(DataRef<BarField> dataRef, DataRef.PriceType priceType, int fastLineRef, int slowLineRef) {
 		fastLine = new MovingAverageIndicator(dataRef, priceType, fastLineRef);
 		slowLine = new MovingAverageIndicator(dataRef, priceType, slowLineRef);
 	}
-	
+
+	@Override
+	public void init() {
+		fastLine.init();
+		slowLine.init();		
+	}
+
 	@Override
 	public Signal getCurrentSignal() {
 		return null;
 	}
-
 }

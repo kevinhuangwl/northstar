@@ -23,14 +23,14 @@ public class MovingAverageIndicator extends BaseIndicator implements Indicator{
 	private int sampleSize;
 	private int maxRefLen;
 	
-	private DataRef dataRef;
+	private DataRef<BarField> dataRef;
 	private DataRef.PriceType refPriceType;
 	
-	public MovingAverageIndicator(DataRef dataRef, DataRef.PriceType priceType, int sampleSize) {
+	public MovingAverageIndicator(DataRef<BarField> dataRef, DataRef.PriceType priceType, int sampleSize) {
 		this(dataRef, priceType, sampleSize, DEFAULT_LEN);
 	}
 	
-	public MovingAverageIndicator(DataRef dataRef, DataRef.PriceType priceType, int sampleSize, int maxRef) {
+	public MovingAverageIndicator(DataRef<BarField> dataRef, DataRef.PriceType priceType, int sampleSize, int maxRef) {
 		this.dataRef = dataRef;
 		this.refPriceType = priceType;
 		this.sampleSize = sampleSize;
@@ -41,7 +41,7 @@ public class MovingAverageIndicator extends BaseIndicator implements Indicator{
 	
 	@Override
 	public void init() {
-		List<BarField> barData = dataRef.getBarRef();
+		List<BarField> barData = dataRef.getDataRef();
 		computedVal = new double[maxRefLen];
 		double[] data = new double[sampleSize];
 		Assert.isTrue(barData.size() >= sampleSize, "数据源的数据量不足");

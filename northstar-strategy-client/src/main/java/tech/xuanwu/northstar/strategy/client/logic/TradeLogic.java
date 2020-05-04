@@ -6,7 +6,16 @@ package tech.xuanwu.northstar.strategy.client.logic;
  *
  */
 public interface TradeLogic {
+	
+	/**
+	 * 初始化/重置
+	 */
+	void init();
 
+	/**
+	 * 获取交易逻辑信号
+	 * @return
+	 */
 	Signal getCurrentSignal();
 	
 	/**

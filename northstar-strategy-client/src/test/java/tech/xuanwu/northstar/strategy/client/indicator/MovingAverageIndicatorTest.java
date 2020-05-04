@@ -17,7 +17,7 @@ import xyz.redtorch.pb.CoreField.BarField;
 
 public class MovingAverageIndicatorTest {
 	
-	DataRef dataRef;
+	DataRef<BarField> dataRef;
 	
 	double[] prices = new double[] {3356.2,3358,3358.6,3355,3326};
 	double[] mkPrices = new double[] {3355,3369,3354,3333,3312,3345,3346,3347,3348,3354,3343,3336,3395,3375,3314,3377,3366,3345,3354,3364,3365};
@@ -31,7 +31,7 @@ public class MovingAverageIndicatorTest {
 		for(double v : prices) {
 			barData.add(BarField.newBuilder().setClosePrice(v).build());
 		}
-		when(dataRef.getBarRef()).thenReturn(barData);
+		when(dataRef.getDataRef()).thenReturn(barData);
 	}
 	
 	
