@@ -3,7 +3,7 @@ package tech.xuanwu.northstar.strategy.client.config.strategy;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import tech.xuanwu.northstar.strategy.client.trade.dataref.DataRef;
+import tech.xuanwu.northstar.strategy.DataRef;
 
 @ConfigurationProperties(prefix="strategy-setting.demo-strategy")
 public class BaseStrategyConfig {

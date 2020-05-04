@@ -4,6 +4,8 @@ import org.springframework.util.Assert;
 
 import com.google.common.math.Stats;
 
+import tech.xuanwu.northstar.strategy.RunningAlgo;
+
 /**
  * 均值算法
  * @author kevinhuangwl

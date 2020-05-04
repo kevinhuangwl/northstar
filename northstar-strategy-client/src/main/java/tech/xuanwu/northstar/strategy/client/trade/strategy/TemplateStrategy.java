@@ -14,6 +14,7 @@ import tech.xuanwu.northstar.constant.CommonConstant;
 import tech.xuanwu.northstar.service.AccountService;
 import tech.xuanwu.northstar.service.MailSenderService;
 import tech.xuanwu.northstar.service.TradeService;
+import tech.xuanwu.northstar.strategy.Strategy;
 import tech.xuanwu.northstar.strategy.client.config.common.DefaultSubmitOrderConfig;
 import tech.xuanwu.northstar.strategy.client.config.strategy.BaseStrategyConfig;
 import tech.xuanwu.northstar.strategy.client.constant.TradeState;

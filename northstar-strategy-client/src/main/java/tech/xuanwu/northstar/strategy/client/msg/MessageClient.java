@@ -15,7 +15,7 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter.Listener;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.Message;
-import tech.xuanwu.northstar.strategy.client.trade.strategy.Strategy;
+import tech.xuanwu.northstar.strategy.Strategy;
 import xyz.redtorch.pb.CoreField.TickField;
 
 /**

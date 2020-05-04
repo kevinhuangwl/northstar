@@ -1,8 +1,6 @@
-package tech.xuanwu.northstar.strategy.client.trade.dataref;
+package tech.xuanwu.northstar.strategy;
 
 import java.util.List;
-
-import tech.xuanwu.northstar.strategy.client.trade.indicator.Indicator;
 
 public interface DataRef<T> {
 

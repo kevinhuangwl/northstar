@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.strategy.client.trade.strategy;
+package tech.xuanwu.northstar.strategy;
 
 import xyz.redtorch.pb.CoreField.TickField;
 

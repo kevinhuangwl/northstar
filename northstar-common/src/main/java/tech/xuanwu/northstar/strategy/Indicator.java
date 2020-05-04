@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.strategy.client.trade.indicator;
+package tech.xuanwu.northstar.strategy;
 
 /**
  * 指标
