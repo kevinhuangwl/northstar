@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.strategy.client.config.BaseStrategyConfig;
+import tech.xuanwu.northstar.strategy.client.config.strategy.BaseStrategyConfig;
 import xyz.redtorch.pb.CoreField.BarField;
 import xyz.redtorch.pb.CoreField.TickField;
 
@@ -38,5 +38,4 @@ public class DemoStrategy extends TemplateStrategy {
 				bar.getVolume());
 	}
 
-	
 }

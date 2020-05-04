@@ -19,14 +19,16 @@ strategy-setting:
     gatewayId: simnow724
     accountId: 094020@simnow724
     strategyName: DemoStrategy
-    mdContracts: rb2010,AP010,m2009,IF2006,SC2006
-    tdContracts: rb2010
+    mdtdContracts: AP000@AP010,CF000@CF009
+    periods: 1MIN
+    tickRefLen: 5
+    barRefLen: 1024
+    
   shadow-strategy:
     gatewayId: simnow724
     accountId: CTP-SimNow
     strategyName: ShadowStrategy
-    mdContracts: rb2005,AP005,cu2005,IF2006,au2006
-    tdContracts: rb2005
+    tradeContracts: AP000@AP010,CF000@CF009
     followAccount: CTP-SimNow
     
     

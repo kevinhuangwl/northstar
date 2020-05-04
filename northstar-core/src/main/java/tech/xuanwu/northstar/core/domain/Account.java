@@ -1,6 +1,5 @@
 package tech.xuanwu.northstar.core.domain;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +12,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.common.Conditional;
 import tech.xuanwu.northstar.constant.ErrorHint;
 import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
 import tech.xuanwu.northstar.core.persistence.repo.PositionRepo;
@@ -27,7 +25,6 @@ import tech.xuanwu.northstar.gateway.GatewayApi;
 import xyz.redtorch.pb.CoreEnum.ConnectStatusEnum;
 import xyz.redtorch.pb.CoreEnum.OrderStatusEnum;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
-import xyz.redtorch.pb.CoreField.GatewayField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 
 /**
@@ -260,21 +257,6 @@ public class Account implements IAccount{
 		}
 	}
 	
-	protected boolean isTimeoutWaitingFor(Conditional c) {
-		int retry = 100;
-		while(retry-->0) {
-			if(c.expect()) {
-				return false;
-			}
-			
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-			}
-		}
-		return true;
-	}
-
 	@Override
 	public ConnectStatusEnum connectStatus() {
 		return status;

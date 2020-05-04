@@ -1,11 +1,13 @@
 package tech.xuanwu.northstar.strategy.client.msg;
 
-import java.net.URISyntaxException;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-import com.google.gson.Gson;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import io.socket.client.IO;
@@ -13,9 +15,7 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter.Listener;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.Message;
-import tech.xuanwu.northstar.entity.StrategyInfo;
-import tech.xuanwu.northstar.strategy.client.strategies.TemplateStrategy;
-import tech.xuanwu.northstar.strategy.client.strategies.TradeStrategy;
+import tech.xuanwu.northstar.strategy.client.strategies.Strategy;
 import xyz.redtorch.pb.CoreField.TickField;
 
 /**
@@ -24,59 +24,27 @@ import xyz.redtorch.pb.CoreField.TickField;
  *
  */
 @Slf4j
-public class MessageClient {
+@Component
+public class MessageClient implements InitializingBean, DisposableBean{
+	
+	@Value("${northstar.message.endpoint}")
+	private String msgServerEndpoint;
+	
+	List<Strategy> strategyList = new CopyOnWriteArrayList<>();
 	
 	Socket client;
 	
-	TradeStrategy strategy;
-	
-	public MessageClient(String coreServiceEndpoint, TradeStrategy s){
-		try {
-			this.client = IO.socket(coreServiceEndpoint);
-			this.strategy = s;
-		} catch (URISyntaxException e) {
-			log.error("通信客户端创建异常", e);
-		}
-	}
-	
-	/**
-	 * 收到TICK数据
-	 * @param tick
-	 */
-	private void onTick(TickField tick) {
-		((TemplateStrategy)strategy).onTickEvent(tick);
-	}
-	
-	
-	private <T> JSONObject wrapAsJSON(T t) throws JSONException {
-		return new JSONObject(new Gson().toJson(t));
-	}
-	
-	/**
-	 * 建立与socket服务端连接
-	 */
-	public void connect() {
-		if(client.connected()) {
-			return;
-		}
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		client = IO.socket(msgServerEndpoint);
 		
-		final Listener callback = (data)->{
-			String gatewayId = strategy.getGatewayId();
-			String accountId = strategy.getAccountId();
-			String strategyName = strategy.getStrategyName();
-			String[] contractList = strategy.getSubscribeContractList();
-			StrategyInfo strategyInfo = new StrategyInfo(gatewayId, accountId, strategyName, contractList);
-			
-			try {
-				client.emit(Message.REG_STRATEGY, wrapAsJSON(strategyInfo));
-			} catch (JSONException e) {
-				log.error("", e);
-			}
+		final Listener callback = (data) -> {
+			log.info("消息客户端【{}】连线成功", client.id());
 		};
 		
-		client.once(Socket.EVENT_CONNECTING, callback);
+		client.on(Socket.EVENT_RECONNECT, callback);
 		
-		client.on(Socket.EVENT_RECONNECTING, callback);
+		client.on(Socket.EVENT_CONNECT, callback);
 		
 		client.on(Message.MARKET_DATA, (data)->{
 			byte[] b = (byte[]) data[0];
@@ -91,12 +59,26 @@ public class MessageClient {
 		client.connect();
 	}
 	
-	/**
-	 * 断开与socket服务端连接
-	 * @throws JSONException 
-	 */
-	public void disconnect() {
+	@Override
+	public void destroy() throws Exception {
 		client.disconnect();
 	}
 	
+	/**
+	 * 收到TICK数据
+	 * @param tick
+	 */
+	private void onTick(TickField tick) {
+		for(Strategy s : strategyList) {
+			s.updateTick(tick);
+		}
+	}
+	
+	/**
+	 * 注册策略
+	 * @param s
+	 */
+	public void registerStrategy(Strategy s) {
+		strategyList.add(s);
+	}
 }

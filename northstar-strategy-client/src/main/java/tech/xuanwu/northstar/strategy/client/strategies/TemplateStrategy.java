@@ -3,7 +3,6 @@ package tech.xuanwu.northstar.strategy.client.strategies;
 import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +14,8 @@ import tech.xuanwu.northstar.constant.CommonConstant;
 import tech.xuanwu.northstar.service.AccountService;
 import tech.xuanwu.northstar.service.MailSenderService;
 import tech.xuanwu.northstar.service.TradeService;
-import tech.xuanwu.northstar.strategy.client.config.BaseStrategyConfig;
+import tech.xuanwu.northstar.strategy.client.config.common.DefaultSubmitOrderConfig;
+import tech.xuanwu.northstar.strategy.client.config.strategy.BaseStrategyConfig;
 import tech.xuanwu.northstar.strategy.client.constant.TradeState;
 import tech.xuanwu.northstar.strategy.client.msg.MessageClient;
 import xyz.redtorch.common.util.bar.BarGenerator;
@@ -26,9 +26,12 @@ import xyz.redtorch.pb.CoreField.BarField;
 import xyz.redtorch.pb.CoreField.TickField;
 
 @Slf4j
-public abstract class TemplateStrategy implements TradeStrategy, InitializingBean, DisposableBean{
+public abstract class TemplateStrategy implements Strategy, InitializingBean{
 	
 	protected BaseStrategyConfig strategyConfig;
+	
+	@Autowired
+	protected DefaultSubmitOrderConfig defaultOrderConfig;
 
 	/*策略运行状态*/
 	protected volatile boolean running = false;
@@ -38,8 +41,6 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 	
 	@Value("${northstar.message.endpoint}")
 	protected String messageEndpoint;
-	
-	protected MessageClient msgClient;
 	
 	private ConcurrentHashMap<String, BarGenerator> barGeneratorMap = new ConcurrentHashMap<String, BarGenerator>();
 	
@@ -52,47 +53,22 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 	@Autowired
 	private MailSenderService mailService;
 	
+	@Autowired
+	private MessageClient msgClient;
+	
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		//每个策略绑定一个消息客户端用于与行情交易平台通信
-		msgClient = new MessageClient(messageEndpoint, this);
-		msgClient.connect();
-		
 		System.out.println("#################################");
 		System.out.println(String.format("策略名称：%s", strategyConfig.getStrategyName()));
 		System.out.println(String.format("交易账户名称：%s", strategyConfig.getAccountId()));
-		System.out.println(String.format("订阅合约名称：%s", JSON.toJSONString(strategyConfig.getMdContracts())));
-		System.out.println(String.format("交易合约名称：%s", JSON.toJSONString(strategyConfig.getTdContracts())));
+//		System.out.println(String.format("订阅合约名称：%s", JSON.toJSONString(strategyConfig.getMdContracts())));
+//		System.out.println(String.format("交易合约名称：%s", JSON.toJSONString(strategyConfig.getTdContracts())));
 		System.out.println("#################################");
 		
+		//注册策略
+		msgClient.registerStrategy(this);
 		//连接账户
 		accountService.connect(strategyConfig.getAccountId());
-	}
-	
-	@Override
-	public void destroy() throws Exception {
-		log.info("断开策略-[{}]", strategyConfig.getStrategyName());
-		msgClient.disconnect();
-	}
-	
-	@Override
-	public String getGatewayId() {
-		return strategyConfig.getGatewayId();
-	}
-	
-	@Override
-	public String getAccountId() {
-		return strategyConfig.getAccountId();
-	}
-	
-	@Override
-	public String getStrategyName() {
-		return strategyConfig.getStrategyName();
-	}
-	
-	@Override
-	public String[] getSubscribeContractList() {
-		return strategyConfig.getMdContracts();
 	}
 	
 	@Override
@@ -110,8 +86,12 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 		return running;
 	}
 	
+	CommonBarCallBack barCallback = (barField)->{
+		onBar(barField);
+	};
 	
-	public void onTickEvent(TickField tick) {
+	@Override
+	public void updateTick(TickField tick) {
 		//优先传入onTick计算策略
 		onTick(tick);
 		
@@ -123,10 +103,6 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 		
 		barGeneratorMap.get(contractId).updateTick(tick);
 	}
-	
-	CommonBarCallBack barCallback = (barField)->{
-		onBar(barField);
-	};
 	
 	
 	protected abstract void onTick(TickField tick);
@@ -147,8 +123,19 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 			return;
 		}
 		try {
-			String originOrderId = tradeService.submitOrder(strategyConfig.getAccountId(),
-					symbol, price, volume, dir, OffsetFlagEnum.OF_Open);
+			String originOrderId = tradeService.submitOrder(
+					strategyConfig.getAccountId(),
+					symbol, 
+					price, 
+					0D,
+					volume,
+					defaultOrderConfig.getOrderPriceType(),
+					dir,
+					OffsetFlagEnum.OF_Open,
+					defaultOrderConfig.getHedgeFlag(),
+					defaultOrderConfig.getTimeCondition(),
+					defaultOrderConfig.getVolumeCondition(),
+					defaultOrderConfig.getTrigerCondition());
 			
 			onOpening(originOrderId);
 			
@@ -177,8 +164,19 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 			return;
 		}
 		try {
-			String originOrderId = tradeService.submitOrder(strategyConfig.getAccountId(),
-					symbol, price, volume, dir, OffsetFlagEnum.OF_Close);
+			String originOrderId = tradeService.submitOrder(
+					strategyConfig.getAccountId(),
+					symbol,
+					price,
+					0D,
+					volume,
+					defaultOrderConfig.getOrderPriceType(),
+					dir, 
+					OffsetFlagEnum.OF_Close,
+					defaultOrderConfig.getHedgeFlag(),
+					defaultOrderConfig.getTimeCondition(),
+					defaultOrderConfig.getVolumeCondition(),
+					defaultOrderConfig.getTrigerCondition());
 			
 			onClosing(originOrderId);
 			
@@ -201,9 +199,6 @@ public abstract class TemplateStrategy implements TradeStrategy, InitializingBea
 	private void onClosing(String originOrderId) {
 		tradeState = TradeState.CLOSING_POSITION;
 	}
-	
-	//TODO 难点：下单之后，如何拿到订单号，如何制定撤单策略，如何反馈成交
-	
 	
 	
 }
