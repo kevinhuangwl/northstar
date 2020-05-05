@@ -20,7 +20,7 @@ public interface RuntimeEngine {
 	
 	IAccount getAccount(String accountId) throws NoSuchAccountException;
 	
-	List<String> getAccountIdList();
+	List<IAccount> getAccountList();
 	
 	boolean addEventHandler(RuntimeEvent event, Listener listener);
 	

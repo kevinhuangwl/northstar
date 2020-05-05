@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.common.ResultBean;
 import tech.xuanwu.northstar.common.ReturnCode;
 import tech.xuanwu.northstar.constant.ErrorHint;
+import tech.xuanwu.northstar.entity.AccountConnectionInfo;
 import tech.xuanwu.northstar.entity.AccountInfo;
 import tech.xuanwu.northstar.entity.OrderInfo;
 import tech.xuanwu.northstar.entity.PositionInfo;
@@ -33,10 +34,23 @@ public class AccountController {
 
 	@GetMapping("/list")
 	@ApiOperation("查询账户列表")
-	public ResultBean<List<AccountInfo>> getAccountInfoList() {
-		return new ResultBean<List<AccountInfo>>(acService.getAccountInfoList());
+	public ResultBean<List<AccountConnectionInfo>> getAccountList() {
+		return new ResultBean<List<AccountConnectionInfo>>(acService.getAccountList());
 	}
 
+	@GetMapping("/info")
+	@ApiOperation("获取账户信息")
+	public ResultBean<AccountInfo> getAccountInfo(String accountId) {
+		try {
+			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
+			log.info("获取账户[{}]的账户信息", accountId);
+			return new ResultBean<>(acService.getAccountInfo(accountId));
+		} catch (NoSuchAccountException e) {
+			log.error("", e);
+			return new ResultBean<>(ReturnCode.ERROR, e.getMessage());
+		}
+	}
+	
 	@GetMapping("/position")
 	@ApiOperation("获取账户持仓信息")
 	public ResultBean<List<PositionInfo>> getPositionInfoList(String accountId) {
@@ -101,16 +115,4 @@ public class AccountController {
 		}
 	}
 
-	@GetMapping("/connectionStatus")
-	@ApiOperation("获取账户连线状态")
-	public ResultBean<ConnectStatusEnum> getConnectionStatus(String accountId) {
-		try {
-			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
-			log.info("获取账户[{}]网关连线状态", accountId);
-			return new ResultBean<>(acService.connectStatus(accountId));
-		} catch (NoSuchAccountException e) {
-			log.error("", e);
-			return new ResultBean<>(ReturnCode.ERROR, e.getMessage());
-		}
-	}
 }

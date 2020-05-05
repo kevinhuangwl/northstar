@@ -55,8 +55,7 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 	
 	public SimulatedGatewayImpl(GatewayApi realGatewayApi, FastEventEngine feEngine, AccountInfo accountInfo, List<PositionInfo> positionInfoList) {
 		log.info("启动模拟市场网关");
-		String simGatewayName = realGatewayApi.getGatewayName() + CommonConstant.SIM_TAG;
-		this.account = accountInfo==null ? new GwAccount(simGatewayName, simGatewayName) : new GwAccount(accountInfo, positionInfoList);
+		this.account = accountInfo==null ? new GwAccount(realGatewayApi) : new GwAccount(accountInfo, positionInfoList);
 		this.realGatewayApi = realGatewayApi;
 		this.feEngine = feEngine;
 		

@@ -4,20 +4,28 @@ import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 import lombok.extern.slf4j.Slf4j;
+import tech.xuanwu.northstar.SimulatedGatewayImpl;
 import tech.xuanwu.northstar.constant.CommonConstant;
 import tech.xuanwu.northstar.core.config.factory.YamlPropertySourceFactory;
 import tech.xuanwu.northstar.core.config.props.CtpGatewayCommonSettings;
+import tech.xuanwu.northstar.core.domain.Account;
 import tech.xuanwu.northstar.core.persistence.repo.ContractRepo;
+import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.FastEventEngine;
 import tech.xuanwu.northstar.engine.IndexEngine;
+import tech.xuanwu.northstar.entity.AccountInfo;
 import tech.xuanwu.northstar.entity.ContractInfo;
+import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.gateway.GatewayApi;
 import xyz.redtorch.pb.CoreEnum.GatewayTypeEnum;
 import xyz.redtorch.pb.CoreField.ContractField;
@@ -32,7 +40,13 @@ public class CtpMarketDataConfig extends BaseAccountConfig{
 	private ContractRepo contractRepo;
 	
 	@Autowired
+	private ApplicationContext ctx;
+	
+	@Autowired
 	private IndexEngine idxEngine;
+	
+	@Resource(name = "ctpMdAccountSetting")
+	CtpGatewayCommonSettings setting;
 	
 	/****************************/
 	/*         行情网关			*/
@@ -41,9 +55,10 @@ public class CtpMarketDataConfig extends BaseAccountConfig{
 	public CtpGatewayCommonSettings ctpMdAccountSetting() {
 		return new CtpGatewayCommonSettings();
 	}
+	
 	//独立数据源
 	@Bean(CommonConstant.CTP_MKT_GATEWAY)
-	public GatewayApi createCtpMdAccount(@Qualifier("ctpMdAccountSetting") CtpGatewayCommonSettings setting) throws Exception {
+	public GatewayApi createCtpMdAccount() throws Exception {
 		setting.setGatewayType(GatewayTypeEnum.GTE_MarketData);
 		Class<?> gatewayClass = Class.forName(setting.getGatewayImplClassName());
 		Constructor<?> constructor = gatewayClass.getConstructor(FastEventEngine.class, GatewaySettingField.class);
@@ -51,6 +66,11 @@ public class CtpMarketDataConfig extends BaseAccountConfig{
 		gateway.connect();
 		
 		CompletableFuture.runAsync(()->{
+			
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e1) {
+			}
 			
 			log.info("=====开始自动续订合约=====");
 			//自动续订阅合约
@@ -88,5 +108,21 @@ public class CtpMarketDataConfig extends BaseAccountConfig{
 		
 		
 		return gateway;
+	}
+	
+	
+	@Bean("simulatedGateway")
+	@ConditionalOnExpression("${account.simulate}")
+	public GatewayApi createSimulatedGateway() throws Exception {
+		//使用模拟账户时要初始化账户
+		GatewayApi realGateway = (GatewayApi) ctx.getBean(CommonConstant.CTP_MKT_GATEWAY);
+		String accountId = setting.getUserID();
+		AccountInfo accountInfo = accountRepo.getLatestAccountInfoByAccountId(accountId);
+		List<PositionInfo> positionInfoList = positionRepo.getPositionListByAccountId(accountId);
+		GatewayApi simulatedGateway = new SimulatedGatewayImpl(realGateway, feEngine, accountInfo, positionInfoList);
+		
+		IAccount account = new Account(simulatedGateway, accountRepo, positionRepo);
+		rtEngine.regAccount(account);
+		return simulatedGateway;
 	}
 }

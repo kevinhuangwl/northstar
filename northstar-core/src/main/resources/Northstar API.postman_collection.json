@@ -29,6 +29,32 @@
 					"response": []
 				},
 				{
+					"name": "查询账户信息",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/account/info?accountId=094020@simnow724",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"account",
+								"info"
+							],
+							"query": [
+								{
+									"key": "accountId",
+									"value": "094020@simnow724"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "连接网关",
 					"request": {
 						"method": "GET",
@@ -60,7 +86,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8888/account/disconnect?accountName=simnow724_094020",
+							"raw": "http://localhost:8888/account/disconnect?accountId=094020@simnow724",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -72,8 +98,8 @@
 							],
 							"query": [
 								{
-									"key": "accountName",
-									"value": "simnow724_094020"
+									"key": "accountId",
+									"value": "094020@simnow724"
 								}
 							]
 						}
@@ -112,7 +138,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8888/account/position?gatewayId=CTP-SimNow724@Simulated",
+							"raw": "http://localhost:8888/account/position?accountId=094020@simnow724",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -124,8 +150,8 @@
 							],
 							"query": [
 								{
-									"key": "gatewayId",
-									"value": "CTP-SimNow724@Simulated"
+									"key": "accountId",
+									"value": "094020@simnow724"
 								}
 							]
 						}
@@ -170,7 +196,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8888/trade/order?accountId=094020@simnow724&contractSymbol=rb2010&direction=D_Buy&price=3300&transactionType=OF_Open&volume=5",
+							"raw": "http://localhost:8888/trade/order?accountId=094020@simnow724&contractSymbol=m2009&direction=D_Sell&price=2710&transactionType=OF_Close&volume=6",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -187,23 +213,23 @@
 								},
 								{
 									"key": "contractSymbol",
-									"value": "rb2010"
+									"value": "m2009"
 								},
 								{
 									"key": "direction",
-									"value": "D_Buy"
+									"value": "D_Sell"
 								},
 								{
 									"key": "price",
-									"value": "3300"
+									"value": "2710"
 								},
 								{
 									"key": "transactionType",
-									"value": "OF_Open"
+									"value": "OF_Close"
 								},
 								{
 									"key": "volume",
-									"value": "5"
+									"value": "6"
 								}
 							]
 						}
@@ -216,7 +242,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8888/trade/cancel?accountId=094020@simnow724&originOrderId=7a8c96e3-d781-4c45-9ef9-56944fb5c946",
+							"raw": "http://localhost:8888/trade/cancel?accountId=094020@simnow724&originOrderId=1d4e2091-f67e-44c8-8983-ca8dd2c5fdc7",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -233,7 +259,7 @@
 								},
 								{
 									"key": "originOrderId",
-									"value": "7a8c96e3-d781-4c45-9ef9-56944fb5c946"
+									"value": "1d4e2091-f67e-44c8-8983-ca8dd2c5fdc7"
 								}
 							]
 						}
@@ -257,32 +283,6 @@
 		{
 			"name": "行情相关API",
 			"item": [
-				{
-					"name": "获取订阅合约列表",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8888/market/contracts?gatewayId=CTP-SimNow724",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8888",
-							"path": [
-								"market",
-								"contracts"
-							],
-							"query": [
-								{
-									"key": "gatewayId",
-									"value": "CTP-SimNow724"
-								}
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "订阅网关合约",
 					"request": {

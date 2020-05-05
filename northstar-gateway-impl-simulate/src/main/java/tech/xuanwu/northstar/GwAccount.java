@@ -14,12 +14,15 @@ import tech.xuanwu.northstar.entity.ContractInfo;
 import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.exception.AccountException;
 import tech.xuanwu.northstar.exception.TradeException;
+import tech.xuanwu.northstar.gateway.GatewayApi;
 import xyz.redtorch.pb.CoreEnum.CurrencyEnum;
 import xyz.redtorch.pb.CoreEnum.DirectionEnum;
 import xyz.redtorch.pb.CoreEnum.OffsetFlagEnum;
 import xyz.redtorch.pb.CoreEnum.PositionDirectionEnum;
 import xyz.redtorch.pb.CoreField.AccountField;
 import xyz.redtorch.pb.CoreField.ContractField;
+import xyz.redtorch.pb.CoreField.GatewaySettingField;
+import xyz.redtorch.pb.CoreField.GatewaySettingField.CtpApiSettingField;
 import xyz.redtorch.pb.CoreField.OrderField;
 import xyz.redtorch.pb.CoreField.PositionField;
 import xyz.redtorch.pb.CoreField.TickField;
@@ -47,13 +50,14 @@ class GwAccount {
 	
 	private ConcurrentHashMap<String, TickField> tickMap = new ConcurrentHashMap<>();
 	
-	public GwAccount(String gatewayId, String gatewayName) {
-		log.info("创建模拟账户{}", gatewayName);
+	public GwAccount(GatewayApi gateway) {
+		CtpApiSettingField ctpSetting = gateway.getGatewaySetting().getCtpApiSetting();
+		GatewaySettingField gatewaySetting = gateway.getGatewaySetting();
+		log.info("创建模拟账户{}", ctpSetting.getUserId());
 		accountInfo = new AccountInfo();
-		accountInfo.setAccountId(gatewayId);
-		accountInfo.setGatewayId(gatewayId);
+		accountInfo.setAccountId(ctpSetting.getUserId() + "@" + gatewaySetting.getGatewayId());
+		accountInfo.setGatewayId(gatewaySetting.getGatewayId());
 		accountInfo.setCode(CommonConstant.SIM_TAG);
-		accountInfo.setName(gatewayName);
 		accountInfo.setCurrency(CurrencyEnum.CNY);
 		accountInfo.setHolder("user");
 		

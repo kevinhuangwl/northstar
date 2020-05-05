@@ -1280,7 +1280,7 @@ public class TdSpi extends CThostFtdcTraderSpi {
 				NoticeInfo noticeInfo = new NoticeInfo();
 				noticeInfo.setEvent(NoticeCode.GATEWAY_READY);
 				noticeInfo.setMessage("网关:" + ctpGatewayImpl.getGatewayName() + ",网关ID:" + ctpGatewayImpl.getGatewayId() + "可以交易");
-				noticeInfo.setData(ctpGatewayImpl.getGatewayId());
+				noticeInfo.setData(ctpGatewayImpl.getGatewayName());
 				
 				NoticeField.Builder noticeBuilder = NoticeField.newBuilder();
 				noticeBuilder.setContent(new Gson().toJson(noticeInfo));

@@ -2,12 +2,12 @@ package tech.xuanwu.northstar.service;
 
 import java.util.List;
 
+import tech.xuanwu.northstar.entity.AccountConnectionInfo;
 import tech.xuanwu.northstar.entity.AccountInfo;
 import tech.xuanwu.northstar.entity.OrderInfo;
 import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.entity.TransactionInfo;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
-import xyz.redtorch.pb.CoreEnum.ConnectStatusEnum;
 
 /**
  * 账户服务主要提供监控端所需要的账户相关的查询操作入口
@@ -17,10 +17,18 @@ import xyz.redtorch.pb.CoreEnum.ConnectStatusEnum;
 public interface AccountService {
 	
 	/**
-	 * 获取账户信息
+	 * 获取账户连接列表
 	 * @return
 	 */
-	List<AccountInfo> getAccountInfoList();
+	List<AccountConnectionInfo> getAccountList();
+	
+	/**
+	 * 获取账户信息
+	 * @param accountId
+	 * @return
+	 * @throws NoSuchAccountException
+	 */
+	AccountInfo getAccountInfo(String accountId) throws NoSuchAccountException;
 	
 	/**
 	 * 获取持仓信息
@@ -54,11 +62,4 @@ public interface AccountService {
 	 */
 	void disconnect(String accountId) throws NoSuchAccountException;
 	
-	/**
-	 * 连线状态
-	 * @param accountId
-	 * @return
-	 * @throws NoSuchAccountException
-	 */
-	ConnectStatusEnum connectStatus(String accountId) throws NoSuchAccountException;
 }

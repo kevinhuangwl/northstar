@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import tech.xuanwu.northstar.engine.FastEventEngine;
+import xyz.redtorch.pb.CoreEnum.ConnectStatusEnum;
 import xyz.redtorch.pb.CoreField.AccountField;
 import xyz.redtorch.pb.CoreField.ContractField;
 import xyz.redtorch.pb.CoreField.GatewayField;
@@ -45,7 +46,7 @@ public abstract class GatewayApiAbstract implements GatewayApi {
 		gatewayBuilder.setGatewayType(gatewaySetting.getGatewayType());
 		gatewayBuilder.setGatewayId(gatewaySetting.getGatewayId());
 		gatewayBuilder.setName(gatewaySetting.getGatewayName());
-		gatewayBuilder.setStatus(gatewaySetting.getStatus());
+		gatewayBuilder.setStatus(ConnectStatusEnum.CS_Disconnected);
 		gateway = gatewayBuilder.build();
 		log.info(logInfo + "开始初始化");
 

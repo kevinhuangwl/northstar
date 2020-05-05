@@ -10,13 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.core.persistence.repo.GatewayRepo;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
+import tech.xuanwu.northstar.entity.AccountConnectionInfo;
 import tech.xuanwu.northstar.entity.AccountInfo;
 import tech.xuanwu.northstar.entity.OrderInfo;
 import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.entity.TransactionInfo;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
 import tech.xuanwu.northstar.service.AccountService;
-import xyz.redtorch.pb.CoreEnum.ConnectStatusEnum;
 
 @Slf4j
 @Service
@@ -29,18 +29,20 @@ public class AccountServiceImpl implements AccountService {
 	GatewayRepo gatewayRepo;
 	
 	@Override
-	public List<AccountInfo> getAccountInfoList() {
-		List<String> accountIdList = rtEngine.getAccountIdList();
-		List<AccountInfo> resultList = new ArrayList<>(accountIdList.size());
-		for(String name : accountIdList) {
-			try {
-				resultList.add(rtEngine.getAccount(name).getAccountInfo());
-			} catch (NoSuchAccountException e) {
-				log.error("", e);
-			}
+	public List<AccountConnectionInfo> getAccountList() {
+		List<IAccount> accountList = rtEngine.getAccountList();
+		List<AccountConnectionInfo> resultList = new ArrayList<>(accountList.size());
+		for(IAccount account : accountList) {
+			resultList.add(account.getAccountConnectionInfo());
 		}
 		return resultList;
 	}
+
+	@Override
+	public AccountInfo getAccountInfo(String accountId) throws NoSuchAccountException {
+		return rtEngine.getAccount(accountId).getAccountInfo();
+	}
+	
 
 	@Override
 	public List<PositionInfo> getPositionInfoList(String accountId) throws NoSuchAccountException {
@@ -74,10 +76,6 @@ public class AccountServiceImpl implements AccountService {
 		account.disconnectGateway();
 	}
 
-	@Override
-	public ConnectStatusEnum connectStatus(String accountId) throws NoSuchAccountException {
-		IAccount account = rtEngine.getAccount(accountId);
-		return account.connectStatus();
-	}
+	
 
 }

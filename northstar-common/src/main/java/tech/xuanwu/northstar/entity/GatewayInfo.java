@@ -21,7 +21,7 @@ public class GatewayInfo implements Serializable{
 	String description;  // 描述
 	GatewayTypeEnum gatewayType;  // 网关类型
 	GatewayAdapterTypeEnum gatewayAdapterType;  // 网关适配器类型
-	ConnectStatusEnum status;  // 网关状态
+	ConnectStatusEnum status = ConnectStatusEnum.CS_Disconnected;  // 网关状态
 	boolean authErrorFlag; // 登录失败标志
 	
 	public static GatewayInfo convertFrom(GatewayField g) {

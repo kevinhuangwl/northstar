@@ -55,6 +55,8 @@ public class CtpGatewayCommonSettings {
 	//期货公司ID
 	private String brokerID;
 	
+	private boolean simulate;
+	
 	public GatewaySettingField convertToGatewaySettingField() {
 		GatewaySettingField.Builder builder = GatewaySettingField.newBuilder();
 		CtpApiSettingField.Builder ctpApiBuilder = CtpApiSettingField.newBuilder();

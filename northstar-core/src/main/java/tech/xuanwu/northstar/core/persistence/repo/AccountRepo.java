@@ -19,5 +19,5 @@ public interface AccountRepo {
 	 * @return
 	 * @throws Exception
 	 */
-	AccountInfo getLatestAccountInfoByName(String name) throws Exception;
+	AccountInfo getLatestAccountInfoByAccountId(String accountId) throws Exception;
 }

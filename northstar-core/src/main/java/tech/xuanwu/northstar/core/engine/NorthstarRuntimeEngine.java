@@ -2,8 +2,10 @@ package tech.xuanwu.northstar.core.engine;
 
 import java.util.ArrayList;
 import java.util.EventObject;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -27,7 +29,9 @@ public class NorthstarRuntimeEngine implements RuntimeEngine{
 
 	@Override
 	public void regAccount(IAccount account) {
+		//部分场景只能获取accountId，网关连线成功的场景只能获取gatewayName，因此需要重复索引
 		accountMap.put(account.getAccountId(), account);
+		accountMap.put(account.getGatewayInfo().getName(), account);
 	}
 	
 	@Override
@@ -68,9 +72,11 @@ public class NorthstarRuntimeEngine implements RuntimeEngine{
 	}
 
 	@Override
-	public List<String> getAccountIdList() {
-		List<String> resultList = new ArrayList<String>(accountMap.size());
-		resultList.addAll(accountMap.keySet());
+	public List<IAccount> getAccountList() {
+		List<IAccount> resultList = new ArrayList<IAccount>(accountMap.size());
+		HashSet<IAccount> uniqueSet = new HashSet<>();
+		uniqueSet.addAll(accountMap.values());
+		resultList.addAll(uniqueSet);
 		return resultList;
 	}
 

@@ -35,17 +35,6 @@ public class MarketController {
 		}
 	}
 	
-//	@ApiOperation("获取订阅合约列表")
-//	@RequestMapping(value="/contracts", method=RequestMethod.GET)
-//	public ResultBean<List<ContractInfo>> getSubscribedContracts(String gatewayId){
-//		try {
-//			return new ResultBean<>(mdService.getAllSubscribedContracts(gatewayId));
-//		} catch (Exception e) {
-//			log.error("", e);
-//			return new ResultBean<>(ReturnCode.ERROR, e.getMessage());
-//		}
-//	}
-	
 	@ApiOperation("获取可用合约列表")
 	@RequestMapping(value="/available", method=RequestMethod.GET)
 	public ResultBean<List<ContractInfo>> getAvailableContracts(String gatewayId){

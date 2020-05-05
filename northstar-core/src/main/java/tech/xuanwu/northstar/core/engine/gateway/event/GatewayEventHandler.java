@@ -4,10 +4,14 @@ import java.util.EventObject;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import com.google.gson.Gson;
+
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.constant.CommonConstant;
+import tech.xuanwu.northstar.SimulatedGatewayImpl;
+import tech.xuanwu.northstar.constant.NoticeCode;
 import tech.xuanwu.northstar.constant.RuntimeEvent;
 import tech.xuanwu.northstar.core.engine.SocketIOMessageEngine;
 import tech.xuanwu.northstar.core.persistence.repo.ContractRepo;
@@ -15,12 +19,19 @@ import tech.xuanwu.northstar.engine.FastEventEngine;
 import tech.xuanwu.northstar.engine.FastEventEngine.FastEvent;
 import tech.xuanwu.northstar.engine.FastEventEngine.FastEventDynamicHandlerAbstract;
 import tech.xuanwu.northstar.engine.FastEventEngine.FastEventType;
+import tech.xuanwu.northstar.engine.IndexEngine;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.entity.ContractInfo;
+import tech.xuanwu.northstar.entity.NoticeInfo;
+import tech.xuanwu.northstar.exception.NoSuchEventHandlerException;
+import tech.xuanwu.northstar.gateway.GatewayApi;
+import xyz.redtorch.pb.CoreEnum.CommonStatusEnum;
 import xyz.redtorch.pb.CoreField.AccountField;
 import xyz.redtorch.pb.CoreField.ContractField;
+import xyz.redtorch.pb.CoreField.NoticeField;
 import xyz.redtorch.pb.CoreField.OrderField;
 import xyz.redtorch.pb.CoreField.PositionField;
+import xyz.redtorch.pb.CoreField.TickField;
 import xyz.redtorch.pb.CoreField.TradeField;
 
 /**
@@ -30,7 +41,7 @@ import xyz.redtorch.pb.CoreField.TradeField;
  */
 @Slf4j
 @Component
-public class PortfolioEventHandler extends FastEventDynamicHandlerAbstract implements InitializingBean{
+public class GatewayEventHandler extends FastEventDynamicHandlerAbstract implements InitializingBean{
 	
 	@Autowired
 	FastEventEngine fes;
@@ -44,16 +55,23 @@ public class PortfolioEventHandler extends FastEventDynamicHandlerAbstract imple
 	@Autowired
 	ContractRepo contractRepo;
 	
+	@Autowired
+	IndexEngine idxEngine;
+	
+	@Qualifier("simulatedGateway")
+	GatewayApi simulatedGateway;
+	
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		fes.addHandler(this);
 		
+		subscribeFastEventType(FastEventType.TICK);
 		subscribeFastEventType(FastEventType.ACCOUNT);
 		subscribeFastEventType(FastEventType.CONTRACT);
 		subscribeFastEventType(FastEventType.ORDER);
 		subscribeFastEventType(FastEventType.POSITION);
 		subscribeFastEventType(FastEventType.TRADE);
-		
+		subscribeFastEventType(FastEventType.NOTICE);
 	}
 
 	@Override
@@ -64,6 +82,14 @@ public class PortfolioEventHandler extends FastEventDynamicHandlerAbstract imple
 		
 		//发生频率越高的事件排得越前
 		switch(event.getFastEventType()) {
+		case TICK:
+			try {
+				TickField tick = (TickField) event.getObj();
+				onTick(tick);
+			} catch (Exception e) {
+				log.error("行情事件发生异常", e);
+			}
+			break;
 		case ACCOUNT:
 			AccountField account = (AccountField) event.getObj();
 			rtEngine.emitEvent(RuntimeEvent.FEEDBACK_ACCOUNT, new EventObject(account));
@@ -84,13 +110,34 @@ public class PortfolioEventHandler extends FastEventDynamicHandlerAbstract imple
 			ContractField c = (ContractField) event.getObj();
 			ContractInfo contract = ContractInfo.convertFrom(c);
 			contractRepo.insertIfAbsent(contract);
-			//所有合约都会保存一个模拟网关的合约副本用于模拟交易
-			contract.setGatewayId(contract.getGatewayId() + CommonConstant.SIM_TAG);
-			contract.setContractId(contract.getContractId() + CommonConstant.SIM_TAG);
-			contractRepo.insertIfAbsent(contract);
+			break;
+		case NOTICE:
+			NoticeField notice = (NoticeField) event.getObj();
+			if(notice.getStatus() == CommonStatusEnum.COMS_SUCCESS) {
+				String noticeInfoStr = notice.getContent();
+				NoticeInfo noticeInfo = new Gson().fromJson(noticeInfoStr, NoticeInfo.class);
+				
+				log.info(noticeInfo.getMessage());
+				rtEngine.emitEvent(NoticeCode.EVENT_MAP.get(noticeInfo.getEvent()), new EventObject(noticeInfo.getData()));
+			}
 			break;
 		default:
 			log.warn("遇到未知事件类型：{}", event.getFastEventType());
 		}
+	}
+	
+	//处理TICK
+	private void onTick(TickField tick) throws NoSuchEventHandlerException {
+		//更新指数合约
+		idxEngine.updateTick(tick);
+		
+		//回输模拟网关
+		if(simulatedGateway!=null && simulatedGateway instanceof SimulatedGatewayImpl) {
+			simulatedGateway.emitTick(tick);
+		}
+		
+		//
+		EventObject e = new EventObject(tick);
+		rtEngine.emitEvent(RuntimeEvent.TICK_UPDATE, e);
 	}
 }

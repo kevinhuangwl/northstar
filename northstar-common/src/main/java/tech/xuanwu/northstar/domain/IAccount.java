@@ -2,12 +2,13 @@ package tech.xuanwu.northstar.domain;
 
 import java.util.List;
 
+import tech.xuanwu.northstar.entity.AccountConnectionInfo;
 import tech.xuanwu.northstar.entity.AccountInfo;
+import tech.xuanwu.northstar.entity.GatewayInfo;
 import tech.xuanwu.northstar.entity.OrderInfo;
 import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.entity.TransactionInfo;
 import tech.xuanwu.northstar.exception.TradeException;
-import xyz.redtorch.pb.CoreEnum.ConnectStatusEnum;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 
@@ -18,15 +19,21 @@ import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
  */
 public interface IAccount {
 	
-	String getGatewayId();
-	
 	String getAccountId();
+	
+	GatewayInfo getGatewayInfo();
 	
 	/**
 	 * 获取账户信息
 	 * @return
 	 */
 	AccountInfo getAccountInfo();
+	
+	/**
+	 * 获取账户连接信息
+	 * @return
+	 */
+	AccountConnectionInfo getAccountConnectionInfo();
 	
 	/**
 	 * 更新账户
@@ -98,12 +105,6 @@ public interface IAccount {
 	 * 断开网关
 	 */
 	void disconnectGateway();
-	
-	/**
-	 * 连线状态
-	 * @return
-	 */
-	ConnectStatusEnum connectStatus();
 	
 	
 	void onConnected();

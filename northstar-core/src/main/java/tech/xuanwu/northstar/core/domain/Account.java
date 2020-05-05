@@ -10,13 +10,14 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.ErrorHint;
 import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
 import tech.xuanwu.northstar.core.persistence.repo.PositionRepo;
 import tech.xuanwu.northstar.domain.IAccount;
+import tech.xuanwu.northstar.entity.AccountConnectionInfo;
 import tech.xuanwu.northstar.entity.AccountInfo;
+import tech.xuanwu.northstar.entity.GatewayInfo;
 import tech.xuanwu.northstar.entity.OrderInfo;
 import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.entity.TransactionInfo;
@@ -64,24 +65,20 @@ public class Account implements IAccount{
 	/**/
 	protected ConcurrentHashMap<String, OrderInfo> cachedOrderMap = new ConcurrentHashMap<>();
 	
-	private ConnectStatusEnum status = ConnectStatusEnum.CS_Disconnected;
 	
+	private AccountConnectionInfo connectionInfo;
 	
 	/*账户ID*/
 	private String accountId;
-	
-	@Getter
-	@NotNull
-	private String gatewayId;
 	
 	protected String lastOrderTradeDay = "";
 	
 	public Account(GatewayApi gatewayApi, AccountRepo accountRepo, PositionRepo positionRepo){
 		this.accountId = gatewayApi.getGatewaySetting().getCtpApiSetting().getUserId() + "@" + gatewayApi.getGatewayId();
-		this.gatewayId = gatewayApi.getGatewayId();
 		this.gatewayApi = gatewayApi;
 		this.accountRepo = accountRepo;
 		this.positionRepo = positionRepo;
+		this.connectionInfo = new AccountConnectionInfo(this.accountId, GatewayInfo.convertFrom(gatewayApi.getGateway()));
 	}
 
 	
@@ -233,7 +230,7 @@ public class Account implements IAccount{
 			return;
 		}
 		gatewayApi.connect();
-		status = ConnectStatusEnum.CS_Connecting;
+		connectionInfo.onConnecting();
 	}
 
 	@Override
@@ -243,7 +240,7 @@ public class Account implements IAccount{
 			return;
 		}
 		gatewayApi.disconnect();
-		status = ConnectStatusEnum.CS_Disconnected;
+		connectionInfo.onDisconnected();
 	}
 
 	/**
@@ -258,18 +255,25 @@ public class Account implements IAccount{
 	}
 	
 	@Override
-	public ConnectStatusEnum connectStatus() {
-		return status;
-	}
-
-	@Override
 	public void onConnected() {
-		status = ConnectStatusEnum.CS_Connected;
+		connectionInfo.onConnected();
 	}
 
 	@Override
 	public String getAccountId() {
 		return accountId;
+	}
+
+
+	@Override
+	public AccountConnectionInfo getAccountConnectionInfo() {
+		return connectionInfo;
+	}
+
+
+	@Override
+	public GatewayInfo getGatewayInfo() {
+		return connectionInfo.getGatewayInfo();
 	}
 
 }

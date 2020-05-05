@@ -13,7 +13,7 @@ import tech.xuanwu.northstar.engine.FastEventEngine.FastEventType;
 import xyz.redtorch.pb.CoreField.TickField;
 
 /**
- * Tick事件处理器，专门用于推送行情数据
+ * Tick事件处理器，专门用于推送行情数据，确保行情数据的处理线程以最快的速度响应。
  * @author kevinhuangwl
  *
  */

@@ -14,10 +14,10 @@ public class AccountInfo implements Serializable{
 	 */
 	private static final long serialVersionUID = -92867553096817323L;
 	
-	String accountId;  // ID，通常是 <账户代码@币种@网关>
-	String code;  // 代码
-	String name;  // 名称
-	String holder;  // 持有人
+	String accountId = "";  // ID，通常是 <账户代码@币种@网关>
+	String code = "";  // 代码
+	String name = "";  // 名称
+	String holder = "";  // 持有人
 	CurrencyEnum currency;  // 币种
 	double preBalance;  // 昨日权益
 	double balance;  // 权益
@@ -28,8 +28,8 @@ public class AccountInfo implements Serializable{
 	double positionProfit;  // 持仓盈亏
 	double deposit;  // 入金
 	double withdraw;  // 出金
-	String gatewayId;  // 网关ID
-	String tradingDay;	//交易日
+	String gatewayId = "";  // 网关ID
+	String tradingDay = "";	//交易日
 	
 	public static AccountInfo convertFrom(AccountField accountField) {
 		AccountInfo info = new AccountInfo();

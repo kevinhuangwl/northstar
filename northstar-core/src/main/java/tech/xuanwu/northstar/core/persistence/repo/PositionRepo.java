@@ -10,5 +10,5 @@ public interface PositionRepo {
 	
 	boolean removeById(PositionInfo p);
 	
-	List<PositionInfo> getPositionListByGateway(String gatewayName);
+	List<PositionInfo> getPositionListByAccountId(String accountId);
 }
