@@ -35,7 +35,7 @@ import xyz.redtorch.pb.CoreField.TickField;
 import xyz.redtorch.pb.CoreField.TradeField;
 
 /**
- * 投资组合相关事件处理器
+ * 网关事件处理器。主要处理事件分支
  * @author kevinhuangwl
  *
  */
@@ -137,7 +137,7 @@ public class GatewayEventHandler extends FastEventDynamicHandlerAbstract impleme
 			simulatedGateway.emitTick(tick);
 		}
 		
-		//
+		//后续处理
 		EventObject e = new EventObject(tick);
 		rtEngine.emitEvent(RuntimeEvent.TICK_UPDATE, e);
 	}

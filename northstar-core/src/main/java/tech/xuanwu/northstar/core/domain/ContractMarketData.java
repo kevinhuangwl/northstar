@@ -1,6 +1,7 @@
 package tech.xuanwu.northstar.core.domain;
 
-import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import tech.xuanwu.northstar.core.persistence.dao.BarDataDao;
 import tech.xuanwu.northstar.core.persistence.dao.TickDataDao;
 import xyz.redtorch.common.util.bar.BarGenerator;
@@ -15,10 +16,10 @@ import xyz.redtorch.pb.CoreField.TickField;
  */
 public class ContractMarketData {
 	
-	@Setter
+	@Autowired
 	private TickDataDao tickDao;
 	
-	@Setter
+	@Autowired
 	private BarDataDao barDao;
 	
 	private BarGenerator barGen = new BarGenerator((bar)->{

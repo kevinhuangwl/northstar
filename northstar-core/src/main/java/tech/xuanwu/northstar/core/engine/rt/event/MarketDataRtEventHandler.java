@@ -4,8 +4,10 @@ import java.util.EventObject;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
@@ -13,11 +15,12 @@ import tech.xuanwu.northstar.constant.RuntimeEvent;
 import tech.xuanwu.northstar.core.domain.ContractMarketData;
 import tech.xuanwu.northstar.core.persistence.dao.BarDataDao;
 import tech.xuanwu.northstar.core.persistence.dao.TickDataDao;
+import tech.xuanwu.northstar.engine.IndexEngine;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import xyz.redtorch.pb.CoreField.TickField;
 
 /**
- * 
+ * 行情数据处理器
  * @author kevinhuangwl
  *
  */
@@ -29,10 +32,7 @@ public class MarketDataRtEventHandler implements RuntimeEngine.Listener, Initial
 	private RuntimeEngine rtEngine;
 	
 	@Autowired
-	private BarDataDao barDao;
-	
-	@Autowired
-	private TickDataDao tickDao;
+	private ApplicationContext ctx;
 	
 	private boolean isHalt = false;
 	
@@ -52,9 +52,7 @@ public class MarketDataRtEventHandler implements RuntimeEngine.Listener, Initial
 			TickField tick = (TickField) event.getSource();
 			String contractId = tick.getUnifiedSymbol();
 			if(!cmdMap.containsKey(contractId)) {
-				ContractMarketData cmd = new ContractMarketData();
-				cmd.setBarDao(barDao);
-				cmd.setTickDao(tickDao);
+				ContractMarketData cmd = ctx.getBean(ContractMarketData.class);
 				cmdMap.put(contractId, cmd);
 			}
 			
