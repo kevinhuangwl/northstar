@@ -23,7 +23,6 @@ import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.entity.TransactionInfo;
 import tech.xuanwu.northstar.exception.TradeException;
 import tech.xuanwu.northstar.gateway.GatewayApi;
-import xyz.redtorch.pb.CoreEnum.ConnectStatusEnum;
 import xyz.redtorch.pb.CoreEnum.OrderStatusEnum;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
@@ -226,7 +225,7 @@ public class Account implements IAccount{
 	@Override
 	public void connectGateway() {
 		if(gatewayApi.isConnected()) {
-			log.info("账户已连线");
+			log.info("账户已连线，不重复操作");
 			return;
 		}
 		gatewayApi.connect();
@@ -236,7 +235,7 @@ public class Account implements IAccount{
 	@Override
 	public void disconnectGateway() {
 		if(!gatewayApi.isConnected()) {
-			log.info("账户已断开");
+			log.info("账户已断开，不重复操作");
 			return;
 		}
 		gatewayApi.disconnect();

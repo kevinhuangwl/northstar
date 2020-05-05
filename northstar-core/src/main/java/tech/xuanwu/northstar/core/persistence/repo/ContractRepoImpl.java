@@ -88,6 +88,7 @@ public class ContractRepoImpl implements ContractRepo{
 
 	@Override
 	public ContractInfo getContractBySymbol(String gatewayId, String symbol) throws Exception {
+		log.info("获取网关 [{}] 的 [{}] 合约", gatewayId, symbol);
 		List<Document> result = mongodb.find(DB, TBL_CONTRACT, and(eq("gatewayId", gatewayId), eq("symbol",symbol)));
 		if(result.size()==0) {
 			return null;

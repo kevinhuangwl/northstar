@@ -61,7 +61,9 @@ class GwAccount {
 		accountInfo.setCurrency(CurrencyEnum.CNY);
 		accountInfo.setHolder("user");
 		
-		log.info("初始入金：{}, 可用金额：{}", depositMoney(DEFAULT_INIT_BALANCE));
+		depositMoney(DEFAULT_INIT_BALANCE);
+		
+		log.info("初始入金：{}, 可用金额：{}", accountInfo.getDeposit(), accountInfo.getAvailable());
 	}
 	
 	public GwAccount(AccountInfo accountInfo, List<PositionInfo> positionInfoList) {
@@ -114,7 +116,7 @@ class GwAccount {
 		}
 		GwPosition sp = shortPositionMap.get(unifiedSymbol);
 		if(sp != null) {
-			PositionField p0 = sp.updateByTick(tick);
+			PositionField p0 = sp.getPosition();
 			PositionField p = sp.updateByTick(tick);
 			deltaProfit += p.getPositionProfit() - p0.getPositionProfit();
 		}
@@ -142,11 +144,11 @@ class GwAccount {
 	 * 挂单
 	 * @return
 	 */
-	public AccountField submitOrder(OrderField order) throws TradeException{
+	public AccountField submitOrder(OrderField order) {
 		boolean isOpening = order.getOffsetFlag() == OffsetFlagEnum.OF_Open;
 		boolean validOrder = isOpening ? validOpeningOrder(order) : validClosingOrder(order);
 		if(!validOrder) {
-			throw new TradeException();
+			return null;
 		}
 		
 		if(isOpening) {			

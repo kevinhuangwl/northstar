@@ -81,7 +81,7 @@ class GwOrder {
 		ob.setTradingDay(gateway.getTradingDay());
 		ob.setOrderDate(LocalDate.now().format(CommonConstant.D_FORMAT_INT_FORMATTER));
 		ob.setOrderTime(LocalTime.now().format(CommonConstant.T_FORMAT_FORMATTER));
-		ob.setAccountId(gatewayId);
+		ob.setAccountId(gateway.getGatewaySetting().getCtpApiSetting().getUserId() + "@" + gatewayId);
 		ob.setTotalVolume(submitOrder.getVolume());
 		ob.setOffsetFlag(submitOrder.getOffsetFlag());
 		ob.setOrderPriceType(submitOrder.getOrderPriceType());

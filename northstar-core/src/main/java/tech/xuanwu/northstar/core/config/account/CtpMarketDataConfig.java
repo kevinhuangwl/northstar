@@ -116,12 +116,14 @@ public class CtpMarketDataConfig extends BaseAccountConfig{
 	public GatewayApi createSimulatedGateway() throws Exception {
 		//使用模拟账户时要初始化账户
 		GatewayApi realGateway = (GatewayApi) ctx.getBean(CommonConstant.CTP_MKT_GATEWAY);
-		String accountId = setting.getUserID();
+		String accountId = setting.getUserID() + "@" + realGateway.getGatewayId();
 		AccountInfo accountInfo = accountRepo.getLatestAccountInfoByAccountId(accountId);
 		List<PositionInfo> positionInfoList = positionRepo.getPositionListByAccountId(accountId);
 		GatewayApi simulatedGateway = new SimulatedGatewayImpl(realGateway, feEngine, accountInfo, positionInfoList);
 		
 		IAccount account = new Account(simulatedGateway, accountRepo, positionRepo);
+		//模拟账户默认自动连接
+		account.connectGateway();
 		rtEngine.regAccount(account);
 		return simulatedGateway;
 	}

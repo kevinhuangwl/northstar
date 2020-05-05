@@ -9,7 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.google.gson.Gson;
 
 import lombok.extern.slf4j.Slf4j;
-import tech.xuanwu.northstar.constant.CommonConstant;
 import tech.xuanwu.northstar.constant.ErrorHint;
 import tech.xuanwu.northstar.constant.NoticeCode;
 import tech.xuanwu.northstar.engine.FastEventEngine;
@@ -44,6 +43,8 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 	private GatewayApi realGatewayApi;
 	
 	private FastEventEngine feEngine;
+	
+	private boolean connected = false;
 	
 	/*账户信息*/
 	private GwAccount account;
@@ -80,13 +81,12 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 		
 		GwOrder order = new GwOrder(this);
 		boolean validOrder = true;
-		try {
-			OrderField orderField = order.initFrom(submitOrder);
-			AccountField acc = account.submitOrder(orderField);
+		OrderField orderField = order.initFrom(submitOrder);
+		AccountField acc = account.submitOrder(orderField);
+		if(acc != null) {
 			feEngine.emitAccount(acc);
 			orderMap.put(order.getOriginOrderId(), order);
-		} catch (TradeException e) {
-			log.error(e.getMessage(), e);
+		}else {
 			validOrder = false;
 		}
 		
@@ -121,8 +121,9 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 			
 			feEngine.emitOrder(order.orderConfirmed());
 		}else {
-			
-			feEngine.emitOrder(order.orderRejected());
+			OrderField resultOrder = order.orderRejected();
+			log.info("模拟订单被拒绝。原因：{}", resultOrder.getStatusMsg());
+			feEngine.emitOrder(resultOrder);
 		}
 		
 		return order.getOriginOrderId();
@@ -181,11 +182,10 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 		}
 	}
 	
+	//为了不影响正常行情，模拟网关的连接与断开不对行情网关产生作用
 	@Override
 	public void connect() {
-		realGatewayApi.connect();
-		
-		while(!realGatewayApi.isConnected());
+		connected = true;
 		
 		feEngine.emitAccount(account.getAccount());
 		for(PositionField p : account.getPositions()) {
@@ -194,8 +194,8 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 		
 		NoticeInfo noticeInfo = new NoticeInfo();
 		noticeInfo.setEvent(NoticeCode.GATEWAY_READY);
-		noticeInfo.setMessage("网关:" + getGatewayName() + ",网关ID:" + getGatewayId() + "可以交易");
-		noticeInfo.setData(getGatewayId());
+		noticeInfo.setMessage("网关:" + getGatewayName() + "，网关ID:" + getGatewayId() + "，可以交易");
+		noticeInfo.setData(getGatewayName());
 		
 		NoticeField.Builder noticeBuilder = NoticeField.newBuilder();
 		noticeBuilder.setContent(new Gson().toJson(noticeInfo));
@@ -206,22 +206,22 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 
 	@Override
 	public void disconnect() {
-		realGatewayApi.disconnect();		
+		connected = false;
 	}
 
 	@Override
 	public boolean isConnected() {
-		return realGatewayApi.isConnected();
+		return connected;
 	}
 
 	@Override
 	public String getGatewayId() {
-		return realGatewayApi.getGatewayId() + CommonConstant.SIM_TAG;
+		return realGatewayApi.getGatewayId();
 	}
 
 	@Override
 	public String getGatewayName() {
-		return realGatewayApi.getGatewayName() + CommonConstant.SIM_TAG;
+		return realGatewayApi.getGatewayName();
 	}
 
 	@Override
