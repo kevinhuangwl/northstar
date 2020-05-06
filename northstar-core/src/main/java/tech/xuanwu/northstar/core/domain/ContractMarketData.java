@@ -1,9 +1,9 @@
 package tech.xuanwu.northstar.core.domain;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import tech.xuanwu.northstar.core.persistence.dao.BarDataDao;
-import tech.xuanwu.northstar.core.persistence.dao.TickDataDao;
+import tech.xuanwu.northstar.entity.DayBarInfo;
+import tech.xuanwu.northstar.entity.MinTickInfo;
+import tech.xuanwu.northstar.persistence.dao.BarDataDao;
+import tech.xuanwu.northstar.persistence.dao.TickDataDao;
 import xyz.redtorch.common.util.bar.BarGenerator;
 import xyz.redtorch.pb.CoreField.BarField;
 import xyz.redtorch.pb.CoreField.TickField;
@@ -16,11 +16,18 @@ import xyz.redtorch.pb.CoreField.TickField;
  */
 public class ContractMarketData {
 	
-	@Autowired
 	private TickDataDao tickDao;
 	
-	@Autowired
 	private BarDataDao barDao;
+	
+	private volatile MinTickInfo currentMinTick;
+	
+	private volatile DayBarInfo currentDayBar;
+	
+	public ContractMarketData(TickDataDao tickDao, BarDataDao barDao) {
+		this.tickDao = tickDao;
+		this.barDao = barDao;
+	}
 	
 	private BarGenerator barGen = new BarGenerator((bar)->{
 		saveBar(bar);
@@ -33,10 +40,28 @@ public class ContractMarketData {
 	}
 
 	public void saveTick(TickField tick) {
-		tickDao.saveTickData(tick);
+		if(currentMinTick == null) {
+			currentMinTick = tickDao.loadTickData(tick.getUnifiedSymbol(), tick.getTradingDay(), tick.getActionTime().substring(0, 4));
+			currentMinTick = currentMinTick == null ? MinTickInfo.convertFrom(tick) : currentMinTick;
+		}
+		if(!tick.getActionTime().startsWith(currentMinTick.getActionTimeMin())) {
+			//每分钟保存一次
+			tickDao.saveTickData(currentMinTick);
+			currentMinTick = MinTickInfo.convertFrom(tick);
+		}
+		currentMinTick.addTick(tick);
 	}
 	
 	public void saveBar(BarField bar) {
-		barDao.saveBarData(bar);
+		if(currentDayBar == null) {
+			currentDayBar = barDao.loadBarData(bar.getUnifiedSymbol(), bar.getTradingDay());
+			currentDayBar = currentDayBar == null ? DayBarInfo.convertFrom(bar) : currentDayBar;
+		}
+		//每分钟保存一次
+		barDao.saveBarData(currentDayBar);
+		if(!bar.getTradingDay().equals(currentDayBar.getTradingDay())) {
+			currentDayBar = DayBarInfo.convertFrom(bar);
+		}
+		currentDayBar.addBar(bar);
 	}
 }

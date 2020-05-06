@@ -37,6 +37,10 @@ public class DayBarInfo implements Serializable{
 		return dayBar;
 	}
 	
+	public void addBar(BarField bar) {
+		bars.add(BarInfo.convertFrom(bar));
+	}
+	
 	@Data
 	static class BarInfo implements Serializable{
 		

@@ -43,6 +43,10 @@ public class MinTickInfo implements Serializable{
 		return minTick;
 	}
 	
+	public void addTick(TickField tick) {
+		ticks.add(TickInfo.convertFrom(tick));
+	}
+	
 	@Data
 	static class TickInfo implements Serializable{
 		
@@ -79,7 +83,7 @@ public class MinTickInfo implements Serializable{
 		
 		public static TickInfo convertFrom(TickField tick) {
 			TickInfo tickInfo = new TickInfo();
-			TickField.Builder tb = TickField.newBuilder();
+			TickField.Builder tb = tick.toBuilder();
 			BeanUtils.copyProperties(tb, tickInfo);
 			tickInfo.setBidPrice(tb.getBidPrice(0));
 			tickInfo.setBidVolume(tb.getBidVolume(0));
