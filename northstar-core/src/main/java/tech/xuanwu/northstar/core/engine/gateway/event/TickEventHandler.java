@@ -32,6 +32,8 @@ public class TickEventHandler extends FastEventDynamicHandlerAbstract implements
 		fes.addHandler(this);
 		
 		subscribeFastEventType(FastEventType.TICK);
+		
+		log.info("行情处理器注册完成");
 	}
 	
 	@Override

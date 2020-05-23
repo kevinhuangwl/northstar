@@ -23,6 +23,7 @@ import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import com.lmax.disruptor.util.DaemonThreadFactory;
 
+import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.engine.FastEventEngine;
 import xyz.redtorch.pb.CoreField.AccountField;
 import xyz.redtorch.pb.CoreField.ContractField;
@@ -32,6 +33,7 @@ import xyz.redtorch.pb.CoreField.PositionField;
 import xyz.redtorch.pb.CoreField.TickField;
 import xyz.redtorch.pb.CoreField.TradeField;
 
+@Slf4j
 @Service
 public class DisruptorFastEventEngine implements FastEventEngine, InitializingBean, DisposableBean {
 
@@ -64,6 +66,7 @@ public class DisruptorFastEventEngine implements FastEventEngine, InitializingBe
 					ProducerType.MULTI, new YieldingWaitStrategy());
 		}
 		ringBuffer = disruptor.start();
+		log.info("启动事件引擎");
 	}
 
 	@Override

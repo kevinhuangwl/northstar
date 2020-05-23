@@ -59,7 +59,6 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 		this.account = accountInfo==null ? new GwAccount(realGatewayApi) : new GwAccount(accountInfo, positionInfoList);
 		this.realGatewayApi = realGatewayApi;
 		this.feEngine = feEngine;
-		
 	}
 	
 	@Override

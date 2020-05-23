@@ -16,7 +16,7 @@ logging:
   
 strategy-setting:
   demo-strategy:
-    gatewayId: simnow724
+    gatewayId: Simnow724
     accountId: 094020@Simnow724
     strategyName: DemoStrategy
     mdtdContracts: AP000@AP010,CF000@CF009
@@ -24,7 +24,7 @@ strategy-setting:
     barRefLen: 1024
     
   shadow-strategy:
-    gatewayId: simnow724
+    gatewayId: Simnow724
     accountId: CTP-SimNow
     strategyName: ShadowStrategy
     tradeContracts: AP000@AP010,CF000@CF009

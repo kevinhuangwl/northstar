@@ -73,6 +73,8 @@ public class GatewayEventHandler extends FastEventDynamicHandlerAbstract impleme
 		subscribeFastEventType(FastEventType.POSITION);
 		subscribeFastEventType(FastEventType.TRADE);
 		subscribeFastEventType(FastEventType.NOTICE);
+		
+		log.info("事件处理器注册完成");
 	}
 
 	@Override

@@ -74,7 +74,6 @@ public class CtpMarketDataConfig extends BaseAccountConfig implements Initializi
 			GatewayApi simulatedGateway = new SimulatedGatewayImpl(gateway, feEngine, accountInfo, positionInfoList);
 			
 			IAccount account = new Account(simulatedGateway, accountRepo, positionRepo);
-			account.connectGateway();
 			rtEngine.regAccount(account);
 			
 			//自动续订合约
@@ -114,6 +113,8 @@ public class CtpMarketDataConfig extends BaseAccountConfig implements Initializi
 				}
 				
 				log.info("=====自动续订合约完成=====");
+				
+				account.connectGateway();
 			}).exceptionally(e ->{
 				log.error("", e);
 				return null;
