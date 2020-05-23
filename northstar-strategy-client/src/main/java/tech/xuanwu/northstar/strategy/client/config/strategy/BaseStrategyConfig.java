@@ -34,17 +34,12 @@ public class BaseStrategyConfig {
 	protected DataRef[] strategicContracts;
 	
 	/**
-	 * bar周期
-	 */
-	protected String period;
-	
-	/**
-	 * tick回溯长度
+	 * tick回溯长度（单位：分钟）
 	 */
 	protected int tickRefLen;
 	
 	/**
-	 * bar回溯长度
+	 * bar回溯长度（单位：分钟）
 	 */
 	protected int barRefLen;
 	
@@ -90,14 +85,6 @@ public class BaseStrategyConfig {
 			
 			
 		}
-	}
-
-	public String getPeriod() {
-		return period;
-	}
-
-	public void setPeriod(String period) {
-		this.period = period;
 	}
 
 	public int getTickRefLen() {

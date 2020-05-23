@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.core.persistence.repo;
+package tech.xuanwu.northstar.core.persistence.repo.deprecate;
 
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import com.google.gson.Gson;
 
 import lombok.extern.slf4j.Slf4j;
+import tech.xuanwu.northstar.core.persistence.repo.IndexContractRepo;
 import tech.xuanwu.northstar.entity.ContractInfo;
 import xyz.redtorch.common.mongo.MongoDBClient;
 

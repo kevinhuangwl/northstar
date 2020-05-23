@@ -18,24 +18,16 @@ logging:
   path: log/NorthstarCore/
   
 spring:
+  profiles:
+    active: dev
   mail:
     host: smtp.126.com
     username: kevinbauer@126.com
     password: QHYFVZJDJPCNVNKS
     default-encoding: UTF-8
     subscribed: 12959229@qq.com,kevinbauer@163.com
-  
-
-simulate-account-setting:
-  commissionTick: 2
-  marginRateExtra: 2
-
-db:
-  mongo:
-    host: 127.0.0.1
-    port: 27017
-    username: 
-    password:
-    auth:
-    
-
+  data:
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+      database: northstar

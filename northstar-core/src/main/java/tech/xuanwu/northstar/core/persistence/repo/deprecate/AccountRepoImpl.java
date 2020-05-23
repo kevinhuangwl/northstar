@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.core.persistence.repo;
+package tech.xuanwu.northstar.core.persistence.repo.deprecate;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.mongodb.client.model.Sorts;
 
 import lombok.extern.slf4j.Slf4j;
+import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
 import tech.xuanwu.northstar.entity.AccountInfo;
 import xyz.redtorch.common.mongo.MongoDBClient;
 

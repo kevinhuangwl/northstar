@@ -40,7 +40,9 @@ public class MovingAverageIndicatorTest {
 		MovingAverageIndicator ma5 = new MovingAverageIndicator(dataRef, DataRef.PriceType.CLOSE, 5, 6);
 		ma5.init();
 		for(int i=0; i<mkPrices.length; i++) {
-			ma5.update(mkPrices[i]);
+			BarField.Builder bb = BarField.newBuilder();
+			bb.setClosePrice(mkPrices[i]);
+			ma5.update(bb.build());
 			assertThat(ma5.getValue()).isCloseTo(avgPrices[i], offset(0.00001));
 		}
 		

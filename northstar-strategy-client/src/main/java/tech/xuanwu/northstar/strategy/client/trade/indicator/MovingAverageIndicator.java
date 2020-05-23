@@ -1,10 +1,12 @@
 package tech.xuanwu.northstar.strategy.client.trade.indicator;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
 import org.springframework.util.Assert;
 
+import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.strategy.DataRef;
 import tech.xuanwu.northstar.strategy.Indicator;
 import tech.xuanwu.northstar.strategy.client.trade.algo.RunningMeanAlgo;
@@ -15,6 +17,7 @@ import xyz.redtorch.pb.CoreField.BarField;
  * @author kevinhuangwl
  *
  */
+@Slf4j
 public class MovingAverageIndicator extends BaseIndicator implements Indicator{
 
 	private RunningMeanAlgo algo;
@@ -26,6 +29,9 @@ public class MovingAverageIndicator extends BaseIndicator implements Indicator{
 	
 	private DataRef<BarField> dataRef;
 	private DataRef.PriceType refPriceType;
+	
+	//BarField的取值方法
+	private Method method;
 	
 	public MovingAverageIndicator(DataRef<BarField> dataRef, DataRef.PriceType priceType, int sampleSize) {
 		this(dataRef, priceType, sampleSize, DEFAULT_LEN);
@@ -47,7 +53,6 @@ public class MovingAverageIndicator extends BaseIndicator implements Indicator{
 		double[] data = new double[sampleSize];
 		Assert.isTrue(barData.size() >= sampleSize, "数据源的数据量不足");
 		List<BarField> srcBarData = barData.subList(barData.size() - sampleSize, barData.size());
-		Method method = null;
 		try {			
 			switch(refPriceType){
 			case HIGH:
@@ -92,8 +97,12 @@ public class MovingAverageIndicator extends BaseIndicator implements Indicator{
 	}
 
 	@Override
-	public void update(double v) {
-		algo.update(v);
+	public void update(BarField bar) {
+		try {
+			algo.update((double) method.invoke(bar));
+		} catch (Exception e) {
+			log.error("", e);
+		}
 		computedVal[nextComputedCursor++ % maxRefLen] = algo.getResult();
 	}
 

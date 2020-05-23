@@ -1,4 +1,4 @@
-package tech.xuanwu.northstar.core.persistence.repo;
+package tech.xuanwu.northstar.core.persistence.repo.deprecate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.mongodb.client.model.Filters;
 
 import lombok.extern.slf4j.Slf4j;
+import tech.xuanwu.northstar.core.persistence.repo.GatewayRepo;
 import tech.xuanwu.northstar.entity.GatewayInfo;
 import xyz.redtorch.common.mongo.MongoDBClient;
 

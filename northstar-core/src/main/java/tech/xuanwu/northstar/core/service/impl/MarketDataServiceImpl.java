@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import tech.xuanwu.northstar.constant.CommonConstant;
 import tech.xuanwu.northstar.core.persistence.repo.ContractRepo;
 import tech.xuanwu.northstar.engine.IndexEngine;
 import tech.xuanwu.northstar.entity.ContractInfo;
@@ -41,7 +40,7 @@ public class MarketDataServiceImpl implements MarketDataService{
 			throw new NoSuchContractException(symbol);
 		}
 		ContractField contract = c.convertTo();
-		GatewayApi mktGateway = (GatewayApi) ctx.getBean(CommonConstant.CTP_MKT_GATEWAY);
+		GatewayApi mktGateway = (GatewayApi) ctx.getBean(gatewayId);
 		boolean res = mktGateway.subscribe(contract);
 		c.setSubscribed(true);
 		contractRepo.updateById(c);

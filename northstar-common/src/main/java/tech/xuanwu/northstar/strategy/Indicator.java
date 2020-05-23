@@ -1,5 +1,7 @@
 package tech.xuanwu.northstar.strategy;
 
+import xyz.redtorch.pb.CoreField.BarField;
+
 /**
  * 指标
  * @author kevinhuangwl
@@ -16,7 +18,7 @@ public interface Indicator {
 	 * 更新数据
 	 * @param v
 	 */
-	void update(double v);
+	void update(BarField bar);
 	
 	/**
 	 * 获取最近的指标计算值

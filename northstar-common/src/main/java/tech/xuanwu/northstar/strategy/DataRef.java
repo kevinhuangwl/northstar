@@ -18,7 +18,7 @@ public interface DataRef<T> {
 
 	/**
 	 * 更新数据
-	 * @param tick
+	 * @param data
 	 */
 	void updateData(T data);
 	

@@ -17,10 +17,9 @@ logging:
 strategy-setting:
   demo-strategy:
     gatewayId: simnow724
-    accountId: 094020@simnow724
+    accountId: 094020@Simnow724
     strategyName: DemoStrategy
     mdtdContracts: AP000@AP010,CF000@CF009
-    periods: 1MIN
     tickRefLen: 5
     barRefLen: 1024
     
