@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 import tech.xuanwu.northstar.core.domain.Account;
 import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
+import tech.xuanwu.northstar.core.persistence.repo.ContractRepo;
 import tech.xuanwu.northstar.core.persistence.repo.PositionRepo;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.FastEventEngine;
@@ -33,6 +34,9 @@ public class BaseAccountConfig {
 	protected PositionRepo positionRepo;
 	
 	@Autowired
+	protected ContractRepo contractRepo;
+	
+	@Autowired
 	protected FastEventEngine feEngine;
 	
 	@Value("${spring.profiles.active}:prod")
@@ -42,7 +46,7 @@ public class BaseAccountConfig {
 		Class<?> gatewayClass = Class.forName(setting.getGatewayClass());
 		Constructor<?> c = gatewayClass.getConstructor(FastEventEngine.class, GatewaySettingField.class);
 		GatewayApi gateway = (GatewayApi) c.newInstance(feEngine, setting.convertTo());
-		IAccount account = new Account(gateway, accountRepo, positionRepo);
+		IAccount account = new Account(gateway, accountRepo, positionRepo, contractRepo);
 		return account;
 	}
 }

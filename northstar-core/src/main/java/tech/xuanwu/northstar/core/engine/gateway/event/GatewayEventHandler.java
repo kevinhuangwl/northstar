@@ -1,5 +1,7 @@
 package tech.xuanwu.northstar.core.engine.gateway.event;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.EventObject;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -25,6 +27,7 @@ import tech.xuanwu.northstar.entity.ContractInfo;
 import tech.xuanwu.northstar.entity.NoticeInfo;
 import tech.xuanwu.northstar.exception.NoSuchEventHandlerException;
 import tech.xuanwu.northstar.gateway.GatewayApi;
+import tech.xuanwu.northstar.service.MailSenderService;
 import xyz.redtorch.pb.CoreEnum.CommonStatusEnum;
 import xyz.redtorch.pb.CoreField.AccountField;
 import xyz.redtorch.pb.CoreField.ContractField;
@@ -61,6 +64,9 @@ public class GatewayEventHandler extends FastEventDynamicHandlerAbstract impleme
 	@Autowired(required = false)
 	@Qualifier("simulatedGateway")
 	GatewayApi simulatedGateway;
+	
+	@Autowired
+	MailSenderService mailService;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -122,6 +128,11 @@ public class GatewayEventHandler extends FastEventDynamicHandlerAbstract impleme
 				
 				log.info(noticeInfo.getMessage());
 				rtEngine.emitEvent(NoticeCode.EVENT_MAP.get(noticeInfo.getEvent()), new EventObject(noticeInfo.getData()));
+			}else {
+				String message = notice.getContent();
+				CommonStatusEnum status = notice.getStatus();
+				String datetime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-M-d HH:mm:ss"));
+				mailService.sendMessage(String.format("【%s】Northstar网关消息", status.toString().split("_")[1]), datetime + ": " + message);
 			}
 			break;
 		default:

@@ -10,12 +10,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.Gson;
+
 import tech.xuanwu.northstar.constant.CommonConstant;
+import tech.xuanwu.northstar.constant.NoticeCode;
+import tech.xuanwu.northstar.entity.NoticeInfo;
 import xyz.redtorch.common.util.CommonUtils;
 import xyz.redtorch.gateway.ctp.x64v6v3v15v.api.CThostFtdcDepthMarketDataField;
 import xyz.redtorch.gateway.ctp.x64v6v3v15v.api.CThostFtdcForQuoteRspField;
@@ -26,8 +31,10 @@ import xyz.redtorch.gateway.ctp.x64v6v3v15v.api.CThostFtdcRspInfoField;
 import xyz.redtorch.gateway.ctp.x64v6v3v15v.api.CThostFtdcRspUserLoginField;
 import xyz.redtorch.gateway.ctp.x64v6v3v15v.api.CThostFtdcSpecificInstrumentField;
 import xyz.redtorch.gateway.ctp.x64v6v3v15v.api.CThostFtdcUserLogoutField;
+import xyz.redtorch.pb.CoreEnum.CommonStatusEnum;
 import xyz.redtorch.pb.CoreEnum.ExchangeEnum;
 import xyz.redtorch.pb.CoreField.ContractField;
+import xyz.redtorch.pb.CoreField.NoticeField;
 import xyz.redtorch.pb.CoreField.TickField;
 
 public class MdSpi extends CThostFtdcMdSpi {
@@ -261,7 +268,18 @@ public class MdSpi extends CThostFtdcMdSpi {
 			logger.warn(logInfo + "行情接口前置机已连接");
 			// 修改前置机连接状态
 			connectionStatus = CONNECTION_STATUS_CONNECTED;
+			
+			NoticeField notice = NoticeField.newBuilder()
+					.setContent(logInfo + "行情接口前置机已连接")
+					.setStatus(CommonStatusEnum.COMS_INFO)
+					.setTimestamp(System.currentTimeMillis())
+					.build();
+			
+			ctpGatewayImpl.getEventEngine().emitNotice(notice);
+			
 			login();
+			
+			ctpGatewayImpl.stopAutoReconnect();
 		} catch (Throwable t) {
 			logger.error("{} OnFrontConnected Exception", logInfo, t);
 		}
@@ -272,6 +290,16 @@ public class MdSpi extends CThostFtdcMdSpi {
 		try {
 			logger.warn("{}行情接口前置机已断开, 原因:{}", logInfo, nReason);
 			ctpGatewayImpl.disconnect();
+			
+			NoticeField notice = NoticeField.newBuilder()
+					.setContent(logInfo + "行情接口前置机已断开，原因：" + nReason)
+					.setStatus(CommonStatusEnum.COMS_WARN)
+					.setTimestamp(System.currentTimeMillis())
+					.build();
+			
+			ctpGatewayImpl.getEventEngine().emitNotice(notice);
+			
+			ctpGatewayImpl.startAutoReconnect();
 		} catch (Throwable t) {
 			logger.error("{} OnFrontDisconnected Exception", logInfo, t);
 		}
@@ -293,6 +321,18 @@ public class MdSpi extends CThostFtdcMdSpi {
 					String[] symbolArray = subscribedSymbolSet.toArray(new String[subscribedSymbolSet.size()]);
 					cThostFtdcMdApi.SubscribeMarketData(symbolArray, subscribedSymbolSet.size());
 				}
+				
+				NoticeInfo noticeInfo = new NoticeInfo();
+				noticeInfo.setEvent(NoticeCode.GATEWAY_READY);
+				noticeInfo.setMessage("网关:" + ctpGatewayImpl.getGatewayName() + "，网关ID:" + ctpGatewayImpl.getGatewayId() + "，可以订阅");
+				noticeInfo.setData(Base64.encodeBase64String(ctpGatewayImpl.getGateway().toByteArray()));
+				
+				NoticeField.Builder noticeBuilder = NoticeField.newBuilder();
+				noticeBuilder.setContent(new Gson().toJson(noticeInfo));
+				noticeBuilder.setStatus(CommonStatusEnum.COMS_SUCCESS);
+				noticeBuilder.setTimestamp(System.currentTimeMillis());
+				ctpGatewayImpl.getEventEngine().emitNotice(noticeBuilder.build());
+				
 			} else {
 				logger.warn("{}行情接口登录回报错误 错误ID:{},错误信息:{}", logInfo, pRspInfo.getErrorID(), pRspInfo.getErrorMsg());
 				// 不合法的登录

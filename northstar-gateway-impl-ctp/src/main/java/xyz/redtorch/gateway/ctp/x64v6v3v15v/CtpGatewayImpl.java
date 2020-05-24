@@ -1,6 +1,10 @@
 package xyz.redtorch.gateway.ctp.x64v6v3v15v;
 
 import java.io.File;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,6 +73,8 @@ public class CtpGatewayImpl extends GatewayApiAbstract {
 	private TdSpi tdSpi = null;
 
 	public Map<String, ContractField> contractMap = new HashMap<>();
+	
+	private volatile boolean unexpectedDisconnection = false;
 
 	public CtpGatewayImpl(FastEventEngine fastEventEngine, GatewaySettingField gatewaySetting) {
 		super(fastEventEngine, gatewaySetting);
@@ -226,5 +232,51 @@ public class CtpGatewayImpl extends GatewayApiAbstract {
 		}
 		return false;
 	}
-
+	
+	/**
+	 * 自动重连
+	 */
+	public void startAutoReconnect() {
+		unexpectedDisconnection = true;
+		//只有在工作日开市时间才会进行重连
+		//一旦重连成功则会停止线程
+		int i = 0;
+		while(unexpectedDisconnection) {
+			logger.info("尝试第{}次重连", ++i);
+			connect();
+			
+			try {
+				Thread.sleep(30000);
+			} catch (InterruptedException e) {
+			}
+		}
+		
+	}
+	
+	/**
+	 * 停止重连
+	 */
+	public void stopAutoReconnect() {
+		unexpectedDisconnection = false;
+	}
+	
+	private boolean isMarketOpenTime() {
+		LocalDate date = LocalDate.now();
+		LocalTime time = LocalTime.now();
+		if(date.getDayOfWeek() == DayOfWeek.SUNDAY) {
+			return false;
+		}
+		if(date.getDayOfWeek() == DayOfWeek.SATURDAY && time.isAfter(LocalTime.of(2, 40))) {
+			return false;
+		}
+		//夜盘时间
+		if(time.isBefore(LocalTime.of(2, 40)) || time.isAfter(LocalTime.of(20, 50))) {
+			return true;
+		}
+		//白盘时间
+		if(time.isAfter(LocalTime.of(8, 50)) && time.isBefore(LocalTime.of(15, 10))) {
+			return true;
+		}
+		return false;
+	}
 }

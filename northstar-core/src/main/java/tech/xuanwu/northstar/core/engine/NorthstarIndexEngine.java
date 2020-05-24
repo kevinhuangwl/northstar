@@ -57,7 +57,7 @@ public class NorthstarIndexEngine implements IndexEngine{
 		idxContractMap.put(String.format("%s@%s", symbol, gatewayId), idxContract);
 
 		//向网关订阅
-		GatewayApi mktGateway = (GatewayApi) ctx.getBean(CommonConstant.CTP_MKT_GATEWAY);
+		GatewayApi mktGateway = (GatewayApi) ctx.getBean(gatewayId);
 		for(ContractInfo c : contractList) {
 			mktGateway.subscribe(c.convertTo());
 			contractToIndexContractMap.put(c.getUnifiedSymbol(), idxContract);

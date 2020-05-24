@@ -13,18 +13,22 @@ import org.apache.commons.lang3.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.ErrorHint;
 import tech.xuanwu.northstar.core.persistence.repo.AccountRepo;
+import tech.xuanwu.northstar.core.persistence.repo.ContractRepo;
 import tech.xuanwu.northstar.core.persistence.repo.PositionRepo;
 import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.entity.AccountConnectionInfo;
 import tech.xuanwu.northstar.entity.AccountInfo;
+import tech.xuanwu.northstar.entity.ContractInfo;
 import tech.xuanwu.northstar.entity.GatewayInfo;
 import tech.xuanwu.northstar.entity.OrderInfo;
 import tech.xuanwu.northstar.entity.PositionInfo;
 import tech.xuanwu.northstar.entity.TransactionInfo;
 import tech.xuanwu.northstar.exception.TradeException;
 import tech.xuanwu.northstar.gateway.GatewayApi;
+import xyz.redtorch.pb.CoreEnum.GatewayTypeEnum;
 import xyz.redtorch.pb.CoreEnum.OrderStatusEnum;
 import xyz.redtorch.pb.CoreField.CancelOrderReqField;
+import xyz.redtorch.pb.CoreField.ContractField;
 import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 
 /**
@@ -44,6 +48,9 @@ public class Account implements IAccount{
 	
 	@NotNull
 	protected PositionRepo positionRepo;
+	
+	@NotNull
+	private ContractRepo contractRepo;
 	
 	/*账户对应的网关接口，一对一关系*/
 	@NotNull
@@ -72,10 +79,11 @@ public class Account implements IAccount{
 	
 	protected String lastOrderTradeDay = "";
 	
-	public Account(GatewayApi gatewayApi, AccountRepo accountRepo, PositionRepo positionRepo){
+	public Account(GatewayApi gatewayApi, AccountRepo accountRepo, PositionRepo positionRepo, ContractRepo contractRepo){
 		this.accountId = gatewayApi.getGatewaySetting().getCtpApiSetting().getUserId() + "@" + gatewayApi.getGatewayId();
 		this.gatewayApi = gatewayApi;
 		this.accountRepo = accountRepo;
+		this.contractRepo = contractRepo;
 		this.positionRepo = positionRepo;
 		this.connectionInfo = new AccountConnectionInfo(this.accountId, GatewayInfo.convertFrom(gatewayApi.getGateway()));
 	}
@@ -256,6 +264,33 @@ public class Account implements IAccount{
 	@Override
 	public void onConnected() {
 		connectionInfo.onConnected();
+		
+		if(gatewayApi.getGateway().getGatewayType() == GatewayTypeEnum.GTE_Trade) {
+			return;
+		}
+		
+		log.info("=====【{}】开始自动续订合约=====", gatewayApi.getGatewayId());
+		//自动续订阅合约
+		List<ContractInfo> contractList;
+		try {
+			contractList = contractRepo.getAllSubscribedContracts(gatewayApi.getGatewayId());
+		} catch (Exception ex) {
+			log.error("", ex);
+			throw new RuntimeException(ex);
+		}
+		for(ContractInfo c : contractList) {
+			ContractField contract = c.convertTo();
+			if(contract != null) {
+				gatewayApi.subscribe(contract);
+				log.info("订阅网关【{}】的合约【{}】", c.getGatewayId(), c.getSymbol());
+			}else {
+				log.warn("合约【{}】已过期", c.getSymbol());
+				contractRepo.delete(c.getGatewayId(),c.getSymbol());				
+			}
+		}		
+		
+		log.info("=====自动续订合约完成=====");
+		
 	}
 
 	@Override

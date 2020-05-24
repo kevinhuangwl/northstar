@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -694,7 +695,18 @@ public class TdSpi extends CThostFtdcTraderSpi {
 			logger.warn("{}交易接口前置机已连接", logInfo);
 			// 修改前置机连接状态
 			connectionStatus = CONNECTION_STATUS_CONNECTED;
+			
+			NoticeField notice = NoticeField.newBuilder()
+					.setContent(logInfo + "交易接口前置机已连接")
+					.setStatus(CommonStatusEnum.COMS_INFO)
+					.setTimestamp(System.currentTimeMillis())
+					.build();
+			
+			ctpGatewayImpl.getEventEngine().emitNotice(notice);
+			
 			reqAuth();
+			
+			ctpGatewayImpl.stopAutoReconnect();
 		} catch (Throwable t) {
 			logger.error("{}OnFrontConnected Exception", logInfo, t);
 		}
@@ -705,6 +717,16 @@ public class TdSpi extends CThostFtdcTraderSpi {
 		try {
 			logger.warn("{}交易接口前置机已断开, 原因:{}", logInfo, nReason);
 			ctpGatewayImpl.disconnect();
+			
+			NoticeField notice = NoticeField.newBuilder()
+					.setContent(logInfo + "交易接口前置机已断开，原因：" + nReason)
+					.setStatus(CommonStatusEnum.COMS_WARN)
+					.setTimestamp(System.currentTimeMillis())
+					.build();
+			
+			ctpGatewayImpl.getEventEngine().emitNotice(notice);
+			
+			ctpGatewayImpl.startAutoReconnect();
 		} catch (Throwable t) {
 			logger.error("{}OnFrontDisconnected Exception", logInfo, t);
 		}
@@ -1377,7 +1399,7 @@ public class TdSpi extends CThostFtdcTraderSpi {
 				NoticeInfo noticeInfo = new NoticeInfo();
 				noticeInfo.setEvent(NoticeCode.GATEWAY_READY);
 				noticeInfo.setMessage("网关:" + ctpGatewayImpl.getGatewayName() + "，网关ID:" + ctpGatewayImpl.getGatewayId() + "，可以交易");
-				noticeInfo.setData(ctpGatewayImpl.getGatewayName());
+				noticeInfo.setData(Base64.encodeBase64String(ctpGatewayImpl.getGateway().toByteArray()));
 				
 				NoticeField.Builder noticeBuilder = NoticeField.newBuilder();
 				noticeBuilder.setContent(new Gson().toJson(noticeInfo));
