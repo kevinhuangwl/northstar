@@ -25,7 +25,9 @@ public class SocketIOMessageEngine implements MessageEngine{
 	
 	@Override
 	public void emitTick(TickField tick) {
-		server.getBroadcastOperations().sendEvent(Message.MARKET_DATA, tick.toByteArray());
+		for(SocketIOClient client : server.getAllClients()) {
+			client.sendEvent(Message.MARKET_DATA, tick.toByteArray());
+		}
 	}
 	
 	

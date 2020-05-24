@@ -1,3 +1,6 @@
+server:
+  port: 9988
+  
 northstar:
   message.endpoint: http://localhost:51888
   server.endpoint: http://localhost:8888
