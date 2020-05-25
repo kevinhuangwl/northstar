@@ -39,7 +39,7 @@ public class BaseAccountConfig {
 	@Autowired
 	protected FastEventEngine feEngine;
 	
-	@Value("${spring.profiles.active}:prod")
+	@Value("${spring.profiles.active:prod}")
 	protected String profile;
 	
 	protected IAccount createCtpAccount(CtpSettingInfo setting) throws Exception {
