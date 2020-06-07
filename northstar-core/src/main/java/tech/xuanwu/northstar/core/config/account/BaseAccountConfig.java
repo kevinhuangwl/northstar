@@ -1,6 +1,7 @@
 package tech.xuanwu.northstar.core.config.account;
 
 import java.lang.reflect.Constructor;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,7 @@ import tech.xuanwu.northstar.domain.IAccount;
 import tech.xuanwu.northstar.engine.FastEventEngine;
 import tech.xuanwu.northstar.engine.RuntimeEngine;
 import tech.xuanwu.northstar.entity.CtpSettingInfo;
+import tech.xuanwu.northstar.entity.CtpSettingInfo.MarketType;
 import tech.xuanwu.northstar.gateway.GatewayApi;
 import xyz.redtorch.pb.CoreField.GatewaySettingField;
 
@@ -48,5 +50,31 @@ public class BaseAccountConfig {
 		GatewayApi gateway = (GatewayApi) c.newInstance(feEngine, setting.convertTo());
 		IAccount account = new Account(gateway, accountRepo, positionRepo, contractRepo);
 		return account;
+	}
+	
+	protected HashMap<String, String> envMap = new HashMap<String, String>(){
+		{
+			put("dev", "仿真行情（Simnow724）");
+			put("test", "测试行情（Simnow）");
+			put("prod", "真实行情（RealCTP）");
+		}
+	};
+	
+	protected MarketType getMarketType() {
+		MarketType type;
+		switch(profile) {
+		case "prod":
+			type = MarketType.REAL;
+			break;
+		case "dev":
+			type = MarketType.SIMULATE;
+			break;
+		case "test":
+			type = MarketType.TEST;
+			break;
+		default:
+			throw new IllegalStateException();
+		}
+		return type;
 	}
 }

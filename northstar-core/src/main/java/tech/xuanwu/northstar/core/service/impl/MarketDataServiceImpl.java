@@ -54,8 +54,8 @@ public class MarketDataServiceImpl implements MarketDataService{
 	}
 
 	@Override
-	public List<ContractInfo> getAvailableContracts(String gatewayId) throws Exception {
-		return contractRepo.getAllAvailableContracts(gatewayId);
+	public List<ContractInfo> getAvailableFutureContracts(String gatewayId) throws Exception {
+		return contractRepo.getAllAvailableFutureContracts(gatewayId);
 	}
 
 }

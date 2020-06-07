@@ -1,6 +1,7 @@
 package tech.xuanwu.northstar.core.config.account;
 
 import java.lang.reflect.Constructor;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.codec.binary.StringUtils;
@@ -34,14 +35,15 @@ public class CtpMarketDataConfig extends BaseAccountConfig implements Initializi
 	@Autowired
 	private DefaultListableBeanFactory beanFactory;
 	
+	
 	/****************************/
 	/*         行情网关			*/
 	/****************************/
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		boolean isRealMarket = StringUtils.equals(profile, "prod");
-		log.info("当前行情使用【{}行情】", isRealMarket ? "真实" : "仿真");
-		List<CtpSettingInfo> mktGatewaySettingList = ctpSettingRepo.findByConnectionTypeAndMarketType(ConnectionType.MARKET, isRealMarket ? MarketType.REAL : MarketType.SIMULATE);
+		log.info("当前行情使用【{}】", envMap.get(profile));
+		MarketType type = getMarketType();
+		List<CtpSettingInfo> mktGatewaySettingList = ctpSettingRepo.findByConnectionTypeAndMarketType(ConnectionType.MARKET, type);
 		for(CtpSettingInfo info : mktGatewaySettingList) {
 			String gatewayName = info.getGatewayName();
 			String gatewayId = info.getGatewayId();
@@ -65,7 +67,8 @@ public class CtpMarketDataConfig extends BaseAccountConfig implements Initializi
 			IAccount account = new Account(simulatedGateway, accountRepo, positionRepo, contractRepo);
 			rtEngine.regAccount(account);
 			
-			account.connectGateway();
+			//此处不能连接账户，因为事件引擎没启动
+//			account.connectGateway();
 		}
 	}
 }

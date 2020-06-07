@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.gson.Gson;
@@ -194,7 +195,7 @@ public class SimulatedGatewayImpl implements GatewayApi, SimulatedGateway{
 		NoticeInfo noticeInfo = new NoticeInfo();
 		noticeInfo.setEvent(NoticeCode.GATEWAY_READY);
 		noticeInfo.setMessage("网关:" + getGatewayName() + "，网关ID:" + getGatewayId() + "，可以交易");
-		noticeInfo.setData(getGatewayName());
+		noticeInfo.setData(Base64.encodeBase64String(realGatewayApi.getGateway().toByteArray()));
 		
 		NoticeField.Builder noticeBuilder = NoticeField.newBuilder();
 		noticeBuilder.setContent(new Gson().toJson(noticeInfo));

@@ -270,10 +270,10 @@ public class Account implements IAccount{
 		}
 		
 		log.info("=====【{}】开始自动续订合约=====", gatewayApi.getGatewayId());
-		//自动续订阅合约
 		List<ContractInfo> contractList;
 		try {
-			contractList = contractRepo.getAllSubscribedContracts(gatewayApi.getGatewayId());
+			//自动续订期货合约
+			contractList = contractRepo.getAllAvailableFutureContracts(gatewayApi.getGatewayId());
 		} catch (Exception ex) {
 			log.error("", ex);
 			throw new RuntimeException(ex);

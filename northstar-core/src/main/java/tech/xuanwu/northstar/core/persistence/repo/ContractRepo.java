@@ -56,6 +56,6 @@ public interface ContractRepo {
 	 * @return
 	 * @throws Exception
 	 */
-	List<ContractInfo> getAllAvailableContracts(String gatewayId) throws Exception;
+	List<ContractInfo> getAllAvailableFutureContracts(String gatewayId) throws Exception;
 	
 }

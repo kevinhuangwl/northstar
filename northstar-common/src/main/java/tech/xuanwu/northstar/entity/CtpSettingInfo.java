@@ -46,6 +46,8 @@ public class CtpSettingInfo implements Serializable{
 	public static enum MarketType {
 		//仿真
 		SIMULATE,
+		//测试
+		TEST,
 		//真实
 		REAL
 	}

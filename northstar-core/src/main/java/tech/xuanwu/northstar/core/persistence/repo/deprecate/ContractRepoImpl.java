@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.google.gson.Gson;
+import com.mongodb.client.model.Sorts;
 
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.constant.CommonConstant;
@@ -59,10 +60,10 @@ public class ContractRepoImpl implements ContractRepo{
 	}
 
 	@Override
-	public List<ContractInfo> getAllAvailableContracts(String gatewayId) throws Exception {
+	public List<ContractInfo> getAllAvailableFutureContracts(String gatewayId) throws Exception {
 		List<Document> mkContracts = mongodb.find(DB, TBL_CONTRACT, 
-				and(eq("gatewayId", gatewayId),
-					gte("lastTradeDateOrContractMonth", LocalDate.now().format(CommonConstant.D_FORMAT_INT_FORMATTER))));
+				and(eq("gatewayId", gatewayId), eq("productClass", "FUTURES"),
+					gte("lastTradeDateOrContractMonth", LocalDate.now().format(CommonConstant.D_FORMAT_INT_FORMATTER))), Sorts.ascending("symbol"));
 		log.info("获取市场合约{}个", mkContracts.size());
 		List<ContractInfo> resultList = new ArrayList<>(mkContracts.size());
 		for(Document doc : mkContracts) {

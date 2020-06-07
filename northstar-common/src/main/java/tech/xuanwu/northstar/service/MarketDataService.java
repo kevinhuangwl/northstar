@@ -20,5 +20,11 @@ public interface MarketDataService {
 	 */
 	boolean subscribeContract(String gatewayId, String contractName) throws Exception;
 	
-	List<ContractInfo> getAvailableContracts(String gatewayId) throws Exception;
+	/**
+	 * 获取期货合约
+	 * @param gatewayId
+	 * @return
+	 * @throws Exception
+	 */
+	List<ContractInfo> getAvailableFutureContracts(String gatewayId) throws Exception;
 }

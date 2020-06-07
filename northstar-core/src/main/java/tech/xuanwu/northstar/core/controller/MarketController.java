@@ -3,8 +3,8 @@ package tech.xuanwu.northstar.core.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
@@ -25,7 +25,7 @@ public class MarketController {
 	MarketDataService mdService;
 	
 	@ApiOperation("订阅网关合约")
-	@RequestMapping(value="/sub", method=RequestMethod.POST)
+	@GetMapping(value="/sub")
 	public ResultBean<Boolean> subscribe(String gatewayId, String contractName){
 		try {
 			return new ResultBean<>(mdService.subscribeContract(gatewayId, contractName));
@@ -36,10 +36,10 @@ public class MarketController {
 	}
 	
 	@ApiOperation("获取可用合约列表")
-	@RequestMapping(value="/available", method=RequestMethod.GET)
-	public ResultBean<List<ContractInfo>> getAvailableContracts(String gatewayId){
+	@GetMapping(value="/available/future")
+	public ResultBean<List<ContractInfo>> getAvailableFutureContracts(String gatewayId){
 		try {
-			return new ResultBean<>(mdService.getAvailableContracts(gatewayId));
+			return new ResultBean<>(mdService.getAvailableFutureContracts(gatewayId));
 		} catch (Exception e) {
 			log.error("", e);
 			return new ResultBean<>(ReturnCode.ERROR, e.getMessage());
