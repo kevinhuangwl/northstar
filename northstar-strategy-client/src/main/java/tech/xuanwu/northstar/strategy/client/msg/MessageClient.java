@@ -57,6 +57,7 @@ public class MessageClient implements InitializingBean, DisposableBean{
 		});
 		
 		client.connect();
+		client.emit("login", "AP007@CZCE@FUTURES");
 	}
 	
 	@Override

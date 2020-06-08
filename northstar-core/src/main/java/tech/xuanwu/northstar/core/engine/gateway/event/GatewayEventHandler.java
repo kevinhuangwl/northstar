@@ -29,6 +29,7 @@ import tech.xuanwu.northstar.exception.NoSuchEventHandlerException;
 import tech.xuanwu.northstar.gateway.GatewayApi;
 import tech.xuanwu.northstar.service.MailSenderService;
 import xyz.redtorch.pb.CoreEnum.CommonStatusEnum;
+import xyz.redtorch.pb.CoreEnum.ProductClassEnum;
 import xyz.redtorch.pb.CoreField.AccountField;
 import xyz.redtorch.pb.CoreField.ContractField;
 import xyz.redtorch.pb.CoreField.NoticeField;
@@ -117,6 +118,10 @@ public class GatewayEventHandler extends FastEventDynamicHandlerAbstract impleme
 			break;
 		case CONTRACT:
 			ContractField c = (ContractField) event.getObj();
+			if (c.getProductClass() != ProductClassEnum.FUTURES) {
+				//TODO 暂时不处理期权合约。由于实盘的期权合约太多，启动时会导致大量IO，从而导致线程被占用，最终影响账户启动
+				return;
+			}
 			ContractInfo contract = ContractInfo.convertFrom(c);
 			contractRepo.insertIfAbsent(contract);
 			break;

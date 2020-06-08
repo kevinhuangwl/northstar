@@ -29,6 +29,7 @@ import xyz.redtorch.pb.CoreField.TickField;
 @Slf4j
 public abstract class TemplateStrategy implements Strategy, InitializingBean{
 	
+	@Autowired
 	protected BaseStrategyConfig strategyConfig;
 	
 	@Autowired
@@ -62,8 +63,8 @@ public abstract class TemplateStrategy implements Strategy, InitializingBean{
 		System.out.println("#################################");
 		System.out.println(String.format("策略名称：%s", strategyConfig.getStrategyName()));
 		System.out.println(String.format("交易账户名称：%s", strategyConfig.getAccountId()));
-//		System.out.println(String.format("订阅合约名称：%s", JSON.toJSONString(strategyConfig.getMdContracts())));
-//		System.out.println(String.format("交易合约名称：%s", JSON.toJSONString(strategyConfig.getTdContracts())));
+		System.out.println(String.format("订阅合约名称：%s", JSON.toJSONString(strategyConfig.getMdtdContracts())));
+		System.out.println(String.format("交易合约名称：%s", JSON.toJSONString(strategyConfig.getMdtdContracts())));
 		System.out.println("#################################");
 		
 		//注册策略
