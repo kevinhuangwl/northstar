@@ -22,7 +22,15 @@ public class PositionVO implements Serializable{
 	
 	private int totalPosition;
 	
+	private int tdPosition;
+	
+	private int ydPosition;
+	
 	private int availablePosition;
+	
+	private int tdFrozen;
+	
+	private int ydFrozen;
 	
 	private String avgOpenPrice;
 	
@@ -32,12 +40,15 @@ public class PositionVO implements Serializable{
 	public static PositionVO convertFrom(PositionInfo p) {
 		PositionVO vo = new PositionVO();
 		vo.name = CtpSymbolNameConverter.convert(p.getContract().getSymbol());
-		String positionId = p.getPositionId();
-		vo.direction = positionId.split("@")[3].equals(PositionDirectionEnum.PD_Long.toString()) ? "多" : "空";
+		vo.direction = p.getPositionDirection() == PositionDirectionEnum.PD_Long ? "多" : "空";
 		vo.totalPosition = p.getPosition();
 		vo.availablePosition = p.getTdPosition() + p.getYdPosition();
 		vo.avgOpenPrice = String.valueOf(p.getOpenPrice());
 		vo.profit = (int) p.getOpenPositionProfit();
+		vo.tdPosition = p.getTdPosition();
+		vo.ydPosition = p.getYdPosition();
+		vo.tdFrozen = p.getTdFrozen();
+		vo.ydFrozen = p.getYdFrozen();
 		return vo;
 	}
 }

@@ -1,6 +1,8 @@
 package tech.xuanwu.northstar.entity;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -32,11 +34,29 @@ public class OrderVO implements Serializable{
 	
 	private int canceledOrderVolume;
 	
+	private OrderStatusEnum orderState;
+	
 	private String state;
 	
 	private String orderTime;
 	
+	private static transient Map<OrderStatusEnum,String> statusMap = new HashMap<>() {
+		{
+			put(OrderStatusEnum.OS_AllTraded, "全成");
+			put(OrderStatusEnum.OS_Canceled, "已撤单");
+			put(OrderStatusEnum.OS_NoTradeNotQueueing, "未挂");
+			put(OrderStatusEnum.OS_NoTradeQueueing, "全挂");
+			put(OrderStatusEnum.OS_NotTouched, "未触发");
+			put(OrderStatusEnum.OS_PartTradedNotQueueing, "未全成");
+			put(OrderStatusEnum.OS_PartTradedQueueing, "部分成");
+			put(OrderStatusEnum.OS_Rejected, "已拒绝");
+			put(OrderStatusEnum.OS_Touched, "已触发");
+			put(OrderStatusEnum.OS_Unknown, "未知");
+		}
+	};
+	
 	public static OrderVO convertFrom(OrderInfo o) {
+		
 		OrderVO vo = new OrderVO();
 		vo.name = CtpSymbolNameConverter.convert(o.getContract().getSymbol());
 		vo.action = (o.getDirection() == DirectionEnum.D_Buy ? "买" : "卖") + (o.getOffsetFlag() == OffsetFlagEnum.OF_Open ? "开" : o.getOffsetFlag() == OffsetFlagEnum.OF_CloseToday ? "平今" : "平");
@@ -44,11 +64,9 @@ public class OrderVO implements Serializable{
 		vo.totalOrderVolume = o.getTotalVolume();
 		vo.tradedOrderVolume = o.getTradedVolume();
 		vo.canceledOrderVolume = o.getOrderStatus() == OrderStatusEnum.OS_Canceled ? vo.totalOrderVolume - vo.tradedOrderVolume : 0;
-		vo.waitingOrderVolume = o.getOrderStatus() == OrderStatusEnum.OS_Unknown ? vo.totalOrderVolume - vo.tradedOrderVolume : 0;
-		vo.state = o.getOrderStatus() == OrderStatusEnum.OS_AllTraded ? "全成" 
-				: o.getOrderStatus() == OrderStatusEnum.OS_Canceled ? "已撤"
-				: o.getOrderStatus() == OrderStatusEnum.OS_Rejected ? "已拒绝" 
-				: o.getOrderStatus() == OrderStatusEnum.OS_Unknown ? "未成交" : "未知";
+		vo.waitingOrderVolume = vo.totalOrderVolume - vo.tradedOrderVolume - vo.canceledOrderVolume;
+		vo.state = statusMap.get(o.getOrderStatus());
+		vo.orderState = o.getOrderStatus();
 		vo.orderTime = o.getOrderTime();
 		return vo;
 	}
