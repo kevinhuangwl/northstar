@@ -56,7 +56,7 @@ public interface TradeService {
 	 * @return
 	 */
 	String submitOrder(String accountId, String contractSymbol, double price, int volume, DirectionEnum direction,
-			OffsetFlagEnum transactionType) throws Exception;
+			OffsetFlagEnum transactionType, OrderPriceTypeEnum priceType) throws Exception;
 
 	/**
 	 * 提交委托

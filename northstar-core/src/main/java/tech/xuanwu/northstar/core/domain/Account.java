@@ -118,7 +118,7 @@ public class Account implements IAccount{
 				//当持仓不变时，不更新数据库
 				return;
 			}
-			if(position.getPosition() == 0) {
+			if(positionMap.containsKey(position.getPositionId()) && position.getPosition() == 0) {
 				positionMap.remove(position.getPositionId());
 				positionRepo.removeById(position);
 				return;

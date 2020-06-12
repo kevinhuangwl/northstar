@@ -16,6 +16,8 @@ import tech.xuanwu.northstar.exception.TradeException;
 import tech.xuanwu.northstar.service.TradeService;
 import xyz.redtorch.pb.CoreEnum.DirectionEnum;
 import xyz.redtorch.pb.CoreEnum.OffsetFlagEnum;
+import xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum;
+import xyz.redtorch.pb.CoreEnum.PriceSourceEnum;
 
 @Slf4j
 @RestController
@@ -29,10 +31,10 @@ public class TradeController {
 	@RequestMapping(value="/order", method=RequestMethod.POST)
 	@ApiOperation("账户发送委托单")
 	public ResultBean<String> submitOrder(String accountId, String contractSymbol, double price, int volume, DirectionEnum direction,
-			OffsetFlagEnum transactionType){
+			OffsetFlagEnum transactionType, OrderPriceTypeEnum priceType){
 		
 		try {
-			return new ResultBean<>(tradeService.submitOrder(accountId, contractSymbol, price, volume, direction, transactionType));
+			return new ResultBean<>(tradeService.submitOrder(accountId, contractSymbol, price, volume, direction, transactionType, priceType));
 		} catch (Exception e) {
 			log.error("", e);
 			String errMsg = String.format("%s。原因：%s", ErrorHint.FAIL_SUBMIT_ORDER, e.getMessage());

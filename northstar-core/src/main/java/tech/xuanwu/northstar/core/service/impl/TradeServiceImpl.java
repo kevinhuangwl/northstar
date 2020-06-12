@@ -16,7 +16,6 @@ import tech.xuanwu.northstar.service.TradeService;
 import xyz.redtorch.common.util.UUIDStringPoolUtils;
 import xyz.redtorch.pb.CoreEnum.ContingentConditionEnum;
 import xyz.redtorch.pb.CoreEnum.DirectionEnum;
-import xyz.redtorch.pb.CoreEnum.ExchangeEnum;
 import xyz.redtorch.pb.CoreEnum.ForceCloseReasonEnum;
 import xyz.redtorch.pb.CoreEnum.HedgeFlagEnum;
 import xyz.redtorch.pb.CoreEnum.OffsetFlagEnum;
@@ -74,10 +73,10 @@ public class TradeServiceImpl implements TradeService{
 
 	@Override
 	public String submitOrder(String accountId, String contractSymbol, double price, int volume, DirectionEnum direction,
-			OffsetFlagEnum transactionType) throws Exception{
+			OffsetFlagEnum transactionType, OrderPriceTypeEnum priceType) throws Exception{
 		checkValuePositive(price);
 		checkValuePositive(volume);
-		return submitOrder(accountId, contractSymbol, price, 0D, volume, OrderPriceTypeEnum.OPT_LimitPrice, direction, transactionType,
+		return submitOrder(accountId, contractSymbol, price, 0D, volume, priceType, direction, transactionType,
 				HedgeFlagEnum.HF_Speculation, TimeConditionEnum.TC_GFD, VolumeConditionEnum.VC_AV, ContingentConditionEnum.CC_Immediately);
 	}
 
@@ -88,12 +87,6 @@ public class TradeServiceImpl implements TradeService{
 		submitOrderReq = sb.build();
 		String uuid = StringUtils.isEmpty(sb.getOriginOrderId()) ? UUIDStringPoolUtils.getUUIDString() : sb.getOriginOrderId();
 		sb.setOriginOrderId(uuid);
-		
-		boolean isClosing = sb.getOffsetFlag() == OffsetFlagEnum.OF_Close || sb.getOffsetFlag() == OffsetFlagEnum.OF_CloseToday || sb.getOffsetFlag() == OffsetFlagEnum.OF_CloseYesterday;
-		if(isClosing) {
-			//采用CTP自动平仓机制：上期所先平今再平昨，其他交易所先开先平
-			sb.setOffsetFlag(sb.getContract().getExchange() == ExchangeEnum.SHFE ? OffsetFlagEnum.OF_CloseToday : OffsetFlagEnum.OF_Close);
-		}
 
 		if(sb.getContingentCondition() == ContingentConditionEnum.CC_Unkonwn) {
 			sb.setContingentCondition(ContingentConditionEnum.CC_Immediately);
