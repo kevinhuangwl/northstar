@@ -72,7 +72,7 @@ public interface TradeService {
 	 * @param accountId
 	 * @param originOrderId
 	 */
-	void cancelOrder(String accountId, String originOrderId) throws NoSuchAccountException, TradeException;
+	void cancelOrder(String accountId, String orderId) throws NoSuchAccountException, TradeException;
 	
 	/**
 	 * 撤销委托

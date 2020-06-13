@@ -101,13 +101,13 @@ public class Account implements IAccount{
 	@Override
 	public void cancelOrder(CancelOrderReqField cancelOrderReq) throws TradeException {
 		log.info("账户-【{}】委托撤单，{}", accountId, cancelOrderReq);
-		gatewayApi.cancelOrder(cancelOrderReq);
 		
-		String originOrderId = cancelOrderReq.getOriginOrderId();
-		OrderInfo order = cachedOrderMap.get(originOrderId);
-		if(order == null && order.getOrderStatus() != OrderStatusEnum.OS_AllTraded) {
+		String orderId = cancelOrderReq.getOrderId();
+		OrderInfo order = cachedOrderMap.get(orderId);
+		if(order == null || order.getOrderStatus() == OrderStatusEnum.OS_AllTraded) {
 			throw new TradeException(accountId, ErrorHint.FAIL_CANCEL_ORDER);
 		}
+		gatewayApi.cancelOrder(cancelOrderReq);
 	}
 
 	@Override
@@ -118,9 +118,11 @@ public class Account implements IAccount{
 				//当持仓不变时，不更新数据库
 				return;
 			}
-			if(positionMap.containsKey(position.getPositionId()) && position.getPosition() == 0) {
-				positionMap.remove(position.getPositionId());
-				positionRepo.removeById(position);
+			if(position.getPosition() == 0) {
+				if(positionMap.containsKey(position.getPositionId())) {					
+					positionMap.remove(position.getPositionId());
+					positionRepo.removeById(position);
+				}
 				return;
 			}
 			positionRepo.upsertById(position);
@@ -143,7 +145,7 @@ public class Account implements IAccount{
 
 	@Override
 	public void updateOrder(OrderInfo order) {
-		cachedOrderMap.put(order.getOriginOrderId(), order);
+		cachedOrderMap.put(order.getOrderId(), order);
 		
 		synchronized (orderMap) {
 			String orderId = order.getOrderId();
@@ -269,27 +271,27 @@ public class Account implements IAccount{
 			return;
 		}
 		
-		log.info("=====【{}】开始自动续订合约=====", gatewayApi.getGatewayId());
-		List<ContractInfo> contractList;
-		try {
-			//自动续订期货合约
-			contractList = contractRepo.getAllAvailableFutureContracts(gatewayApi.getGatewayId());
-		} catch (Exception ex) {
-			log.error("", ex);
-			throw new RuntimeException(ex);
-		}
-		for(ContractInfo c : contractList) {
-			ContractField contract = c.convertTo();
-			if(contract != null) {
-				gatewayApi.subscribe(contract);
-				log.info("订阅网关【{}】的合约【{}】", c.getGatewayId(), c.getSymbol());
-			}else {
-				log.warn("合约【{}】已过期", c.getSymbol());
-				contractRepo.delete(c.getGatewayId(),c.getSymbol());				
-			}
-		}		
-		
-		log.info("=====自动续订合约完成=====");
+//		log.info("=====【{}】开始自动续订合约=====", gatewayApi.getGatewayId());
+//		List<ContractInfo> contractList;
+//		try {
+//			//自动续订期货合约
+//			contractList = contractRepo.getAllAvailableFutureContracts(gatewayApi.getGatewayId());
+//		} catch (Exception ex) {
+//			log.error("", ex);
+//			throw new RuntimeException(ex);
+//		}
+//		for(ContractInfo c : contractList) {
+//			ContractField contract = c.convertTo();
+//			if(contract != null) {
+//				gatewayApi.subscribe(contract);
+//				log.info("订阅网关【{}】的合约【{}】", c.getGatewayId(), c.getSymbol());
+//			}else {
+//				log.warn("合约【{}】已过期", c.getSymbol());
+//				contractRepo.delete(c.getGatewayId(),c.getSymbol());				
+//			}
+//		}		
+//		
+//		log.info("=====自动续订合约完成=====");
 		
 	}
 

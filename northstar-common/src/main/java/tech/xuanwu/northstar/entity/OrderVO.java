@@ -20,6 +20,10 @@ public class OrderVO implements Serializable{
 	 */
 	private static final long serialVersionUID = 3768565221247076401L;
 
+	private String accountId;
+	
+	private String orderId;
+	
 	private String name;
 	
 	private String action;
@@ -58,6 +62,8 @@ public class OrderVO implements Serializable{
 	public static OrderVO convertFrom(OrderInfo o) {
 		
 		OrderVO vo = new OrderVO();
+		vo.accountId = o.accountId;
+		vo.orderId = o.getOrderId();
 		vo.name = CtpSymbolNameConverter.convert(o.getContract().getSymbol());
 		vo.action = (o.getDirection() == DirectionEnum.D_Buy ? "买" : "卖") + (o.getOffsetFlag() == OffsetFlagEnum.OF_Open ? "开" : o.getOffsetFlag() == OffsetFlagEnum.OF_CloseToday ? "平今" : "平");
 		vo.orderPrice = String.valueOf(o.getPrice());

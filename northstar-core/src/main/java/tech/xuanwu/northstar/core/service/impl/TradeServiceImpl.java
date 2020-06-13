@@ -109,9 +109,9 @@ public class TradeServiceImpl implements TradeService{
 	}
 
 	@Override
-	public void cancelOrder(String accountId, String originOrderId) throws NoSuchAccountException, TradeException {
+	public void cancelOrder(String accountId, String orderId) throws NoSuchAccountException, TradeException {
 		CancelOrderReqField.Builder cb = CancelOrderReqField.newBuilder();
-		cb.setOriginOrderId(originOrderId);
+		cb.setOrderId(orderId);
 		cancelOrder(accountId, cb.build());
 	}
 

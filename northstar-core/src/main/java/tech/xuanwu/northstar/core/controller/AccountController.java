@@ -47,7 +47,6 @@ public class AccountController {
 	public ResultBean<AccountInfo> getAccountInfo(String accountId) {
 		try {
 			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
-			log.info("获取账户[{}]的账户信息", accountId);
 			return new ResultBean<>(acService.getAccountInfo(accountId));
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
@@ -57,7 +56,7 @@ public class AccountController {
 
 	@GetMapping("/position")
 	@ApiOperation("获取账户持仓信息")
-	public ResultBean<List<PositionVO>> getPositionInfoList(String accountId) {
+	public ResultBean<List<PositionVO>> getPositionList(String accountId) {
 		try {
 			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
 			return new ResultBean<List<PositionVO>>(acService.getPositionInfoList(accountId).stream()
@@ -67,10 +66,22 @@ public class AccountController {
 			return new ResultBean<List<PositionVO>>(ReturnCode.ERROR, e.getMessage());
 		}
 	}
+	
+	@GetMapping("/positionInfo")
+	@ApiOperation("获取账户持仓信息")
+	public ResultBean<List<PositionInfo>> getPositionInfoList(String accountId) {
+		try {
+			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
+			return new ResultBean<List<PositionInfo>>(acService.getPositionInfoList(accountId));
+		} catch (NoSuchAccountException e) {
+			log.error("", e);
+			return new ResultBean<List<PositionInfo>>(ReturnCode.ERROR, e.getMessage());
+		}
+	}
 
 	@GetMapping("/order")
 	@ApiOperation("获取账户订单信息")
-	public ResultBean<List<OrderVO>> getOrderInfoList(String accountId) {
+	public ResultBean<List<OrderVO>> getOrderList(String accountId) {
 		try {
 			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
 			return new ResultBean<List<OrderVO>>(acService.getOrderInfoList(accountId).stream()
@@ -80,10 +91,22 @@ public class AccountController {
 			return new ResultBean<List<OrderVO>>(ReturnCode.ERROR, e.getMessage());
 		}
 	}
+	
+	@GetMapping("/orderInfo")
+	@ApiOperation("获取账户订单信息")
+	public ResultBean<List<OrderInfo>> getOrderInfoList(String accountId) {
+		try {
+			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
+			return new ResultBean<List<OrderInfo>>(acService.getOrderInfoList(accountId));
+		} catch (NoSuchAccountException e) {
+			log.error("", e);
+			return new ResultBean<List<OrderInfo>>(ReturnCode.ERROR, e.getMessage());
+		}
+	}
 
 	@GetMapping("/trade")
 	@ApiOperation("获取账户成交信息")
-	public ResultBean<List<TransactionVO>> getTransactionInfoList(String accountId) {
+	public ResultBean<List<TransactionVO>> getTransactionList(String accountId) {
 		try {
 			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
 			return new ResultBean<List<TransactionVO>>(acService.getTransactionInfoList(accountId).stream()
@@ -91,6 +114,18 @@ public class AccountController {
 		} catch (NoSuchAccountException e) {
 			log.error("", e);
 			return new ResultBean<List<TransactionVO>>(ReturnCode.ERROR, e.getMessage());
+		}
+	}
+	
+	@GetMapping("/tradeInfo")
+	@ApiOperation("获取账户成交信息")
+	public ResultBean<List<TransactionInfo>> getTransactionInfoList(String accountId) {
+		try {
+			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
+			return new ResultBean<List<TransactionInfo>>(acService.getTransactionInfoList(accountId));
+		} catch (NoSuchAccountException e) {
+			log.error("", e);
+			return new ResultBean<List<TransactionInfo>>(ReturnCode.ERROR, e.getMessage());
 		}
 	}
 

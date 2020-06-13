@@ -44,9 +44,9 @@ public class TradeController {
 	
 	@RequestMapping(value="/cancel", method=RequestMethod.POST)
 	@ApiOperation("账户撤销委托单")
-	public ResultBean<Void> cancelOrder(String accountId, String originOrderId){
+	public ResultBean<Void> cancelOrder(String accountId, String orderId){
 		try {
-			tradeService.cancelOrder(accountId, originOrderId);
+			tradeService.cancelOrder(accountId, orderId);
 			return new ResultBean<>(null);
 		} catch (NoSuchAccountException | TradeException e) {
 			log.error("", e);
