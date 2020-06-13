@@ -44,117 +44,72 @@ public class AccountController {
 
 	@GetMapping("/info")
 	@ApiOperation("获取账户信息")
-	public ResultBean<AccountInfo> getAccountInfo(String accountId) {
-		try {
-			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
-			return new ResultBean<>(acService.getAccountInfo(accountId));
-		} catch (NoSuchAccountException e) {
-			log.error("", e);
-			return new ResultBean<>(ReturnCode.ERROR, e.getMessage());
-		}
+	public ResultBean<AccountInfo> getAccountInfo(String accountId) throws NoSuchAccountException {
+		Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
+		return new ResultBean<>(acService.getAccountInfo(accountId));
 	}
 
 	@GetMapping("/position")
 	@ApiOperation("获取账户持仓信息")
-	public ResultBean<List<PositionVO>> getPositionList(String accountId) {
-		try {
-			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
-			return new ResultBean<List<PositionVO>>(acService.getPositionInfoList(accountId).stream()
-					.map(p -> PositionVO.convertFrom(p)).collect(Collectors.toList()));
-		} catch (NoSuchAccountException e) {
-			log.error("", e);
-			return new ResultBean<List<PositionVO>>(ReturnCode.ERROR, e.getMessage());
-		}
+	public ResultBean<List<PositionVO>> getPositionList(String accountId) throws NoSuchAccountException {
+		Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
+		return new ResultBean<List<PositionVO>>(acService.getPositionInfoList(accountId).stream()
+				.map(p -> PositionVO.convertFrom(p)).collect(Collectors.toList()));
 	}
 	
 	@GetMapping("/positionInfo")
 	@ApiOperation("获取账户持仓信息")
-	public ResultBean<List<PositionInfo>> getPositionInfoList(String accountId) {
-		try {
-			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
-			return new ResultBean<List<PositionInfo>>(acService.getPositionInfoList(accountId));
-		} catch (NoSuchAccountException e) {
-			log.error("", e);
-			return new ResultBean<List<PositionInfo>>(ReturnCode.ERROR, e.getMessage());
-		}
+	public ResultBean<List<PositionInfo>> getPositionInfoList(String accountId) throws NoSuchAccountException {
+		Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
+		return new ResultBean<List<PositionInfo>>(acService.getPositionInfoList(accountId));
 	}
 
 	@GetMapping("/order")
 	@ApiOperation("获取账户订单信息")
-	public ResultBean<List<OrderVO>> getOrderList(String accountId) {
-		try {
-			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
-			return new ResultBean<List<OrderVO>>(acService.getOrderInfoList(accountId).stream()
-					.map(o -> OrderVO.convertFrom(o)).collect(Collectors.toList()));
-		} catch (NoSuchAccountException e) {
-			log.error("", e);
-			return new ResultBean<List<OrderVO>>(ReturnCode.ERROR, e.getMessage());
-		}
+	public ResultBean<List<OrderVO>> getOrderList(String accountId) throws NoSuchAccountException {
+		Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
+		return new ResultBean<List<OrderVO>>(acService.getOrderInfoList(accountId).stream()
+				.map(o -> OrderVO.convertFrom(o)).collect(Collectors.toList()));
 	}
 	
 	@GetMapping("/orderInfo")
 	@ApiOperation("获取账户订单信息")
-	public ResultBean<List<OrderInfo>> getOrderInfoList(String accountId) {
-		try {
-			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
-			return new ResultBean<List<OrderInfo>>(acService.getOrderInfoList(accountId));
-		} catch (NoSuchAccountException e) {
-			log.error("", e);
-			return new ResultBean<List<OrderInfo>>(ReturnCode.ERROR, e.getMessage());
-		}
+	public ResultBean<List<OrderInfo>> getOrderInfoList(String accountId) throws NoSuchAccountException {
+		Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
+		return new ResultBean<List<OrderInfo>>(acService.getOrderInfoList(accountId));
 	}
 
 	@GetMapping("/trade")
 	@ApiOperation("获取账户成交信息")
-	public ResultBean<List<TransactionVO>> getTransactionList(String accountId) {
-		try {
-			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
-			return new ResultBean<List<TransactionVO>>(acService.getTransactionInfoList(accountId).stream()
-					.map(t -> TransactionVO.convertFrom(t)).collect(Collectors.toList()));
-		} catch (NoSuchAccountException e) {
-			log.error("", e);
-			return new ResultBean<List<TransactionVO>>(ReturnCode.ERROR, e.getMessage());
-		}
+	public ResultBean<List<TransactionVO>> getTransactionList(String accountId) throws NoSuchAccountException {
+		Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
+		return new ResultBean<List<TransactionVO>>(acService.getTransactionInfoList(accountId).stream()
+				.map(t -> TransactionVO.convertFrom(t)).collect(Collectors.toList()));
 	}
 	
 	@GetMapping("/tradeInfo")
 	@ApiOperation("获取账户成交信息")
-	public ResultBean<List<TransactionInfo>> getTransactionInfoList(String accountId) {
-		try {
-			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
-			return new ResultBean<List<TransactionInfo>>(acService.getTransactionInfoList(accountId));
-		} catch (NoSuchAccountException e) {
-			log.error("", e);
-			return new ResultBean<List<TransactionInfo>>(ReturnCode.ERROR, e.getMessage());
-		}
+	public ResultBean<List<TransactionInfo>> getTransactionInfoList(String accountId) throws NoSuchAccountException {
+		Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
+		return new ResultBean<List<TransactionInfo>>(acService.getTransactionInfoList(accountId));
 	}
 
 	@GetMapping("/connect")
 	@ApiOperation("连接账户网关")
-	public ResultBean<Void> connectGateway(String accountId) {
-		try {
-			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
-			log.info("账户[{}]连接网关", accountId);
-			acService.connect(accountId);
-			return new ResultBean<>(null);
-		} catch (Exception e) {
-			log.error("", e);
-			return new ResultBean<Void>(ReturnCode.ERROR, e.getMessage());
-		}
+	public ResultBean<Void> connectGateway(String accountId) throws Exception {
+		Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
+		log.info("账户[{}]连接网关", accountId);
+		acService.connect(accountId);
+		return new ResultBean<>(null);
 	}
 
 	@GetMapping("/disconnect")
 	@ApiOperation("断开账户网关")
-	public ResultBean<Void> disconnectGateway(String accountId) {
-		try {
-			Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
-			log.info("账户[{}]断开网关", accountId);
-			acService.disconnect(accountId);
-			return new ResultBean<>(null);
-		} catch (NoSuchAccountException e) {
-			log.error("", e);
-			return new ResultBean<Void>(ReturnCode.ERROR, e.getMessage());
-		}
+	public ResultBean<Void> disconnectGateway(String accountId) throws NoSuchAccountException {
+		Assert.hasText(accountId, ErrorHint.EMPTY_PARAM);
+		log.info("账户[{}]断开网关", accountId);
+		acService.disconnect(accountId);
+		return new ResultBean<>(null);
 	}
 
 }

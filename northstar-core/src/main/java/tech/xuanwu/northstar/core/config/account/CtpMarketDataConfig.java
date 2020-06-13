@@ -67,6 +67,9 @@ public class CtpMarketDataConfig extends BaseAccountConfig implements Initializi
 			IAccount account = new Account(simulatedGateway, accountRepo, positionRepo, contractRepo);
 			rtEngine.regAccount(account);
 			
+			//注册模拟账户
+			beanFactory.registerSingleton("simulatedGateway", simulatedGateway);
+			
 			//此处不能连接账户，因为事件引擎没启动
 //			account.connectGateway();
 		}

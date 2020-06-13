@@ -9,15 +9,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.common.ResultBean;
-import tech.xuanwu.northstar.common.ReturnCode;
-import tech.xuanwu.northstar.constant.ErrorHint;
 import tech.xuanwu.northstar.exception.NoSuchAccountException;
-import tech.xuanwu.northstar.exception.TradeException;
 import tech.xuanwu.northstar.service.TradeService;
 import xyz.redtorch.pb.CoreEnum.DirectionEnum;
 import xyz.redtorch.pb.CoreEnum.OffsetFlagEnum;
 import xyz.redtorch.pb.CoreEnum.OrderPriceTypeEnum;
-import xyz.redtorch.pb.CoreEnum.PriceSourceEnum;
 
 @Slf4j
 @RestController
@@ -31,40 +27,23 @@ public class TradeController {
 	@RequestMapping(value="/order", method=RequestMethod.POST)
 	@ApiOperation("账户发送委托单")
 	public ResultBean<String> submitOrder(String accountId, String contractSymbol, double price, int volume, DirectionEnum direction,
-			OffsetFlagEnum transactionType, OrderPriceTypeEnum priceType){
+			OffsetFlagEnum transactionType, OrderPriceTypeEnum priceType) throws Exception{
 		
-		try {
-			return new ResultBean<>(tradeService.submitOrder(accountId, contractSymbol, price, volume, direction, transactionType, priceType));
-		} catch (Exception e) {
-			log.error("", e);
-			String errMsg = String.format("%s。原因：%s", ErrorHint.FAIL_SUBMIT_ORDER, e.getMessage());
-			return new ResultBean<String>(ReturnCode.ERROR,  errMsg);
-		}
+		return new ResultBean<>(tradeService.submitOrder(accountId, contractSymbol, price, volume, direction, transactionType, priceType));
 	}
 	
 	@RequestMapping(value="/cancel", method=RequestMethod.POST)
 	@ApiOperation("账户撤销委托单")
-	public ResultBean<Void> cancelOrder(String accountId, String orderId){
-		try {
-			tradeService.cancelOrder(accountId, orderId);
-			return new ResultBean<>(null);
-		} catch (NoSuchAccountException | TradeException e) {
-			log.error("", e);
-			String errMsg = String.format("%s。原因：%s", ErrorHint.FAIL_CANCEL_ORDER, e.getMessage());
-			return new ResultBean<>(ReturnCode.ERROR,  errMsg);
-		}
+	public ResultBean<Void> cancelOrder(String accountId, String orderId) throws Exception{
+		tradeService.cancelOrder(accountId, orderId);
+		return new ResultBean<>(null);
 	}
 	
 	@RequestMapping(value="/sellout", method=RequestMethod.DELETE)
 	@ApiOperation("账户一键全平【危险】")
-	public ResultBean<Void> sellOutAllPosition(String accountId){
+	public ResultBean<Void> sellOutAllPosition(String accountId) throws NoSuchAccountException{
 		log.info("【警告】账户一键全平");
-		try {
-			tradeService.sellOutAllPosition(accountId);
-			return new ResultBean<>(null);
-		} catch (NoSuchAccountException e) {
-			log.error("", e);
-			return new ResultBean<>(ReturnCode.ERROR, e.getMessage());
-		}
+		tradeService.sellOutAllPosition(accountId);
+		return new ResultBean<>(null);
 	}
 }

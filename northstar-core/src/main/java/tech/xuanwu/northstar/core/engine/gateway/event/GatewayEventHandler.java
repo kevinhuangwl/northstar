@@ -62,7 +62,7 @@ public class GatewayEventHandler extends FastEventDynamicHandlerAbstract impleme
 	@Autowired
 	IndexEngine idxEngine;
 	
-	@Autowired(required = false)
+	@Autowired
 	@Qualifier("simulatedGateway")
 	GatewayApi simulatedGateway;
 	

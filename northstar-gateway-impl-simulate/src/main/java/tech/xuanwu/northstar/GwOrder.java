@@ -95,7 +95,7 @@ class GwOrder {
 	}
 	
 	public OrderField orderConfirmed() {
-		ob.setOrderStatus(OrderStatusEnum.OS_Unknown);
+		ob.setOrderStatus(OrderStatusEnum.OS_NoTradeQueueing);
 		ob.setStatusMsg("报单已提交");
 		return ob.build();
 	}

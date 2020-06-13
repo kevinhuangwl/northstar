@@ -10,7 +10,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import tech.xuanwu.northstar.common.ResultBean;
-import tech.xuanwu.northstar.common.ReturnCode;
 import tech.xuanwu.northstar.constant.ErrorHint;
 import tech.xuanwu.northstar.service.MailSenderService;
 
@@ -25,15 +24,10 @@ public class MailSenderController {
 	
 	@PostMapping("/msg")
 	@ApiOperation("发送邮件消息")
-	public ResultBean<Void> sendMessage(String title, String content){
-		try {
-			Assert.hasText(title, ErrorHint.EMPTY_PARAM);
-			Assert.hasText(content, ErrorHint.EMPTY_PARAM);
-			service.sendMessage(title, content);
-			return new ResultBean<Void>(null);
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			return new ResultBean<Void>(ReturnCode.ERROR, ErrorHint.FAIL_TO_SEND_MAIL);
-		}
+	public ResultBean<Void> sendMessage(String title, String content) throws Exception{
+		Assert.hasText(title, ErrorHint.EMPTY_PARAM);
+		Assert.hasText(content, ErrorHint.EMPTY_PARAM);
+		service.sendMessage(title, content);
+		return new ResultBean<Void>(null);
 	}
 }
