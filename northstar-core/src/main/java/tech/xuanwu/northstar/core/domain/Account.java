@@ -1,6 +1,8 @@
 package tech.xuanwu.northstar.core.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +42,7 @@ import xyz.redtorch.pb.CoreField.SubmitOrderReqField;
 @Slf4j
 public class Account implements IAccount{
 	//数据库更新间隔，避免频繁更新数据库
-	private static final int DB_UPDATE_INTERVAL = 30000;
+	private static final int DB_UPDATE_INTERVAL = 120000;
 	private long lastUpdateTime = 0;
 	
 	@NotNull
@@ -119,28 +121,27 @@ public class Account implements IAccount{
 				return;
 			}
 			if(position.getPosition() == 0) {
-				if(positionMap.containsKey(position.getPositionId())) {					
-					positionMap.remove(position.getPositionId());
-					positionRepo.removeById(position);
-				}
-				return;
+				// 无持仓时，移除数据库持仓记录
+				positionRepo.removeById(position);
+			}else {
+				// 有持仓时，更新数据库持仓记录
+				positionRepo.upsertById(position);
 			}
-			positionRepo.upsertById(position);
 		}
 	}
 	
 	@Override
 	public List<PositionInfo> getPositionInfoList() {
+		List<PositionInfo> resultList = new ArrayList<>(positionMap.size());
 		synchronized (positionMap) {		
-			List<PositionInfo> resultList = new ArrayList<>(positionMap.size());
 			for(PositionInfo p : positionMap.values()) {
 				//过滤持仓量等于零的持仓
 				if(p.getPosition() > 0) {					
 					resultList.add(p);
 				}
 			}
-			return resultList;
 		}
+		return resultList;
 	}
 
 	@Override
@@ -216,20 +217,23 @@ public class Account implements IAccount{
 
 	@Override
 	public List<OrderInfo> getOrderInfoList() {
+		List<OrderInfo> resultList = new ArrayList<>(orderMap.size());
 		synchronized (orderMap) {
-			List<OrderInfo> resultList = new ArrayList<>(orderMap.size());
 			resultList.addAll(orderMap.values());
-			return resultList;
 		}
+		return resultList;
 	}
 
 	@Override
 	public List<TransactionInfo> getTransactionInfoList() {
+		List<TransactionInfo> resultList = new ArrayList<>(transactionMap.size());
 		synchronized (transactionMap) {
-			List<TransactionInfo> resultList = new ArrayList<>(transactionMap.size());
 			resultList.addAll(transactionMap.values());
-			return resultList;
 		}
+		Collections.sort(resultList, (a, b) -> {
+			return a.getTradeTimestamp() < b.getTradeTimestamp() ? -1 : 1;
+		});
+		return resultList;
 	}
 
 	@Override
@@ -271,27 +275,27 @@ public class Account implements IAccount{
 			return;
 		}
 		
-//		log.info("=====【{}】开始自动续订合约=====", gatewayApi.getGatewayId());
-//		List<ContractInfo> contractList;
-//		try {
-//			//自动续订期货合约
-//			contractList = contractRepo.getAllAvailableFutureContracts(gatewayApi.getGatewayId());
-//		} catch (Exception ex) {
-//			log.error("", ex);
-//			throw new RuntimeException(ex);
-//		}
-//		for(ContractInfo c : contractList) {
-//			ContractField contract = c.convertTo();
-//			if(contract != null) {
-//				gatewayApi.subscribe(contract);
-//				log.info("订阅网关【{}】的合约【{}】", c.getGatewayId(), c.getSymbol());
-//			}else {
-//				log.warn("合约【{}】已过期", c.getSymbol());
-//				contractRepo.delete(c.getGatewayId(),c.getSymbol());				
-//			}
-//		}		
-//		
-//		log.info("=====自动续订合约完成=====");
+		log.info("=====【{}】开始自动续订合约=====", gatewayApi.getGatewayId());
+		List<ContractInfo> contractList;
+		try {
+			//自动续订期货合约
+			contractList = contractRepo.getAllAvailableFutureContracts(gatewayApi.getGatewayId());
+		} catch (Exception ex) {
+			log.error("", ex);
+			throw new RuntimeException(ex);
+		}
+		for(ContractInfo c : contractList) {
+			ContractField contract = c.convertTo();
+			if(contract != null) {
+				gatewayApi.subscribe(contract);
+				log.info("订阅网关【{}】的合约【{}】", c.getGatewayId(), c.getSymbol());
+			}else {
+				log.warn("合约【{}】已过期", c.getSymbol());
+				contractRepo.delete(c.getGatewayId(),c.getSymbol());				
+			}
+		}		
+		
+		log.info("=====自动续订合约完成=====");
 		
 	}
 

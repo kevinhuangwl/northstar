@@ -5,6 +5,7 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 import tech.xuanwu.northstar.utils.CtpSymbolNameConverter;
+import xyz.redtorch.pb.CoreEnum.ExchangeEnum;
 import xyz.redtorch.pb.CoreEnum.PositionDirectionEnum;
 
 @Getter
@@ -24,6 +25,8 @@ public class PositionVO implements Serializable{
 	
 	private String direction;
 	
+	private ExchangeEnum exchange;
+	
 	private int totalPosition;
 	
 	private int tdPosition;
@@ -40,13 +43,13 @@ public class PositionVO implements Serializable{
 	
 	private int profit; 
 	
-	
 	public static PositionVO convertFrom(PositionInfo p) {
 		PositionVO vo = new PositionVO();
 		vo.name = CtpSymbolNameConverter.convert(p.getContract().getSymbol());
 		vo.accountId = p.getAccountId();
 		vo.unifiedSymbol = p.getContract().getUnifiedSymbol();
 		vo.direction = p.getPositionDirection() == PositionDirectionEnum.PD_Long ? "多" : "空";
+		vo.exchange = p.getContract().getExchange();
 		vo.avgOpenPrice = String.valueOf(p.getOpenPrice());
 		vo.profit = (int) p.getOpenPositionProfit();
 		vo.tdPosition = p.getTdPosition();

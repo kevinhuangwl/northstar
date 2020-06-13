@@ -19,7 +19,7 @@ logging:
   
 spring:
   profiles:
-    active: test
+    active: dev
   mail:
     host: smtp.126.com
     username: kevinbauer@126.com
