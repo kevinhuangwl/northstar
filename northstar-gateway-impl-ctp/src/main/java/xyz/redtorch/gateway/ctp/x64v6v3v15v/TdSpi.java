@@ -2,6 +2,11 @@ package xyz.redtorch.gateway.ctp.x64v6v3v15v;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 
+import tech.xuanwu.northstar.constant.CommonConstant;
 import tech.xuanwu.northstar.constant.NoticeCode;
 import tech.xuanwu.northstar.entity.NoticeInfo;
 import xyz.redtorch.gateway.ctp.x64v6v3v15v.api.CThostFtdcAccountregisterField;
@@ -1650,6 +1656,8 @@ public class TdSpi extends CThostFtdcTraderSpi {
 			int volume = pTrade.getVolume();
 			String tradeDate = pTrade.getTradeDate();
 			String tradeTime = pTrade.getTradeTime();
+			LocalDateTime tradeDatetime = LocalDateTime.of(LocalDate.from(CommonConstant.D_FORMAT_INT_FORMATTER.parse(tradeDate)), LocalTime.from(CommonConstant.T_FORMAT_FORMATTER.parse(tradeTime)));
+			long tradeTimestamp = tradeDatetime.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
 
 			HedgeFlagEnum hedgeFlag = CtpConstant.hedgeFlagMapReverse.getOrDefault(String.valueOf(pTrade.getHedgeFlag()), HedgeFlagEnum.HF_Unknown);
 			TradeTypeEnum tradeType = CtpConstant.tradeTypeMapReverse.getOrDefault(pTrade.getTradeType(), TradeTypeEnum.TT_Unkonwn);
@@ -1677,6 +1685,7 @@ public class TdSpi extends CThostFtdcTraderSpi {
 			tradeBuilder.setTradeId(tradeId);
 			tradeBuilder.setTradeTime(tradeTime);
 			tradeBuilder.setTradingDay(tradingDay);
+			tradeBuilder.setTradeTimestamp(tradeTimestamp);
 			tradeBuilder.setDirection(direction);
 			tradeBuilder.setOffsetFlag(offsetFlag);
 			tradeBuilder.setOrderId(orderId);
