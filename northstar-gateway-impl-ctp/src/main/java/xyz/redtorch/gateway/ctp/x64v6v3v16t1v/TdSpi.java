@@ -1431,8 +1431,10 @@ public class TdSpi extends CThostFtdcTraderSpi {
 
 			String orderDate = pOrder.getInsertDate();
 			String orderTime = pOrder.getInsertTime();
+			LocalDateTime tradeDatetime = LocalDateTime.of(LocalDate.from(CommonConstant.D_FORMAT_INT_FORMATTER.parse(orderDate)), LocalTime.from(CommonConstant.T_FORMAT_FORMATTER.parse(orderTime)));
+			long tradeTimestamp = tradeDatetime.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+			String activeTime = String.valueOf(tradeTimestamp);
 			String cancelTime = pOrder.getCancelTime();
-			String activeTime = pOrder.getActiveTime();
 			String updateTime = pOrder.getUpdateTime();
 			String suspendTime = pOrder.getSuspendTime();
 
